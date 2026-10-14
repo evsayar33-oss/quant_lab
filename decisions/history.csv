@@ -1,2 +1,3 @@
 validated_at,id,strategy,universe,timeframe,verdict,gate_sharpe,dsr,pbo,oos_cagr,oos_maxdd
 2026-10-14T18:51:15+00:00,H001,xs_momentum,bist30,1d,ACCEPT,0.87,1.0,0.484,0.7113,-0.4394
+2026-10-14T19:03:37+00:00,H001,xs_momentum,bist30,1d,WATCH,0.87,1.0,0.484,0.7113,-0.4394

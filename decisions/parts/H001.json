@@ -1,8 +1,8 @@
 {
-  "verdict": "ACCEPT",
-  "previous_verdict": null,
+  "verdict": "WATCH",
+  "previous_verdict": "ACCEPT",
   "reasons": [
-    "all gate checks passed"
+    "OOS MaxDD -0.5099 worse than -0.45 (local or USD)"
   ],
   "strategy": "xs_momentum",
   "kind": "strategy",
@@ -23,11 +23,7 @@
     "skip": 0,
     "top_n": 3
   },
-  "targets": {
-    "EREGL.IS": 0.3333,
-    "KRDMD.IS": 0.3333,
-    "TUPRS.IS": 0.3333
-  },
+  "targets": {},
   "targets_observe_only": {
     "EREGL.IS": 0.3333,
     "KRDMD.IS": 0.3333,
@@ -138,7 +134,7 @@
   "recommended_overlay": "dd_brake_0.2",
   "kelly_fraction": null,
   "oos_csv": "results/H001_xs_momentum_bist30_1d_oos.csv",
-  "validated_at": "2026-10-14T18:51:15+00:00",
-  "accepted_at": "2026-10-14T18:51:15+00:00",
+  "validated_at": "2026-10-14T19:03:37+00:00",
+  "accepted_at": null,
   "data_end": "2026-10-14 00:00:00"
 }
