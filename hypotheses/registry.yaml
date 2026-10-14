@@ -309,3 +309,69 @@
   test_months: 2
   status: active
   note: "Intraday breakout long/short"
+
+# ---------------------------------------------------------------- metals (XAU, XAG, copper, PGMs)
+- id: H033
+  strategy: ts_momentum
+  universe: metals_etf
+  for_system: metals
+  start: "2010-01-01"
+  status: active
+  note: "Trend following across gold, silver, copper, platinum, palladium and miners"
+
+- id: H034
+  rule: donchian_breakout
+  universe: metals
+  for_system: metals
+  start: "2008-01-01"
+  filters: [none, trend_sma200, vix_below_25]
+  side: both
+  status: active
+  note: "Turtle breakout long/short on metal futures"
+
+- id: H035
+  rule: supertrend_flip
+  universe: metals
+  timeframe: 1w
+  for_system: metals
+  start: "2005-01-01"
+  filters: [none, curve_normal]
+  side: long
+  status: active
+  note: "Weekly supertrend swing entries on metals"
+
+- id: H036
+  strategy: pairs_zscore
+  universe: metals_etf
+  for_system: metals
+  start: "2010-01-01"
+  status: active
+  note: "Relative value: gold/silver, gold/miners, silver/miners mean reversion"
+
+- id: H037
+  rule: rsi_reversal
+  universe: metals_etf
+  for_system: metals
+  start: "2010-01-01"
+  filters: [trend_sma200, htf_week_sma30]
+  side: long
+  confirm: macd_cross
+  confirm_within: [0, 3, 5]
+  status: active
+  note: "Dip-buy in uptrend, RSI oversold confirmed by MACD"
+
+- id: H038
+  strategy: dual_momentum
+  universe: metals_etf
+  for_system: metals
+  start: "2010-01-01"
+  status: active
+  note: "Rotate into the strongest metal, cash when none is rising"
+
+- id: H039
+  strategy: macro_risk_switch
+  universe: metals_etf
+  for_system: metals
+  start: "2010-01-01"
+  status: active
+  note: "Hold metals only in favourable VIX / yield-curve / trend regime"
