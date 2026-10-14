@@ -21,7 +21,7 @@ from lab import engine, rules
 from lab.engine import Costs, Result
 from lab.panel import Panel
 from lab.strategies import get as get_strategy
-from lab.trade_engine import EXIT_GRID, ExitCfg, run_trades
+from lab.trade_engine import EXIT_GRID, SIZE_GRID, ExitCfg, run_trades
 
 _G: dict = {}  # worker globals (fork start method shares the panel without pickling)
 
@@ -43,7 +43,7 @@ class StrategyCandidate:
         return [Variant(f"{self.name}|{_fmt(p)}", p) for p in pts]
 
     def run(self, p: Panel, v: Variant, costs: Costs) -> Result:
-        return engine.run(p.c, self.strat(p, **v.params), costs)
+        return engine.run(p.c, self.strat(p, **v.params), costs, ppy=p.ppy, member=p.member)
 
     def targets(self, p: Panel, v: Variant) -> dict:
         w = self.strat(p, **v.params).iloc[-1]
@@ -54,7 +54,8 @@ class RuleCandidate:
     """rule x rule-grid x filters x exits. `staged=True` sweeps exits only on the best stage-1 variants."""
 
     def __init__(self, rule: str, filters=("none",), exits=None, side: str = "long",
-                 max_positions: int | None = None, staged: bool = True, stage2_top: int = 3):
+                 max_positions: int | None = None, staged: bool = True, stage2_top: int = 3,
+                 sizes=None):
         self.rule = rules.RULES[rule]
         self.name = rule
         self.source = self.rule.source
@@ -64,6 +65,7 @@ class RuleCandidate:
         self.max_positions = max_positions
         self.staged = staged
         self.stage2_top = stage2_top
+        self.sizes = list(sizes) if sizes is not None else list(range(len(SIZE_GRID)))
 
     def variants(self, stage: int = 1, seeds: list[Variant] | None = None) -> list[Variant]:
         out = []
@@ -72,8 +74,15 @@ class RuleCandidate:
             for gp in rules.grid_points(self.rule.grid):
                 for f in self.filters:
                     for e in ex_list:
-                        out.append(Variant(f"{self.name}|{_fmt(gp)}|f={f}|x={EXIT_GRID[e].label()}",
-                                           {**gp, "_filter": f, "_exit": e}))
+                        out.append(Variant(self._key(gp, f, e, 0), {**gp, "_filter": f, "_exit": e, "_size": 0}))
+        elif stage == 3:  # position-sizing study on the best exits
+            for s in seeds or []:
+                for z in self.sizes:
+                    if z == s.params.get("_size", 0):
+                        continue
+                    p = {**s.params, "_size": z}
+                    gp = {k: v for k, v in p.items() if not k.startswith("_")}
+                    out.append(Variant(self._key(gp, p["_filter"], p["_exit"], z), p))
         else:
             ex_list = self.exits if self.exits is not None else list(range(len(EXIT_GRID)))
             for s in seeds or []:
@@ -82,8 +91,12 @@ class RuleCandidate:
                         continue
                     p = {**s.params, "_exit": e}
                     gp = {k: v for k, v in p.items() if not k.startswith("_")}
-                    out.append(Variant(f"{self.name}|{_fmt(gp)}|f={p['_filter']}|x={EXIT_GRID[e].label()}", p))
+                    out.append(Variant(self._key(gp, p["_filter"], e, p.get("_size", 0)), p))
         return out
+
+    def _key(self, gp, f, e, z):
+        k = f"{self.name}|{_fmt(gp)}|f={f}|x={EXIT_GRID[e].label()}"
+        return k if not z else k + f"|size={SIZE_GRID[z].label()}"
 
     def _signals(self, p: Panel, v: Variant):
         gp = {k: x for k, x in v.params.items() if not k.startswith("_")}
@@ -91,7 +104,7 @@ class RuleCandidate:
 
     def run(self, p: Panel, v: Variant, costs: Costs) -> Result:
         return run_trades(p, self._signals(p, v), EXIT_GRID[v.params["_exit"]], costs,
-                          self.side, self.max_positions)
+                          self.side, self.max_positions, SIZE_GRID[v.params.get("_size", 0)])
 
     def targets(self, p: Panel, v: Variant) -> dict:
         res = self.run(p, v, Costs())
@@ -154,8 +167,11 @@ def from_spec(spec: dict):
         exits = spec.get("exits")
         if exits == "all":
             exits = list(range(len(EXIT_GRID)))
+        sizes = spec.get("sizes")
+        if sizes == "all":
+            sizes = None
         return RuleCandidate(spec["rule"], filters, exits, spec.get("side", "long"),
-                             spec.get("max_positions"), spec.get("staged", True))
+                             spec.get("max_positions"), spec.get("staged", True), spec.get("stage2_top", 3), sizes)
     return StrategyCandidate(spec["strategy"])
 
 

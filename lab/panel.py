@@ -1,8 +1,13 @@
 """Panel: the container every strategy receives.
 
-  panel.o / .h / .l / .c / .v   wide OHLCV frames (dates x assets)
+  panel.o / .h / .l / .c / .v   wide OHLCV frames (bars x assets)
   panel.bench                   benchmark close (Series) or None
-  panel.fund                    dict[field] -> wide point-in-time fundamental frame (may be empty)
+  panel.fund                    dict[field] -> wide point-in-time fundamental frame
+  panel.macro                   dict[ticker] -> macro series aligned to bars (^VIX, USDTRY=X, ...)
+  panel.rf_annual               risk-free rate (annual, decimal) aligned to bars, or None
+  panel.fx                      local-currency price of 1 USD (to report results in USD), or None
+  panel.member                  bool frame: was the asset an index member at that time (survivorship)
+  panel.freq / panel.ppy        timeframe label and bars per year (measured from the data)
 """
 from __future__ import annotations
 
@@ -22,6 +27,13 @@ class Panel:
     bench: pd.Series | None = None
     fund: dict = field(default_factory=dict)
     name: str = ""
+    freq: str = "1d"
+    market: str = ""
+    macro: dict = field(default_factory=dict)
+    rf_annual: pd.Series | None = None
+    fx: pd.Series | None = None
+    member: pd.DataFrame | None = None
+    costs_meta: dict = field(default_factory=dict)
 
     @property
     def index(self):
@@ -31,10 +43,19 @@ class Panel:
     def columns(self):
         return self.c.columns
 
-    def slice(self, end) -> "Panel":
-        s = lambda x: x.loc[:end] if x is not None else None  # noqa: E731
-        return Panel(s(self.o), s(self.h), s(self.l), s(self.c), s(self.v), s(self.bench),
-                     {k: s(v) for k, v in self.fund.items()}, self.name)
+    @property
+    def ppy(self) -> float:
+        """Bars per year, measured (works for any timeframe and market calendar)."""
+        idx = self.c.index
+        if len(idx) < 3:
+            return 252.0
+        years = (idx[-1] - idx[0]).total_seconds() / (365.25 * 86400)
+        return float(len(idx) / years) if years > 0 else 252.0
+
+    def rf_per_bar(self) -> pd.Series:
+        if self.rf_annual is None:
+            return pd.Series(0.0, index=self.index)
+        return (1 + self.rf_annual.fillna(0.0)) ** (1 / self.ppy) - 1
 
     @staticmethod
     def from_ohlcv(data: dict[str, pd.DataFrame], bench: pd.Series | None = None, name: str = "") -> "Panel":
@@ -43,12 +64,11 @@ class Panel:
         c = wide("Close")
         c = c.where(c > 0).ffill(limit=5)
         o, h, l = (wide(k).reindex(c.index) for k in ("Open", "High", "Low"))
-        # Repair missing/invalid OHLC with the close so stops never see NaN highs/lows.
         o = o.where(o > 0, c); h = h.where(h > 0, c); l = l.where(l > 0, c)
         h = np.maximum(h, np.maximum(o, c)); l = np.minimum(l, np.minimum(o, c))
         v = wide("Volume").reindex(c.index).fillna(0)
         if bench is not None:
-            bench = bench.reindex(c.index).ffill()
+            bench = bench.reindex(bench.index.union(c.index)).sort_index().ffill().reindex(c.index)
         return Panel(o.where(c.notna()), h.where(c.notna()), l.where(c.notna()), c, v, bench, {}, name)
 
     @staticmethod

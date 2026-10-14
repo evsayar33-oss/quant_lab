@@ -1,10 +1,14 @@
-"""Free market data loader with a local CSV cache.
+"""Free market data loader with a local CSV cache. Multi-timeframe.
 
 Sources (all free, no API key):
-  - yfinance : BIST (.IS), US stocks/ETFs, FX, indices
-  - ccxt     : crypto spot/perp OHLCV from public endpoints (bitget -> okx fallback)
+  - yfinance : BIST (.IS), US stocks/ETFs, FX (USDTRY=X), indices (^VIX, ^IRX, ^TNX, XU100.IS)
+               daily history is long; 1h history is limited to ~730 days by Yahoo
+  - ccxt     : crypto OHLCV from public endpoints (bitget -> okx -> kucoin), long 1h/4h history
 
-Output: wide DataFrame of adjusted close prices (index = date, columns = tickers).
+Timeframes: 1h, 4h, 1d, 1w, 1mo
+  * 1w / 1mo bars are built from daily bars (W-FRI / month end) so every market is consistent.
+  * 4h stock bars are built from 1h bars.
+A bar is labelled with its END; signals are read at the bar close and traded at the next bar open.
 """
 from __future__ import annotations
 
@@ -18,6 +22,8 @@ import pandas as pd
 CACHE = Path(__file__).resolve().parent.parent / "data" / "cache"
 CACHE.mkdir(parents=True, exist_ok=True)
 MAX_CACHE_AGE_H = float(os.environ.get("LAB_CACHE_HOURS", "20"))
+TIMEFRAMES = ("1h", "4h", "1d", "1w", "1mo")
+AGG = {"Open": "first", "High": "max", "Low": "min", "Close": "last", "Volume": "sum"}
 
 
 def _is_crypto(t: str) -> bool:
@@ -33,20 +39,30 @@ def _fresh(p: Path) -> bool:
     return p.exists() and (time.time() - p.stat().st_mtime) < MAX_CACHE_AGE_H * 3600
 
 
-def _yf_download(tickers: list[str], start: str) -> dict[str, pd.DataFrame]:
+def resample(df: pd.DataFrame, tf: str) -> pd.DataFrame:
+    rule = {"1w": "W-FRI", "1mo": "ME", "4h": "4h"}[tf]
+    out = df.resample(rule, label="right", closed="right" if tf == "4h" else "right").agg(AGG)
+    return out.dropna(subset=["Close"])
+
+
+def _yf_download(tickers: list[str], start: str, interval: str = "1d") -> dict[str, pd.DataFrame]:
     import yfinance as yf
 
     out: dict[str, pd.DataFrame] = {}
     if not tickers:
         return out
-    raw = yf.download(tickers, start=start, auto_adjust=True, progress=False,
-                      group_by="ticker", threads=True)
+    kw = {"start": start} if interval == "1d" else {"period": "730d"}
+    raw = yf.download(tickers, interval=interval, auto_adjust=True, progress=False,
+                      group_by="ticker", threads=True, **kw)
     for t in tickers:
         try:
             df = raw[t] if isinstance(raw.columns, pd.MultiIndex) else raw
             df = df.dropna(how="all")
             if len(df):
-                out[t] = df[["Open", "High", "Low", "Close", "Volume"]]
+                df = df[["Open", "High", "Low", "Close", "Volume"]].copy()
+                if df.index.tz is not None:
+                    df.index = df.index.tz_localize(None)
+                out[t] = df
         except KeyError:
             pass
     return out
@@ -55,66 +71,77 @@ def _yf_download(tickers: list[str], start: str) -> dict[str, pd.DataFrame]:
 def _ccxt_download(symbol: str, start: str, timeframe: str = "1d") -> pd.DataFrame | None:
     import ccxt
 
+    tf = {"1mo": "1M"}.get(timeframe, timeframe)
     since0 = int(pd.Timestamp(start, tz="UTC").timestamp() * 1000)
     for ex_id in ("bitget", "okx", "kucoin"):
         try:
             ex = getattr(ccxt, ex_id)({"enableRateLimit": True})
             rows, since = [], since0
-            for _ in range(200):
-                batch = ex.fetch_ohlcv(symbol, timeframe, since=since, limit=200)
+            for _ in range(2000):
+                batch = ex.fetch_ohlcv(symbol, tf, since=since, limit=200)
                 if not batch:
                     break
                 rows += batch
                 nxt = batch[-1][0] + 1
-                if nxt <= since:
+                if nxt <= since or len(batch) < 2:
                     break
                 since = nxt
-                if len(batch) < 2:
-                    break
             if rows:
-                df = pd.DataFrame(rows, columns=["ts", "Open", "High", "Low", "Close", "Volume"])
-                df = df.drop_duplicates("ts")
-                df.index = pd.to_datetime(df["ts"], unit="ms").dt.tz_localize(None).dt.normalize()
-                return df.drop(columns="ts")
+                df = pd.DataFrame(rows, columns=["ts", "Open", "High", "Low", "Close", "Volume"]).drop_duplicates("ts")
+                idx = pd.to_datetime(df["ts"], unit="ms")
+                df.index = idx.dt.normalize() if timeframe == "1d" else idx
+                return df.drop(columns="ts").sort_index()
         except Exception as e:  # noqa: BLE001 - try next exchange
-            print(f"[data] {ex_id} {symbol} failed: {e}")
+            print(f"[data] {ex_id} {symbol} {timeframe} failed: {e}")
     return None
 
 
-def load_ohlcv(tickers: list[str], start: str = "2010-01-01") -> dict[str, pd.DataFrame]:
-    """Return {ticker: OHLCV DataFrame}. Uses cache when fresh."""
+def load_ohlcv(tickers: list[str], start: str = "2010-01-01", timeframe: str = "1d") -> dict[str, pd.DataFrame]:
+    """Return {ticker: OHLCV DataFrame} for the timeframe. Uses cache when fresh."""
+    if timeframe not in TIMEFRAMES:
+        raise ValueError(f"timeframe must be one of {TIMEFRAMES}")
+    if timeframe in ("1w", "1mo"):
+        daily = load_ohlcv(tickers, start, "1d")
+        return {t: resample(d, timeframe) for t, d in daily.items()}
     result: dict[str, pd.DataFrame] = {}
     need_yf: list[str] = []
     for t in tickers:
-        p = _cache_path(t, "ohlcv")
+        p = _cache_path(t, f"ohlcv_{timeframe}")
         if _fresh(p):
             df = pd.read_csv(p, index_col=0, parse_dates=True)
-            if len(df) and df.index[0] <= pd.Timestamp(start) + pd.Timedelta(days=10):
+            if len(df) and (timeframe != "1d" or df.index[0] <= pd.Timestamp(start) + pd.Timedelta(days=10)):
                 result[t] = df
                 continue
         if _is_crypto(t):
-            df = _ccxt_download(t, start)
+            df = _ccxt_download(t, start, timeframe)
             if df is not None:
                 df.to_csv(p)
                 result[t] = df
         else:
             need_yf.append(t)
-    for t, df in _yf_download(need_yf, start).items():
-        df.to_csv(_cache_path(t, "ohlcv"))
+    yf_iv = "1h" if timeframe in ("1h", "4h") else "1d"
+    for t, df in _yf_download(need_yf, start, yf_iv).items():
+        if timeframe == "4h":
+            df = resample(df, "4h")
+        df.to_csv(_cache_path(t, f"ohlcv_{timeframe}"))
         result[t] = df
     missing = [t for t in tickers if t not in result]
     if missing:
-        print(f"[data] WARNING no data for: {missing}")
+        print(f"[data] WARNING no {timeframe} data for: {missing}")
     return result
 
 
-def load_prices(tickers: list[str], start: str = "2010-01-01", field: str = "Close") -> pd.DataFrame:
-    data = load_ohlcv(tickers, start)
+def load_prices(tickers: list[str], start: str = "2010-01-01", field: str = "Close", timeframe: str = "1d") -> pd.DataFrame:
+    data = load_ohlcv(tickers, start, timeframe)
     px = pd.DataFrame({t: d[field] for t, d in data.items()}).sort_index()
     px = px[px.index >= pd.Timestamp(start)]
-    # Remove impossible prints (zero / negative) and forward-fill short gaps only.
-    px = px.where(px > 0).ffill(limit=5)
-    return px
+    return px.where(px > 0).ffill(limit=5)
+
+
+def load_series(ticker: str, start: str = "2005-01-01") -> pd.Series | None:
+    """Daily close of a macro / FX / rate series (e.g. ^VIX, USDTRY=X, ^IRX)."""
+    d = load_ohlcv([ticker], start, "1d").get(ticker)
+    return None if d is None else d["Close"].where(d["Close"] > 0).ffill()
 
 
 def synthetic_prices(n_assets: int = 10, n_days: int = 2000, seed: int = 0) -> pd.DataFrame:
@@ -126,19 +153,59 @@ def synthetic_prices(n_assets: int = 10, n_days: int = 2000, seed: int = 0) -> p
                         columns=[f"A{i}" for i in range(n_assets)])
 
 
-def load_panel(universe: dict, start: str, name: str = "", with_fundamentals: bool = True):
-    """OHLCV + benchmark + point-in-time fundamentals for a universe from config/universes.yaml."""
-    from lab import fundamentals
+def _align(s: pd.Series | None, index: pd.DatetimeIndex) -> pd.Series | None:
+    """Align a DAILY series to the bar index without look-ahead.
+    On intraday bars a daily close is only known after that day ends -> available next day."""
+    if s is None:
+        return None
+    s = s.copy()
+    if len(index) > 1 and (index[1:] - index[:-1]).min() < pd.Timedelta(hours=20):
+        s.index = s.index.normalize() + pd.Timedelta(days=1)
+    return s.reindex(s.index.union(index)).sort_index().ffill().reindex(index)
+
+
+def load_panel(universe: dict, start: str, name: str = "", with_fundamentals: bool = True,
+               timeframe: str = "1d"):
+    """Everything a strategy may need, aligned on the universe's bar index:
+    OHLCV, benchmark, risk-free, FX (to report in USD), macro series, membership mask, fundamentals."""
+    from lab import fundamentals, membership
     from lab.panel import Panel
 
     tickers = universe["tickers"]
     bench_t = universe.get("benchmark")
-    ohlcv = load_ohlcv(tickers + ([bench_t] if bench_t and bench_t not in tickers else []), start)
+    ohlcv = load_ohlcv(tickers + ([bench_t] if bench_t and bench_t not in tickers else []), start, timeframe)
     bench = ohlcv[bench_t]["Close"] if bench_t in ohlcv else None
     data = {t: d[d.index >= pd.Timestamp(start)] for t, d in ohlcv.items() if t in tickers}
     if not data:
         raise RuntimeError("no price data")
     p = Panel.from_ohlcv(data, bench, name)
+    p.freq = timeframe
+    p.market = universe.get("market", "")
+    p.costs_meta = {"price_limit": universe.get("price_limit"), "min_adv": universe.get("min_adv")}
+
+    # Risk-free (annual %, daily series) -> per-bar return. ^IRX = US 13-week T-bill.
+    rf_t = universe.get("risk_free", "^IRX")
+    rf = load_series(rf_t, "2000-01-01") if rf_t else None
+    if rf is not None:
+        p.rf_annual = (_align(rf, p.index) / 100.0).fillna(0.0)
+    fx_t = universe.get("fx")  # e.g. USDTRY=X : price of 1 USD in local currency
+    if fx_t:
+        p.fx = _align(load_series(fx_t, "2000-01-01"), p.index)
+    for m in universe.get("macro", ["^VIX", "^TNX", "^IRX", "USDTRY=X"]):
+        try:
+            s = load_series(m, "2000-01-01")
+            if s is not None:
+                p.macro[m] = _align(s, p.index)
+        except Exception as e:  # noqa: BLE001 - macro is optional
+            print(f"[data] macro {m}: {e}")
+    if universe.get("membership"):
+        p.member = membership.mask(universe["membership"], p.index, list(p.columns))
     if with_fundamentals and universe.get("market") in ("bist", "us"):
-        p.fund = fundamentals.load(list(p.columns), p.index, universe["market"])
+        daily_idx = p.index if timeframe == "1d" else pd.DatetimeIndex(p.index.normalize().unique())
+        f = fundamentals.load(list(p.columns), daily_idx, universe["market"])
+        p.fund = {k: _align_frame(v, p.index) for k, v in f.items()}
     return p
+
+
+def _align_frame(f: pd.DataFrame, index: pd.DatetimeIndex) -> pd.DataFrame:
+    return f.reindex(f.index.union(index)).sort_index().ffill().reindex(index)

@@ -557,3 +557,72 @@ def apply_filter(sig: Signals, p: Panel, name: str) -> Signals:
 
 def n_variants() -> int:
     return sum(len(grid_points(r.grid)) for r in RULES.values())
+
+
+# ------------------------------------------------------------------ higher-timeframe (multi-timeframe) filters
+def _htf_trend(p: Panel, rule: str, n: int):
+    """Trend of a HIGHER timeframe built only from completed higher-timeframe bars."""
+    hc = p.c.resample(rule).last()
+    up = hc > hc.rolling(n, min_periods=n).mean()
+    intraday = len(p.index) > 1 and (p.index[1:] - p.index[:-1]).min() < pd.Timedelta(hours=20)
+    if intraday:  # a weekly/monthly close is only known after that day ends
+        up.index = up.index.normalize() + pd.Timedelta(days=1)
+    al = up.astype(float).reindex(up.index.union(p.index)).sort_index().ffill().reindex(p.index)
+    return al
+
+
+for _nm, (_rule, _n) in {"htf_week_sma30": ("W-FRI", 30), "htf_week_sma10": ("W-FRI", 10),
+                         "htf_month_sma10": ("ME", 10)}.items():
+    def _mk_htf(rule, n):
+        def f(p):
+            al = _htf_trend(p, rule, n)
+            return _b(al == 1), _b(al == 0)
+        return f
+    FILTERS[_nm] = _mk_htf(_rule, _n)
+
+
+# ------------------------------------------------------------------ macro regime filters
+def _macro_bool(p: Panel, key: str, fn):
+    s = p.macro.get(key) if p.macro else None
+    if s is None:
+        return None
+    ok = fn(s)
+    return pd.DataFrame(np.repeat(ok.values[:, None], p.c.shape[1], 1), index=p.index, columns=p.columns)
+
+
+@filt("vix_below_25")
+def f_vix(p):
+    m = _macro_bool(p, "^VIX", lambda s: s < 25)
+    return (_all(p), _all(p)) if m is None else (_b(m), _b(~m))
+
+
+@filt("vix_spike_buy")
+def f_vix_spike(p):
+    """Contrarian: allow longs only after fear spikes (VIX > 30)."""
+    m = _macro_bool(p, "^VIX", lambda s: s > 30)
+    return (_all(p), _all(p)) if m is None else (_b(m), _b(m))
+
+
+@filt("usdtry_calm")
+def f_usdtry(p):
+    """BIST: avoid longs while the lira is under acute stress (USDTRY 20-day move > 5%)."""
+    m = _macro_bool(p, "USDTRY=X", lambda s: s.pct_change(20, fill_method=None) < 0.05)
+    return (_all(p), _all(p)) if m is None else (_b(m), _b(~m))
+
+
+@filt("curve_normal")
+def f_curve(p):
+    """Longs only when the US yield curve (10y - 3m) is not inverted."""
+    if not p.macro or p.macro.get("^TNX") is None or p.macro.get("^IRX") is None:
+        return _all(p), _all(p)
+    ok = (p.macro["^TNX"] - p.macro["^IRX"]) >= 0
+    m = pd.DataFrame(np.repeat(ok.values[:, None], p.c.shape[1], 1), index=p.index, columns=p.columns)
+    return _b(m), _b(~m)
+
+
+@filt("member_only")
+def f_member(p):
+    """Survivorship control: entries only while the asset was an index member."""
+    if p.member is None:
+        return _all(p), _all(p)
+    return _b(p.member), _b(p.member)

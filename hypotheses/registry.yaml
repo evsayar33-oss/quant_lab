@@ -231,3 +231,81 @@
   test_months: 3
   status: active
   note: "Turtle breakout long/short on perps"
+
+# ---------------------------------------------------------------- multi-timeframe, stat-arb, ML, event, macro
+- id: H025
+  strategy: pairs_zscore
+  universe: bist_banks
+  for_system: bist_shock_quant
+  start: "2012-01-01"
+  status: active
+  note: "Bank-pair mean reversion (market-neutral)"
+
+- id: H026
+  strategy: ml_ridge_rank
+  universe: sp_megacap
+  for_system: global_momentum_quant
+  start: "2010-01-01"
+  status: active
+  note: "Walk-forward ridge ranking on momentum/vol/RSI features"
+
+- id: H027
+  strategy: macro_risk_switch
+  universe: global_assets
+  for_system: macro-model
+  start: "2008-01-01"
+  status: active
+  note: "VIX + yield curve + trend risk switch"
+
+- id: H028
+  rule: rsi_reversal
+  universe: crypto_major
+  timeframe: 4h
+  for_system: karma_perp_bot
+  start: "2021-01-01"
+  filters: [none, htf_week_sma10]
+  side: both
+  train_years: 1.5
+  test_months: 3
+  status: active
+  note: "4h RSI reversal long/short with weekly trend filter"
+
+- id: H029
+  rule: supertrend_flip
+  universe: bist30
+  timeframe: 1w
+  for_system: bist_orderflow_quant
+  start: "2010-01-01"
+  filters: [none, usdtry_calm]
+  side: long
+  status: active
+  note: "Weekly supertrend swing entries on BIST30"
+
+- id: H030
+  strategy: post_report_drift
+  universe: us_largecap_100
+  for_system: us_f1_bot
+  start: "2011-01-01"
+  status: active
+  note: "Post-report drift proxy with SEC filing dates (F1 filter research)"
+
+- id: H031
+  strategy: usdtry_hedge_switch
+  universe: bist_index
+  for_system: macro-model
+  start: "2010-01-01"
+  status: active
+  note: "Step out of BIST in lira stress"
+
+- id: H032
+  rule: donchian_breakout
+  universe: crypto_major
+  timeframe: 1h
+  for_system: karma_perp_bot
+  start: "2022-01-01"
+  filters: [none, htf_week_sma10]
+  side: both
+  train_years: 1
+  test_months: 2
+  status: active
+  note: "Intraday breakout long/short"

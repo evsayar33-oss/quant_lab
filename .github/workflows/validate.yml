@@ -1,12 +1,15 @@
 name: Validate hypotheses
 
+# Saturday 07:17 TR: re-validate every active hypothesis in PARALLEL jobs (one per id),
+# then one job merges the parts into decisions/registry.json and commits.
+
 on:
   schedule:
-    - cron: '17 4 * * 6'        # every Saturday 07:17 TR: re-validate all active hypotheses
+    - cron: '17 4 * * 6'
   workflow_dispatch:
     inputs:
       hypothesis:
-        description: "Hypothesis id (e.g. H001). Empty = all active"
+        description: "Hypothesis id(s), comma separated (e.g. H001,H013). Empty = all active"
         required: false
         default: ""
 
@@ -18,35 +21,93 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  validate:
+  plan:
     runs-on: ubuntu-latest
-    timeout-minutes: 340
+    outputs:
+      ids: ${{ steps.ids.outputs.ids }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: pip
+        with: {python-version: '3.11', cache: pip}
       - run: pip install -r requirements.txt
       - name: Offline tests (the engine must be correct before it decides anything)
         run: python tests/test_core.py
-      - name: Validate
+      - id: ids
+        env:
+          WANT: ${{ github.event.inputs.hypothesis }}
+        run: |
+          if [ -n "$WANT" ]; then
+            python -c "import json,os; print('ids='+json.dumps([x.strip() for x in os.environ['WANT'].split(',') if x.strip()]))" >> "$GITHUB_OUTPUT"
+          else
+            echo "ids=$(python run.py --ids)" >> "$GITHUB_OUTPUT"
+          fi
+
+  validate:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        id: ${{ fromJSON(needs.plan.outputs.ids) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - run: pip install -r requirements.txt
+      - name: Validate ${{ matrix.id }}
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: python run.py --hypothesis "${{ matrix.id }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: part-${{ matrix.id }}
+          path: |
+            decisions/parts/${{ matrix.id }}.json
+            decisions/history.csv
+            results/${{ matrix.id }}_*
+            results/charts/${{ matrix.id }}_*
+          if-no-files-found: ignore
+
+  merge:
+    needs: validate
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: part-*
+          path: _parts
+      - name: Collect parts
+        run: |
+          mkdir -p decisions/parts results/charts
+          [ -f decisions/history.csv ] || echo "validated_at,id,strategy,universe,timeframe,verdict,gate_sharpe,dsr,pbo,oos_cagr,oos_maxdd" > decisions/history.csv
+          for d in _parts/*; do
+            [ -d "$d" ] || continue
+            cp -r "$d"/decisions/parts/*.json decisions/parts/ 2>/dev/null || true
+            cp -r "$d"/results/* results/ 2>/dev/null || true
+            if [ -f "$d/decisions/history.csv" ]; then
+              tail -n +2 "$d/decisions/history.csv" | tail -n 1 >> decisions/history.csv
+            fi
+          done
+          rm -rf _parts
+      - name: Merge registry
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
-          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
-        run: |
-          if [ -n "${{ github.event.inputs.hypothesis }}" ]; then
-            python run.py --hypothesis "${{ github.event.inputs.hypothesis }}" --telegram
-          else
-            python run.py --all --telegram
-          fi
-      - name: Commit decisions and reports
+        run: python run.py --merge --telegram
+      - name: Commit
         run: |
           git config user.name "quant-lab-bot"
           git config user.email "actions@users.noreply.github.com"
           git add decisions results
           git diff --cached --quiet && exit 0
           git commit -m "Validation $(date -u +%F)"
-          for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep 5; done
+          for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep 7; done
           exit 1

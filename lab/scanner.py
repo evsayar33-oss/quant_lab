@@ -30,6 +30,7 @@ from lab.validation import _matrix, walk_forward
 def scan(p: Panel, costs: Costs, families: str = "all", filters=("none",), side: str = "long",
          rule_names: list[str] | None = None) -> dict:
     t0 = time.time()
+    metrics.set_periods(p.ppy)
     all_runs, fam_of, errors = {}, {}, {}
     todo = []
     if families in ("all", "rules"):
@@ -72,13 +73,13 @@ def scan(p: Panel, costs: Costs, families: str = "all", filters=("none",), side:
             "family": fam,
             "variants": len(cols),
             "best_variant": best,
-            "best_full_sharpe": round(float(sr_d[best] * math.sqrt(252)), 3),
-            "best_full_dsr": round(metrics.dsr(R[best].iloc[260:], K, trial_srs), 3),
+            "best_full_sharpe": round(float(sr_d[best] * math.sqrt(p.ppy)), 3),
+            "best_full_dsr": round(metrics.dsr(R[best].iloc[int(p.ppy):], K, trial_srs), 3),
             "wf_oos_sharpe": round(metrics.sharpe(oos), 3) if len(oos) > 60 else None,
             "wf_oos_cagr": round(metrics.cagr(oos), 4) if len(oos) > 60 else None,
             "wf_oos_maxdd": round(metrics.max_drawdown(oos), 4) if len(oos) > 60 else None,
             "wf_oos_2x_cost_sharpe": round(metrics.sharpe(oos - oos_to * costs.per_turnover), 3) if len(oos) > 60 else None,
-            "family_pbo": round(v, 3) if (v := metrics.pbo(R[cols].iloc[260:])) is not None else None,
+            "family_pbo": round(v, 3) if (v := metrics.pbo(R[cols].iloc[int(p.ppy):])) is not None else None,
         })
     board = pd.DataFrame(rows).sort_values("wf_oos_sharpe", ascending=False, na_position="last")
     bench = CD.run_all(CD.StrategyCandidate("equal_weight"), p,
@@ -87,8 +88,10 @@ def scan(p: Panel, costs: Costs, families: str = "all", filters=("none",), side:
     return {
         "universe": p.name,
         "n_trials": K,
-        "global_pbo": round(g, 3) if (g := metrics.pbo(R.iloc[260:])) is not None else None,
-        "benchmark_sharpe": round(metrics.sharpe(b.iloc[260:]), 3),
+        "global_pbo": round(g, 3) if (g := metrics.pbo(R.iloc[int(p.ppy):])) is not None else None,
+        "benchmark_sharpe": round(metrics.sharpe(b.iloc[int(p.ppy):]), 3),
+        "reality_check_p": metrics.reality_check(R.iloc[int(p.ppy):], b, n=300),
+        "timeframe": p.freq,
         "board": board,
         "errors": errors,
         "seconds": round(time.time() - t0),

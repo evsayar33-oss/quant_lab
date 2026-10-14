@@ -1,53 +1,41 @@
-# Asset universes. Add a new universe here; every strategy can then be tested on it.
-# NOTE (survivorship bias): these are TODAY's members. Stocks that left the index or were
-# delisted are missing, so historical results are optimistic. The report flags this.
-# Costs are per side (fraction of notional): commission + slippage.
+# Asset universes. Every strategy / rule can be tested on any universe and timeframe.
+#
+# Keys
+#   market        bist | us | multi | crypto        (selects fundamentals source)
+#   benchmark     regime filters + equal-weight comparison
+#   costs         per side: commission, slippage; optional borrow_annual (shorts), funding_annual (perps)
+#   risk_free     yfinance ticker of an annual % rate (^IRX = US 13-week T-bill). Sharpe is measured in excess of it.
+#   fx            local-currency price of 1 USD; results are ALSO reported (and gated) in USD
+#   price_limit   daily limit (BIST 0.10): orders cannot fill at a limit-locked open
+#   min_adv       minimum 20-bar average traded value (local currency) to open a position
+#   membership    sp500 | path/to/csv  -> historical index membership mask (survivorship control)
+#   macro         macro series loaded for filters and regime reports
+#
+# WARNING (survivorship bias): without `membership`, lists are TODAY's members -> optimistic history.
 
 bist30:
   market: bist
   benchmark: XU100.IS
   costs: {commission: 0.0010, slippage: 0.0010}
+  risk_free: ^IRX
+  fx: USDTRY=X
+  price_limit: 0.10
+  min_adv: 20000000
+  macro: [^VIX, USDTRY=X, ^TNX, ^IRX]
   tickers: [AKBNK.IS, ARCLK.IS, ASELS.IS, BIMAS.IS, EKGYO.IS, ENKAI.IS, EREGL.IS, FROTO.IS,
             GARAN.IS, GUBRF.IS, HEKTS.IS, ISCTR.IS, KCHOL.IS, KOZAL.IS, KRDMD.IS, PETKM.IS,
             PGSUS.IS, SAHOL.IS, SASA.IS, SISE.IS, TCELL.IS, THYAO.IS, TOASO.IS, TUPRS.IS,
             YKBNK.IS, TTKOM.IS, ALARK.IS, TAVHL.IS, OYAKC.IS, MGROS.IS]
 
-bist_index:
-  market: bist
-  benchmark: XU100.IS
-  costs: {commission: 0.0005, slippage: 0.0005}
-  tickers: [XU100.IS]
-
-sp_megacap:
-  market: us
-  benchmark: SPY
-  costs: {commission: 0.0002, slippage: 0.0003}
-  tickers: [AAPL, MSFT, NVDA, AMZN, GOOGL, META, BRK-B, JPM, V, UNH, XOM, JNJ, PG, MA, HD,
-            COST, AVGO, LLY, ABBV, MRK, PEP, KO, WMT, BAC, CVX, ORCL, CSCO, ADBE, CRM, NFLX]
-
-us_sectors:
-  market: us
-  benchmark: SPY
-  costs: {commission: 0.0002, slippage: 0.0002}
-  tickers: [XLK, XLF, XLV, XLE, XLI, XLY, XLP, XLU, XLB, XLRE, XLC]
-
-global_assets:
-  market: multi
-  benchmark: SPY
-  costs: {commission: 0.0002, slippage: 0.0003}
-  tickers: [SPY, QQQ, IWM, EFA, EEM, TLT, IEF, GLD, DBC, VNQ]
-
-crypto_major:
-  market: crypto
-  benchmark: BTC/USDT
-  costs: {commission: 0.0006, slippage: 0.0005}
-  tickers: [BTC/USDT, ETH/USDT, SOL/USDT, BNB/USDT, XRP/USDT, ADA/USDT, DOGE/USDT, AVAX/USDT,
-            LINK/USDT, DOT/USDT]
-
 bist_extended:
   market: bist
   benchmark: XU100.IS
   costs: {commission: 0.0010, slippage: 0.0015}
+  risk_free: ^IRX
+  fx: USDTRY=X
+  price_limit: 0.10
+  min_adv: 5000000
+  macro: [^VIX, USDTRY=X, ^TNX, ^IRX]
   tickers: [AKBNK.IS, ARCLK.IS, ASELS.IS, BIMAS.IS, EKGYO.IS, ENKAI.IS, EREGL.IS, FROTO.IS,
             GARAN.IS, GUBRF.IS, HEKTS.IS, ISCTR.IS, KCHOL.IS, KOZAL.IS, KRDMD.IS, PETKM.IS,
             PGSUS.IS, SAHOL.IS, SASA.IS, SISE.IS, TCELL.IS, THYAO.IS, TOASO.IS, TUPRS.IS,
@@ -57,10 +45,41 @@ bist_extended:
             OTKAR.IS, SKBNK.IS, SMRTG.IS, SOKM.IS, TKFEN.IS, TSKB.IS, TTRAK.IS, ULKER.IS,
             VAKBN.IS, VESBE.IS, VESTL.IS, ZOREN.IS]
 
+bist_index:
+  market: bist
+  benchmark: XU100.IS
+  costs: {commission: 0.0005, slippage: 0.0005}
+  risk_free: ^IRX
+  fx: USDTRY=X
+  macro: [^VIX, USDTRY=X]
+  tickers: [XU100.IS, XU030.IS, XBANK.IS, XUSIN.IS]
+
+bist_banks:          # natural pairs-trading universe
+  market: bist
+  benchmark: XBANK.IS
+  costs: {commission: 0.0010, slippage: 0.0010}
+  risk_free: ^IRX
+  fx: USDTRY=X
+  price_limit: 0.10
+  tickers: [AKBNK.IS, GARAN.IS, ISCTR.IS, YKBNK.IS, HALKB.IS, VAKBN.IS, TSKB.IS, SKBNK.IS, ALBRK.IS]
+
+sp_megacap:
+  market: us
+  benchmark: SPY
+  costs: {commission: 0.0002, slippage: 0.0003}
+  risk_free: ^IRX
+  membership: sp500
+  macro: [^VIX, ^TNX, ^IRX]
+  tickers: [AAPL, MSFT, NVDA, AMZN, GOOGL, META, BRK-B, JPM, V, UNH, XOM, JNJ, PG, MA, HD,
+            COST, AVGO, LLY, ABBV, MRK, PEP, KO, WMT, BAC, CVX, ORCL, CSCO, ADBE, CRM, NFLX]
+
 us_largecap_100:
   market: us
   benchmark: SPY
   costs: {commission: 0.0002, slippage: 0.0004}
+  risk_free: ^IRX
+  membership: sp500
+  macro: [^VIX, ^TNX, ^IRX]
   tickers: [AAPL, MSFT, NVDA, AMZN, GOOGL, META, BRK-B, JPM, V, UNH, XOM, JNJ, PG, MA, HD,
             COST, AVGO, LLY, ABBV, MRK, PEP, KO, WMT, BAC, CVX, ORCL, CSCO, ADBE, CRM, NFLX,
             TMO, ACN, MCD, ABT, DHR, LIN, TXN, NEE, PM, WFC, DIS, VZ, CMCSA, INTC, AMD, QCOM,
@@ -68,3 +87,28 @@ us_largecap_100:
             AXP, DE, MDT, PLD, GILD, SYK, ADP, MMC, TJX, C, LMT, CB, MO, SO, DUK, ZTS, CI, BDX,
             MDLZ, REGN, VRTX, EOG, SLB, COP, ITW, CL, NOC, APD, EMR, FDX, GD, NSC, USB, PNC,
             TGT, SHW, MMM, F]
+
+us_sectors:
+  market: us
+  benchmark: SPY
+  costs: {commission: 0.0002, slippage: 0.0002}
+  risk_free: ^IRX
+  macro: [^VIX, ^TNX, ^IRX]
+  tickers: [XLK, XLF, XLV, XLE, XLI, XLY, XLP, XLU, XLB, XLRE, XLC]
+
+global_assets:
+  market: multi
+  benchmark: SPY
+  costs: {commission: 0.0002, slippage: 0.0003}
+  risk_free: ^IRX
+  macro: [^VIX, ^TNX, ^IRX]
+  tickers: [SPY, QQQ, IWM, EFA, EEM, TLT, IEF, GLD, DBC, VNQ]
+
+crypto_major:
+  market: crypto
+  benchmark: BTC/USDT
+  costs: {commission: 0.0006, slippage: 0.0005, funding_annual: 0.08}
+  risk_free: ^IRX
+  macro: [^VIX]
+  tickers: [BTC/USDT, ETH/USDT, SOL/USDT, BNB/USDT, XRP/USDT, ADA/USDT, DOGE/USDT, AVAX/USDT,
+            LINK/USDT, DOT/USDT]

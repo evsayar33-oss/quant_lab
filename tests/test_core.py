@@ -13,6 +13,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from lab import data, engine, fundamentals, metrics, rules, validation  # noqa: E402
+from lab.engine import rank_top_n  # noqa: E402,F401
 from lab.engine import Costs  # noqa: E402
 from lab.panel import Panel  # noqa: E402
 from lab.rules import Signals  # noqa: E402
@@ -147,6 +148,130 @@ def test_fundamental_strategies_run():
             w = s(p)
             assert (w.abs().sum(axis=1) <= 1 + 1e-9).all(), name
             assert w.iloc[-1].abs().sum() > 0, name
+
+
+def test_resample_and_ppy():
+    p = Panel.from_close(data.synthetic_prices(3, 1300, seed=12))
+    d = {c: pd.DataFrame({"Open": p.o[c], "High": p.h[c], "Low": p.l[c], "Close": p.c[c], "Volume": p.v[c]}) for c in p.columns}
+    w = {k: data.resample(v, "1w") for k, v in d.items()}
+    pw = Panel.from_ohlcv(w)
+    assert 50 < pw.ppy < 54 and 250 < p.ppy < 265
+    k = pw.index[10]
+    assert abs(pw.c.iloc[10, 0] - p.c.loc[:k].iloc[-1, 0]) < 1e-9          # weekly close = last daily close
+    assert abs(pw.h.iloc[10, 0] - p.h.loc[pw.index[9]:k].iloc[1:, 0].max()) < 1e-9
+
+
+def test_htf_filter_is_causal_intraday():
+    idx = pd.date_range("2024-01-01", periods=24 * 60, freq="h")   # 2024-01-01 is a Monday
+    px = np.linspace(100, 200, len(idx))
+    crash = idx >= pd.Timestamp("2024-02-09 00:00")                  # Friday of week 6
+    px[crash] = px[crash] * 0.5
+    p = Panel.from_close(pd.DataFrame({"A": px}, index=idx))
+    al = rules._htf_trend(p, "W-FRI", 2)["A"]
+    assert al.loc["2024-02-08 12:00"] == 1 and al.loc["2024-02-09 12:00"] == 1   # Friday cannot see Friday's close
+    assert al.loc["2024-02-10 12:00"] == 0                                         # known from the next day
+
+
+def test_partial_take_profit_and_breakeven():
+    idx = pd.bdate_range("2021-01-01", periods=30)
+    c = pd.DataFrame({"X": [100.0] * 30}, index=idx)
+    o, h, l = c.copy(), c + 0.5, c - 0.5
+    c.iloc[11:] = 110; o.iloc[11:] = 110; h.iloc[11] = 112; l.iloc[11:] = 109.5; h.iloc[12:] = 110.5
+    l.iloc[14] = 99   # falls back: remaining half must exit at breakeven (entry price)
+    p = Panel(o, h, l, c, c * 0 + 1e6, c["X"], {}, "toy")
+    e = pd.DataFrame(False, index=idx, columns=["X"]); e.iloc[9] = True
+    from lab.trade_engine import ExitCfg as EC
+    res = run_trades(p, Signals(e, e & False), EC(stop_pct=0.05, partial_r=1.0), Costs(0, 0))
+    t = res.meta["trades"]
+    assert len(t) == 1 and t["reason"].iloc[0] == "breakeven"
+    # bar 11 gaps above the +1R level (105) and opens at 110: half fills at the open (+10%),
+    # the other half exits at breakeven -> +5% total
+    assert abs(t["ret"].iloc[0] - 0.05) < 1e-9, t
+
+
+def test_price_limit_blocks_entry():
+    idx = pd.bdate_range("2021-01-01", periods=10)
+    c = pd.DataFrame({"X": [100, 100, 100, 110, 121, 121, 121, 121, 121, 121.0]}, index=idx)
+    o = c.copy()
+    p = Panel(o, c * 1.0, c * 1.0, c, c * 0 + 1e9, c["X"], {}, "toy", costs_meta={"price_limit": 0.10})
+    e = pd.DataFrame(False, index=idx, columns=["X"]); e.iloc[2] = True; e.iloc[3] = True
+    t = run_trades(p, Signals(e, e & False), ExitCfg(max_hold=2), Costs(0, 0)).meta["trades"]
+    assert t["entry"].iloc[0] == idx[5]   # opens at 110 and 121 are limit-up locked -> first fill on bar 5
+
+
+def test_pairs_find_cointegration():
+    rng = np.random.default_rng(13)
+    T = 1500
+    base = np.cumsum(rng.normal(0, 0.01, T))
+    spread = np.zeros(T)
+    for t in range(1, T):
+        spread[t] = 0.9 * spread[t - 1] + rng.normal(0, 0.01)
+    c = pd.DataFrame({"A": 100 * np.exp(base + spread), "B": 100 * np.exp(base),
+                      "C": 100 * np.exp(np.cumsum(rng.normal(0, 0.01, T)))},
+                     index=pd.bdate_range("2015-01-01", periods=T))
+    w = REGISTRY["pairs_zscore"](c, form=126, entry_z=2.0, min_corr=0.3)
+    r = engine.run(c, w, Costs(0.0005, 0.0005)).returns
+    assert (w.abs().sum(axis=1) > 0).mean() > 0.05 and metrics.sharpe(r) > 1.0, metrics.sharpe(r)
+
+
+def test_membership_mask_blocks_weights():
+    px = data.synthetic_prices(4, 300, seed=14)
+    mem = pd.DataFrame(True, index=px.index, columns=px.columns); mem.iloc[:150, 0] = False
+    w = pd.DataFrame(0.25, index=px.index, columns=px.columns)
+    res = engine.run(px, w, Costs(0, 0), member=mem)
+    assert (res.weights.iloc[:150, 0] == 0).all() and (res.weights.iloc[200:, 0] > 0).all()
+
+
+def test_usd_conversion():
+    idx = pd.bdate_range("2020-01-01", periods=3)
+    r = pd.Series([0.0, 0.10, 0.0], index=idx)
+    fx = pd.Series([10.0, 11.0, 11.0], index=idx)  # lira loses 10% the same day
+    u = validation.to_usd(r, fx)
+    assert abs(u.iloc[1] - (1.10 * 10 / 11 - 1)) < 1e-12
+
+
+def test_exit_grid_and_event_study():
+    from lab import robustness as RB
+    p = Panel.from_close(data.synthetic_prices(5, 800, seed=15))
+    e = rules.RULES["rsi_reversal"].fn(p, n=14, lo=30, exit=60).entry_long
+    es = RB.event_study(p, e)
+    eg = RB.exit_grid_study(p, e)
+    assert "best_holding_bars" in es and len(eg["top"]) > 0
+
+
+def test_decision_merge_and_client(tmp_path=None):
+    import json
+    import tempfile
+    from lab import client, decision
+    d = Path(tempfile.mkdtemp())
+    old = (decision.PARTS, decision.REG, decision.LIVE_STATUS, decision.ROOT)
+    decision.PARTS, decision.REG, decision.LIVE_STATUS, decision.ROOT = d / "parts", d / "registry.json", d / "live.json", d
+    try:
+        decision.PARTS.mkdir()
+        idx = pd.bdate_range("2020-01-01", periods=300)
+        rng = np.random.default_rng(16)
+        now = pd.Timestamp.now(tz="UTC").isoformat()
+        for hid in ("H1", "H2", "H3"):
+            pd.Series(rng.normal(0.0005, 0.01, 300), index=idx).to_csv(d / f"{hid}.csv")
+            (decision.PARTS / f"{hid}.json").write_text(json.dumps({
+                "verdict": "ACCEPT" if hid != "H3" else "WATCH", "for_system": "botA", "reasons": [],
+                "oos_csv": f"{hid}.csv", "validated_at": now, "targets": {"X": 1}}))
+        decision.LIVE_STATUS.write_text(json.dumps({"H2": {"degraded": True, "why": "test"}}))
+        reg = decision.merge()
+        assert reg["hypotheses"]["H2"]["verdict"] == "DEGRADED"
+        assert reg["systems"]["botA"]["approved"] == ["H1"]
+        url = (d / "registry.json").as_uri()
+        assert [h["id"] for h in client.approved("botA", url)] == ["H1"]
+        assert client.allocation("botA", url) == {"H1": 1.0}
+    finally:
+        decision.PARTS, decision.REG, decision.LIVE_STATUS, decision.ROOT = old
+
+
+def test_live_decay_check():
+    from lab import live
+    r = pd.Series(np.r_[np.full(60, -0.01)], index=pd.bdate_range("2024-01-01", periods=60))
+    bad, why = live.decay_check(r, {"oos": {"max_dd": -0.10, "sharpe": 1.0}})
+    assert bad, why
 
 
 if __name__ == "__main__":

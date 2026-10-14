@@ -18,6 +18,7 @@ class Costs:
     commission: float = 0.001   # per side, fraction of traded notional
     slippage: float = 0.0005    # per side
     borrow_annual: float = 0.0  # short borrow cost (annual), applied to |short| weight
+    funding_annual: float = 0.0  # perp funding / financing (annual), applied to gross exposure
 
     @property
     def per_turnover(self) -> float:
@@ -38,10 +39,12 @@ class Result:
 
 
 def run(prices: pd.DataFrame, target_weights: pd.DataFrame, costs: Costs | None = None,
-        lag: int = 1) -> Result:
+        lag: int = 1, ppy: float = 252.0, member: pd.DataFrame | None = None) -> Result:
     costs = costs or Costs()
     prices = prices.sort_index()
     tw = target_weights.reindex(prices.index).reindex(columns=prices.columns).fillna(0.0)
+    if member is not None:  # survivorship control: never hold a stock outside its membership window
+        tw = tw.where(member.reindex(index=tw.index, columns=tw.columns).fillna(False), 0.0)
     held = tw.shift(lag).fillna(0.0)
     asset_ret = prices.pct_change(fill_method=None).fillna(0.0)
     # An asset with no price today cannot be held: zero its contribution.
@@ -50,7 +53,9 @@ def run(prices: pd.DataFrame, target_weights: pd.DataFrame, costs: Costs | None 
     turnover = held.diff().abs().sum(axis=1).fillna(held.abs().sum(axis=1))
     cost = turnover * costs.per_turnover
     if costs.borrow_annual:
-        cost = cost + held.clip(upper=0).abs().sum(axis=1) * costs.borrow_annual / 252
+        cost = cost + held.clip(upper=0).abs().sum(axis=1) * costs.borrow_annual / ppy
+    if costs.funding_annual:
+        cost = cost + held.abs().sum(axis=1) * costs.funding_annual / ppy
     net = gross - cost
     first = held.abs().sum(axis=1).gt(0)
     if first.any():
@@ -87,10 +92,10 @@ def rebalance(weights: pd.DataFrame, freq: str = "ME") -> pd.DataFrame:
 
 
 def vol_target(weights: pd.DataFrame, prices: pd.DataFrame, target: float = 0.15,
-               lookback: int = 63, cap: float = 2.0) -> pd.DataFrame:
+               lookback: int = 63, cap: float = 2.0, ppy: float = 252.0) -> pd.DataFrame:
     """Scale the whole book to an annual volatility target (uses past data only)."""
     r = prices.pct_change(fill_method=None).fillna(0.0)
     port = (weights.shift(1).fillna(0) * r).sum(axis=1)
-    realized = port.rolling(lookback, min_periods=20).std() * np.sqrt(252)
+    realized = port.rolling(lookback, min_periods=20).std() * np.sqrt(ppy)
     scale = (target / realized).clip(upper=cap).fillna(0.0)
     return weights.mul(scale, axis=0)

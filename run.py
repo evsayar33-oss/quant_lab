@@ -32,7 +32,7 @@ from lab.trade_engine import EXIT_GRID
 
 ROOT = Path(__file__).resolve().parent
 RESULTS = ROOT / "results"
-ICON = {"ACCEPT": "✅", "WATCH": "🟡", "REJECT": "❌", "NO_DATA": "⚪", "ERROR": "⚠️"}
+ICON = {"ACCEPT": "✅", "WATCH": "🟡", "REJECT": "❌", "NO_DATA": "⚪", "ERROR": "⚠️", "DEGRADED": "🔻"}
 
 
 def load_yaml(p: str):
@@ -50,42 +50,79 @@ def get_panel(spec: dict, synthetic: bool) -> tuple[Panel, Costs]:
     if synthetic:
         return Panel.from_close(data.synthetic_prices(15, 2600, seed=11)), Costs()
     u = universe(spec["universe"])
-    return data.load_panel(u, spec.get("start", "2012-01-01"), spec["universe"]), Costs(**u.get("costs", {}))
+    tf = spec.get("timeframe", "1d")
+    p = data.load_panel(u, spec.get("start", "2012-01-01"), spec["universe"], timeframe=tf)
+    return p, Costs(**u.get("costs", {}))
 
 
-def report_md(hid: str, spec: dict, rep: dict) -> str:
+def _fmt_dict(d) -> str:
+    return json.dumps(d, default=str, ensure_ascii=False)
+
+
+def report_md(hid: str, spec: dict, rep: dict, charts: dict) -> str:
     o, b = rep["oos"], rep["benchmark"]
     what = spec.get("rule") or spec.get("strategy")
-    lines = [
-        f"# {hid} — {what} on {spec.get('universe', 'synthetic')}  {ICON[rep['verdict']]} {rep['verdict']}",
+    L = [
+        f"# {hid} — {what} on {spec.get('universe', 'synthetic')} [{rep['timeframe']}]  {ICON[rep['verdict']]} {rep['verdict']}",
         "",
         f"- Kind: {rep['kind']} · Source: {rep['source']}",
         f"- For system: `{spec.get('for_system', '-')}`",
-        f"- Data: {rep['data_start']} → {rep['data_end']}, {rep['n_assets']} assets",
-        f"- Costs/side: commission {rep['costs']['commission']}, slippage {rep['costs']['slippage']}",
+        f"- Data: {rep['data_start']} → {rep['data_end']} · {rep['n_assets']} assets · {rep['bars_per_year']} bars/year"
+        f" · survivorship mask: {rep['survivorship_mask']}",
+        f"- Costs: {rep['costs']}",
         f"- Variants tried (DSR trials): {rep['n_trials']} (failed: {rep['failed_variants']})",
         f"- Final variant: `{rep['final_variant']}`",
         "",
-        "## Walk-forward out-of-sample",
-        "| Metric | Strategy | Equal-weight benchmark |",
-        "|---|---|---|",
-        *[f"| {k} | {o.get(k)} | {b.get(k)} |" for k in ["years", "cagr", "vol", "sharpe", "sortino", "max_dd", "calmar"]],
+        "## Verdict reasons", *[f"- {r}" for r in rep["reasons"]],
         "",
-        f"- Deflated Sharpe (prob.): **{rep['dsr']}** · PBO: **{rep['pbo']}**",
-        f"- PSR: {o.get('psr')} · Info ratio: {o.get('info_ratio')} · Beta: {o.get('beta')}",
-        f"- Sharpe with 2× costs: {rep['stress_2x_cost']['sharpe']}",
-        f"- Bootstrap: {rep['bootstrap']}",
-        f"- Yearly OOS Sharpe: {rep['yearly_sharpe']}",
-        f"- Regimes: {rep['regimes']}",
+        "## Walk-forward out-of-sample",
     ]
+    if charts.get("equity"):
+        L += [f"![equity](charts/{charts['equity']})", ""]
+    L += ["| Metric | Strategy | Equal-weight benchmark |", "|---|---|---|",
+          *[f"| {k} | {o.get(k)} | {b.get(k)} |" for k in
+            ["years", "cagr", "vol", "sharpe", "sharpe_excess_rf", "sortino", "max_dd", "max_dd_bars", "calmar",
+             "ulcer", "var95", "cvar95", "omega", "tail_ratio", "skew", "kurtosis", "hit_rate", "turnover_ann"]],
+          "",
+          f"- **Gate Sharpe ({rep['gate_sharpe_basis']}): {rep['gate_sharpe']}**",
+          f"- Deflated Sharpe: **{rep['dsr']}** · PBO: **{rep['pbo']}** · Reality Check p: **{rep['reality_check_p']}**",
+          f"- PSR {o.get('psr')} · Info ratio {o.get('info_ratio')} · Beta {o.get('beta')} · Up/Down capture {o.get('up_capture')}/{o.get('down_capture')}",
+          f"- Sharpe with 2× costs: {rep['stress_2x_cost']['sharpe']} · Walk-forward efficiency: {rep['wf_efficiency']}",
+          f"- Bootstrap: {rep['bootstrap']}",
+          f"- Yearly OOS Sharpe: {rep['yearly_sharpe']}"]
+    if rep.get("oos_usd"):
+        u = rep["oos_usd"]
+        L.append(f"- In USD: CAGR {u['cagr']} · Sharpe {u['sharpe']} · excess-rf Sharpe {u['sharpe_excess_rf']} · MaxDD {u['max_dd']}")
+    if charts.get("monthly"):
+        L += ["", f"![monthly](charts/{charts['monthly']})"]
+    L += ["", "## Regimes (where does it work?)", f"`{_fmt_dict(rep['regimes'])}`",
+          "", "## Calendar profile (weekday / month / hour)", f"`{_fmt_dict(rep['calendar'])}`"]
     if rep.get("trade_stats"):
-        lines.append(f"- Trades (OOS): {rep['trade_stats']}")
-    lines += ["", "## Verdict reasons", *[f"- {r}" for r in rep["reasons"]],
-              "", "## Best variants (full sample, for reference only)",
-              *[f"- {r['variant']}: Sharpe {r['sharpe']}" for r in rep["full_sample_top"][:10]],
-              "", "## Current targets / signals", "```json", json.dumps(rep["targets"], indent=1, default=str), "```",
-              "", "> Survivorship bias: universes use today's members. Treat results as an upper bound."]
-    return "\n".join(lines)
+        L += ["", "## Trades (OOS)", f"`{_fmt_dict(rep['trade_stats'])}`"]
+    if rep.get("robustness"):
+        L += ["", "## Robustness"] + [f"- **{k}**: `{_fmt_dict(v)}`" for k, v in rep["robustness"].items()]
+    st = rep.get("studies") or {}
+    if st:
+        L += ["", "## Timing, take-profit, stop-loss and profit studies (in-sample diagnostics)"]
+        if "event_study_long" in st:
+            L.append(f"- Event study (forward return by bars held): `{_fmt_dict(st['event_study_long'])}`")
+            if charts.get("hold"):
+                L.append(f"![hold](charts/{charts['hold']})")
+        if "event_study_short" in st:
+            L.append(f"- Event study short: `{_fmt_dict(st['event_study_short'])}`")
+        if "exit_grid_long" in st:
+            L.append(f"- Best stop / target / max-hold combinations: `{_fmt_dict(st['exit_grid_long'].get('top', [])[:5])}`")
+            if charts.get("exit"):
+                L.append(f"![exit](charts/{charts['exit']})")
+        if "overlays" in st:
+            L.append(f"- Portfolio overlays (vol target, drawdown brake, equity-curve filter): `{_fmt_dict(st['overlays'])}`")
+        L.append("> Studies are in-sample diagnostics. To use a better exit, register it (exits: [...]) and let the gate judge it.")
+    L += ["", "## Walk-forward windows", *[f"- {w['test_start']} → {w['test_end']}: IS {w['is_sharpe']} / OOS {w['oos_sharpe']} — `{w['variant']}`" for w in rep["walk_forward"][-12:]],
+          "", "## Best variants (full sample, reference only)",
+          *[f"- {r['variant']}: Sharpe {r['sharpe']}" for r in rep["full_sample_top"][:10]],
+          "", "## Current targets / signals", "```json", json.dumps(rep["targets"], indent=1, default=str), "```",
+          "", "> Survivorship bias: unless a membership mask is used, universes are today's members (upper-bound results)."]
+    return "\n".join(L)
 
 
 def telegram(text: str) -> None:
@@ -101,6 +138,27 @@ def telegram(text: str) -> None:
             print(f"[telegram] failed: {e}")
 
 
+def make_charts(stem: str, rep: dict) -> dict:
+    from lab import charts as CH, metrics
+    out = {}
+    d = RESULTS / "charts"
+    d.mkdir(parents=True, exist_ok=True)
+    try:
+        r = rep["_oos_returns"]
+        if len(r) > 30:
+            out["equity"] = CH.equity_dd(r, rep.get("_bench_oos"), d / f"{stem}_equity.png", f"{stem} — OOS equity")
+            if rep["timeframe"] in ("1d", "1h", "4h", "1w"):
+                out["monthly"] = CH.monthly_heatmap(metrics.monthly_table(r), d / f"{stem}_monthly.png")
+        es = (rep.get("studies") or {}).get("event_study_long")
+        if es:
+            out["hold"] = CH.holding_curve(es, d / f"{stem}_hold.png")
+        if rep.get("_exit_table") is not None:
+            out["exit"] = CH.exit_heatmap(rep["_exit_table"], d / f"{stem}_exit.png")
+    except Exception as e:  # noqa: BLE001 - charts must never break a validation
+        print(f"[charts] {e}")
+    return {k: v for k, v in out.items() if v}
+
+
 def run_one(hid: str, spec: dict, write_registry: bool, synthetic: bool = False) -> dict:
     p, costs = get_panel(spec, synthetic)
     p.c = p.c.dropna(axis=1, how="all")
@@ -109,28 +167,39 @@ def run_one(hid: str, spec: dict, write_registry: bool, synthetic: bool = False)
         return {"verdict": "NO_DATA", "reasons": ["not enough price history"]}
     rep = validation.validate(spec, p, costs, float(spec.get("train_years", 3)), int(spec.get("test_months", 6)))
     RESULTS.mkdir(exist_ok=True)
-    stem = f"{hid}_{spec.get('rule') or spec.get('strategy')}_{spec.get('universe', 'synthetic')}"
-    (RESULTS / f"{stem}.md").write_text(report_md(hid, spec, rep))
+    stem = f"{hid}_{spec.get('rule') or spec.get('strategy')}_{spec.get('universe', 'synthetic')}_{spec.get('timeframe', '1d')}"
+    charts = make_charts(stem, rep)
+    (RESULTS / f"{stem}.md").write_text(report_md(hid, spec, rep, charts))
     rep["_oos_returns"].rename("oos_return").to_csv(RESULTS / f"{stem}_oos.csv")
     clean = {k: v for k, v in rep.items() if not k.startswith("_")}
     (RESULTS / f"{stem}.json").write_text(json.dumps(clean, indent=2, default=str))
     if write_registry:
-        decision.record(hid, spec, rep, rep["targets"])
+        decision.record(hid, spec, rep, rep["targets"], oos_csv=f"results/{stem}_oos.csv")
     o = rep["oos"]
     print(f"[{hid}] {rep['verdict']}  OOS Sharpe={o.get('sharpe')} CAGR={o.get('cagr')} MaxDD={o.get('max_dd')} "
           f"DSR={rep['dsr']} PBO={rep['pbo']} trials={rep['n_trials']}")
     return rep
 
 
+def summary_text(reg: dict) -> str:
+    lines = ["🧭 quant_lab decisions"]
+    for hid, h in sorted(reg["hypotheses"].items()):
+        lines.append(f"{ICON.get(h['verdict'], '🔻')} {hid} {h['strategy']} {h['universe']}/{h.get('timeframe')} "
+                     f"SR {h.get('gate_sharpe')} DSR {h.get('dsr')} → {h.get('for_system')}")
+    for s, v in reg.get("systems", {}).items():
+        lines.append(f"🤖 {s}: {v['allocation']} ({v['method']})")
+    return "\n".join(lines)
+
+
 def do_scan(a) -> None:
     from lab import scanner
     filters = [f for f in a.filters.split(",") if f] if a.filters != "all" else list(rules.FILTERS)
-    spec = {"universe": a.universe or "synthetic", "start": a.start}
+    spec = {"universe": a.universe or "synthetic", "start": a.start, "timeframe": a.timeframe}
     p, costs = get_panel(spec, a.synthetic)
     names = a.rules.split(",") if a.rules else None
     res = scanner.scan(p, costs, a.families, filters, a.side, names)
     RESULTS.mkdir(exist_ok=True)
-    stem = f"scan_{spec['universe']}_{a.families}"
+    stem = f"scan_{spec['universe']}_{a.timeframe}_{a.families}"
     (RESULTS / f"{stem}.md").write_text(scanner.to_markdown(res) + "\n\n```yaml\n" +
                                         scanner.suggest_yaml(res, spec["universe"]) + "\n```\n")
     res["board"].to_csv(RESULTS / f"{stem}.csv", index=False)
@@ -152,6 +221,7 @@ def main() -> None:
     ap.add_argument("--rule")
     ap.add_argument("--universe")
     ap.add_argument("--start", default="2012-01-01")
+    ap.add_argument("--timeframe", default="1d", help="1h | 4h | 1d | 1w | 1mo")
     ap.add_argument("--filters", default="none")
     ap.add_argument("--exits", default="")
     ap.add_argument("--side", default="long")
@@ -160,9 +230,30 @@ def main() -> None:
     ap.add_argument("--rules", default="")
     ap.add_argument("--synthetic", action="store_true")
     ap.add_argument("--telegram", action="store_true")
+    ap.add_argument("--ids", action="store_true", help="print active hypothesis ids as JSON (workflow matrix)")
+    ap.add_argument("--merge", action="store_true", help="rebuild decisions/registry.json from parts")
+    ap.add_argument("--live", action="store_true", help="paper-track ACCEPT decisions, demote on decay")
     a = ap.parse_args()
 
     hyps = load_yaml("hypotheses/registry.yaml") or []
+    if a.ids:
+        print(json.dumps([h["id"] for h in hyps if h.get("status") == "active"]))
+        return
+    if a.merge:
+        reg = decision.merge()
+        print(json.dumps({k: v["verdict"] for k, v in reg["hypotheses"].items()}, indent=1))
+        print(json.dumps(reg["systems"], indent=1, default=str))
+        if a.telegram:
+            telegram(summary_text(reg))
+        return
+    if a.live:
+        from lab import live
+        st = live.run([h for h in hyps if h.get("status") == "active"])
+        if a.telegram and st:
+            telegram("📡 quant_lab live tracking\n" + "\n".join(
+                f"{'🔻' if v['degraded'] else '🟢'} {k} live {v['live_return']:+.1%} SR {v['live_sharpe']} — {v['why']}"
+                for k, v in st.items()))
+        return
     if a.list:
         print(f"Weight strategies ({len(REGISTRY)}):")
         for n, s in sorted(REGISTRY.items()):
@@ -187,7 +278,7 @@ def main() -> None:
 
     results = {}
     if a.synthetic or (a.universe and (a.strategy or a.rule)):
-        spec = {"universe": a.universe or "synthetic", "start": a.start}
+        spec = {"universe": a.universe or "synthetic", "start": a.start, "timeframe": a.timeframe}
         if a.rule:
             spec.update({"rule": a.rule, "side": a.side,
                          "filters": "all" if a.filters == "all" else a.filters.split(","),
@@ -209,8 +300,11 @@ def main() -> None:
             try:
                 results[h["id"]] = run_one(h["id"], h, write_registry=True)
             except Exception as e:  # noqa: BLE001 - one bad hypothesis must not stop the batch
+                import traceback
+                traceback.print_exc()
                 print(f"[{h['id']}] ERROR {e}")
                 results[h["id"]] = {"verdict": "ERROR", "reasons": [str(e)]}
+        decision.merge()
 
     if a.telegram and results:
         msg = ["🧪 quant_lab validation"]
