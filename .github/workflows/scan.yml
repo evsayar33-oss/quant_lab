@@ -1,8 +1,8 @@
 name: Discovery scan
 
-# Tries EVERY rule x parameter variant and EVERY weight strategy on each universe.
-# Runs on the 1st of every month and on demand. Never writes decisions; it writes
-# results/scan_*.md leaderboards with suggested hypotheses.
+# 1st of every month + on demand. Every rule x variant x filter, every strategy, then two-signal
+# combinations of the best rule families. Never writes decisions. Leaderboards + per-variant CSV
+# are published to the `results` branch.
 
 on:
   schedule:
@@ -13,6 +13,10 @@ on:
         description: 'JSON list, e.g. ["bist30"] or ["bist30","sp_megacap","crypto_major"]'
         required: false
         default: '["bist30","sp_megacap","us_sectors","global_assets","crypto_major"]'
+      timeframes:
+        description: 'JSON list of timeframes: ["1d"] or ["4h","1d","1w"]'
+        required: false
+        default: '["1d","1w"]'
       families:
         description: "all | rules | strategies | factors"
         required: false
@@ -21,10 +25,6 @@ on:
         description: "comma list or all (e.g. none,trend_sma200,regime_bench200)"
         required: false
         default: "none,trend_sma200"
-      timeframes:
-        description: 'JSON list of timeframes: ["1d"] or ["1h","4h","1d","1w"]'
-        required: false
-        default: '["1d","1w"]'
 
 permissions:
   contents: write
@@ -35,17 +35,20 @@ jobs:
     timeout-minutes: 340
     strategy:
       fail-fast: false
-      max-parallel: 3
+      max-parallel: 4
       matrix:
         universe: ${{ fromJSON(github.event.inputs.universes || '["bist30","sp_megacap","us_sectors","global_assets","crypto_major"]') }}
         timeframe: ${{ fromJSON(github.event.inputs.timeframes || '["1d","1w"]') }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: pip
+        with: {python-version: '3.11', cache: pip}
       - run: pip install -r requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: data/cache
+          key: scan-${{ matrix.universe }}-${{ matrix.timeframe }}-${{ github.run_id }}
+          restore-keys: scan-${{ matrix.universe }}-${{ matrix.timeframe }}-
       - name: Scan
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
@@ -58,13 +61,27 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: scan-${{ matrix.universe }}-${{ matrix.timeframe }}
+          retention-days: 7
           path: results/scan_*
-      - name: Commit leaderboard
-        run: |
-          git config user.name "quant-lab-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add results/scan_*
-          git diff --cached --quiet && exit 0
-          git commit -m "Scan ${{ matrix.universe }} ${{ matrix.timeframe }} $(date -u +%F)"
-          for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((RANDOM % 20 + 5)); done
-          exit 1
+
+  publish:
+    needs: scan
+    if: always()
+    runs-on: ubuntu-latest
+    concurrency:
+      group: quant-lab-results
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/fetch_results.sh
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: scan-*
+          path: _parts
+      - run: |
+          mkdir -p results
+          for d in _parts/*; do cp -r "$d"/. results/ 2>/dev/null || true; done
+          rm -rf _parts
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/publish_results.sh

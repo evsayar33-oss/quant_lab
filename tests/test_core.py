@@ -274,6 +274,19 @@ def test_live_decay_check():
     assert bad, why
 
 
+def test_confirmation_combo():
+    p = Panel.from_close(data.synthetic_prices(5, 700, seed=17))
+    a = rules.RULES["rsi_reversal"].fn(p, n=14, lo=30, exit=60)
+    b = rules.RULES["macd_cross"].fn(p, cfg=(12, 26, 9), zero_filter=False)
+    c0 = rules.confirm(a, b, 0)
+    c5 = rules.confirm(a, b, 5)
+    assert (c0.entry_long <= a.entry_long).all().all() and (c0.entry_long <= b.entry_long).all().all()
+    assert c5.entry_long.sum().sum() >= c0.entry_long.sum().sum()
+    from lab import candidates as CD
+    cand = CD.from_spec({"rule": "rsi_reversal", "confirm": "macd_cross"})
+    assert cand.name == "rsi_reversal+macd_cross" and len(cand.variants()) <= 1500
+
+
 if __name__ == "__main__":
     for k, fn in list(globals().items()):
         if k.startswith("test_"):

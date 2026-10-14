@@ -22,6 +22,7 @@ Fikir → Discovery scan (her şeyi dener, dürüst sıralar)
 | **Çoklu zaman dilimi** | Üst zaman dilimi trend filtreleri (`htf_week_sma10/30`, `htf_month_sma10`), sadece **tamamlanmış** üst barlarla |
 | **İndikatörler** | 60+: 7 hareketli ortalama tipi, RSI, Stoch, StochRSI, %R, CCI, MFI, ROC, MACD, PPO, TRIX, TSI, AO, UO, Coppock, DMI/ADX, Aroon, Vortex, WaveTrend, Supertrend, PSAR, Ichimoku, Heikin-Ashi, Bollinger, Keltner, Donchian, ATR, Choppiness, Z-skor, Hurst, OBV, CMF, A/D, Chaikin, Force, VWAP, EOM, mum formasyonları |
 | **Giriş kuralları** | 53 kural / **518 parametre varyantı** (ör. RSI 2,3,5,7,9,14,21,28 × seviye × çıkış). Long, short, ikisi |
+| **Kombinasyonlar** | İki sinyal onayı: `A+B` = A sinyali, B sinyali aynı barda veya son 3/5 bar içinde geldiyse. Taramada en iyi 6 kural ailesi ikili eşlenir (30 kombinasyon); hipotezde `confirm:` ile tüm ızgara denenir (çok büyük alanda 1500 varyantlık rastgele arama) |
 | **Filtreler (19)** | Trend SMA50/100/200, ADX, endeks rejimi, düşük vol, hacim, temel kalite/değer, üst zaman dilimi trendi, VIX, VIX-spike, USDTRY stresi, faiz eğrisi, endeks üyeliği |
 | **Stop-loss** | ATR (1.5/2/3), yüzde (3/5/8/12), swing-low (5/10/20 bar), breakeven, ATR/yüzde trailing (chandelier), MA trailing, zaman stopu |
 | **Kâr alma** | ATR hedef, yüzde hedef, R-katı (1.5/2/3), **kısmi kâr alma** (1R/2R'de %50 + kalan trailing + stop başabaş), sabit tutma süresi |
@@ -72,6 +73,14 @@ Bunlar örneklem içi teşhislerdir. Daha iyi bir çıkış bulunursa hipoteze `
 - Intraday barlarda günlük makro veri bir gün sonra görünür.
 - S&P evrenlerinde geçmiş üyelik maskesi uygulanır (survivorship kontrolü).
 
+## Sonuçlar nerede? (repo şişmez)
+
+- **`main` dalı:** Sadece kod ve küçük karar dosyaları (`decisions/`). Botlar buradan okur.
+- **`results` dalı:** Tüm raporlar, grafikler, OOS serileri, tarama tabloları ve her varyantın ayrı sonucu (`*_variants.csv`). Bu dal her yayında **tek commit** olarak yeniden yazılır. Eski grafikler git geçmişinde birikmez, repo boyutu sabit kalır.
+- Telefondan: repo → dal seçici → `results` → `results/` klasörü.
+- Ad-hoc denemeler sadece artifact (14 gün) ve Telegram olarak gelir.
+- Veri her çalıştırmada bir kez indirilir ve paralel işlere cache ile dağıtılır. Yahoo isteği 25'lik gruplar ve 4 deneme ile yapılır (rate-limit koruması).
+
 ## Telefondan kullanım (GitHub → Actions)
 
 | Workflow | Ne zaman | Ne yapar |
@@ -97,6 +106,8 @@ Settings → Actions → General → Workflow permissions → **Read and write**
   exits: all                    # veya [0, 18, 22]; boş = kademeli arama (tüm çıkışlar en iyi 3 varyanta)
   sizes: all                    # pozisyon boyutu modları (kademe 3)
   side: long                    # long | short | both
+  confirm: macd_cross           # isteğe bağlı: ikinci sinyal onayı (kombinasyon)
+  confirm_within: [0, 3, 5]     # onay penceresi (bar)
   max_positions: 10
   status: active
   note: "neden test ediyoruz"
@@ -127,7 +138,7 @@ Kayıt alınamazsa veya 10 günden eskiyse boş döner; bot kendi varsayılanın
 
 ```bash
 pip install -r requirements.txt
-python tests/test_core.py      # 22 test
+python tests/test_core.py      # 23 test
 python run.py --synthetic --rule rsi_reversal
 python run.py --scan --synthetic
 ```

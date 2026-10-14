@@ -626,3 +626,19 @@ def f_member(p):
     if p.member is None:
         return _all(p), _all(p)
     return _b(p.member), _b(p.member)
+
+
+# ------------------------------------------------------------------ two-signal confirmation (combinations)
+def confirm(primary: Signals, secondary: Signals, within: int = 0) -> Signals:
+    """Entry only when the primary rule fires AND the secondary rule fired on the same bar
+    or within the previous `within` bars. Exits follow the primary rule.
+    Example: RSI oversold cross confirmed by a MACD bullish cross in the last 3 bars."""
+    def win(x):
+        if x is None:
+            return None
+        return x if within <= 0 else x.astype(int).rolling(within + 1, min_periods=1).max().astype(bool)
+    el = primary.entry_long & win(secondary.entry_long)
+    es = None
+    if primary.entry_short is not None and secondary.entry_short is not None:
+        es = primary.entry_short & win(secondary.entry_short)
+    return Signals(_b(el), primary.exit_long, None if es is None else _b(es), primary.exit_short)

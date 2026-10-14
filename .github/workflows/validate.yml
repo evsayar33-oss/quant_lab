@@ -1,7 +1,8 @@
 name: Validate hypotheses
 
-# Saturday 07:17 TR: re-validate every active hypothesis in PARALLEL jobs (one per id),
-# then one job merges the parts into decisions/registry.json and commits.
+# Saturday 07:17 TR. plan: tests + one shared data download (cached for all jobs)
+# validate: one PARALLEL job per hypothesis   merge: registry + HRP allocation,
+# decisions committed to main, reports/charts published to the `results` branch (no git bloat).
 
 on:
   schedule:
@@ -23,6 +24,7 @@ concurrency:
 jobs:
   plan:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     outputs:
       ids: ${{ steps.ids.outputs.ids }}
     steps:
@@ -41,6 +43,16 @@ jobs:
           else
             echo "ids=$(python run.py --ids)" >> "$GITHUB_OUTPUT"
           fi
+      - name: Download all data once (avoids Yahoo rate limits in parallel jobs)
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          WANT: ${{ github.event.inputs.hypothesis }}
+        run: |
+          if [ -n "$WANT" ]; then python run.py --prefetch --hypothesis "$WANT"; else python run.py --prefetch; fi
+      - uses: actions/cache/save@v4
+        with:
+          path: data/cache
+          key: data-${{ github.run_id }}
 
   validate:
     needs: plan
@@ -56,30 +68,41 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.11', cache: pip}
       - run: pip install -r requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/cache
+          key: data-${{ github.run_id }}
       - name: Validate ${{ matrix.id }}
         env:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          LAB_CACHE_HOURS: "48"
         run: python run.py --hypothesis "${{ matrix.id }}"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: part-${{ matrix.id }}
+          retention-days: 3
+          if-no-files-found: ignore
           path: |
             decisions/parts/${{ matrix.id }}.json
             decisions/history.csv
             results/${{ matrix.id }}_*
             results/charts/${{ matrix.id }}_*
-          if-no-files-found: ignore
 
   merge:
     needs: validate
     if: always()
     runs-on: ubuntu-latest
+    concurrency:
+      group: quant-lab-results
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.11', cache: pip}
       - run: pip install -r requirements.txt
+      - name: Fetch published results (older OOS series are needed for the allocation)
+        run: bash scripts/fetch_results.sh
       - uses: actions/download-artifact@v4
         with:
           pattern: part-*
@@ -90,11 +113,9 @@ jobs:
           [ -f decisions/history.csv ] || echo "validated_at,id,strategy,universe,timeframe,verdict,gate_sharpe,dsr,pbo,oos_cagr,oos_maxdd" > decisions/history.csv
           for d in _parts/*; do
             [ -d "$d" ] || continue
-            cp -r "$d"/decisions/parts/*.json decisions/parts/ 2>/dev/null || true
-            cp -r "$d"/results/* results/ 2>/dev/null || true
-            if [ -f "$d/decisions/history.csv" ]; then
-              tail -n +2 "$d/decisions/history.csv" | tail -n 1 >> decisions/history.csv
-            fi
+            cp "$d"/decisions/parts/*.json decisions/parts/ 2>/dev/null || true
+            cp -r "$d"/results/. results/ 2>/dev/null || true
+            if [ -f "$d/decisions/history.csv" ]; then tail -n 1 "$d/decisions/history.csv" >> decisions/history.csv; fi
           done
           rm -rf _parts
       - name: Merge registry
@@ -102,11 +123,15 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
         run: python run.py --merge --telegram
-      - name: Commit
+      - name: Publish reports to the results branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/publish_results.sh
+      - name: Commit decisions to main
         run: |
           git config user.name "quant-lab-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add decisions results
+          git add decisions
           git diff --cached --quiet && exit 0
           git commit -m "Validation $(date -u +%F)"
           for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep 7; done

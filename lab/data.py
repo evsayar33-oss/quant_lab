@@ -52,8 +52,26 @@ def _yf_download(tickers: list[str], start: str, interval: str = "1d") -> dict[s
     if not tickers:
         return out
     kw = {"start": start} if interval == "1d" else {"period": "730d"}
-    raw = yf.download(tickers, interval=interval, auto_adjust=True, progress=False,
-                      group_by="ticker", threads=True, **kw)
+    frames = []
+    for i in range(0, len(tickers), 25):            # small batches + retries: Yahoo rate limits
+        chunk = tickers[i:i + 25]
+        for attempt in range(4):
+            try:
+                raw = yf.download(chunk, interval=interval, auto_adjust=True, progress=False,
+                                  group_by="ticker", threads=True, **kw)
+                if raw is not None and len(raw):
+                    frames.append((chunk, raw))
+                    break
+            except Exception as e:  # noqa: BLE001
+                print(f"[data] yfinance attempt {attempt + 1} failed: {e}")
+            time.sleep(5 * (attempt + 1))
+    for chunk, raw in frames:
+        out.update(_split(raw, chunk))
+    return out
+
+
+def _split(raw: pd.DataFrame, tickers: list[str]) -> dict[str, pd.DataFrame]:
+    out: dict[str, pd.DataFrame] = {}
     for t in tickers:
         try:
             df = raw[t] if isinstance(raw.columns, pd.MultiIndex) else raw

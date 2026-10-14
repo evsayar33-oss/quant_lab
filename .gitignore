@@ -2,3 +2,9 @@ __pycache__/
 *.pyc
 data/cache/
 .pytest_cache/
+_res/
+_pub/
+_parts/
+# heavy outputs live on the `results` branch (force-pushed single commit), not on main
+results/*
+!results/.gitkeep

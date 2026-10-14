@@ -203,6 +203,7 @@ def do_scan(a) -> None:
     (RESULTS / f"{stem}.md").write_text(scanner.to_markdown(res) + "\n\n```yaml\n" +
                                         scanner.suggest_yaml(res, spec["universe"]) + "\n```\n")
     res["board"].to_csv(RESULTS / f"{stem}.csv", index=False)
+    res["variants"].to_csv(RESULTS / f"{stem}_variants.csv", index=False)
     print(scanner.to_markdown(res, top=15))
     if a.telegram:
         top = res["board"].head(10)
@@ -233,11 +234,24 @@ def main() -> None:
     ap.add_argument("--ids", action="store_true", help="print active hypothesis ids as JSON (workflow matrix)")
     ap.add_argument("--merge", action="store_true", help="rebuild decisions/registry.json from parts")
     ap.add_argument("--live", action="store_true", help="paper-track ACCEPT decisions, demote on decay")
+    ap.add_argument("--prefetch", action="store_true",
+                    help="download & cache all data needed by active hypotheses (or --universe/--timeframe)")
     a = ap.parse_args()
 
     hyps = load_yaml("hypotheses/registry.yaml") or []
     if a.ids:
         print(json.dumps([h["id"] for h in hyps if h.get("status") == "active"]))
+        return
+    if a.prefetch:
+        want = [(a.universe, a.timeframe, a.start)] if a.universe else sorted(
+            {(h["universe"], h.get("timeframe", "1d"), h.get("start", "2012-01-01")) for h in hyps
+             if h.get("status") == "active" and (not a.hypothesis or h["id"] in a.hypothesis.split(","))})
+        for uni, tf, st in want:
+            try:
+                p = data.load_panel(universe(uni), st, uni, timeframe=tf)
+                print(f"[prefetch] {uni} {tf}: {p.c.shape} fund={len(p.fund)} macro={list(p.macro)}")
+            except Exception as e:  # noqa: BLE001
+                print(f"[prefetch] {uni} {tf} failed: {e}")
         return
     if a.merge:
         reg = decision.merge()

@@ -55,7 +55,7 @@ class RuleCandidate:
 
     def __init__(self, rule: str, filters=("none",), exits=None, side: str = "long",
                  max_positions: int | None = None, staged: bool = True, stage2_top: int = 3,
-                 sizes=None):
+                 sizes=None, confirm: str | None = None, confirm_within=(0, 3), confirm_params=None):
         self.rule = rules.RULES[rule]
         self.name = rule
         self.source = self.rule.source
@@ -66,6 +66,14 @@ class RuleCandidate:
         self.staged = staged
         self.stage2_top = stage2_top
         self.sizes = list(sizes) if sizes is not None else list(range(len(SIZE_GRID)))
+        self.max_variants = 1500
+        self.confirm = rules.RULES[confirm] if confirm else None
+        self.confirm_within = list(confirm_within) if isinstance(confirm_within, (list, tuple)) else [confirm_within]
+        # confirmation rule: its own grid is swept unless fixed params are given
+        self.confirm_points = [confirm_params] if confirm_params else (
+            rules.grid_points(self.confirm.grid) if self.confirm else [None])
+        if self.confirm:
+            self.name = f"{rule}+{confirm}"
 
     def variants(self, stage: int = 1, seeds: list[Variant] | None = None) -> list[Variant]:
         out = []
@@ -74,7 +82,16 @@ class RuleCandidate:
             for gp in rules.grid_points(self.rule.grid):
                 for f in self.filters:
                     for e in ex_list:
-                        out.append(Variant(self._key(gp, f, e, 0), {**gp, "_filter": f, "_exit": e, "_size": 0}))
+                        for cp in self.confirm_points:
+                            for cw in (self.confirm_within if self.confirm else [None]):
+                                prm = {**gp, "_filter": f, "_exit": e, "_size": 0}
+                                if self.confirm:
+                                    prm.update({"_cparams": cp, "_cwithin": cw})
+                                out.append(Variant(self._key(gp, f, e, 0, prm), prm))
+            if len(out) > self.max_variants:   # very large spaces (e.g. combos): seeded random search
+                import random
+                rnd = random.Random(42)
+                out = rnd.sample(out, self.max_variants)
         elif stage == 3:  # position-sizing study on the best exits
             for s in seeds or []:
                 for z in self.sizes:
@@ -82,7 +99,7 @@ class RuleCandidate:
                         continue
                     p = {**s.params, "_size": z}
                     gp = {k: v for k, v in p.items() if not k.startswith("_")}
-                    out.append(Variant(self._key(gp, p["_filter"], p["_exit"], z), p))
+                    out.append(Variant(self._key(gp, p["_filter"], p["_exit"], z, p), p))
         else:
             ex_list = self.exits if self.exits is not None else list(range(len(EXIT_GRID)))
             for s in seeds or []:
@@ -91,16 +108,22 @@ class RuleCandidate:
                         continue
                     p = {**s.params, "_exit": e}
                     gp = {k: v for k, v in p.items() if not k.startswith("_")}
-                    out.append(Variant(self._key(gp, p["_filter"], e, p.get("_size", 0)), p))
+                    out.append(Variant(self._key(gp, p["_filter"], e, p.get("_size", 0), p), p))
         return out
 
-    def _key(self, gp, f, e, z):
+    def _key(self, gp, f, e, z, prm=None):
         k = f"{self.name}|{_fmt(gp)}|f={f}|x={EXIT_GRID[e].label()}"
+        if prm and prm.get("_cparams") is not None:
+            k += f"|confirm={_fmt(prm['_cparams'])},within={prm['_cwithin']}"
         return k if not z else k + f"|size={SIZE_GRID[z].label()}"
 
     def _signals(self, p: Panel, v: Variant):
         gp = {k: x for k, x in v.params.items() if not k.startswith("_")}
-        return rules.apply_filter(self.rule.fn(p, **gp), p, v.params["_filter"])
+        sig = self.rule.fn(p, **gp)
+        if self.confirm is not None:
+            sig = rules.confirm(sig, self.confirm.fn(p, **(v.params.get("_cparams") or {})),
+                                v.params.get("_cwithin") or 0)
+        return rules.apply_filter(sig, p, v.params["_filter"])
 
     def run(self, p: Panel, v: Variant, costs: Costs) -> Result:
         return run_trades(p, self._signals(p, v), EXIT_GRID[v.params["_exit"]], costs,
@@ -171,7 +194,8 @@ def from_spec(spec: dict):
         if sizes == "all":
             sizes = None
         return RuleCandidate(spec["rule"], filters, exits, spec.get("side", "long"),
-                             spec.get("max_positions"), spec.get("staged", True), spec.get("stage2_top", 3), sizes)
+                             spec.get("max_positions"), spec.get("staged", True), spec.get("stage2_top", 3), sizes,
+                             spec.get("confirm"), spec.get("confirm_within", [0, 3]), spec.get("confirm_params"))
     return StrategyCandidate(spec["strategy"])
 
 
