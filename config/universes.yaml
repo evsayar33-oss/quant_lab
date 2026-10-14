@@ -112,3 +112,20 @@ crypto_major:
   macro: [^VIX]
   tickers: [BTC/USDT, ETH/USDT, SOL/USDT, BNB/USDT, XRP/USDT, ADA/USDT, DOGE/USDT, AVAX/USDT,
             LINK/USDT, DOT/USDT]
+
+metals:              # gold, silver, copper, platinum, palladium (continuous front-month futures)
+  market: multi
+  benchmark: GC=F
+  costs: {commission: 0.0002, slippage: 0.0005}
+  risk_free: ^IRX
+  macro: [^VIX, ^TNX, ^IRX]
+  # NOTE: Yahoo "=F" series are rolled front-month futures; roll days can show small jumps.
+  tickers: [GC=F, SI=F, HG=F, PL=F, PA=F]
+
+metals_etf:          # same exposure via ETFs (no roll jumps, dividend/fee adjusted)
+  market: multi
+  benchmark: GLD
+  costs: {commission: 0.0002, slippage: 0.0003}
+  risk_free: ^IRX
+  macro: [^VIX, ^TNX, ^IRX]
+  tickers: [GLD, SLV, CPER, PPLT, PALL, GDX, SIL, COPX]
