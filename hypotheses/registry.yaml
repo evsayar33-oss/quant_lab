@@ -1,0 +1,93 @@
+# Hypothesis registry: one entry = one claim to test.
+# The weekly workflow re-validates every entry with status != retired.
+# `for_system` names the bot that would use the result (its repo name).
+# A bot may only act on a hypothesis whose verdict in decisions/registry.json is ACCEPT.
+#
+# Fields:
+#   id          unique, never reused
+#   strategy    name from lab/strategies (python run.py --list)
+#   universe    name from config/universes.yaml
+#   for_system  target bot repo
+#   start       first data date
+#   status      active | retired
+#   note        why we test it
+
+- id: H001
+  strategy: xs_momentum
+  universe: bist30
+  for_system: bist_orderflow_quant
+  start: "2012-01-01"
+  status: active
+  note: "12-1 momentum on BIST30; candidate stock filter for the orderflow meta-engine"
+
+- id: H002
+  strategy: low_vol
+  universe: bist30
+  for_system: bist_shock_quant
+  start: "2012-01-01"
+  status: active
+  note: "Low-vol anomaly in a high-inflation EM market"
+
+- id: H003
+  strategy: st_reversal
+  universe: bist30
+  for_system: bist_shock_quant
+  start: "2012-01-01"
+  status: active
+  note: "Weekly losers bounce; related to shock-recovery logic"
+
+- id: H004
+  strategy: turn_of_month
+  universe: bist_index
+  for_system: bist_orderflow_quant
+  start: "2010-01-01"
+  status: active
+  note: "Calendar effect on XU100 as an entry-timing filter"
+
+- id: H005
+  strategy: xs_momentum
+  universe: sp_megacap
+  for_system: global_momentum_quant
+  start: "2010-01-01"
+  status: active
+  note: "US arm of GMQ"
+
+- id: H006
+  strategy: dual_momentum
+  universe: global_assets
+  for_system: macro-model
+  start: "2008-01-01"
+  status: active
+  note: "Cross-asset risk-on/off allocation"
+
+- id: H007
+  strategy: ts_momentum
+  universe: us_sectors
+  for_system: sp500_shock_quant
+  start: "2010-01-01"
+  status: active
+  note: "Sector trend following"
+
+- id: H008
+  strategy: rsi_reversion
+  universe: sp_megacap
+  for_system: us_f1_bot
+  start: "2010-01-01"
+  status: active
+  note: "Connors RSI(2) dip-buy in uptrend as entry timing"
+
+- id: H009
+  strategy: ts_momentum
+  universe: crypto_major
+  for_system: karma_perp_bot
+  start: "2020-01-01"
+  status: active
+  note: "Crypto trend following for the Bitget perp book"
+
+- id: H010
+  strategy: high_52w
+  universe: bist30
+  for_system: bist_orderflow_quant
+  start: "2012-01-01"
+  status: active
+  note: "52-week-high anchoring"

@@ -1,0 +1,51 @@
+name: Validate hypotheses
+
+on:
+  schedule:
+    - cron: '17 4 * * 6'        # every Saturday 07:17 TR: re-validate all active hypotheses
+  workflow_dispatch:
+    inputs:
+      hypothesis:
+        description: "Hypothesis id (e.g. H001). Empty = all active"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: quant-lab-registry
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Offline tests (the engine must be correct before it decides anything)
+        run: python tests/test_core.py
+      - name: Validate
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: |
+          if [ -n "${{ github.event.inputs.hypothesis }}" ]; then
+            python run.py --hypothesis "${{ github.event.inputs.hypothesis }}" --telegram
+          else
+            python run.py --all --telegram
+          fi
+      - name: Commit decisions and reports
+        run: |
+          git config user.name "quant-lab-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add decisions results
+          git diff --cached --quiet && exit 0
+          git commit -m "Validation $(date -u +%F)"
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done
+          exit 1

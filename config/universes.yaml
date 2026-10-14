@@ -1,0 +1,45 @@
+# Asset universes. Add a new universe here; every strategy can then be tested on it.
+# NOTE (survivorship bias): these are TODAY's members. Stocks that left the index or were
+# delisted are missing, so historical results are optimistic. The report flags this.
+# Costs are per side (fraction of notional): commission + slippage.
+
+bist30:
+  market: bist
+  benchmark: XU100.IS
+  costs: {commission: 0.0010, slippage: 0.0010}
+  tickers: [AKBNK.IS, ARCLK.IS, ASELS.IS, BIMAS.IS, EKGYO.IS, ENKAI.IS, EREGL.IS, FROTO.IS,
+            GARAN.IS, GUBRF.IS, HEKTS.IS, ISCTR.IS, KCHOL.IS, KOZAL.IS, KRDMD.IS, PETKM.IS,
+            PGSUS.IS, SAHOL.IS, SASA.IS, SISE.IS, TCELL.IS, THYAO.IS, TOASO.IS, TUPRS.IS,
+            YKBNK.IS, TTKOM.IS, ALARK.IS, TAVHL.IS, OYAKC.IS, MGROS.IS]
+
+bist_index:
+  market: bist
+  benchmark: XU100.IS
+  costs: {commission: 0.0005, slippage: 0.0005}
+  tickers: [XU100.IS]
+
+sp_megacap:
+  market: us
+  benchmark: SPY
+  costs: {commission: 0.0002, slippage: 0.0003}
+  tickers: [AAPL, MSFT, NVDA, AMZN, GOOGL, META, BRK-B, JPM, V, UNH, XOM, JNJ, PG, MA, HD,
+            COST, AVGO, LLY, ABBV, MRK, PEP, KO, WMT, BAC, CVX, ORCL, CSCO, ADBE, CRM, NFLX]
+
+us_sectors:
+  market: us
+  benchmark: SPY
+  costs: {commission: 0.0002, slippage: 0.0002}
+  tickers: [XLK, XLF, XLV, XLE, XLI, XLY, XLP, XLU, XLB, XLRE, XLC]
+
+global_assets:
+  market: multi
+  benchmark: SPY
+  costs: {commission: 0.0002, slippage: 0.0003}
+  tickers: [SPY, QQQ, IWM, EFA, EEM, TLT, IEF, GLD, DBC, VNQ]
+
+crypto_major:
+  market: crypto
+  benchmark: BTC/USDT
+  costs: {commission: 0.0006, slippage: 0.0005}
+  tickers: [BTC/USDT, ETH/USDT, SOL/USDT, BNB/USDT, XRP/USDT, ADA/USDT, DOGE/USDT, AVAX/USDT,
+            LINK/USDT, DOT/USDT]

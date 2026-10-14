@@ -1,0 +1,61 @@
+name: Ad-hoc backtest
+
+# Run from the phone: Actions -> Ad-hoc backtest -> Run workflow.
+# Results are uploaded as an artifact and summarised on Telegram.
+# Ad-hoc runs NEVER change decisions/registry.json. To make a test official,
+# add it to hypotheses/registry.yaml.
+
+on:
+  workflow_dispatch:
+    inputs:
+      engine:
+        description: "lab (walk-forward+DSR) | vbt (MA heat-map) | bt (stops/targets)"
+        required: true
+        default: lab
+        type: choice
+        options: [lab, vbt, bt]
+      strategy:
+        description: "lab only: strategy name (run.py --list)"
+        required: false
+        default: xs_momentum
+      universe:
+        description: "lab only: universe name from config/universes.yaml"
+        required: false
+        default: bist30
+      ticker:
+        description: "vbt/bt only: one ticker (e.g. THYAO.IS, SPY, BTC/USDT)"
+        required: false
+        default: THYAO.IS
+      start:
+        description: "Start date"
+        required: false
+        default: "2012-01-01"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Optional engines
+        if: ${{ inputs.engine != 'lab' }}
+        run: pip install -r requirements-optional.txt
+      - name: Run
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: |
+          case "${{ inputs.engine }}" in
+            lab) python run.py --strategy "${{ inputs.strategy }}" --universe "${{ inputs.universe }}" --start "${{ inputs.start }}" --telegram ;;
+            vbt) python -m lab.adapters.vbt_adapter "${{ inputs.ticker }}" --start "${{ inputs.start }}" ;;
+            bt)  python -m lab.adapters.bt_adapter "${{ inputs.ticker }}" --start "${{ inputs.start }}" ;;
+          esac
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adhoc-results
+          path: results/
