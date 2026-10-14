@@ -37,12 +37,17 @@ def record(hid: str, meta: dict, report: dict, targets: dict) -> dict:
         "verdict": report["verdict"],
         "previous_verdict": prev,
         "reasons": report["reasons"],
-        "strategy": meta["strategy"],
+        "strategy": meta.get("strategy") or meta.get("rule"),
+        "kind": report["kind"],
         "universe": meta["universe"],
         "for_system": meta.get("for_system"),
-        "params": report["current_params"],
+        "variant": report["final_variant"],
+        "params": report["final_params"],
         "targets": targets if report["verdict"] == "ACCEPT" else {},
         "targets_observe_only": targets,
+        "pbo": report["pbo"],
+        "trade_stats": report["trade_stats"],
+        "regimes": report["regimes"],
         "oos": report["oos"],
         "dsr": report["dsr"],
         "n_trials": report["n_trials"],
@@ -59,6 +64,6 @@ def record(hid: str, meta: dict, report: dict, targets: dict) -> dict:
         if new:
             f.write("validated_at,id,strategy,universe,verdict,oos_sharpe,dsr,oos_cagr,oos_maxdd\n")
         o = report["oos"]
-        f.write(f"{entry['validated_at']},{hid},{meta['strategy']},{meta['universe']},{entry['verdict']},"
+        f.write(f"{entry['validated_at']},{hid},{entry['strategy']},{meta['universe']},{entry['verdict']},"
                 f"{o.get('sharpe')},{report['dsr']},{o.get('cagr')},{o.get('max_dd')}\n")
     return entry

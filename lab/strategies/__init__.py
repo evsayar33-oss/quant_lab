@@ -26,19 +26,24 @@ class Strategy:
     grid: dict = field(default_factory=dict)
     defaults: dict = field(default_factory=dict)
     source: str = ""
-    kind: str = "cross_section"  # cross_section | time_series | single_asset
+    kind: str = "cross_section"  # cross_section | time_series | fundamental
+    needs: str = "close"         # close -> fn(close DataFrame); panel -> fn(Panel)
 
-    def __call__(self, prices: pd.DataFrame, **params) -> pd.DataFrame:
+    def __call__(self, data, **params) -> pd.DataFrame:
+        from lab.panel import Panel
         p = {**self.defaults, **params}
-        return self.fn(prices, **p)
+        if self.needs == "close" and isinstance(data, Panel):
+            data = data.c
+        return self.fn(data, **p)
 
 
 REGISTRY: dict[str, Strategy] = {}
 
 
-def strategy(name: str, grid: dict, defaults: dict, source: str, kind: str = "cross_section"):
+def strategy(name: str, grid: dict, defaults: dict, source: str, kind: str = "cross_section",
+             needs: str = "close"):
     def deco(fn):
-        REGISTRY[name] = Strategy(name, fn, grid, defaults, source, kind)
+        REGISTRY[name] = Strategy(name, fn, grid, defaults, source, kind, needs)
         return fn
     return deco
 
@@ -82,12 +87,12 @@ def ts_momentum(prices, lookback, vol_target, long_only, freq):
 # ----------------------------------------------------------------------------
 # 3. Moving-average crossover (per asset, equal weight across assets)
 # ----------------------------------------------------------------------------
-@strategy("ma_cross",
+@strategy("ma_timing",
           grid={"fast": [20, 50], "slow": [100, 200]},
           defaults={"fast": 50, "slow": 200},
           source="Faber (2007) A Quantitative Approach to Tactical Asset Allocation",
           kind="time_series")
-def ma_cross(prices, fast, slow):
+def ma_timing(prices, fast, slow):
     on = (prices.rolling(fast).mean() > prices.rolling(slow).mean()).astype(float)
     on = on.where(prices.rolling(slow).count() >= slow, 0.0)
     return on.div(prices.notna().sum(axis=1).replace(0, np.nan), axis=0).fillna(0.0)
@@ -199,5 +204,7 @@ def equal_weight(prices, freq):
     w = prices.notna().astype(float)
     return rebalance(w.div(w.sum(axis=1).replace(0, np.nan), axis=0).fillna(0.0), freq)
 
+
+from lab.strategies import price_factors, fundamental_factors  # noqa: E402,F401  (registers more)
 
 __all__ = ["REGISTRY", "get", "strategy", "Strategy", "vol_target"]

@@ -101,3 +101,58 @@ def summary(r: pd.Series, turnover: pd.Series | None = None, bench: pd.Series | 
         cov = np.cov(r, b)
         out["beta"] = round(float(cov[0, 1] / cov[1, 1]), 3) if cov[1, 1] > 0 else None
     return out
+
+
+def pbo(R: pd.DataFrame, S: int = 16) -> float | None:
+    """Probability of Backtest Overfitting via CSCV (Bailey, Borwein, Lopez de Prado & Zhu, 2017).
+
+    R: T x K matrix of per-period returns, one column per tried variant.
+    Splits time into S blocks; for every half/half combination picks the in-sample best
+    variant and records its out-of-sample rank. PBO = share of splits where that variant
+    lands in the bottom half out of sample. 0 = robust selection, >0.5 = selection is noise.
+    """
+    import itertools
+
+    R = R.dropna(how="all").fillna(0.0)
+    T, K = R.shape
+    if K < 2 or T < S * 20:
+        return None
+    blocks = np.array_split(np.arange(T), S)
+    vals = R.values
+    combos = list(itertools.combinations(range(S), S // 2))
+    if len(combos) > 2000:  # cap work; sample evenly
+        combos = combos[:: len(combos) // 2000 + 1]
+    logits = []
+    for is_b in combos:
+        is_idx = np.concatenate([blocks[b] for b in is_b])
+        oos_idx = np.concatenate([blocks[b] for b in range(S) if b not in is_b])
+        def sr(ix):
+            x = vals[ix]
+            sd = x.std(axis=0)
+            return np.where(sd > 0, x.mean(axis=0) / np.where(sd > 0, sd, 1), -np.inf)
+        best = int(np.argmax(sr(is_idx)))
+        oos = sr(oos_idx)
+        rank = (oos < oos[best]).sum() + 0.5 * ((oos == oos[best]).sum() - 1)
+        w = (rank + 1) / (K + 1)
+        logits.append(np.log(w / (1 - w)))
+    return float(np.mean(np.array(logits) <= 0))
+
+
+def regime_breakdown(r: pd.Series, bench: pd.Series | None) -> dict:
+    """Sharpe of the strategy inside market regimes (bull/bear trend, calm/stressed vol)."""
+    if bench is None or len(r) < 100:
+        return {}
+    b = bench.reindex(r.index).ffill()
+    full_b = bench.ffill()
+    trend = (full_b > full_b.rolling(200, min_periods=150).mean()).reindex(r.index)
+    vol = full_b.pct_change(fill_method=None).rolling(21).std()
+    hi_vol = (vol > vol.rolling(252, min_periods=126).median()).reindex(r.index)
+    out = {}
+    for name, mask in (("bull", trend == True), ("bear", trend == False),  # noqa: E712
+                       ("calm", hi_vol == False), ("stressed", hi_vol == True)):  # noqa: E712
+        x = r[mask.fillna(False)]
+        if len(x) > 60:
+            out[name] = {"sharpe": round(sharpe(x), 2), "ann_ret": round(float(x.mean() * ANN), 4),
+                         "days": int(len(x))}
+    _ = b
+    return out

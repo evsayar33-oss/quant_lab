@@ -43,3 +43,28 @@ crypto_major:
   costs: {commission: 0.0006, slippage: 0.0005}
   tickers: [BTC/USDT, ETH/USDT, SOL/USDT, BNB/USDT, XRP/USDT, ADA/USDT, DOGE/USDT, AVAX/USDT,
             LINK/USDT, DOT/USDT]
+
+bist_extended:
+  market: bist
+  benchmark: XU100.IS
+  costs: {commission: 0.0010, slippage: 0.0015}
+  tickers: [AKBNK.IS, ARCLK.IS, ASELS.IS, BIMAS.IS, EKGYO.IS, ENKAI.IS, EREGL.IS, FROTO.IS,
+            GARAN.IS, GUBRF.IS, HEKTS.IS, ISCTR.IS, KCHOL.IS, KOZAL.IS, KRDMD.IS, PETKM.IS,
+            PGSUS.IS, SAHOL.IS, SASA.IS, SISE.IS, TCELL.IS, THYAO.IS, TOASO.IS, TUPRS.IS,
+            YKBNK.IS, TTKOM.IS, ALARK.IS, TAVHL.IS, OYAKC.IS, MGROS.IS, AEFES.IS, AKSA.IS,
+            AKSEN.IS, ALBRK.IS, CCOLA.IS, CIMSA.IS, DOAS.IS, ECILC.IS, EGEEN.IS, ENJSA.IS,
+            GESAN.IS, HALKB.IS, ISGYO.IS, KARSN.IS, KONTR.IS, LOGO.IS, MAVI.IS, ODAS.IS,
+            OTKAR.IS, SKBNK.IS, SMRTG.IS, SOKM.IS, TKFEN.IS, TSKB.IS, TTRAK.IS, ULKER.IS,
+            VAKBN.IS, VESBE.IS, VESTL.IS, ZOREN.IS]
+
+us_largecap_100:
+  market: us
+  benchmark: SPY
+  costs: {commission: 0.0002, slippage: 0.0004}
+  tickers: [AAPL, MSFT, NVDA, AMZN, GOOGL, META, BRK-B, JPM, V, UNH, XOM, JNJ, PG, MA, HD,
+            COST, AVGO, LLY, ABBV, MRK, PEP, KO, WMT, BAC, CVX, ORCL, CSCO, ADBE, CRM, NFLX,
+            TMO, ACN, MCD, ABT, DHR, LIN, TXN, NEE, PM, WFC, DIS, VZ, CMCSA, INTC, AMD, QCOM,
+            HON, UNP, IBM, AMGN, LOW, CAT, GS, MS, SBUX, INTU, BKNG, ISRG, GE, RTX, SPGI, BLK,
+            AXP, DE, MDT, PLD, GILD, SYK, ADP, MMC, TJX, C, LMT, CB, MO, SO, DUK, ZTS, CI, BDX,
+            MDLZ, REGN, VRTX, EOG, SLB, COP, ITW, CL, NOC, APD, EMR, FDX, GD, NSC, USB, PNC,
+            TGT, SHW, MMM, F]

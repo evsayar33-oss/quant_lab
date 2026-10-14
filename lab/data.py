@@ -124,3 +124,21 @@ def synthetic_prices(n_assets: int = 10, n_days: int = 2000, seed: int = 0) -> p
     rets = rng.normal(0.0003, 0.02, size=(n_days, n_assets))
     return pd.DataFrame(100 * np.exp(np.cumsum(rets, axis=0)), index=idx,
                         columns=[f"A{i}" for i in range(n_assets)])
+
+
+def load_panel(universe: dict, start: str, name: str = "", with_fundamentals: bool = True):
+    """OHLCV + benchmark + point-in-time fundamentals for a universe from config/universes.yaml."""
+    from lab import fundamentals
+    from lab.panel import Panel
+
+    tickers = universe["tickers"]
+    bench_t = universe.get("benchmark")
+    ohlcv = load_ohlcv(tickers + ([bench_t] if bench_t and bench_t not in tickers else []), start)
+    bench = ohlcv[bench_t]["Close"] if bench_t in ohlcv else None
+    data = {t: d[d.index >= pd.Timestamp(start)] for t, d in ohlcv.items() if t in tickers}
+    if not data:
+        raise RuntimeError("no price data")
+    p = Panel.from_ohlcv(data, bench, name)
+    if with_fundamentals and universe.get("market") in ("bist", "us"):
+        p.fund = fundamentals.load(list(p.columns), p.index, universe["market"])
+    return p

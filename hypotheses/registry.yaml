@@ -1,17 +1,18 @@
-# Hypothesis registry: one entry = one claim to test.
-# The weekly workflow re-validates every entry with status != retired.
-# `for_system` names the bot that would use the result (its repo name).
-# A bot may only act on a hypothesis whose verdict in decisions/registry.json is ACCEPT.
+# Hypothesis registry: one entry = one claim to test. The weekly workflow re-validates every
+# entry with status: active. A bot may act on a hypothesis ONLY when decisions/registry.json
+# shows verdict ACCEPT for it (lab/client.py enforces this).
 #
-# Fields:
-#   id          unique, never reused
-#   strategy    name from lab/strategies (python run.py --list)
-#   universe    name from config/universes.yaml
-#   for_system  target bot repo
-#   start       first data date
-#   status      active | retired
-#   note        why we test it
+# Two kinds of entry:
+#   strategy: <name>     weight strategy (factor / rotation / calendar)     -> python run.py --list
+#   rule: <name>         entry/exit rule run through the trade engine
+#       filters: [none, trend_sma200, ...] | all       entry filters to sweep
+#       exits:   [0, 1, 5] | all                       exit configs (indexes in run.py --list); default = all, staged
+#       side:    long | short | both
+#       max_positions: 10                              optional slot limit
+# Common: universe, for_system, start, status (active|retired), note, train_years, test_months
+# Ids are never reused. Gate changes are logged in hypotheses/CHANGELOG.md.
 
+# ---------------------------------------------------------------- BIST
 - id: H001
   strategy: xs_momentum
   universe: bist30
@@ -44,6 +45,81 @@
   status: active
   note: "Calendar effect on XU100 as an entry-timing filter"
 
+- id: H010
+  strategy: high_52w
+  universe: bist30
+  for_system: bist_orderflow_quant
+  start: "2012-01-01"
+  status: active
+  note: "52-week-high anchoring"
+
+- id: H011
+  rule: rsi_reversal
+  universe: bist30
+  for_system: bist_shock_quant
+  start: "2012-01-01"
+  filters: [none, trend_sma200, regime_bench200]
+  side: long
+  status: active
+  note: "RSI 2..28 oversold entries with stops/targets; shock-recovery entry timing"
+
+- id: H012
+  rule: wavetrend_reversal
+  universe: bist30
+  for_system: bist_orderflow_quant
+  start: "2012-01-01"
+  filters: [none, trend_sma200, volume_confirm]
+  side: long
+  status: active
+  note: "WaveTrend (ATVS core) cross from oversold"
+
+- id: H013
+  rule: supertrend_flip
+  universe: bist30
+  for_system: bist_orderflow_quant
+  start: "2012-01-01"
+  filters: [none, adx20, regime_bench200]
+  side: long
+  status: active
+  note: "Trend entry with ATR bands"
+
+- id: H014
+  rule: donchian_breakout
+  universe: bist30
+  for_system: bist_orderflow_quant
+  start: "2012-01-01"
+  filters: [none, volume_confirm, regime_bench200]
+  side: long
+  status: active
+  note: "Turtle breakout on BIST30"
+
+- id: H015
+  strategy: qvm_composite
+  universe: bist30
+  for_system: bist_orderflow_quant
+  start: "2012-01-01"
+  status: active
+  note: "Value + quality + momentum composite (Is Yatirim fundamentals)"
+
+- id: H016
+  strategy: value_ep
+  universe: bist30
+  for_system: bist_shock_quant
+  start: "2012-01-01"
+  status: active
+  note: "Earnings yield in an inflationary market"
+
+- id: H017
+  rule: volume_breakout
+  universe: bist30
+  for_system: bist_orderflow_quant
+  start: "2012-01-01"
+  filters: [none, trend_sma200]
+  side: long
+  status: active
+  note: "Breakout confirmed by a volume surge (orderflow proxy)"
+
+# ---------------------------------------------------------------- US
 - id: H005
   strategy: xs_momentum
   universe: sp_megacap
@@ -51,14 +127,6 @@
   start: "2010-01-01"
   status: active
   note: "US arm of GMQ"
-
-- id: H006
-  strategy: dual_momentum
-  universe: global_assets
-  for_system: macro-model
-  start: "2008-01-01"
-  status: active
-  note: "Cross-asset risk-on/off allocation"
 
 - id: H007
   strategy: ts_momentum
@@ -69,13 +137,71 @@
   note: "Sector trend following"
 
 - id: H008
-  strategy: rsi_reversion
+  rule: rsi_reversal
   universe: sp_megacap
   for_system: us_f1_bot
   start: "2010-01-01"
+  filters: [trend_sma200, regime_bench200]
+  side: long
   status: active
-  note: "Connors RSI(2) dip-buy in uptrend as entry timing"
+  note: "Connors-style RSI dip-buy in an uptrend as entry timing"
 
+- id: H018
+  strategy: magic_formula
+  universe: sp_megacap
+  for_system: us_f1_bot
+  start: "2011-01-01"
+  status: active
+  note: "Greenblatt with SEC point-in-time fundamentals"
+
+- id: H019
+  strategy: piotroski_f
+  universe: sp_megacap
+  for_system: us_f1_bot
+  start: "2011-01-01"
+  status: active
+  note: "F-score quality screen"
+
+- id: H020
+  rule: bollinger_reversion
+  universe: sp_megacap
+  for_system: sp500_shock_quant
+  start: "2010-01-01"
+  filters: [trend_sma200, low_vol]
+  side: long
+  status: active
+  note: "Band mean reversion inside long-term uptrends"
+
+- id: H021
+  rule: ibs_reversion
+  universe: us_sectors
+  for_system: sp500_shock_quant
+  start: "2010-01-01"
+  filters: [none, trend_sma200]
+  side: long
+  status: active
+  note: "Internal bar strength on sector ETFs"
+
+# ---------------------------------------------------------------- cross-asset / macro
+- id: H006
+  strategy: dual_momentum
+  universe: global_assets
+  for_system: macro-model
+  start: "2008-01-01"
+  status: active
+  note: "Cross-asset risk-on/off allocation"
+
+- id: H022
+  rule: macd_cross
+  universe: global_assets
+  for_system: macro-model
+  start: "2008-01-01"
+  filters: [none, trend_sma200]
+  side: long
+  status: active
+  note: "MACD variants across asset classes"
+
+# ---------------------------------------------------------------- crypto
 - id: H009
   strategy: ts_momentum
   universe: crypto_major
@@ -84,10 +210,24 @@
   status: active
   note: "Crypto trend following for the Bitget perp book"
 
-- id: H010
-  strategy: high_52w
-  universe: bist30
-  for_system: bist_orderflow_quant
-  start: "2012-01-01"
+- id: H023
+  rule: supertrend_flip
+  universe: crypto_major
+  for_system: karma_perp_bot
+  start: "2020-01-01"
+  filters: [none, adx20]
+  side: both
   status: active
-  note: "52-week-high anchoring"
+  note: "Long/short supertrend on perps"
+
+- id: H024
+  rule: donchian_breakout
+  universe: crypto_major
+  for_system: karma_perp_bot
+  start: "2020-01-01"
+  filters: [none, volume_confirm]
+  side: both
+  train_years: 2
+  test_months: 3
+  status: active
+  note: "Turtle breakout long/short on perps"
