@@ -103,7 +103,8 @@ def to_markdown(res: dict, top: int = 25) -> str:
     lines = [f"# Scan — {res['universe']}",
              "",
              f"- Variants tried: **{res['n_trials']}** · global PBO: **{res['global_pbo']}** · "
-             f"equal-weight benchmark Sharpe: {res['benchmark_sharpe']} · runtime {res['seconds']}s",
+             f"equal-weight benchmark Sharpe: {res['benchmark_sharpe']} · Reality Check p (best vs benchmark): "
+             f"{res.get('reality_check_p')} · timeframe {res.get('timeframe')} · runtime {res['seconds']}s",
              "- Ranked by walk-forward OOS Sharpe per family. Full-sample DSR is deflated by ALL trials.",
              "- A scan result is a LEAD, not a decision. Register a hypothesis and run the gate.",
              "",
