@@ -124,7 +124,8 @@ def verdict(rep: dict) -> tuple[str, list[str]]:
     check(o["years"] >= g["min_oos_years"], f"OOS too short ({o['years']}y < {g['min_oos_years']}y)")
     check(rep["dsr"] >= g["min_dsr"], f"DSR {rep['dsr']} < {g['min_dsr']} (luck not excluded after {rep['n_trials']} trials)")
     check(main_sr >= g["min_oos_sharpe"], f"OOS Sharpe ({rep['gate_sharpe_basis']}) {main_sr} < {g['min_oos_sharpe']}")
-    check(o["max_dd"] >= g["max_dd_floor"], f"OOS MaxDD {o['max_dd']} worse than {g['max_dd_floor']}")
+    dd = min(o["max_dd"], (rep.get("oos_usd") or {}).get("max_dd", 0))   # worst of local and USD
+    check(dd >= g["max_dd_floor"], f"OOS MaxDD {dd} worse than {g['max_dd_floor']} (local or USD)")
     bs = rep["bootstrap"]["p_sharpe_pos"]
     check(bs is not None and bs >= g["min_p_sharpe_pos"], f"bootstrap P(SR>0) {bs} < {g['min_p_sharpe_pos']}")
     ys = list(rep["yearly_sharpe"].values())
