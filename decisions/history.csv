@@ -1,3 +1,10 @@
 validated_at,id,strategy,universe,timeframe,verdict,gate_sharpe,dsr,pbo,oos_cagr,oos_maxdd
 2026-10-14T18:51:15+00:00,H001,xs_momentum,bist30,1d,ACCEPT,0.87,1.0,0.484,0.7113,-0.4394
 2026-10-14T19:03:37+00:00,H001,xs_momentum,bist30,1d,WATCH,0.87,1.0,0.484,0.7113,-0.4394
+2026-10-14T20:17:30+00:00,H033,ts_momentum,metals_etf,1d,WATCH,0.085,0.81,0.539,0.0225,-0.19
+2026-10-14T20:18:07+00:00,H034,donchian_breakout,metals,1d,REJECT,-0.32,0.036,0.527,-0.0164,-0.4225
+2026-10-14T20:17:32+00:00,H035,supertrend_flip,metals,1w,REJECT,0.166,0.084,0.409,0.0238,-0.3456
+2026-10-14T20:17:34+00:00,H036,pairs_zscore,metals_etf,1d,REJECT,-0.341,0.193,0.591,0.0055,-0.105
+2026-10-14T21:24:25+00:00,H037,rsi_reversal,metals_etf,1d,REJECT,-0.742,0.002,0.466,0.0024,-0.0428
+2026-10-14T20:17:34+00:00,H038,dual_momentum,metals_etf,1d,WATCH,0.353,0.882,0.727,0.0807,-0.5419
+2026-10-14T20:17:35+00:00,H039,macro_risk_switch,metals_etf,1d,WATCH,0.141,0.61,0.889,0.0286,-0.4137
