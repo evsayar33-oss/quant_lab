@@ -1,0 +1,141 @@
+{
+  "verdict": "WATCH",
+  "previous_verdict": null,
+  "reasons": [
+    "DSR 0.741 < 0.9 (luck not excluded after 20 trials)",
+    "OOS Sharpe (excess of T-bill) 0.126 < 0.5",
+    "only 52% of OOS years positive",
+    "with 2x costs it does not beat the equal-weight benchmark",
+    "PBO 0.803 > 0.5 (variant selection is overfit)",
+    "Reality Check p 0.994 > 0.1 (best variant may be data-mined)"
+  ],
+  "strategy": "ts_seasonality",
+  "kind": "strategy",
+  "universe": "metals",
+  "timeframe": "1d",
+  "for_system": "metals",
+  "spec": {
+    "id": "H046",
+    "strategy": "ts_seasonality",
+    "universe": "metals",
+    "for_system": "metals",
+    "start": "2000-01-01",
+    "status": "active"
+  },
+  "variant": "ts_seasonality|years=5,thr=0.005|overlay=vt20",
+  "params": {
+    "years": 5,
+    "thr": 0.005,
+    "_overlay": "vt20"
+  },
+  "targets": {},
+  "targets_observe_only": {},
+  "gate_sharpe": 0.126,
+  "pbo": 0.803,
+  "reality_check_p": 0.994,
+  "dsr": 0.741,
+  "n_trials": 20,
+  "oos": {
+    "start": "2004-01-28 00:00:00",
+    "end": "2026-10-15 00:00:00",
+    "years": 22.75,
+    "cagr": 0.0254,
+    "vol": 0.1243,
+    "sharpe": 0.264,
+    "sharpe_excess_rf": 0.126,
+    "sortino": 0.172,
+    "max_dd": -0.4057,
+    "max_dd_bars": 2328,
+    "calmar": 0.063,
+    "ulcer": 0.1798,
+    "var95": -0.0125,
+    "cvar95": -0.0203,
+    "omega": 1.059,
+    "tail_ratio": 0.992,
+    "skew": -0.531,
+    "kurtosis": 9.028,
+    "hit_rate": 0.388,
+    "psr": 0.895,
+    "time_in_market": null,
+    "turnover_ann": 7.85,
+    "bench_cagr": 0.0891,
+    "bench_sharpe": 0.492,
+    "info_ratio": -0.499,
+    "beta": 0.411,
+    "up_capture": 0.427,
+    "down_capture": 0.439
+  },
+  "trade_stats": null,
+  "regimes": {
+    "bull": {
+      "sharpe": 0.95,
+      "ann_ret": 0.1207,
+      "bars": 3972
+    },
+    "bear": {
+      "sharpe": -1.43,
+      "ann_ret": -0.1671,
+      "bars": 1746
+    },
+    "calm": {
+      "sharpe": 0.62,
+      "ann_ret": 0.0667,
+      "bars": 2894
+    },
+    "stressed": {
+      "sharpe": -0.01,
+      "ann_ret": -0.0019,
+      "bars": 2824
+    },
+    "vix_lt_20": {
+      "sharpe": 0.52,
+      "ann_ret": 0.0602,
+      "bars": 3941
+    },
+    "vix_20_30": {
+      "sharpe": 0.07,
+      "ann_ret": 0.0093,
+      "bars": 1328
+    },
+    "vix_ge_30": {
+      "sharpe": -0.88,
+      "ann_ret": -0.1375,
+      "bars": 449
+    },
+    "curve_inverted": {
+      "sharpe": -0.45,
+      "ann_ret": -0.0604,
+      "bars": 813
+    },
+    "curve_normal": {
+      "sharpe": 0.39,
+      "ann_ret": 0.0483,
+      "bars": 4905
+    }
+  },
+  "robustness": {
+    "delay": {
+      "sharpe": 0.393,
+      "sharpe_delayed_1bar": 0.328,
+      "retained": 0.835
+    },
+    "neighbourhood": {
+      "neighbours": 1,
+      "best_sharpe": 0.354,
+      "neighbour_median": 0.352,
+      "share_positive": 1.0,
+      "stability": 0.995
+    },
+    "noise": {
+      "noise_bp": 0.002,
+      "sharpe_min": 0.347,
+      "sharpe_median": 0.383
+    }
+  },
+  "recommended_overlay": "vol_target_0.1",
+  "kelly_fraction": null,
+  "oos_csv": "results/H046_ts_seasonality_metals_1d_oos.csv",
+  "validated_at": "2026-10-15T07:28:46+00:00",
+  "accepted_at": null,
+  "data_end": "2026-10-15 00:00:00"
+}

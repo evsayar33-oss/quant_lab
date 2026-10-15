@@ -1,14 +1,14 @@
 {
-  "verdict": "WATCH",
-  "previous_verdict": null,
+  "verdict": "REJECT",
+  "previous_verdict": "WATCH",
   "reasons": [
-    "DSR 0.61 < 0.9 (luck not excluded after 12 trials)",
-    "OOS Sharpe (excess of T-bill) 0.141 < 0.5",
-    "bootstrap P(SR>0) 0.824 < 0.85",
-    "only 46% of OOS years positive",
+    "DSR 0.432 < 0.9 (luck not excluded after 26 trials)",
+    "OOS Sharpe (excess of T-bill) 0.002 < 0.5",
+    "bootstrap P(SR>0) 0.678 < 0.85",
+    "only 31% of OOS years positive",
     "with 2x costs it does not beat the equal-weight benchmark",
-    "PBO 0.889 > 0.5 (variant selection is overfit)",
-    "Reality Check p 0.916 > 0.1 (best variant may be data-mined)"
+    "PBO 0.869 > 0.5 (variant selection is overfit)",
+    "Reality Check p 0.932 > 0.1 (best variant may be data-mined)"
   ],
   "strategy": "macro_risk_switch",
   "kind": "strategy",
@@ -23,120 +23,121 @@
     "start": "2010-01-01",
     "status": "active"
   },
-  "variant": "macro_risk_switch|vix_max=25,use_curve=True,trend_n=100",
+  "variant": "macro_risk_switch|vix_max=30,use_curve=True,trend_n=200|overlay=vt20",
   "params": {
-    "vix_max": 25,
+    "vix_max": 30,
     "use_curve": true,
-    "trend_n": 100
+    "trend_n": 200,
+    "_overlay": "vt20"
   },
   "targets": {},
   "targets_observe_only": {},
-  "gate_sharpe": 0.141,
-  "pbo": 0.889,
-  "reality_check_p": 0.916,
-  "dsr": 0.61,
-  "n_trials": 12,
+  "gate_sharpe": 0.002,
+  "pbo": 0.869,
+  "reality_check_p": 0.932,
+  "dsr": 0.432,
+  "n_trials": 26,
   "oos": {
     "start": "2014-01-13 00:00:00",
     "end": "2026-10-14 00:00:00",
     "years": 12.75,
-    "cagr": 0.0286,
-    "vol": 0.1721,
-    "sharpe": 0.251,
-    "sharpe_excess_rf": 0.141,
-    "sortino": 0.191,
-    "max_dd": -0.4137,
-    "max_dd_bars": 1109,
-    "calmar": 0.069,
-    "ulcer": 0.1927,
-    "var95": -0.0167,
-    "cvar95": -0.028,
-    "omega": 1.062,
-    "tail_ratio": 1.064,
-    "skew": -1.229,
-    "kurtosis": 16.782,
-    "hit_rate": 0.276,
-    "psr": 0.812,
+    "cagr": 0.0086,
+    "vol": 0.1451,
+    "sharpe": 0.132,
+    "sharpe_excess_rf": 0.002,
+    "sortino": 0.003,
+    "max_dd": -0.335,
+    "max_dd_bars": 2299,
+    "calmar": 0.026,
+    "ulcer": 0.1965,
+    "var95": -0.0127,
+    "cvar95": -0.0244,
+    "omega": 1.042,
+    "tail_ratio": 1.081,
+    "skew": -2.012,
+    "kurtosis": 32.336,
+    "hit_rate": 0.172,
+    "psr": 0.68,
     "time_in_market": null,
-    "turnover_ann": 14.51,
+    "turnover_ann": 13.88,
     "bench_cagr": 0.0958,
     "bench_sharpe": 0.496,
-    "info_ratio": -0.448,
-    "beta": 0.491,
-    "up_capture": 0.497,
-    "down_capture": 0.51
+    "info_ratio": -0.519,
+    "beta": 0.35,
+    "up_capture": 0.322,
+    "down_capture": 0.337
   },
   "trade_stats": null,
   "regimes": {
     "bull": {
-      "sharpe": 0.87,
-      "ann_ret": 0.1784,
+      "sharpe": 0.45,
+      "ann_ret": 0.0801,
       "bars": 2038
     },
     "bear": {
-      "sharpe": -2.33,
-      "ann_ret": -0.1924,
+      "sharpe": -1.68,
+      "ann_ret": -0.0868,
       "bars": 1170
     },
     "calm": {
-      "sharpe": 0.6,
-      "ann_ret": 0.0812,
+      "sharpe": 0.67,
+      "ann_ret": 0.0725,
       "bars": 1699
     },
     "stressed": {
-      "sharpe": 0.0,
-      "ann_ret": 0.0004,
+      "sharpe": -0.23,
+      "ann_ret": -0.0408,
       "bars": 1509
     },
     "vix_lt_20": {
-      "sharpe": 0.67,
-      "ann_ret": 0.1165,
+      "sharpe": 0.59,
+      "ann_ret": 0.084,
       "bars": 2333
     },
     "vix_20_30": {
-      "sharpe": -0.7,
-      "ann_ret": -0.1244,
+      "sharpe": -0.9,
+      "ann_ret": -0.1483,
       "bars": 717
     },
     "vix_ge_30": {
-      "sharpe": -2.68,
-      "ann_ret": -0.2793,
+      "sharpe": -2.02,
+      "ann_ret": -0.1771,
       "bars": 158
     },
     "curve_inverted": {
-      "sharpe": 0.65,
-      "ann_ret": 0.1107,
+      "sharpe": -0.23,
+      "ann_ret": -0.0141,
       "bars": 614
     },
     "curve_normal": {
-      "sharpe": 0.16,
-      "ann_ret": 0.0272,
+      "sharpe": 0.17,
+      "ann_ret": 0.0271,
       "bars": 2594
     }
   },
   "robustness": {
     "delay": {
-      "sharpe": 0.294,
-      "sharpe_delayed_1bar": 0.21,
-      "retained": 0.716
+      "sharpe": 0.444,
+      "sharpe_delayed_1bar": 0.391,
+      "retained": 0.879
     },
     "neighbourhood": {
-      "neighbours": 4,
-      "best_sharpe": 0.292,
-      "neighbour_median": 0.332,
+      "neighbours": 1,
+      "best_sharpe": 0.439,
+      "neighbour_median": 0.426,
       "share_positive": 1.0,
-      "stability": 1.137
+      "stability": 0.971
     },
     "noise": {
       "noise_bp": 0.002,
-      "sharpe_min": 0.287,
-      "sharpe_median": 0.296
+      "sharpe_min": 0.433,
+      "sharpe_median": 0.447
     }
   },
-  "recommended_overlay": "equity_ma_125",
+  "recommended_overlay": "equity_ma_41",
   "kelly_fraction": null,
   "oos_csv": "results/H039_macro_risk_switch_metals_etf_1d_oos.csv",
-  "validated_at": "2026-10-14T20:17:35+00:00",
+  "validated_at": "2026-10-15T07:28:37+00:00",
   "accepted_at": null,
   "data_end": "2026-10-14 00:00:00"
 }

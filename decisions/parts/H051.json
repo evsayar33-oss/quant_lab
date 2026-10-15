@@ -1,0 +1,145 @@
+{
+  "verdict": "WATCH",
+  "previous_verdict": null,
+  "reasons": [
+    "DSR 0.629 < 0.9 (luck not excluded after 32 trials)",
+    "OOS Sharpe (excess of T-bill) 0.271 < 0.5",
+    "only 50% of OOS years positive",
+    "with 2x costs it does not beat the equal-weight benchmark",
+    "PBO 0.631 > 0.5 (variant selection is overfit)",
+    "Reality Check p 0.5 > 0.1 (best variant may be data-mined)"
+  ],
+  "strategy": "gold_silver_ratio",
+  "kind": "strategy",
+  "universe": "metals",
+  "timeframe": "1w",
+  "for_system": "metals",
+  "spec": {
+    "id": "H051",
+    "strategy": "gold_silver_ratio",
+    "universe": "metals",
+    "timeframe": "1w",
+    "for_system": "metals",
+    "start": "2005-01-01",
+    "status": "active"
+  },
+  "variant": "gold_silver_ratio|z_n=504,entry=2.0,neutral=both",
+  "params": {
+    "z_n": 504,
+    "entry": 2.0,
+    "neutral": "both"
+  },
+  "targets": {},
+  "targets_observe_only": {
+    "GC=F": 0.5,
+    "SI=F": 0.5
+  },
+  "gate_sharpe": 0.271,
+  "pbo": 0.631,
+  "reality_check_p": 0.5,
+  "dsr": 0.629,
+  "n_trials": 32,
+  "oos": {
+    "start": "2009-01-09 00:00:00",
+    "end": "2026-10-16 00:00:00",
+    "years": 17.77,
+    "cagr": 0.046,
+    "vol": 0.1675,
+    "sharpe": 0.353,
+    "sharpe_excess_rf": 0.271,
+    "sortino": 0.402,
+    "max_dd": -0.4009,
+    "max_dd_bars": 652,
+    "calmar": 0.115,
+    "ulcer": 0.1514,
+    "var95": -0.0295,
+    "cvar95": -0.0567,
+    "omega": 1.253,
+    "tail_ratio": 1.379,
+    "skew": -0.039,
+    "kurtosis": 14.019,
+    "hit_rate": 0.205,
+    "psr": 0.93,
+    "time_in_market": null,
+    "turnover_ann": 4.27,
+    "bench_cagr": 0.0955,
+    "bench_sharpe": 0.527,
+    "info_ratio": -0.317,
+    "beta": 0.465,
+    "up_capture": 0.408,
+    "down_capture": 0.385
+  },
+  "trade_stats": null,
+  "regimes": {
+    "bull": {
+      "sharpe": 0.88,
+      "ann_ret": 0.1552,
+      "bars": 612
+    },
+    "bear": {
+      "sharpe": -0.88,
+      "ann_ret": -0.1271,
+      "bars": 316
+    },
+    "calm": {
+      "sharpe": -0.06,
+      "ann_ret": -0.0071,
+      "bars": 485
+    },
+    "stressed": {
+      "sharpe": 0.62,
+      "ann_ret": 0.1316,
+      "bars": 443
+    },
+    "vix_lt_20": {
+      "sharpe": 0.59,
+      "ann_ret": 0.0721,
+      "bars": 624
+    },
+    "vix_20_30": {
+      "sharpe": 0.35,
+      "ann_ret": 0.0585,
+      "bars": 232
+    },
+    "vix_ge_30": {
+      "sharpe": -0.14,
+      "ann_ret": -0.0513,
+      "bars": 72
+    },
+    "curve_inverted": {
+      "sharpe": 0.66,
+      "ann_ret": 0.1356,
+      "bars": 125
+    },
+    "curve_normal": {
+      "sharpe": 0.29,
+      "ann_ret": 0.0472,
+      "bars": 803
+    }
+  },
+  "robustness": {
+    "delay": {
+      "sharpe": 0.6,
+      "sharpe_delayed_1bar": 0.638,
+      "retained": 1.063
+    },
+    "neighbourhood": {
+      "neighbours": 5,
+      "best_sharpe": 0.6,
+      "neighbour_median": 0.586,
+      "share_positive": 1.0,
+      "stability": 0.976
+    },
+    "noise": {
+      "noise_bp": 0.002,
+      "sharpe_min": 0.597,
+      "sharpe_median": 0.598
+    }
+  },
+  "recommended_overlay": "equity_ma_8",
+  "kelly_fraction": null,
+  "oos_csv": "results/H051_gold_silver_ratio_metals_1w_oos.csv",
+  "validated_at": "2026-10-15T07:29:25+00:00",
+  "accepted_at": null,
+  "data_end": "2026-10-16 00:00:00"
+}

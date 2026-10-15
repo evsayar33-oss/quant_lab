@@ -1,13 +1,11 @@
 {
   "verdict": "WATCH",
-  "previous_verdict": null,
+  "previous_verdict": "WATCH",
   "reasons": [
-    "DSR 0.81 < 0.9 (luck not excluded after 6 trials)",
-    "OOS Sharpe (excess of T-bill) 0.085 < 0.5",
+    "OOS Sharpe (excess of T-bill) 0.281 < 0.5",
     "only 46% of OOS years positive",
-    "with 2x costs it does not beat the equal-weight benchmark",
-    "PBO 0.539 > 0.5 (variant selection is overfit)",
-    "Reality Check p 0.916 > 0.1 (best variant may be data-mined)"
+    "PBO 0.92 > 0.5 (variant selection is overfit)",
+    "Reality Check p 0.92 > 0.1 (best variant may be data-mined)"
   ],
   "strategy": "ts_momentum",
   "kind": "strategy",
@@ -22,125 +20,122 @@
     "start": "2010-01-01",
     "status": "active"
   },
-  "variant": "ts_momentum|lookback=252,vol_target=0.1",
+  "variant": "ts_momentum|lookback=126,vol_target=0.15|overlay=vt10",
   "params": {
-    "lookback": 252,
-    "vol_target": 0.1
+    "lookback": 126,
+    "vol_target": 0.15,
+    "_overlay": "vt10"
   },
   "targets": {},
   "targets_observe_only": {
-    "CPER": 0.0542,
-    "SLV": 0.0321,
-    "COPX": 0.0315,
-    "GDX": 0.0264,
-    "SIL": 0.0257
+    "CPER": 0.0812
   },
-  "gate_sharpe": 0.085,
-  "pbo": 0.539,
-  "reality_check_p": 0.916,
-  "dsr": 0.81,
-  "n_trials": 6,
+  "gate_sharpe": 0.281,
+  "pbo": 0.92,
+  "reality_check_p": 0.92,
+  "dsr": 0.933,
+  "n_trials": 20,
   "oos": {
     "start": "2014-01-13 00:00:00",
     "end": "2026-10-14 00:00:00",
     "years": 12.75,
-    "cagr": 0.0225,
-    "vol": 0.0637,
-    "sharpe": 0.381,
-    "sharpe_excess_rf": 0.085,
-    "sortino": 0.116,
-    "max_dd": -0.19,
-    "max_dd_bars": 1082,
-    "calmar": 0.118,
-    "ulcer": 0.0737,
-    "var95": -0.0061,
-    "cvar95": -0.0102,
-    "omega": 1.081,
-    "tail_ratio": 1.035,
-    "skew": -0.621,
-    "kurtosis": 8.159,
-    "hit_rate": 0.44,
-    "psr": 0.912,
+    "cagr": 0.0361,
+    "vol": 0.0669,
+    "sharpe": 0.563,
+    "sharpe_excess_rf": 0.281,
+    "sortino": 0.386,
+    "max_dd": -0.1381,
+    "max_dd_bars": 1035,
+    "calmar": 0.261,
+    "ulcer": 0.0639,
+    "var95": -0.006,
+    "cvar95": -0.0109,
+    "omega": 1.142,
+    "tail_ratio": 1.11,
+    "skew": -0.813,
+    "kurtosis": 13.093,
+    "hit_rate": 0.338,
+    "psr": 0.976,
     "time_in_market": null,
-    "turnover_ann": 1.5,
+    "turnover_ann": 4.33,
     "bench_cagr": 0.0958,
     "bench_sharpe": 0.496,
-    "info_ratio": -0.487,
-    "beta": 0.201,
-    "up_capture": 0.21,
-    "down_capture": 0.211
+    "info_ratio": -0.415,
+    "beta": 0.197,
+    "up_capture": 0.199,
+    "down_capture": 0.189
   },
   "trade_stats": null,
   "regimes": {
     "bull": {
-      "sharpe": 0.81,
-      "ann_ret": 0.0598,
+      "sharpe": 0.94,
+      "ann_ret": 0.0749,
       "bars": 2038
     },
     "bear": {
-      "sharpe": -0.94,
-      "ann_ret": -0.0376,
+      "sharpe": -0.79,
+      "ann_ret": -0.0271,
       "bars": 1170
     },
     "calm": {
-      "sharpe": 0.82,
-      "ann_ret": 0.044,
+      "sharpe": 1.34,
+      "ann_ret": 0.0692,
       "bars": 1699
     },
     "stressed": {
       "sharpe": 0.03,
-      "ann_ret": 0.0021,
+      "ann_ret": 0.0022,
       "bars": 1509
     },
     "vix_lt_20": {
-      "sharpe": 0.68,
-      "ann_ret": 0.0415,
+      "sharpe": 0.82,
+      "ann_ret": 0.0489,
       "bars": 2333
     },
     "vix_20_30": {
-      "sharpe": -0.04,
-      "ann_ret": -0.0021,
+      "sharpe": 0.51,
+      "ann_ret": 0.0342,
       "bars": 717
     },
     "vix_ge_30": {
-      "sharpe": -1.03,
-      "ann_ret": -0.1107,
+      "sharpe": -0.84,
+      "ann_ret": -0.1127,
       "bars": 158
     },
     "curve_inverted": {
-      "sharpe": -0.33,
-      "ann_ret": -0.0221,
+      "sharpe": -0.29,
+      "ann_ret": -0.0195,
       "bars": 614
     },
     "curve_normal": {
-      "sharpe": 0.56,
-      "ann_ret": 0.0353,
+      "sharpe": 0.76,
+      "ann_ret": 0.0512,
       "bars": 2594
     }
   },
   "robustness": {
     "delay": {
-      "sharpe": 0.378,
-      "sharpe_delayed_1bar": 0.335,
-      "retained": 0.884
+      "sharpe": 0.474,
+      "sharpe_delayed_1bar": 0.422,
+      "retained": 0.89
     },
     "neighbourhood": {
-      "neighbours": 3,
-      "best_sharpe": 0.366,
-      "neighbour_median": 0.366,
+      "neighbours": 1,
+      "best_sharpe": 0.466,
+      "neighbour_median": 0.482,
       "share_positive": 1.0,
-      "stability": 1.0
+      "stability": 1.035
     },
     "noise": {
       "noise_bp": 0.002,
-      "sharpe_min": 0.369,
-      "sharpe_median": 0.393
+      "sharpe_min": 0.462,
+      "sharpe_median": 0.48
     }
   },
   "recommended_overlay": "equity_ma_41",
   "kelly_fraction": null,
   "oos_csv": "results/H033_ts_momentum_metals_etf_1d_oos.csv",
-  "validated_at": "2026-10-14T20:17:30+00:00",
+  "validated_at": "2026-10-15T07:28:45+00:00",
   "accepted_at": null,
   "data_end": "2026-10-14 00:00:00"
 }
