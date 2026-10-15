@@ -234,6 +234,7 @@ def main() -> None:
     ap.add_argument("--ids", action="store_true", help="print active hypothesis ids as JSON (workflow matrix)")
     ap.add_argument("--merge", action="store_true", help="rebuild decisions/registry.json from parts")
     ap.add_argument("--live", action="store_true", help="paper-track ACCEPT decisions, demote on decay")
+    ap.add_argument("--calibrate", action="store_true", help="reproduce known results on real data")
     ap.add_argument("--prefetch", action="store_true",
                     help="download & cache all data needed by active hypotheses (or --universe/--timeframe)")
     a = ap.parse_args()
@@ -241,6 +242,23 @@ def main() -> None:
     hyps = load_yaml("hypotheses/registry.yaml") or []
     if a.ids:
         print(json.dumps([h["id"] for h in hyps if h.get("status") == "active"]))
+        return
+    if a.calibrate:
+        from lab import calibration
+        rows = []
+        try:
+            rows = calibration.run()
+        except Exception as e:  # noqa: BLE001
+            import traceback
+            traceback.print_exc()
+            rows = [{"id": "C0", "check": "calibration crashed", "pass": False, "result": str(e)[:300], "expected": "no crash"}]
+        md = calibration.markdown(rows)
+        RESULTS.mkdir(exist_ok=True)
+        (RESULTS / "calibration.md").write_text(md)
+        print(md)
+        if a.telegram:
+            telegram("🧪 " + md.splitlines()[0][2:] + "\n" + "\n".join(
+                f"{'✅' if r['pass'] else '❌'} {r['id']} {r['check']}: {r['result']}" for r in rows))
         return
     if a.prefetch:
         want = [(a.universe, a.timeframe, a.start)] if a.universe else sorted(
