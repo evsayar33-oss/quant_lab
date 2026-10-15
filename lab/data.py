@@ -190,6 +190,8 @@ def load_panel(universe: dict, start: str, name: str = "", with_fundamentals: bo
     from lab.panel import Panel
 
     tickers = universe["tickers"]
+    if tickers == "from_membership":                     # e.g. the whole S&P 500 history, delisted names included
+        tickers = membership.tickers_since(universe["membership"], start)
     bench_t = universe.get("benchmark")
     ohlcv = load_ohlcv(tickers + ([bench_t] if bench_t and bench_t not in tickers else []), start, timeframe)
     bench = ohlcv[bench_t]["Close"] if bench_t in ohlcv else None

@@ -46,6 +46,17 @@ def load(spec: str) -> pd.DataFrame:
     return df.sort_values("date")
 
 
+def tickers_since(spec: str, start: str) -> list[str]:
+    """Every ticker that was a member at any time since `start` (Yahoo spelling: BRK.B -> BRK-B).
+    Builds the universe from history, so companies that later left the index are included."""
+    df = load(spec)
+    first = df[df["date"] <= pd.Timestamp(start)]
+    df = df[df["date"] >= (first["date"].iloc[-1] if len(first) else pd.Timestamp(start))]
+    out = sorted({x.strip().upper().replace(".", "-") for s in df["tickers"] for x in str(s).split(",") if x.strip()})
+    print(f"[membership] {spec}: {len(out)} tickers were members since {start}")
+    return out
+
+
 def mask(spec: str, index: pd.DatetimeIndex, tickers: list[str]) -> pd.DataFrame | None:
     try:
         df = load(spec)

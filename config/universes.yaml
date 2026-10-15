@@ -88,6 +88,15 @@ us_largecap_100:
             MDLZ, REGN, VRTX, EOG, SLB, COP, ITW, CL, NOC, APD, EMR, FDX, GD, NSC, USB, PNC,
             TGT, SHW, MMM, F]
 
+sp500_full:          # every S&P 500 member since the start date (from the historical membership file)
+  market: us
+  benchmark: SPY
+  costs: {commission: 0.0002, slippage: 0.0005}
+  risk_free: ^IRX
+  membership: sp500
+  macro: [^VIX, ^TNX, ^IRX]
+  tickers: from_membership
+
 us_sectors:
   market: us
   benchmark: SPY
