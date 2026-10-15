@@ -375,3 +375,68 @@
   start: "2010-01-01"
   status: active
   note: "Hold metals only in favourable VIX / yield-curve / trend regime"
+
+# ---------------------------------------------------------------- metal drivers (DXY, real yields, ratios, COT, seasonality)
+- id: H040
+  strategy: real_yield_switch
+  universe: metals_etf
+  for_system: metals
+  start: "2008-01-01"
+  status: active
+  note: "Hold metals while real yields fall (TIP/IEF rising)"
+
+- id: H041
+  strategy: dxy_metal_switch
+  universe: metals_etf
+  for_system: metals
+  start: "2008-01-01"
+  status: active
+  note: "Hold metals while the dollar is weak"
+
+- id: H042
+  strategy: gold_silver_ratio
+  universe: metals_etf
+  for_system: metals
+  start: "2008-01-01"
+  status: active
+  note: "Gold/silver ratio extremes: rotate between gold and silver assets"
+
+- id: H043
+  strategy: copper_gold_rotation
+  universe: metals_etf
+  for_system: metals
+  start: "2010-01-01"
+  status: active
+  note: "Copper/gold ratio trend: industrial vs gold rotation"
+
+- id: H044
+  strategy: cot_contrarian
+  universe: metals
+  for_system: metals
+  start: "2008-01-01"
+  status: active
+  note: "Buy metals when speculators are extremely short (CFTC COT)"
+
+- id: H045
+  strategy: cot_commercial_follow
+  universe: metals
+  for_system: metals
+  start: "2008-01-01"
+  status: active
+  note: "Follow commercial hedgers' unusual net long positioning"
+
+- id: H046
+  strategy: ts_seasonality
+  universe: metals
+  for_system: metals
+  start: "2000-01-01"
+  status: active
+  note: "Own-month seasonality per metal (past years only)"
+
+- id: H047
+  strategy: dual_momentum
+  universe: metals_etf
+  for_system: metals
+  start: "2010-01-01"
+  status: active
+  note: "H038 rerun with stage-4 overlays (vol target / drawdown brake) searched as candidates"

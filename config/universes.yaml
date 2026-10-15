@@ -118,7 +118,8 @@ metals:              # gold, silver, copper, platinum, palladium (continuous fro
   benchmark: GC=F
   costs: {commission: 0.0002, slippage: 0.0005}
   risk_free: ^IRX
-  macro: [^VIX, ^TNX, ^IRX]
+  macro: [^VIX, ^TNX, ^IRX, DX-Y.NYB, TIP, IEF, GC=F, SI=F, HG=F]
+  cot: {GC=F: "088691", SI=F: "084691", HG=F: "085692", PL=F: "076651", PA=F: "075651"}
   # NOTE: Yahoo "=F" series are rolled front-month futures; roll days can show small jumps.
   tickers: [GC=F, SI=F, HG=F, PL=F, PA=F]
 
@@ -127,5 +128,6 @@ metals_etf:          # same exposure via ETFs (no roll jumps, dividend/fee adjus
   benchmark: GLD
   costs: {commission: 0.0002, slippage: 0.0003}
   risk_free: ^IRX
-  macro: [^VIX, ^TNX, ^IRX]
+  macro: [^VIX, ^TNX, ^IRX, DX-Y.NYB, TIP, IEF, GC=F, SI=F, HG=F]
+  cot: {GLD: "088691", SLV: "084691", CPER: "085692", PPLT: "076651", PALL: "075651"}
   tickers: [GLD, SLV, CPER, PPLT, PALL, GDX, SIL, COPX]

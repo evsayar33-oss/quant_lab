@@ -8,6 +8,7 @@
   panel.fx                      local-currency price of 1 USD (to report results in USD), or None
   panel.member                  bool frame: was the asset an index member at that time (survivorship)
   panel.freq / panel.ppy        timeframe label and bars per year (measured from the data)
+  panel.extra                   other point-in-time frames (CFTC COT positioning, ...)
 """
 from __future__ import annotations
 
@@ -34,6 +35,7 @@ class Panel:
     fx: pd.Series | None = None
     member: pd.DataFrame | None = None
     costs_meta: dict = field(default_factory=dict)
+    extra: dict = field(default_factory=dict)   # e.g. COT positioning frames (cot_spec_net, cot_comm_net)
 
     @property
     def index(self):

@@ -216,6 +216,9 @@ def load_panel(universe: dict, start: str, name: str = "", with_fundamentals: bo
                 p.macro[m] = _align(s, p.index)
         except Exception as e:  # noqa: BLE001 - macro is optional
             print(f"[data] macro {m}: {e}")
+    if universe.get("cot"):
+        from lab import cot
+        p.extra.update(cot.load(universe["cot"], p.index if timeframe == "1d" else p.index))
     if universe.get("membership"):
         p.member = membership.mask(universe["membership"], p.index, list(p.columns))
     if with_fundamentals and universe.get("market") in ("bist", "us"):

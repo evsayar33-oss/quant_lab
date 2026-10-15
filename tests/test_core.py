@@ -68,11 +68,15 @@ def test_costs_reduce_returns():
 
 
 def test_all_weight_strategies_bounded():
+    from lab.strategies.fundamental_factors import NoData
     p = Panel.from_close(data.synthetic_prices(8, 700, seed=4))
     for name, s in REGISTRY.items():
         if s.kind == "fundamental":
             continue
-        w = s(p)
+        try:
+            w = s(p)
+        except NoData:      # needs macro / COT data the synthetic panel does not have
+            continue
         assert w.shape == p.c.shape, name
         assert np.isfinite(w.values).all(), name
         assert (w.abs().sum(axis=1) <= 2.0 + 1e-9).all(), name
@@ -300,6 +304,26 @@ def test_overlays_are_causal_and_derisk():
         assert (overlays.scale_series(r2, k, 252).iloc[:1001] == sc.iloc[:1001]).all(), k
     dd = overlays.scale_series(r, "dd20", 252)
     assert dd.iloc[740:760].min() == 0.5
+
+
+def test_metal_strategies_run():
+    c = data.synthetic_prices(5, 1500, seed=19)
+    c.columns = ["GLD", "SLV", "CPER", "GDX", "SIL"]
+    p = Panel.from_close(c)
+    rng = np.random.default_rng(19)
+    walk = lambda: pd.Series(100 * np.exp(np.cumsum(rng.normal(0, 0.01, len(c)))), index=c.index)  # noqa: E731
+    p.macro = {k: walk() for k in ("DX-Y.NYB", "TIP", "IEF", "GC=F", "SI=F", "HG=F")}
+    p.extra = {"cot_spec_net": pd.DataFrame(rng.normal(0, 0.1, c.shape), index=c.index, columns=c.columns).rolling(20).mean(),
+               "cot_comm_net": pd.DataFrame(rng.normal(0, 0.1, c.shape), index=c.index, columns=c.columns).rolling(20).mean()}
+    for n in ("dxy_metal_switch", "real_yield_switch", "gold_silver_ratio", "copper_gold_rotation",
+              "cot_contrarian", "cot_commercial_follow", "ts_seasonality"):
+        w = REGISTRY[n](p, years=3) if n == "ts_seasonality" else REGISTRY[n](p)   # 6y of data
+        assert w.shape == p.c.shape and np.isfinite(w.values).all(), n
+        assert (w.abs().sum(axis=1) <= 1 + 1e-9).all(), n
+        assert (w.abs().sum(axis=1) > 0).mean() > 0.05, n
+    for f in ("dxy_weak", "real_yield_falling"):
+        a, b = rules.FILTERS[f](p)
+        assert a.shape == p.c.shape
 
 
 if __name__ == "__main__":

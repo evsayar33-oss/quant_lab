@@ -98,8 +98,8 @@ def noise_test(cand, p: Panel, v, costs: Costs, n: int = 10, bp: float = 0.002, 
     srs = []
     for _ in range(n):
         f = pd.DataFrame(1 + rng.normal(0, bp, p.c.shape), index=p.index, columns=p.columns)
-        q = Panel(p.o * f, p.h * f, p.l * f, p.c * f, p.v, p.bench, p.fund, p.name, p.freq, p.market,
-                  p.macro, p.rf_annual, p.fx, p.member, p.costs_meta)
+        import dataclasses
+        q = dataclasses.replace(p, o=p.o * f, h=p.h * f, l=p.l * f, c=p.c * f)
         try:
             srs.append(metrics.sharpe(cand.run(q, v, costs).returns))
         except Exception:  # noqa: BLE001

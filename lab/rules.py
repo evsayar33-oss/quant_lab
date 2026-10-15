@@ -642,3 +642,21 @@ def confirm(primary: Signals, secondary: Signals, within: int = 0) -> Signals:
     if primary.entry_short is not None and secondary.entry_short is not None:
         es = primary.entry_short & win(secondary.entry_short)
     return Signals(_b(el), primary.exit_long, None if es is None else _b(es), primary.exit_short)
+
+
+@filt("dxy_weak")
+def f_dxy(p):
+    """Longs only while the US dollar index is below its 100-bar average."""
+    m = _macro_bool(p, "DX-Y.NYB", lambda s: s < s.rolling(100, min_periods=50).mean())
+    return (_all(p), _all(p)) if m is None else (_b(m), _b(~m))
+
+
+@filt("real_yield_falling")
+def f_real(p):
+    """Longs only while TIPS outperform nominal Treasuries (real yields falling)."""
+    if not p.macro or p.macro.get("TIP") is None or p.macro.get("IEF") is None:
+        return _all(p), _all(p)
+    r = p.macro["TIP"] / p.macro["IEF"]
+    ok = r > r.rolling(100, min_periods=50).mean()
+    m = pd.DataFrame(np.repeat(ok.values[:, None], p.c.shape[1], 1), index=p.index, columns=p.columns)
+    return _b(m), _b(~m)
