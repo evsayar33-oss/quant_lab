@@ -8,3 +8,10 @@ validated_at,id,strategy,universe,timeframe,verdict,gate_sharpe,dsr,pbo,oos_cagr
 2026-10-14T21:24:25+00:00,H037,rsi_reversal,metals_etf,1d,REJECT,-0.742,0.002,0.466,0.0024,-0.0428
 2026-10-14T20:17:34+00:00,H038,dual_momentum,metals_etf,1d,WATCH,0.353,0.882,0.727,0.0807,-0.5419
 2026-10-14T20:17:35+00:00,H039,macro_risk_switch,metals_etf,1d,WATCH,0.141,0.61,0.889,0.0286,-0.4137
+2026-10-15T06:28:11+00:00,H034,donchian_breakout,metals,1d,REJECT,-0.466,0.008,0.336,-0.0231,-0.402
+2026-10-15T06:26:10+00:00,H035,supertrend_flip,metals,1w,REJECT,-0.003,0.018,0.343,0.0116,-0.3389
+2026-10-15T06:26:10+00:00,H036,pairs_zscore,metals_etf,1d,REJECT,-0.509,0.1,0.773,0.0018,-0.105
+2026-10-15T07:19:53+00:00,H037,rsi_reversal,metals_etf,1d,REJECT,-0.742,0.001,0.448,0.0024,-0.0428
+2026-10-15T06:26:26+00:00,H038,dual_momentum,metals_etf,1d,WATCH,0.326,0.865,0.977,0.0671,-0.4715
+2026-10-15T06:25:53+00:00,H040,real_yield_switch,metals_etf,1d,REJECT,-0.097,0.318,0.679,-0.0059,-0.3241
+2026-10-15T06:26:46+00:00,H043,copper_gold_rotation,metals_etf,1d,WATCH,0.293,0.8,0.629,0.0604,-0.48

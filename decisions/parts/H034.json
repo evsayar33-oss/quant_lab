@@ -1,15 +1,14 @@
 {
   "verdict": "REJECT",
-  "previous_verdict": null,
+  "previous_verdict": "REJECT",
   "reasons": [
-    "DSR 0.036 < 0.9 (luck not excluded after 163 trials)",
-    "OOS Sharpe (excess of T-bill) -0.32 < 0.5",
-    "bootstrap P(SR>0) 0.312 < 0.85",
-    "only 27% of OOS years positive",
+    "DSR 0.008 < 0.9 (luck not excluded after 177 trials)",
+    "OOS Sharpe (excess of T-bill) -0.466 < 0.5",
+    "bootstrap P(SR>0) 0.139 < 0.85",
+    "only 33% of OOS years positive",
     "with 2x costs it does not beat the equal-weight benchmark",
-    "PBO 0.527 > 0.5 (variant selection is overfit)",
-    "Reality Check p 1.0 > 0.1 (best variant may be data-mined)",
-    "random entries match it (p=0.88): the edge is in the exits, not the signal"
+    "Reality Check p 0.998 > 0.1 (best variant may be data-mined)",
+    "1-bar delay keeps only -41% of Sharpe (latency-fragile)"
   ],
   "strategy": "donchian_breakout",
   "kind": "rule",
@@ -30,179 +29,174 @@
     "side": "both",
     "status": "active"
   },
-  "variant": "donchian_breakout|entry=100,exit=20|f=vix_below_25|x=stop_pct=0.05,tp_pct=0.1",
+  "variant": "donchian_breakout|entry=100,exit=10|f=vix_below_25|x=max_hold=5,use_signal_exit=False|size=vol0.1|overlay=eqma_s",
   "params": {
     "entry": 100,
-    "exit": 20,
+    "exit": 10,
     "_filter": "vix_below_25",
-    "_exit": 16,
-    "_size": 0
+    "_exit": 42,
+    "_size": 4,
+    "_overlay": "eqma_s"
   },
   "targets": {},
   "targets_observe_only": {
     "positions": {},
     "entry_long_next_open": [],
-    "exit_long_next_open": [
-      "SI=F",
-      "PL=F",
-      "PA=F"
-    ],
+    "exit_long_next_open": [],
     "entry_short_next_open": []
   },
-  "gate_sharpe": -0.32,
-  "pbo": 0.527,
-  "reality_check_p": 1.0,
-  "dsr": 0.036,
-  "n_trials": 163,
+  "gate_sharpe": -0.466,
+  "pbo": 0.336,
+  "reality_check_p": 0.998,
+  "dsr": 0.008,
+  "n_trials": 177,
   "oos": {
     "start": "2012-01-09 00:00:00",
-    "end": "2026-10-14 00:00:00",
+    "end": "2026-10-15 00:00:00",
     "years": 14.76,
-    "cagr": -0.0164,
-    "vol": 0.09,
-    "sharpe": -0.138,
-    "sharpe_excess_rf": -0.32,
-    "sortino": -0.433,
-    "max_dd": -0.4225,
-    "max_dd_bars": 3539,
-    "calmar": -0.039,
-    "ulcer": 0.307,
-    "var95": -0.007,
-    "cvar95": -0.0141,
-    "omega": 0.961,
-    "tail_ratio": 0.931,
-    "skew": -1.211,
-    "kurtosis": 48.804,
-    "hit_rate": 0.296,
-    "psr": 0.297,
+    "cagr": -0.0231,
+    "vol": 0.0788,
+    "sharpe": -0.257,
+    "sharpe_excess_rf": -0.466,
+    "sortino": -0.618,
+    "max_dd": -0.402,
+    "max_dd_bars": 3540,
+    "calmar": -0.058,
+    "ulcer": 0.3196,
+    "var95": -0.0063,
+    "cvar95": -0.0128,
+    "omega": 0.927,
+    "tail_ratio": 0.913,
+    "skew": -1.563,
+    "kurtosis": 58.286,
+    "hit_rate": 0.274,
+    "psr": 0.159,
     "time_in_market": null,
-    "turnover_ann": 12.16,
-    "bench_cagr": 0.0591,
-    "bench_sharpe": 0.372,
-    "info_ratio": -0.413,
-    "beta": 0.045,
-    "up_capture": 0.031,
-    "down_capture": 0.044
+    "turnover_ann": 10.41,
+    "bench_cagr": 0.0594,
+    "bench_sharpe": 0.373,
+    "info_ratio": -0.437,
+    "beta": -0.003,
+    "up_capture": 0.005,
+    "down_capture": 0.022
   },
   "trade_stats": {
-    "n_trades": 206,
-    "trades_per_year": 14.0,
-    "win_rate": 0.35,
-    "avg_trade": 0.001,
-    "median_trade": -0.0437,
-    "avg_win": 0.0954,
-    "avg_loss": -0.0497,
-    "profit_factor": 1.031,
-    "payoff": 1.919,
-    "expectancy_r": 0.02,
-    "sqn": 0.13,
-    "kelly_fraction": 0.01,
-    "max_consec_losses": 15,
-    "avg_bars": 16.0,
-    "avg_bars_win": 21.4,
-    "avg_bars_loss": 13.0,
-    "avg_mfe": 0.0463,
-    "avg_mae": -0.0256,
-    "edge_ratio": 1.81,
+    "n_trades": 326,
+    "trades_per_year": 22.1,
+    "win_rate": 0.509,
+    "avg_trade": 0.0041,
+    "median_trade": 0.0004,
+    "avg_win": 0.0371,
+    "avg_loss": -0.0302,
+    "profit_factor": 1.275,
+    "payoff": 1.229,
+    "expectancy_r": null,
+    "sqn": null,
+    "kelly_fraction": 0.11,
+    "max_consec_losses": 12,
+    "avg_bars": 5.0,
+    "avg_bars_win": 5.0,
+    "avg_bars_loss": 5.0,
+    "avg_mfe": 0.0281,
+    "avg_mae": -0.0245,
+    "edge_ratio": 1.144,
     "exit_reasons": {
-      "stop": 93,
-      "target": 62,
-      "signal": 51
+      "time": 326
     },
     "long_short": {
       "-1": {
-        "count": 37,
-        "mean": -0.0329
+        "count": 41,
+        "mean": -0.0126
       },
       "1": {
-        "count": 169,
-        "mean": 0.0084
+        "count": 285,
+        "mean": 0.0065
       }
     }
   },
   "regimes": {
     "bull": {
-      "sharpe": 0.05,
-      "ann_ret": 0.0051,
+      "sharpe": -0.14,
+      "ann_ret": -0.0107,
       "bars": 2225
     },
     "bear": {
-      "sharpe": -0.48,
-      "ann_ret": -0.0387,
-      "bars": 1488
+      "sharpe": -0.43,
+      "ann_ret": -0.0346,
+      "bars": 1489
     },
     "calm": {
-      "sharpe": 0.64,
-      "ann_ret": 0.0454,
-      "bars": 1957
+      "sharpe": 0.37,
+      "ann_ret": 0.0234,
+      "bars": 1958
     },
     "stressed": {
-      "sharpe": -0.72,
-      "ann_ret": -0.0769,
+      "sharpe": -0.74,
+      "ann_ret": -0.069,
       "bars": 1756
     },
     "vix_lt_20": {
-      "sharpe": 0.04,
-      "ann_ret": 0.0034,
-      "bars": 2794
+      "sharpe": -0.16,
+      "ann_ret": -0.0104,
+      "bars": 2795
     },
     "vix_20_30": {
-      "sharpe": -0.29,
-      "ann_ret": -0.0223,
+      "sharpe": -0.28,
+      "ann_ret": -0.0202,
       "bars": 761
     },
     "vix_ge_30": {
-      "sharpe": -1.13,
-      "ann_ret": -0.2438,
+      "sharpe": -0.91,
+      "ann_ret": -0.1956,
       "bars": 158
     },
     "curve_inverted": {
-      "sharpe": -0.58,
-      "ann_ret": -0.0234,
+      "sharpe": -0.22,
+      "ann_ret": -0.008,
       "bars": 615
     },
     "curve_normal": {
-      "sharpe": -0.11,
-      "ann_ret": -0.0102,
-      "bars": 3098
+      "sharpe": -0.27,
+      "ann_ret": -0.0227,
+      "bars": 3099
     }
   },
   "robustness": {
     "delay": {
-      "sharpe": 0.034,
-      "sharpe_delayed_1bar": 0.086,
-      "retained": 2.535
+      "sharpe": 0.292,
+      "sharpe_delayed_1bar": -0.121,
+      "retained": -0.413
     },
     "neighbourhood": {
       "neighbours": 1,
-      "best_sharpe": 0.033,
-      "neighbour_median": 0.005,
+      "best_sharpe": 0.287,
+      "neighbour_median": 0.287,
       "share_positive": 1.0,
-      "stability": 0.152
+      "stability": 1.0
     },
     "noise": {
       "noise_bp": 0.002,
-      "sharpe_min": -0.022,
-      "sharpe_median": 0.033
+      "sharpe_min": 0.098,
+      "sharpe_median": 0.2
     },
     "random_entry": {
-      "actual_ret_per_exposure_ann": 0.0142,
-      "random_median_ann": 0.0512,
-      "random_p95_ann": 0.1604,
-      "trades_actual": 273,
-      "p_value": 0.88
+      "actual_ret_per_exposure_ann": 0.2255,
+      "random_median_ann": -0.0012,
+      "random_p95_ann": 0.0968,
+      "trades_actual": 430,
+      "p_value": 0.0
     },
     "mc_trade_shuffle": {
-      "maxdd_median": -0.2033,
-      "maxdd_p95": -0.2968,
-      "final_p05": 0.1056,
-      "final_median": 0.1056
+      "maxdd_median": -0.0455,
+      "maxdd_p95": -0.0723,
+      "final_p05": 0.1529,
+      "final_median": 0.1529
     }
   },
   "recommended_overlay": "equity_ma_41",
-  "kelly_fraction": 0.01,
+  "kelly_fraction": 0.11,
   "oos_csv": "results/H034_donchian_breakout_metals_1d_oos.csv",
-  "validated_at": "2026-10-14T20:18:07+00:00",
+  "validated_at": "2026-10-15T06:28:11+00:00",
   "accepted_at": null,
-  "data_end": "2026-10-14 00:00:00"
+  "data_end": "2026-10-15 00:00:00"
 }

@@ -1,8 +1,8 @@
 {
   "verdict": "REJECT",
-  "previous_verdict": null,
+  "previous_verdict": "REJECT",
   "reasons": [
-    "DSR 0.002 < 0.9 (luck not excluded after 1639 trials)",
+    "DSR 0.001 < 0.9 (luck not excluded after 1653 trials)",
     "OOS Sharpe (excess of T-bill) -0.742 < 0.5",
     "bootstrap P(SR>0) 0.744 < 0.85",
     "only 54% of OOS years positive",
@@ -63,10 +63,10 @@
     "entry_short_next_open": []
   },
   "gate_sharpe": -0.742,
-  "pbo": 0.466,
+  "pbo": 0.448,
   "reality_check_p": 0.968,
-  "dsr": 0.002,
-  "n_trials": 1639,
+  "dsr": 0.001,
+  "n_trials": 1653,
   "oos": {
     "start": "2014-01-13 00:00:00",
     "end": "2026-10-14 00:00:00",
@@ -209,7 +209,7 @@
   "recommended_overlay": "none",
   "kelly_fraction": 0.23,
   "oos_csv": "results/H037_rsi_reversal_metals_etf_1d_oos.csv",
-  "validated_at": "2026-10-14T21:24:25+00:00",
+  "validated_at": "2026-10-15T07:19:53+00:00",
   "accepted_at": null,
   "data_end": "2026-10-14 00:00:00"
 }
