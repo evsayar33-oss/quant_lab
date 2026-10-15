@@ -438,5 +438,5 @@
   universe: metals_etf
   for_system: metals
   start: "2010-01-01"
-  status: active
-  note: "H038 rerun with stage-4 overlays (vol target / drawdown brake) searched as candidates"
+  status: retired
+  note: "Duplicate of H038 (H038 itself now searches stage-4 overlays) - retired"
