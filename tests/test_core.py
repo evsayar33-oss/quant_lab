@@ -326,6 +326,18 @@ def test_metal_strategies_run():
         assert a.shape == p.c.shape
 
 
+def test_studies_accept_every_variant_kind():
+    """Robustness studies must work when the selected variant carries internal keys (overlay etc.)."""
+    from lab import candidates as CD, robustness as RB
+    p = Panel.from_close(data.synthetic_prices(6, 900, seed=20))
+    for cand in (CD.StrategyCandidate("ts_momentum"), CD.from_spec({"rule": "rsi_reversal"})):
+        base = cand.variants()[0]
+        for v in [base] + cand.overlay_variants([base])[:2]:
+            assert "sharpe_delayed_1bar" in RB.delay_test(cand, p, v, Costs())
+            RB.noise_test(cand, p, v, Costs(), n=1)
+            cand.targets(p, v)
+
+
 if __name__ == "__main__":
     for k, fn in list(globals().items()):
         if k.startswith("test_"):

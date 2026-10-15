@@ -6,3 +6,4 @@
 - 2026-10-14: Two-signal confirmation combos (scan stage B + `confirm:` in hypotheses); per-variant scan CSV; heavy outputs moved to a force-pushed `results` branch; shared data prefetch + Actions cache + Yahoo retries.
 - 2026-10-15: Stage 4 overlays (vol target, drawdown brake, equity-curve filter) become searchable variants counted as trials. Calibration suite added (8/8 passed on real data 2026-10-15).
 - 2026-10-15: Metal drivers (DXY, real yields, gold/silver and copper/gold ratios, CFTC COT, own-month seasonality) and hypotheses H040-H047.
+- 2026-10-15: Fix: robustness delay test crashed on overlay variants (7 hypotheses errored silently); errors now published as H0xx_ERROR.txt. Scan leads H048-H051 registered.

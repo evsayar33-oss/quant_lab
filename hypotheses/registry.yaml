@@ -440,3 +440,39 @@
   start: "2010-01-01"
   status: retired
   note: "Duplicate of H038 (H038 itself now searches stage-4 overlays) - retired"
+
+# ---------------------------------------------------------------- metals scan leads (2026-10-15 discovery scan)
+- id: H048
+  strategy: st_reversal
+  universe: metals_etf
+  timeframe: 1w
+  for_system: metals
+  start: "2008-01-01"
+  status: active
+  note: "Scan lead: weekly cross-metal reversal (WF OOS Sharpe 0.88 in scan)"
+
+- id: H049
+  strategy: st_reversal
+  universe: metals_etf
+  for_system: metals
+  start: "2008-01-01"
+  status: active
+  note: "Scan lead: daily-bar cross-metal reversal (WF OOS Sharpe 0.85 in scan)"
+
+- id: H050
+  strategy: copper_gold_rotation
+  universe: metals_etf
+  timeframe: 1w
+  for_system: metals
+  start: "2008-01-01"
+  status: active
+  note: "Scan lead: copper/gold rotation on weekly bars"
+
+- id: H051
+  strategy: gold_silver_ratio
+  universe: metals
+  timeframe: 1w
+  for_system: metals
+  start: "2005-01-01"
+  status: active
+  note: "Scan lead: gold/silver ratio on weekly futures bars"

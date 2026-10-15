@@ -87,7 +87,12 @@ def delay_test(cand, p: Panel, v, costs: Costs) -> dict:
                           EXIT_GRID[v.params["_exit"]], costs, cand.side, cand.max_positions,
                           SIZE_GRID[v.params.get("_size", 0)]).returns
     else:
-        late = engine.run(p.c, cand.strat(p, **v.params), costs, lag=2, ppy=p.ppy, member=p.member).returns
+        prm = {k: x for k, x in v.params.items() if not k.startswith("_")}
+        res = engine.run(p.c, cand.strat(p, **prm), costs, lag=2, ppy=p.ppy, member=p.member)
+        if v.params.get("_overlay"):
+            from lab import overlays
+            res = overlays.apply(res, v.params["_overlay"], p.ppy, costs)
+        late = res.returns
     b, l_ = metrics.sharpe(base), metrics.sharpe(late)
     return {"sharpe": round(b, 3), "sharpe_delayed_1bar": round(l_, 3),
             "retained": round(l_ / b, 3) if b > 0 else None}
