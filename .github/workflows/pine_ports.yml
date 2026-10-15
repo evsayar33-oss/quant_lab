@@ -1,0 +1,41 @@
+name: Pine ports backtest
+
+# Ad-hoc: backtests the BTC and XAU TradingView strategies ported in scripts/pine_ports/.
+# Never changes decisions/registry.json. Results are committed to results/pine_ports/.
+on:
+  workflow_dispatch:
+  push:
+    branches: ['ccr-**']
+    paths: ['scripts/pine_ports/**', '.github/workflows/pine_ports.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: XAU from Dukascopy (free)
+        continue-on-error: true
+        run: npx --yes dukascopy-node@1 -i xauusd -from 2019-01-01 -to $(date -u +%F) -t h1 -f csv -dir dukas -r 3 -bs 15 -bp 500
+      - run: python scripts/pine_ports/fetch_data.py xau
+      - run: python scripts/pine_ports/fetch_data.py btc
+      - run: python scripts/pine_ports/okx_sentinels.py --btc results/pine_ports/data/btc_1h.csv --xau results/pine_ports/data/xau_1h.csv
+      - name: Commit results
+        run: |
+          rm -rf results/pine_ports/data
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -f results/pine_ports
+          git commit -m "Pine ports backtest results" || exit 0
+          git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"
