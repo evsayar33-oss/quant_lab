@@ -113,6 +113,8 @@ jobs:
           [ -f decisions/history.csv ] || echo "validated_at,id,strategy,universe,timeframe,verdict,gate_sharpe,dsr,pbo,oos_cagr,oos_maxdd" > decisions/history.csv
           for d in _parts/*; do
             [ -d "$d" ] || continue
+            id="${d#_parts/part-}"
+            if ls "$d"/decisions/parts/*.json >/dev/null 2>&1; then rm -f "results/${id}_ERROR.txt"; fi   # success clears an old error
             cp "$d"/decisions/parts/*.json decisions/parts/ 2>/dev/null || true
             cp -r "$d"/results/. results/ 2>/dev/null || true
             if [ -f "$d/decisions/history.csv" ]; then tail -n 1 "$d/decisions/history.csv" >> decisions/history.csv; fi

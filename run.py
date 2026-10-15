@@ -175,6 +175,7 @@ def run_one(hid: str, spec: dict, write_registry: bool, synthetic: bool = False)
     (RESULTS / f"{stem}.json").write_text(json.dumps(clean, indent=2, default=str))
     if write_registry:
         decision.record(hid, spec, rep, rep["targets"], oos_csv=f"results/{stem}_oos.csv")
+        (RESULTS / f"{hid}_ERROR.txt").unlink(missing_ok=True)
     o = rep["oos"]
     print(f"[{hid}] {rep['verdict']}  OOS Sharpe={o.get('sharpe')} CAGR={o.get('cagr')} MaxDD={o.get('max_dd')} "
           f"DSR={rep['dsr']} PBO={rep['pbo']} trials={rep['n_trials']}")
