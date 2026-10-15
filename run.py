@@ -333,8 +333,11 @@ def main() -> None:
                 results[h["id"]] = run_one(h["id"], h, write_registry=True)
             except Exception as e:  # noqa: BLE001 - one bad hypothesis must not stop the batch
                 import traceback
-                traceback.print_exc()
+                tb = traceback.format_exc()
+                print(tb)
                 print(f"[{h['id']}] ERROR {e}")
+                RESULTS.mkdir(exist_ok=True)
+                (RESULTS / f"{h['id']}_ERROR.txt").write_text(tb)   # published with the reports
                 results[h["id"]] = {"verdict": "ERROR", "reasons": [str(e)]}
         decision.merge()
 
