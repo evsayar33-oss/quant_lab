@@ -17,7 +17,7 @@ from dataclasses import dataclass
 
 import pandas as pd
 
-from lab import engine, rules
+from lab import engine, overlays, rules
 from lab.engine import Costs, Result
 from lab.panel import Panel
 from lab.strategies import get as get_strategy
@@ -43,10 +43,19 @@ class StrategyCandidate:
         return [Variant(f"{self.name}|{_fmt(p)}", p) for p in pts]
 
     def run(self, p: Panel, v: Variant, costs: Costs) -> Result:
-        return engine.run(p.c, self.strat(p, **v.params), costs, ppy=p.ppy, member=p.member)
+        prm = {k: x for k, x in v.params.items() if not k.startswith("_")}
+        res = engine.run(p.c, self.strat(p, **prm), costs, ppy=p.ppy, member=p.member)
+        return overlays.apply(res, v.params["_overlay"], p.ppy, costs) if v.params.get("_overlay") else res
+
+    def overlay_variants(self, seeds: list[Variant]) -> list[Variant]:
+        return _overlay_variants(seeds)
 
     def targets(self, p: Panel, v: Variant) -> dict:
-        w = self.strat(p, **v.params).iloc[-1]
+        w = self.strat(p, **{k: x for k, x in v.params.items() if not k.startswith("_")}).iloc[-1]
+        if v.params.get("_overlay"):
+            sc = overlays.scale_series(self.run(p, Variant(v.key, {**v.params, "_overlay": None}), Costs()).returns,
+                                       v.params["_overlay"], p.ppy)
+            w = w * float(sc.iloc[-1])
         return {k: round(float(x), 4) for k, x in w[w.abs() > 1e-6].sort_values(ascending=False).items()}
 
 
@@ -126,12 +135,16 @@ class RuleCandidate:
         return rules.apply_filter(sig, p, v.params["_filter"])
 
     def run(self, p: Panel, v: Variant, costs: Costs) -> Result:
-        return run_trades(p, self._signals(p, v), EXIT_GRID[v.params["_exit"]], costs,
-                          self.side, self.max_positions, SIZE_GRID[v.params.get("_size", 0)])
+        res = run_trades(p, self._signals(p, v), EXIT_GRID[v.params["_exit"]], costs,
+                         self.side, self.max_positions, SIZE_GRID[v.params.get("_size", 0)])
+        return overlays.apply(res, v.params["_overlay"], p.ppy, costs) if v.params.get("_overlay") else res
+
+    def overlay_variants(self, seeds: list[Variant]) -> list[Variant]:
+        return _overlay_variants(seeds)
 
     def targets(self, p: Panel, v: Variant) -> dict:
         res = self.run(p, v, Costs())
-        w = res.weights.iloc[-1]
+        w = res.weights.iloc[-1]   # already scaled by the overlay when one is used
         s = self._signals(p, v)
         last = p.index[-1]
         return {
@@ -141,6 +154,17 @@ class RuleCandidate:
             "entry_short_next_open": [] if s.entry_short is None or self.side == "long"
             else [c for c in p.columns if bool(s.entry_short.loc[last, c])],
         }
+
+
+def _overlay_variants(seeds: list[Variant]) -> list[Variant]:
+    """Stage 4: every portfolio overlay on top of the best variants (counted as trials)."""
+    out = []
+    for sd in seeds:
+        if sd.params.get("_overlay"):
+            continue
+        for k in overlays.KINDS:
+            out.append(Variant(f"{sd.key}|overlay={k}", {**sd.params, "_overlay": k}))
+    return out
 
 
 def _fmt(d: dict) -> str:

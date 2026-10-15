@@ -287,6 +287,21 @@ def test_confirmation_combo():
     assert cand.name == "rsi_reversal+macd_cross" and len(cand.variants()) <= 1500
 
 
+def test_overlays_are_causal_and_derisk():
+    from lab import overlays
+    rng = np.random.default_rng(18)
+    idx = pd.bdate_range("2015-01-01", periods=1500)
+    r = pd.Series(rng.normal(0.0004, 0.02, 1500), index=idx)
+    r.iloc[700:760] = -0.03  # crash
+    for k in overlays.KINDS:
+        sc = overlays.scale_series(r, k, 252)
+        assert sc.max() <= 1.0 + 1e-12 and sc.min() >= 0
+        r2 = r.copy(); r2.iloc[1000] = 5.0   # a future shock must not change earlier scales
+        assert (overlays.scale_series(r2, k, 252).iloc[:1001] == sc.iloc[:1001]).all(), k
+    dd = overlays.scale_series(r, "dd20", 252)
+    assert dd.iloc[740:760].min() == 0.5
+
+
 if __name__ == "__main__":
     for k, fn in list(globals().items()):
         if k.startswith("test_"):

@@ -181,6 +181,10 @@ def validate(spec: dict, p: Panel, costs: Costs, train_years: float = 3.0, test_
         seeds = [v for v in vs if v.key in set(top_keys(2))]
         vs3 = cand.variants(stage=3, seeds=seeds)
         r3, e3 = CD.run_all(cand, p, vs3, costs); runs.update(r3); errors.update(e3); vs += vs3
+    # stage 4: portfolio overlays (vol target, drawdown brake, equity-curve filter) on the best 2
+    seeds = [v for v in vs if v.key in set(top_keys(2))]
+    vs4 = cand.overlay_variants(seeds)
+    r4, e4 = CD.run_all(cand, p, vs4, costs); runs.update(r4); errors.update(e4); vs += vs4
     R, TO = _matrix(runs, p.index)
     n_trials = R.shape[1]
     trial_srs = list((R.mean() / R.std().replace(0, np.nan)).dropna())
