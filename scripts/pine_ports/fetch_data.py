@@ -36,14 +36,18 @@ def btc(start="2019-01-01"):
 
 
 def xau():
-    duk = sorted(Path("dukas").glob("*.csv"))
-    if duk:
-        df = pd.read_csv(duk[0])
+    parts = []
+    for f in sorted(Path("dukas").glob("*.csv")):
+        if f.stat().st_size > 100:
+            parts.append(pd.read_csv(f))
+    if parts:
+        df = pd.concat(parts)
         df.index = pd.to_datetime(df.pop("timestamp"), unit="ms")
-        df = df.rename(columns=str.capitalize)
+        df = df[~df.index.duplicated()].sort_index().rename(columns=str.capitalize)
         print("dukascopy", len(df), df.index.min(), df.index.max())
-        df.to_csv(D / "xau_1h.csv")
-        return
+        if len(df) > 5000:
+            df.to_csv(D / "xau_1h.csv")
+            return
     import yfinance as yf
     df = yf.download("GC=F", period="730d", interval="1h", auto_adjust=False, progress=False)
     df.columns = [c[0] if isinstance(c, tuple) else c for c in df.columns]

@@ -27,7 +27,12 @@ jobs:
           node-version: '20'
       - name: XAU from Dukascopy (free)
         continue-on-error: true
-        run: npx --yes dukascopy-node@1 -i xauusd -from 2019-01-01 -to $(date -u +%F) -t h1 -f csv -dir dukas -r 3 -bs 15 -bp 500
+        run: |
+          for y in 2019 2020 2021 2022 2023 2024 2025 2026; do
+            to="$((y+1))-01-01"; [ "$y" = 2026 ] && to=$(date -u +%F)
+            npx --yes dukascopy-node@1 -i xauusd -from "$y-01-01" -to "$to" -t h1 -f csv -dir dukas -fn "xau_$y" -r 3 -bs 10 -bp 1000 || true
+          done
+          ls -la dukas || true
       - run: python scripts/pine_ports/fetch_data.py xau
       - run: python scripts/pine_ports/fetch_data.py btc
       - run: python scripts/pine_ports/okx_sentinels.py --btc results/pine_ports/data/btc_1h.csv --xau results/pine_ports/data/xau_1h.csv
