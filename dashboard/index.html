@@ -80,6 +80,7 @@ svg.chart{width:100%;height:160px;display:block}
 <body>
 <header><div class="wrap">
   <div class="hrow"><h1>quant_lab Arena<small id="sub"></small></h1><div class="upd" id="upd">yükleniyor…</div></div>
+  <div id="tfbar" class="tools" style="margin:0 0 8px"></div>
   <nav role="tablist">
     <button role="tab" aria-selected="true" data-t="ozet">Özet</button>
     <button role="tab" aria-selected="false" data-t="arena">Arena</button>
@@ -172,7 +173,7 @@ function arena(D){
   const rows=ms.map(m=>`<button class="row" data-m="${m.id}">
     <span class="t">${m.id} · ${esc(m.coin)} <span class="badge b-${m.position}" style="margin-left:4px">${POS[m.position]}</span></span>
     <span class="r">${spark(m.spark_fwd&&m.spark_fwd.length>2?m.spark_fwd:m.spark)}<span class="small ${cls(m.forward?.ret)}">ileri ${pct(m.forward?.ret)}</span></span>
-    <span class="s">${esc(m.rule)} · <span class="rg-${m.regime_now}">${RG[m.regime_now]||""}</span> · 3y ${pct(m.card?.["3y"]?.ret,0)} · SR ${num(m.card?.full?.sharpe)}</span></button>`).join("");
+    <span class="s">${esc(m.rule)}${m.stage_no===2?" ★":""} · <span class="rg-${m.regime_now}">${RG[m.regime_now]||""}</span> · 3y ${pct(m.card?.["3y"]?.ret,0)} · SR ${num(m.card?.full?.sharpe)}</span></button>`).join("");
   $("#arena").innerHTML=`<div class="tools">
     <select id="fs"><option value="active">Aktif</option><option value="control">Kontrol</option><option value="retired">Emekli</option><option value="all">Hepsi</option></select>
     <select id="so"><option value="fwd">İleri getiri</option><option value="bt">Backtest Sharpe</option><option value="r3">Son 3 yıl</option><option value="id">Kimlik</option></select>
@@ -199,10 +200,11 @@ function huni(D){
   if(!S.funnel){$("#huni").innerHTML='<div class="card empty">Eleme motoru henüz çalışmadı. Actions → "Arena screen" çalıştır.</div>';return}
   const mx=S.funnel[0]?.remaining+S.funnel[0]?.eliminated||1;
   const f=S.funnel.map(x=>`<tr><td>${x.stage}</td><td style="text-align:left;white-space:normal">${esc(x.label)}</td><td>${x.eliminated}</td><td><b>${x.remaining}</b></td><td style="min-width:90px"><div class="bar"><span style="width:${x.remaining/mx*100}%;background:var(--accent)"></span></div></td></tr>`).join("");
-  const sv=(S.survivors||[]).map(r=>`<tr><td>${r.tier||""} ${esc(r.coin)}<div class="small muted">${esc(r.rule)} <code>${esc(r.params)}</code></div></td>${(D.windows||[]).map(w=>{const k=w?w+"y":"full";const v=r["ret_"+k];return `<td class="${cls(v)}">${v==null?"veri yok":pct(v,0)}</td>`}).join("")}<td>${num(r.sharpe)}</td><td>${num(r.dsr)}</td></tr>`).join("");
+  const sv=(S.survivors||[]).map(r=>`<tr><td>${r.tier||""} ${esc(r.coin)}<div class="small muted">${esc(r.rule)} <code>${esc(r.params)}</code>${r.stage_no===2?"<br>★ "+esc(r.variant):""}</div></td>${(D.windows||[]).map(w=>{const k=w?w+"y":"full";const v=r["ret_"+k];return `<td class="${cls(v)}">${v==null?"veri yok":pct(v,0)}</td>`}).join("")}<td>${num(r.sharpe)}</td><td>${num(r.dsr)}</td></tr>`).join("");
   $("#huni").innerHTML=`<div class="grid"><div class="card"><h2>Huni · ${esc(S.date||"")}</h2>
    <div class="small muted" style="margin-bottom:8px">${S.coins_ok}/${S.coins_total} coin uygun · ${S.n_variant_runs} varyant · <b>${S.n_trials}</b> deneme</div>
    <div class="tscroll"><table><tr><th>Adım</th><th style="text-align:left">Kontrol</th><th>Elenen</th><th>Kalan</th><th></th></tr>${f}</table></div>
+   ${S.stage2&&S.stage2.enabled?`<h2 style="margin-top:14px">2. aşama · filtre × çıkış × kombo</h2><div class="small muted" style="margin-bottom:6px">${S.stage2.candidates} aday → ${S.stage2.trials} ek deneme</div><div class="tscroll"><table><tr><th>Adım</th><th style="text-align:left">Kontrol</th><th>Elenen</th><th>Kalan</th></tr>${(S.funnel2||[]).map(x=>`<tr><td>${x.stage}</td><td style="text-align:left;white-space:normal">${esc(x.label)}</td><td>${x.eliminated}</td><td><b>${x.remaining}</b></td></tr>`).join("")}</table></div>${(S.funnel2||[]).length?"":'<div class="empty small">Hiçbir filtre/çıkış/kombo, kuralın kendi halinden daha sağlam çıkmadı.</div>'}`:""}
    <div class="note">Her (coin, kural) için tek en iyi ayar değil, en sağlam bölgenin merkezi seçilir. Sonuç bir aday listesidir; karar sadece doğrulama kapısında verilir.</div></div>
    <div class="card"><h2>Geçenler</h2>${sv?`<div class="tscroll"><table><tr><th>Strateji</th>${(D.windows||[]).map(w=>`<th>${w?w+" yıl":"Tüm"}</th>`).join("")}<th>SR</th><th>DSR</th></tr>${sv}</table></div>`:'<div class="empty">Daha iyisi bulunamadı: kurala göre hiçbir strateji tüm adımları geçmedi.</div>'}</div></div>`;
 }
@@ -217,7 +219,7 @@ function detail(D,id){
   const rowsL=ws.filter(w=>!m.card[w].no_data).map(w=>`<tr><td>${WL(w)}</td>${levs.map(L=>{const p=m.card[w].perp[L];return `<td class="${cls(p.ret)}">$${Math.round(p.final).toLocaleString("tr-TR")}${p.liquidations?`<div class="small neg">${p.liquidations} likidasyon</div>`:""}</td>`}).join("")}</tr>`).join("");
   const rs=Object.entries(m.regime_sharpe||{}).map(([k,v])=>`<div class="kv"><span class="rg-${k}">${RG[k]}</span><span class="${cls(v)}">${num(v)}</span></div>`).join("");
   $("#dlgc").innerHTML=`<button class="close" aria-label="Kapat" onclick="dlg.close()">×</button>
-  <h3>${m.id} · ${esc(m.coin)}</h3><div class="muted small">${esc(m.rule)} <code>${esc(m.params)}</code> · çıkış ${esc(m.exit)} · ${esc(m.side)}</div>
+  <h3>${m.id} · ${esc(m.coin)}</h3><div class="muted small">${esc(m.rule)} <code>${esc(m.params)}</code> · ${esc(m.variant||("çıkış "+m.exit))} · ${esc(m.side)}${m.stage_no===2?" · 2. aşama":""}</div>
   <div style="margin:10px 0;display:flex;gap:6px;flex-wrap:wrap"><span class="badge">${ST[m.status]}</span>${m.tier?`<span class="badge">tier ${m.tier}</span>`:""}<span class="badge b-${m.position}">${POS[m.position]}</span><span class="badge rg-${m.regime_now}">${RG[m.regime_now]}</span><span class="badge">katılım ${m.added_at}</span></div>
   ${m.why?`<div class="note">${esc(m.why)}</div>`:""}
   <h2 style="font-size:13px;color:var(--ink3);margin:16px 0 6px">KARNE (1x, maliyet dahil)</h2>
@@ -234,12 +236,23 @@ const dlg=$("#dlg");
 tabs();
 dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
 
-fetch("data.json",{cache:"no-store"}).then(r=>r.json()).then(D=>{
-  $("#sub").textContent=` ${D.universe} · ${D.timeframe}`;
-  const u=new Date(D.updated_at);$("#upd").innerHTML=`güncelleme ${u.toLocaleString("tr-TR",{dateStyle:"short",timeStyle:"short"})}<br>son bar ${esc(String(D.data_end).slice(0,16))}`;
-  ozet(D);arena(D);rejim(D);huni(D);
-  document.body.addEventListener("click",e=>{const t=e.target.closest("[data-m]");if(t){e.preventDefault();detail(D,t.dataset.m)}});
-}).catch(e=>{$("#ozet").innerHTML=`<div class="card empty">Veri yüklenemedi: ${esc(e)}</div>`;$("#upd").textContent="hata"});
+let TF=null;
+function load(tf){
+  TF=tf;try{localStorage.setItem("tf",tf)}catch(e){}
+  document.querySelectorAll("#tfbar button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tf===tf));
+  fetch(`data_${tf}.json`,{cache:"no-store"}).then(r=>r.json()).then(D=>{
+    $("#sub").textContent=` ${D.universe} · ${D.timeframe}`;
+    const u=new Date(D.updated_at);$("#upd").innerHTML=`güncelleme ${u.toLocaleString("tr-TR",{dateStyle:"short",timeStyle:"short"})}<br>son bar ${esc(String(D.data_end).slice(0,16))}`;
+    window.D=D;ozet(D);arena(D);rejim(D);huni(D);
+  }).catch(e=>{$("#ozet").innerHTML=`<div class="card empty">Veri yüklenemedi: ${esc(e)}</div>`;$("#upd").textContent="hata"});
+}
+document.body.addEventListener("click",e=>{const t=e.target.closest("[data-m]");if(t&&window.D){e.preventDefault();detail(window.D,t.dataset.m)}});
+fetch("tfs.json",{cache:"no-store"}).then(r=>r.json()).then(tfs=>{
+  $("#tfbar").innerHTML=tfs.map(t=>`<nav style="padding:0"><button data-tf="${t}" aria-selected="false">${t==="1d"?"Günlük (1d)":t==="4h"?"4 saatlik (4h)":t}</button></nav>`).join("");
+  document.querySelectorAll("#tfbar button").forEach(b=>b.onclick=()=>load(b.dataset.tf));
+  let t=null;try{t=localStorage.getItem("tf")}catch(e){}
+  load(tfs.includes(t)?t:tfs[0]);
+}).catch(()=>load("4h"));
 </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 """Strategy arena: ~100 strategies tracked on paper, every closed bar, plus the regime switcher.
 
 Files (all small, on main):
-  decisions/arena/roster.json        members with FROZEN settings and the date they joined (ids never reused)
+  decisions/arena/<tf>/roster.json   members with FROZEN settings and the date they joined (ids never reused)
   decisions/arena/switcher_gate.json backtest part of the switcher gate (written by the monthly screen)
   decisions/arena/switcher.json      what the switcher holds NOW + regime per coin + gate status (bots read this)
   decisions/arena/state.json         positions at the last run (to report changes once)
@@ -29,10 +29,21 @@ from lab.panel import Panel
 from lab.trade_engine import EXIT_GRID
 
 ROOT = Path(__file__).resolve().parent.parent
-DIR = ROOT / "decisions" / "arena"
-ROSTER, STATE, SWITCH, GATE, SUMMARY = (DIR / n for n in
-                                        ("roster.json", "state.json", "switcher.json", "switcher_gate.json",
-                                         "screen_summary.json"))
+BASE = ROOT / "decisions" / "arena"
+DIR = BASE / "4h"
+ROSTER = STATE = SWITCH = GATE = SUMMARY = DIR
+
+
+def use(tf: str) -> None:
+    """Each timeframe has its own arena: decisions/arena/<tf>/ (own roster, switcher, state)."""
+    global DIR, ROSTER, STATE, SWITCH, GATE, SUMMARY
+    DIR = BASE / tf
+    ROSTER, STATE, SWITCH, GATE, SUMMARY = (DIR / n for n in
+                                            ("roster.json", "state.json", "switcher.json", "switcher_gate.json",
+                                             "screen_summary.json"))
+
+
+use("4h")
 
 
 def now_iso() -> str:
@@ -56,8 +67,13 @@ def _params(d: dict) -> dict:
     return {k: tuple(v) if isinstance(v, list) else v for k, v in (d or {}).items()}
 
 
-def member_key(coin, rule, params: dict, exit_id, side, tf) -> str:
-    return f"{coin}|{rule}|{screen.fmt(_params(params))}|x={exit_id}|{side}|{tf}"
+def member_key(coin, rule, params: dict, exit_id, side, tf, filt: str = "none", confirm: dict | None = None) -> str:
+    k = f"{coin}|{rule}|{screen.fmt(_params(params))}|x={exit_id}|{side}|{tf}"
+    if filt and filt != "none":
+        k += f"|f={filt}"
+    if confirm:
+        k += f"|c={confirm['rule']}:{screen.fmt(_params(confirm.get('params') or {}))}:{confirm.get('within', 0)}"
+    return k
 
 
 # ------------------------------------------------------------------ roster
@@ -69,7 +85,7 @@ def update_roster(res: dict, cfg: dict) -> tuple[dict, str]:
     ro = _read(ROSTER, None) or {"universe": cfg["universe"], "timeframe": cfg["timeframe"],
                                  "start": cfg.get("start", "2018-01-01"), "created_at": now_iso(),
                                  "next_id": 1, "members": []}
-    if ro.get("timeframe") != cfg["timeframe"] or ro.get("universe") != cfg["universe"]:
+    if ro.get("universe") != cfg["universe"]:
         for m in ro["members"]:          # config changed: old members stop, record is kept
             if m["status"] != "retired":
                 m.update(status="retired", retired_at=now_iso(), why="arena config changed")
@@ -79,21 +95,26 @@ def update_roster(res: dict, cfg: dict) -> tuple[dict, str]:
     added, promoted = 0, 0
 
     def grid_params(row):
-        pts = RL.grid_points(RL.RULES[row["rule"]].grid)
-        return next(p for p in pts if screen.fmt(p) == row["params"])
+        return dict(row["spec"]["params"])
 
     def n_live():
         return sum(1 for m in ro["members"] if m["status"] in ("active", "control"))
 
+    seen: set = set()      # one variant per (coin, rule) per screen: the best-ranked one
     for want_tier, status in (("ok", "active"), ("near", "control")):
         for row in ranked:
+            if (row["coin"], row["rule"]) in seen:
+                continue
             is_ok = row["stage"] == "OK"
             if (want_tier == "ok") != is_ok:
                 continue
             if want_tier == "near" and (not ac.get("fill_controls", True) or row["stage"] in ("S0", "S1", None)):
                 continue
+            seen.add((row["coin"], row["rule"]))
             prm = grid_params(row)
-            k = member_key(row["coin"], row["rule"], prm, cfg["exit_id"], cfg["side"], cfg["timeframe"])
+            sp = row["spec"]
+            k = member_key(row["coin"], row["rule"], prm, sp["exit_id"], cfg["side"], cfg["timeframe"],
+                           sp.get("filter", "none"), sp.get("confirm"))
             bt = {"card": row["card"], "sharpe": row["sharpe"], "max_dd": row["max_dd"], "dsr": row.get("dsr"),
                   "stage": row["stage"], "why": row["why"], "tier": row.get("tier"), "screened_at": now_iso()}
             if k in keys:
@@ -114,7 +135,8 @@ def update_roster(res: dict, cfg: dict) -> tuple[dict, str]:
             mid = f"A{ro['next_id']:04d}"
             ro["next_id"] += 1
             m = {"id": mid, "key": k, "coin": row["coin"], "rule": row["rule"], "params": prm,
-                 "exit_id": cfg["exit_id"], "side": cfg["side"], "timeframe": cfg["timeframe"],
+                 "exit_id": sp["exit_id"], "filter": sp.get("filter", "none"), "confirm": sp.get("confirm"),
+                 "stage_no": row.get("stage_no", 1), "side": cfg["side"], "timeframe": cfg["timeframe"],
                  "status": status, "added_at": now_iso(), "backtest": bt}
             ro["members"].append(m)
             keys[k] = m
@@ -137,11 +159,13 @@ def compute(ro: dict, p: Panel, costs: Costs, members: list[dict] | None = None)
     for m in members:
         if m["coin"] not in p.columns:
             continue
-        groups.setdefault((m["rule"], json.dumps(m["params"], sort_keys=True), m["exit_id"], m["side"]), []).append(m)
+        spec = {"rule": m["rule"], "params": m["params"], "exit_id": m["exit_id"],
+                "filter": m.get("filter", "none"), "confirm": m.get("confirm")}
+        groups.setdefault((json.dumps(spec, sort_keys=True, default=str), m["side"]), []).append(m)
     R, X, T = {}, {}, {}
-    for (rule, pj, ex, side), ms in groups.items():
+    for (sj, side), ms in groups.items():
         coins = sorted({m["coin"] for m in ms})
-        r, x, tr = screen.run_variant(screen.subpanel(p, coins), rule, _params(json.loads(pj)), ex, side, costs)
+        r, x, tr = screen.run_spec(screen.subpanel(p, coins), json.loads(sj), side, costs)
         for m in ms:
             R[m["id"]] = r[m["coin"]]
             X[m["id"]] = x[m["coin"]]
@@ -253,6 +277,8 @@ def run(p: Panel, costs: Costs, cfg: dict) -> dict:
         members_out.append({
             "id": i, "coin": m["coin"], "rule": m["rule"], "params": screen.fmt(_params(m["params"])),
             "exit": EXIT_GRID[m["exit_id"]].label(), "side": m["side"], "status": m["status"],
+            "variant": screen.spec_label({"exit_id": m["exit_id"], "filter": m.get("filter", "none"),
+                                          "confirm": m.get("confirm")}), "stage_no": m.get("stage_no", 1),
             "tier": (m.get("backtest") or {}).get("tier"), "added_at": m["added_at"][:10], "why": m.get("why", ""),
             "position": "long" if pos > 1e-9 else ("short" if pos < -1e-9 else "flat"), "exposure": round(pos, 3),
             "forward": fwd, "card": perp.card(r, T[i], ppy, windows, cfg.get("account", {}), cps, fund),
@@ -293,7 +319,7 @@ def run(p: Panel, costs: Costs, cfg: dict) -> dict:
             mo = next(x for x in members_out if x["id"] == i)
             m = next(x for x in ro["members"] if x["id"] == i)
             picks.append({"id": i, "coin": m["coin"], "rule": m["rule"], "params": _params(m["params"]),
-                          "exit_id": m["exit_id"], "side": m["side"], "timeframe": m["timeframe"],
+                          "exit_id": m["exit_id"], "filter": m.get("filter", "none"), "confirm": m.get("confirm"), "side": m["side"], "timeframe": m["timeframe"],
                           "weight": w, "position": mo["position"], "regime": mo["regime_now"]})
     sw_out = {"updated_at": now_iso(), "data_end": str(end), "universe": ro["universe"], "timeframe": ro["timeframe"],
               "usable": all(checks.values()), "checks": checks, "settings": d,

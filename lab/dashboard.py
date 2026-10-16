@@ -1,4 +1,4 @@
-"""Static dashboard for GitHub Pages: dashboard/index.html + data.json (built by every arena run).
+"""Static dashboard for GitHub Pages: dashboard/index.html + data_<tf>.json per timeframe + tfs.json (built by every arena run).
 
 The page is deployed with actions/deploy-pages (an artifact, not a commit), so the repository does not grow.
 Settings -> Pages -> Source: "GitHub Actions" (one time).
@@ -37,7 +37,14 @@ def build(out: dict, cfg: dict, site: str | Path = "site") -> Path:
         "spark_switch_fwd": out.get("spark_switch_fwd", []), "spark_ew_fwd": out.get("spark_ew_fwd", []),
         "members": out["members"],
     }
-    (site / "data.json").write_text(json.dumps(_clean(data), ensure_ascii=False, default=str, separators=(",", ":")))
+    tf = cfg.get("timeframe", "4h")
+    (site / f"data_{tf}.json").write_text(json.dumps(_clean(data), ensure_ascii=False, default=str, separators=(",", ":")))
+    return site / f"data_{tf}.json"
+
+
+def write_index(site: str | Path, timeframes: list[str]) -> None:
+    site = Path(site)
+    site.mkdir(parents=True, exist_ok=True)
+    (site / "tfs.json").write_text(json.dumps(timeframes))
     shutil.copy(ROOT / "dashboard" / "index.html", site / "index.html")
     (site / ".nojekyll").write_text("")
-    return site

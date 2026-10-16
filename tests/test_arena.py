@@ -119,6 +119,28 @@ def test_funnel_on_noise_finds_no_tier_a():
     assert f[0]["remaining"] + f[0]["eliminated"] == 5 * 2
 
 
+def test_stage2_filters_exits_combos():
+    """Stage 2 widens only S1-passers, counts its trials, and its rows carry filter/exit/combo specs."""
+    p = _panel(4, 2600, seed=33)
+    cfg = {"report_windows_years": [3, 0], "exit_id": 28, "side": "both",
+           "screen": {"rules": ["donchian_breakout", "macd_cross", "rsi_reversal"], "min_years": 3.0,
+                      "min_trades": 5},
+           "stage2": {"enabled": True, "filters": ["none", "trend_sma200"], "exits": [28, 0],
+                      "combos": {"enabled": True, "top_families": 3, "within": [0, 3]}},
+           "account": {"leverages": [1]}}
+    res = screen.run(p, Costs(0.0006, 0.0005), cfg, workers=1)
+    s1 = sum(1 for r in res["rows"].values() if r["stage_no"] == 1 and r["stage"] not in ("S0", "S1"))
+    assert res["stage2"]["candidates"] == s1
+    base_trials = sum(len(rules.grid_points(rules.RULES[r].grid)) for r in cfg["screen"]["rules"]) * 4
+    assert res["n_trials"] == base_trials + res["stage2"]["trials"]
+    for r in res["rows"].values():
+        if r["stage_no"] == 2:
+            sp = r["spec"]
+            assert sp["filter"] != "none" or sp["exit_id"] != 28 or sp.get("confirm")
+    if s1:
+        assert res["stage2"]["trials"] > 0
+
+
 def test_drop_open_bar():
     now = pd.Timestamp.now(tz="UTC").tz_localize(None).floor("4h")
     idx = pd.date_range(end=now, periods=5, freq="4h")

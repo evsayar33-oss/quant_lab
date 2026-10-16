@@ -60,11 +60,20 @@ def shift_signals(s: Signals, k: int = 1) -> Signals:
     return Signals(sh(s.entry_long), sh(s.exit_long), sh(s.entry_short), sh(s.exit_short))
 
 
-def run_variant(p: Panel, rule: str, params: dict, exit_id: int, side: str, costs: Costs, delay: int = 0):
+def run_variant(p: Panel, rule: str, params: dict, exit_id: int, side: str, costs: Costs, delay: int = 0,
+                filt: str = "none", confirm: dict | None = None):
     """Run one rule variant on every coin of `p` at once (equal 1/N sizing, no slot limit, so each coin
-    trades independently). Returns stand-alone 1x returns per coin, SIGNED held exposure per coin
+    trades independently). Optional entry filter (rules.FILTERS) and two-signal confirmation
+    confirm = {"rule": name, "params": {...}, "within": bars}: entry only when the confirming rule fired
+    on the same bar or within the previous `within` bars.
+    Returns stand-alone 1x returns per coin, SIGNED held exposure per coin
     (+1 long, -1 short, 0 flat; partial exits give fractions) and the trade log."""
     sig = rules.RULES[rule].fn(p, **params)
+    if confirm:
+        sec = rules.RULES[confirm["rule"]].fn(p, **_tuples(confirm.get("params") or {}))
+        sig = rules.confirm(sig, sec, int(confirm.get("within", 0)))
+    if filt and filt != "none":
+        sig = rules.apply_filter(sig, p, filt)
     if delay:
         sig = shift_signals(sig, delay)
     n = p.c.shape[1]
@@ -73,6 +82,27 @@ def run_variant(p: Panel, rule: str, params: dict, exit_id: int, side: str, cost
     X = res.meta["held_weights"].reindex(R.index).fillna(0.0) * n
     R = R.where(p.c.notna().cummax(), np.nan)          # NaN before a coin has data
     return R, X, res.meta["trades"]
+
+
+def _tuples(d: dict) -> dict:
+    return {k: tuple(v) if isinstance(v, list) else v for k, v in (d or {}).items()}
+
+
+def spec_label(spec: dict) -> str:
+    """Short text of a variant beyond its rule parameters: filter, exit, confirmation."""
+    out = []
+    if spec.get("filter", "none") != "none":
+        out.append(f"filtre={spec['filter']}")
+    out.append(f"çıkış={EXIT_GRID[spec['exit_id']].label()}")
+    if spec.get("confirm"):
+        c = spec["confirm"]
+        out.append(f"onay={c['rule']}(≤{c['within']} bar)")
+    return " · ".join(out)
+
+
+def run_spec(p: Panel, spec: dict, side: str, costs: Costs, delay: int = 0):
+    return run_variant(p, spec["rule"], _tuples(spec["params"]), spec["exit_id"], side, costs, delay,
+                       spec.get("filter", "none"), spec.get("confirm"))
 
 
 def first_valid(p: Panel) -> dict:
@@ -129,6 +159,28 @@ def sweep(p: Panel, rule_names: list[str], exit_id: int, side: str, costs: Costs
             continue
         out.setdefault(rn, {})[gi] = d
     return out, errors, len(jobs)
+
+
+def _spec_job(args):
+    tag, coin, spec, side, costs = args
+    try:
+        R, _, tr = run_spec(subpanel(_G["panel"], [coin]), spec, side, costs)
+    except Exception as e:  # noqa: BLE001
+        return tag, coin, None, str(e)
+    r = R[coin].dropna()
+    return tag, coin, (_sr_bar(r), float((1 + r).prod() - 1) if len(r) else 0.0, int(len(tr))), None
+
+
+def _pmap(fn, jobs, workers):
+    workers = workers or int(os.environ.get("LAB_WORKERS", os.cpu_count() or 1))
+    if workers > 1 and len(jobs) > 4:
+        import multiprocessing as mp
+        try:
+            with ProcessPoolExecutor(workers, mp_context=mp.get_context("fork")) as ex:
+                return list(ex.map(fn, jobs, chunksize=max(1, len(jobs) // (workers * 8))))
+        except Exception:  # noqa: BLE001
+            pass
+    return [fn(j) for j in jobs]
 
 
 def neighbours(grid: dict) -> dict[int, list[int]]:
@@ -199,45 +251,183 @@ def run(p: Panel, costs: Costs, cfg: dict, workers: int | None = None) -> dict:
     n_trials = max(1, len(trial_srs))
     print(f"[screen] {n_jobs} variants x {len(coins)} coins = {n_trials} trials")
 
-    # pick the plateau centre for every (coin, rule)
-    picks: dict[tuple, dict] = {}
+    # pick the plateau centre for every (coin, rule)  -> stage-1 candidates
+    cands: dict[tuple, dict] = {}
     for rn, st in stats.items():
         nb = neighbours(rules.RULES[rn].grid)
         pts = rules.grid_points(rules.RULES[rn].grid)
         for c in coins:
             gi, share = plateau_pick(st, nb, c)
             if gi is not None:
-                picks[(c, rn)] = {"gi": gi, "params": pts[gi], "nb_share": share}
+                cands[(c, rn, "base")] = {"coin": c, "stage_no": 1, "nb_share": share, "param_share": share,
+                                          "spec": {"rule": rn, "params": pts[gi], "filter": "none",
+                                                   "exit_id": exit_id, "confirm": None}}
+    ctx = dict(q=q, cfg=cfg, sc=sc, side=side, costs=costs, stress=stress, cps=cps, ppy=ppy,
+               windows=windows, fv=fv)
+    rows, series = evaluate(cands, ctx)
+    n_stage1_rows = len(rows)
 
-    # group identical variants -> one run over their coins
+    # ---------------- stage 2: filters x exits and two-signal combos, only where stage 1 shows promise
+    s2 = cfg.get("stage2", {})
+    s2_info = {"enabled": bool(s2.get("enabled", False)), "trials": 0, "candidates": 0}
+    if s2_info["enabled"]:
+        base = [k for k, r in rows.items() if r["stage"] not in ("S0", "S1")]   # passed S1
+        s2_info["candidates"] = len(base)
+        filters = list(s2.get("filters", ["none"]))
+        exits = [int(x) for x in s2.get("exits", [exit_id])]
+        within = [int(x) for x in (s2.get("combos", {}) or {}).get("within", [0, 3, 5])]
+        top_fam = int((s2.get("combos", {}) or {}).get("top_families", 6))
+        use_combo = bool((s2.get("combos", {}) or {}).get("enabled", True))
+        # confirmation rules: the most frequent S1-passing rule of each of the top families (grid centre)
+        fam_count: dict[str, dict] = {}
+        for k in base:
+            r = rows[k]
+            fam_count.setdefault(r["family"], {}).setdefault(r["rule"], 0)
+            fam_count[r["family"]][r["rule"]] += 1
+        fams = sorted(fam_count, key=lambda f: -sum(fam_count[f].values()))[:top_fam]
+        reps = {f: max(fam_count[f], key=fam_count[f].get) for f in fams}
+        centre = lambda rn: {k: v[len(v) // 2] for k, v in rules.RULES[rn].grid.items()}   # noqa: E731
+        jobs, meta = [], {}
+        for k in base:
+            c, rn = k[0], k[1]
+            sp = cands[k]["spec"]
+            for f in filters:
+                for e in exits:
+                    if f == "none" and e == exit_id:
+                        continue           # that is the stage-1 variant itself
+                    tag = f"fe|{rn}|{f}|{e}"
+                    spec = {**sp, "filter": f, "exit_id": e}
+                    jobs.append((tag, c, spec, side, costs)); meta[(c, tag)] = spec
+            if use_combo:
+                for fam, r2 in reps.items():
+                    if fam == rows[k]["family"] or r2 == rn:
+                        continue
+                    for w in within:
+                        tag = f"cb|{rn}|{r2}|{w}"
+                        spec = {**sp, "confirm": {"rule": r2, "params": centre(r2), "within": w}}
+                        jobs.append((tag, c, spec, side, costs)); meta[(c, tag)] = spec
+        print(f"[screen] stage 2: {len(base)} candidates -> {len(jobs)} filter/exit/combo variants")
+        res2 = _pmap(_spec_job, jobs, workers)
+        summ = {(c, tag): v for tag, c, v, err in res2 if v is not None}
+        for (c, tag), v in summ.items():
+            trial_srs.append(v[0])
+        s2_info["trials"] = len(summ)
+        n_trials = max(1, len(trial_srs))
+        # robust pick per candidate: score = min(own Sharpe, mean of its neighbours)
+        new_cands = {}
+        for k in base:
+            c, rn = k[0], k[1]
+            pshare = rows[k]["nb_share"]
+            # filter x exit matrix: neighbours = same filter other exits + same exit other filters
+            grid = {}
+            for f in filters:
+                for e in exits:
+                    tag = "base" if (f == "none" and e == exit_id) else f"fe|{rn}|{f}|{e}"
+                    v = (rows[k]["sharpe_bar"], rows[k]["ret_full"]) if tag == "base" else summ.get((c, tag))
+                    if v is not None:
+                        grid[(f, e)] = (tag, v[0], v[1])
+            best, best_sc, best_share = None, -np.inf, None
+            for (f, e), (tag, sr, _) in grid.items():
+                nbs = [grid[x] for x in grid if x != (f, e) and (x[0] == f or x[1] == e)]
+                sc_ = min(sr, float(np.mean([n[1] for n in nbs]))) if nbs else sr
+                if sc_ > best_sc:
+                    best, best_sc = (f, e, tag), sc_
+                    best_share = float(np.mean([n[2] > 0 for n in nbs])) if nbs else None
+            if best and best[2] != "base":
+                tag = best[2]
+                new_cands[(c, rn, tag)] = {"coin": c, "stage_no": 2, "param_share": pshare,
+                                           "nb_share": None if best_share is None or pshare is None else min(pshare, best_share),
+                                           "spec": meta[(c, tag)]}
+            if use_combo:
+                cb = {}
+                for (cc, tag), v in summ.items():
+                    if cc == c and tag.startswith(f"cb|{rn}|"):
+                        _, _, r2, w = tag.split("|")
+                        cb.setdefault(r2, {})[int(w)] = (tag, v[0], v[1])
+                best, best_sc, best_share = None, -np.inf, None
+                for r2, ws in cb.items():
+                    for w, (tag, sr, _) in ws.items():
+                        nbs = [ws[x] for x in ws if x != w]
+                        sc_ = min(sr, float(np.mean([n[1] for n in nbs]))) if nbs else sr
+                        if sc_ > best_sc:
+                            best, best_sc = tag, sc_
+                            best_share = float(np.mean([n[2] > 0 for n in nbs])) if nbs else None
+                if best and best_sc > rows[k]["sharpe_bar"]:      # a combo must beat the rule alone
+                    new_cands[(c, rn, best)] = {"coin": c, "stage_no": 2, "param_share": pshare,
+                                                "nb_share": None if best_share is None or pshare is None else min(pshare, best_share),
+                                                "spec": meta[(c, best)]}
+        r2_, s2_ = evaluate(new_cands, ctx)
+        rows.update(r2_); series.update(s2_)
+
+    # ---------------- DSR (every trial of BOTH stages counted), tiers, log
+    for key, row in rows.items():
+        if row["stage"] in ("OK", "S6", "S7", "S5"):
+            row["dsr"] = round(metrics.dsr(series[key][0], n_trials, trial_srs), 3)
+        row["tier"] = ("A" if row.get("dsr", 0) >= sc.get("tier_a_min_dsr", 0.9) else "B") if row["stage"] == "OK" else None
+        log.append({"coin": row["coin"], "rule": row["rule"], "params": row["params"], "variant": row["variant"],
+                    "stage": row["stage"], "why": row["why"]})
+
+    def funnel_of(rs, total, s0):
+        out, remaining = [], total
+        for s_ in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7"]:
+            k_ = s0 if s_ == "S0" else sum(1 for r in rs if r["stage"] == s_)
+            remaining -= k_
+            out.append({"stage": s_, "label": STAGE_TR[s_], "eliminated": k_, "remaining": remaining})
+        return out
+
+    st1 = [r for r in rows.values() if r["stage_no"] == 1]
+    st2 = [r for r in rows.values() if r["stage_no"] == 2]
+    total = len(years) * len(rule_names)
+    s0 = (len(years) - len(coins)) * len(rule_names) + (len(coins) * len(rule_names) - n_stage1_rows)
+    funnel = funnel_of(st1, total, s0)
+    funnel2 = funnel_of(st2, len(st2), 0) if st2 else []
+    return {"rows": rows, "series": series, "log": log, "funnel": funnel, "funnel2": funnel2, "stage2": s2_info,
+            "n_trials": n_trials, "n_variant_runs": n_jobs, "errors": errors, "coins": coins, "candidates_total": total,
+            "years": {c: round(y, 2) for c, y in years.items()}, "data_start": str(p.index[0]),
+            "data_end": str(p.index[-1]), "ppy": ppy, "first_valid": {c: str(t) for c, t in fv.items()}}
+
+
+def evaluate(cands: dict, ctx: dict) -> tuple[dict, dict]:
+    """Full report card + elimination steps S1-S7 for candidate variants (any stage).
+    Identical variants are grouped into one multi-coin run."""
+    q, cfg, sc, side, costs, stress = ctx["q"], ctx["cfg"], ctx["sc"], ctx["side"], ctx["costs"], ctx["stress"]
+    ppy, windows, fv, cps = ctx["ppy"], ctx["windows"], ctx["fv"], ctx["cps"]
+    import json as _json
+
+    def gkey(spec):
+        return _json.dumps(spec, sort_keys=True, default=str)
+
     def groups(keys):
-        g: dict[tuple, list] = {}
-        for (c, rn) in keys:
-            pk = picks[(c, rn)]
-            g.setdefault((rn, pk["gi"]), []).append(c)
+        g: dict[str, list] = {}
+        for k in keys:
+            g.setdefault(gkey(cands[k]["spec"]), []).append(k)
         return g
 
-    rows: dict[tuple, dict] = {}
-    series: dict[tuple, tuple] = {}
-    for (rn, gi), cs in groups(list(picks)).items():
-        prm = picks[(cs[0], rn)]["params"]
-        R, X, tr = run_variant(subpanel(q, cs), rn, prm, exit_id, side, costs)
-        for c in cs:
+    rows, series = {}, {}
+    for _, ks in groups(list(cands)).items():
+        spec = cands[ks[0]]["spec"]
+        coins_ = [cands[k]["coin"] for k in ks]
+        R, X, tr = run_spec(subpanel(q, coins_), spec, side, costs)
+        for k in ks:
+            c = cands[k]["coin"]
             r = R[c].dropna()
             t = tr[tr["asset"] == c] if len(tr) else tr
             card = perp.card(r, t, ppy, windows, cfg.get("account", {}), cps, costs.funding_annual, fv[c])
-            rows[(c, rn)] = {"coin": c, "rule": rn, "family": rules.RULES[rn].family, "params": fmt(prm),
-                             "nb_share": picks[(c, rn)]["nb_share"], "card": card,
-                             "sharpe": round(metrics.sharpe(r), 3), "max_dd": round(metrics.max_drawdown(r), 4),
-                             "psr": round(metrics.psr(r), 3), "pos_years": round(perp.pos_year_frac(r, ppy), 3),
-                             "trades": int(len(t)), "stage": None, "why": ""}
-            series[(c, rn)] = (r, t)
+            rn = spec["rule"]
+            rows[k] = {"coin": c, "rule": rn, "family": rules.RULES[rn].family, "params": fmt(_tuples(spec["params"])),
+                       "spec": spec, "variant": spec_label(spec), "stage_no": cands[k]["stage_no"],
+                       "nb_share": cands[k]["nb_share"], "card": card,
+                       "sharpe": round(metrics.sharpe(r), 3), "sharpe_bar": _sr_bar(r),
+                       "ret_full": float((1 + r).prod() - 1) if len(r) else 0.0,
+                       "max_dd": round(metrics.max_drawdown(r), 4),
+                       "psr": round(metrics.psr(r), 3), "pos_years": round(perp.pos_year_frac(r, ppy), 3),
+                       "trades": int(len(t)), "stage": None, "why": ""}
+            series[k] = (r, t)
 
     def fail(key, stage, why):
         rows[key]["stage"], rows[key]["why"] = stage, why
 
-    # S1, S2
-    for key, row in rows.items():
+    for key, row in rows.items():            # S1, S2
         cd = row["card"]
         rets = {k: v["ret"] for k, v in cd.items() if not v.get("no_data")}
         bad = [k for k, v in rets.items() if v <= 0]
@@ -248,35 +438,30 @@ def run(p: Panel, costs: Costs, cfg: dict, workers: int | None = None) -> dict:
         pf = cd.get("full", {}).get("profit_factor")
         if pf is None or pf < sc.get("min_profit_factor", 1.15) or row["max_dd"] < sc.get("max_dd_floor", -0.40):
             fail(key, "S2", f"PF {pf}, 1x maks. düşüş {row['max_dd']:.0%}")
-
     alive = [k for k, r in rows.items() if r["stage"] is None]
-    # S3 cost stress
-    for (rn, gi), cs in groups(alive).items():
-        R, _, _ = run_variant(subpanel(q, cs), rn, picks[(cs[0], rn)]["params"], exit_id, side, stress)
-        for c in cs:
-            r = R[c].dropna()
+    for _, ks in groups(alive).items():      # S3 cost stress
+        R, _, _ = run_spec(subpanel(q, [cands[k]["coin"] for k in ks]), cands[ks[0]]["spec"], side, stress)
+        for k in ks:
+            r = R[cands[k]["coin"]].dropna()
             tot = float((1 + r).prod() - 1)
-            rows[(c, rn)]["stress_ret"] = round(tot, 4)
+            rows[k]["stress_ret"] = round(tot, 4)
             if tot <= 0:
-                fail((c, rn), "S3", f"{sc.get('cost_stress', 2.0)}x maliyette getiri {tot:+.0%}")
-    # S4 plateau
-    for key in [k for k, r in rows.items() if r["stage"] is None]:
+                fail(k, "S3", f"{sc.get('cost_stress', 2.0)}x maliyette getiri {tot:+.0%}")
+    for key in [k for k, r in rows.items() if r["stage"] is None]:     # S4 plateau
         sh = rows[key]["nb_share"]
         if sh is None or sh < sc.get("min_neighbour_share_pos", 0.5):
             fail(key, "S4", "komşu ayar yok" if sh is None else f"komşu ayarların %{sh * 100:.0f}'i kârlı")
-    # S5 delay
     alive = [k for k, r in rows.items() if r["stage"] is None]
-    for (rn, gi), cs in groups(alive).items():
-        R, _, _ = run_variant(subpanel(q, cs), rn, picks[(cs[0], rn)]["params"], exit_id, side, costs, delay=1)
-        for c in cs:
-            s0 = rows[(c, rn)]["sharpe"]
-            s1 = metrics.sharpe(R[c].dropna())
-            kept = s1 / s0 if s0 > 0 else 0.0
-            rows[(c, rn)]["delay_kept"] = round(kept, 3)
+    for _, ks in groups(alive).items():      # S5 delay
+        R, _, _ = run_spec(subpanel(q, [cands[k]["coin"] for k in ks]), cands[ks[0]]["spec"], side, costs, delay=1)
+        for k in ks:
+            s0_ = rows[k]["sharpe"]
+            s1_ = metrics.sharpe(R[cands[k]["coin"]].dropna())
+            kept = s1_ / s0_ if s0_ > 0 else 0.0
+            rows[k]["delay_kept"] = round(kept, 3)
             if kept < sc.get("min_delay_retained", 0.4):
-                fail((c, rn), "S5", f"1 bar geç girişte Sharpe'ın %{max(kept, 0) * 100:.0f}'i kalıyor")
-    # S6, S7, DSR
-    for key in [k for k, r in rows.items() if r["stage"] is None]:
+                fail(k, "S5", f"1 bar geç girişte Sharpe'ın %{max(kept, 0) * 100:.0f}'i kalıyor")
+    for key in [k for k, r in rows.items() if r["stage"] is None]:     # S6, S7
         row = rows[key]
         if row["pos_years"] < sc.get("min_pos_year_frac", 0.6):
             fail(key, "S6", f"yılların %{row['pos_years'] * 100:.0f}'i kârlı")
@@ -285,24 +470,7 @@ def run(p: Panel, costs: Costs, cfg: dict, workers: int | None = None) -> dict:
             fail(key, "S7", f"PSR {row['psr']}")
             continue
         row["stage"], row["why"] = "OK", "tüm adımlar geçti"
-    for key, row in rows.items():
-        if row["stage"] in ("OK", "S6", "S7", "S5"):
-            row["dsr"] = round(metrics.dsr(series[key][0], n_trials, trial_srs), 3)
-        row["tier"] = ("A" if row.get("dsr", 0) >= sc.get("tier_a_min_dsr", 0.9) else "B") if row["stage"] == "OK" else None
-        log.append({"coin": row["coin"], "rule": row["rule"], "params": row["params"], "stage": row["stage"],
-                    "why": row["why"]})
-
-    total = len(years) * len(rule_names)
-    s0 = (len(years) - len(coins)) * len(rule_names) + (len(coins) * len(rule_names) - len(rows))
-    funnel, remaining = [], total
-    for s in ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7"]:
-        k = s0 if s == "S0" else sum(1 for r in rows.values() if r["stage"] == s)
-        remaining -= k
-        funnel.append({"stage": s, "label": STAGE_TR[s], "eliminated": k, "remaining": remaining})
-    return {"rows": rows, "series": series, "log": log, "funnel": funnel, "n_trials": n_trials,
-            "n_variant_runs": n_jobs, "errors": errors, "coins": coins, "candidates_total": total,
-            "years": {c: round(y, 2) for c, y in years.items()}, "data_start": str(p.index[0]),
-            "data_end": str(p.index[-1]), "ppy": ppy, "first_valid": {c: str(t) for c, t in fv.items()}}
+    return rows, series
 
 
 def rank_key(row: dict):
@@ -322,19 +490,29 @@ def markdown(res: dict, cfg: dict, roster_note: str = "") -> str:
          "## Huni", "", "| Adım | Ne kontrol edilir | Elenen | Kalan |", "|---|---|---|---|"]
     for f in res["funnel"]:
         L.append(f"| {f['stage']} | {f['label']} | {f['eliminated']} | {f['remaining']} |")
+    s2 = res.get("stage2") or {}
+    if s2.get("enabled"):
+        L += ["", "## 2. aşama: filtre × çıkış × kombo (sadece S1'i geçen adaylarda)", "",
+              f"{s2.get('candidates', 0)} aday → {s2.get('trials', 0)} ek deneme (DSR'a eklendi). Her aday için "
+              "en sağlam filtre/çıkış hücresi ve en sağlam kombo seçildi; kombo sadece kuralı tek başına geçerse aday olur. "
+              "Seçilenler aynı S1–S7 adımlarından geçti.", "",
+              "| Adım | Ne kontrol edilir | Elenen | Kalan |", "|---|---|---|---|"]
+        for f in res.get("funnel2") or []:
+            L.append(f"| {f['stage']} | {f['label']} | {f['eliminated']} | {f['remaining']} |")
     ok = sorted([r for r in res["rows"].values() if r["stage"] == "OK"], key=rank_key)
     L += ["", f"## Geçenler ({len(ok)})", ""]
     if not ok:
         L.append("**Daha iyisi bulunamadı:** kurala göre hiçbir strateji tüm adımları geçmedi. "
                  "Arena sadece kontrol üyeleriyle çalışır; switcher para ayırmaz.")
     else:
-        L += ["| Tier | Coin | Kural | Ayar | 3y | 5y | Tüm | Sharpe | 1x DD | PF | DSR |", "|---|---|---|---|---|---|---|---|---|---|---|"]
+        L += ["| Tier | Aşama | Coin | Kural | Ayar | Varyant | 3y | 5y | Tüm | Sharpe | 1x DD | PF | DSR |",
+              "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
         for r in ok:
             cd = r["card"]
             def w(k):
                 v = cd.get(k, {})
                 return "veri yok" if v.get("no_data") else f"{v.get('ret', 0):+.0%}"
-            L.append(f"| {r['tier']} | {r['coin']} | {r['rule']} | `{r['params']}` | {w('3y')} | {w('5y')} | {w('full')} | "
+            L.append(f"| {r['tier']} | {r['stage_no']} | {r['coin']} | {r['rule']} | `{r['params']}` | {r['variant']} | {w('3y')} | {w('5y')} | {w('full')} | "
                      f"{r['sharpe']} | {r['max_dd']:.0%} | {cd.get('full', {}).get('profit_factor')} | {r.get('dsr')} |")
     # agent-style narration per coin
     L += ["", "## Coin coin özet (ajan günlüğü)", ""]
@@ -349,7 +527,8 @@ def markdown(res: dict, cfg: dict, roster_note: str = "") -> str:
         rs = sorted(by[c], key=rank_key)
         n_ok = sum(1 for r in rs if r["stage"] == "OK")
         best = rs[0]
-        txt = (f"- **{c}**: {len(rs)} kural denendi, {n_ok} kaldı. En iyi aday {best['rule']} (`{best['params']}`): "
+        txt = (f"- **{c}**: {len(rs)} aday denendi, {n_ok} kaldı. En iyi aday {best['rule']} (`{best['params']}`, "
+               f"{best['variant']}): "
                f"{best['stage']} — {best['why']}.")
         L.append(txt)
     L += ["", "## Zayıf yönler (dürüst liste)", "",
@@ -364,6 +543,14 @@ def markdown(res: dict, cfg: dict, roster_note: str = "") -> str:
     return "\n".join(L)
 
 
+def _confirm_yaml(spec: dict) -> str:
+    c = spec.get("confirm")
+    if not c:
+        return ""
+    prm = ", ".join(f"{k}: {list(v) if isinstance(v, (list, tuple)) else v}" for k, v in c["params"].items())
+    return f"\n  confirm: {c['rule']}\n  confirm_params: {{{prm}}}\n  confirm_within: [{c['within']}]"
+
+
 def suggested_yaml(res: dict, cfg: dict, next_id: int) -> str:
     out = []
     for r in sorted([r for r in res["rows"].values() if r.get("tier") == "A"], key=rank_key):
@@ -374,11 +561,11 @@ def suggested_yaml(res: dict, cfg: dict, next_id: int) -> str:
   timeframe: {cfg['timeframe']}
   for_system: karma_perp_bot
   start: "{cfg.get('start', '2018-01-01')}"
-  filters: [none]
-  exits: [{cfg.get('exit_id', 28)}]
+  filters: [{r['spec'].get('filter', 'none')}]
+  exits: [{r['spec']['exit_id']}]{_confirm_yaml(r['spec'])}
   side: {cfg.get('side', 'both')}
   status: active
-  note: "Arena funnel tier A ({r['coin']} {r['rule']} {r['params']}, DSR {r.get('dsr')})"
+  note: "Arena funnel tier A ({r['coin']} {r['rule']} {r['params']} {r['variant']}, DSR {r.get('dsr')})"
 """)
         next_id += 1
     return "\n".join(out)
@@ -388,7 +575,7 @@ def to_frame(res: dict) -> pd.DataFrame:
     rec = []
     for r in res["rows"].values():
         cd = r["card"]
-        d = {k: r.get(k) for k in ("coin", "rule", "family", "params", "stage", "why", "tier", "sharpe", "max_dd",
+        d = {k: r.get(k) for k in ("coin", "rule", "family", "params", "variant", "stage_no", "stage", "why", "tier", "sharpe", "max_dd",
                                    "psr", "dsr", "pos_years", "trades", "nb_share", "stress_ret", "delay_kept")}
         for w, v in cd.items():
             if not v.get("no_data"):

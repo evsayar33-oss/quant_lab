@@ -219,13 +219,24 @@ def do_scan(a) -> None:
         telegram("\n".join(msg))
 
 
-def arena_cfg(a) -> dict:
-    cfg = load_yaml("config/arena.yaml")
+def arena_cfgs(a) -> list[dict]:
+    """One config per timeframe. --timeframe runs a single one; --stage2 on|off overrides the config."""
+    base = load_yaml("config/arena.yaml")
     if a.universe:
-        cfg["universe"] = a.universe
+        base["universe"] = a.universe
+    tfs = base.get("timeframes") or [base.get("timeframe", "4h")]
     if "--timeframe" in sys.argv:
-        cfg["timeframe"] = a.timeframe
-    return cfg
+        tfs = [a.timeframe]
+    if a.stage2 in ("on", "off"):
+        base.setdefault("stage2", {})["enabled"] = a.stage2 == "on"
+    out = []
+    for tf in tfs:
+        c = {k: (dict(v) if isinstance(v, dict) else v) for k, v in base.items()}
+        for k, v in (base.get("by_timeframe", {}).get(tf) or {}).items():
+            c[k] = {**(c.get(k) or {}), **v} if isinstance(v, dict) else v
+        c["timeframe"] = tf
+        out.append(c)
+    return out
 
 
 def arena_panel(cfg: dict, synthetic: bool) -> tuple[Panel, Costs]:
@@ -250,8 +261,28 @@ def arena_panel(cfg: dict, synthetic: bool) -> tuple[Panel, Costs]:
 
 
 def do_arena(a, hyps) -> None:
+    from lab import arena
+    built = []
+    for cfg in arena_cfgs(a):
+        arena.use(cfg["timeframe"])
+        print(f"===== arena {cfg['universe']} {cfg['timeframe']} =====")
+        try:
+            out = _arena_one(a, hyps, cfg)
+        except Exception as e:  # noqa: BLE001 - one timeframe must not stop the other
+            import traceback
+            traceback.print_exc()
+            if a.telegram:
+                telegram(f"⚠️ arena {cfg['timeframe']} hata: {e}")
+            continue
+        if out:
+            built.append(cfg["timeframe"])
+    if a.site and built:
+        from lab import dashboard
+        dashboard.write_index(a.site, built)
+
+
+def _arena_one(a, hyps, cfg) -> dict | None:
     from lab import arena, dashboard, screen
-    cfg = arena_cfg(a)
     p, costs = arena_panel(cfg, a.synthetic)
     tag = f"{cfg['universe']}_{cfg['timeframe']}"
     if a.screen:
@@ -260,7 +291,7 @@ def do_arena(a, hyps) -> None:
             print(res["error"])
             if a.telegram:
                 telegram(f"🏟️ arena screen: {res['error']}")
-            return
+            return None
         ro, note = arena.update_roster(res, cfg)
         gate = arena.gate_backtest(ro, p, costs, cfg)
         RESULTS.mkdir(exist_ok=True)
@@ -281,8 +312,11 @@ def do_arena(a, hyps) -> None:
                  "sharpe": r["sharpe"], "dsr": r.get("dsr")}
             for w, v in r["card"].items():
                 d[f"ret_{w}"] = None if v.get("no_data") else v["ret"]
+            d["variant"] = r["variant"]
+            d["stage_no"] = r["stage_no"]
             surv.append(d)
         arena._write(arena.SUMMARY, {"date": date.today().isoformat(), "universe": cfg["universe"],
+                                     "funnel2": res.get("funnel2"), "stage2": res.get("stage2"),
                                      "timeframe": cfg["timeframe"], "n_trials": res["n_trials"],
                                      "n_variant_runs": res["n_variant_runs"], "coins_ok": len(res["coins"]),
                                      "coins_total": len(res["years"]), "funnel": res["funnel"], "survivors": surv,
@@ -292,12 +326,15 @@ def do_arena(a, hyps) -> None:
             f = res["funnel"]
             telegram("🏟️ arena eleme motoru " + tag + f"\n{res['n_trials']} deneme, {len(res['coins'])} coin\n" +
                      "\n".join(f"{x['stage']} {x['label']}: -{x['eliminated']} → {x['remaining']}" for x in f) +
+                     (f"\n2. aşama: {res['stage2']['candidates']} aday, {res['stage2']['trials']} ek deneme → "
+                      f"{sum(1 for r in res['rows'].values() if r['stage_no'] == 2 and r['stage'] == 'OK')} geçti"
+                      if res.get('stage2', {}).get('enabled') else "") +
                      f"\n{note}\nSwitcher backtest kapısı: {'✅' if gate.get('backtest_pass') else '❌'} {gate.get('checks', {})}")
-        return
+        return None
     out = arena.run(p, costs, cfg)
     if out.get("error"):
         print(out["error"])
-        return
+        return None
     if a.site:
         print(f"[arena] dashboard -> {dashboard.build(out, cfg, a.site)}")
     sw = out["switcher"]
@@ -307,7 +344,8 @@ def do_arena(a, hyps) -> None:
     if a.telegram:
         txt = arena.telegram_text(out, out["summary_due"])
         if txt:
-            telegram(txt)
+            telegram(f"[{cfg['timeframe']}] " + txt)
+    return out
 
 
 def main() -> None:
@@ -334,6 +372,7 @@ def main() -> None:
     ap.add_argument("--calibrate", action="store_true", help="reproduce known results on real data")
     ap.add_argument("--screen", action="store_true", help="arena screening funnel (monthly)")
     ap.add_argument("--arena", action="store_true", help="arena paper run + regime switcher (every closed bar)")
+    ap.add_argument("--stage2", default="", help="with --screen: on | off (default: config/arena.yaml)")
     ap.add_argument("--site", default="", help="with --arena: write the dashboard (index.html + data.json) here")
     ap.add_argument("--prefetch", action="store_true",
                     help="download & cache all data needed by active hypotheses (or --universe/--timeframe)")

@@ -3,11 +3,34 @@
 # Do not loosen a threshold to let more strategies through; a change needs a line in hypotheses/CHANGELOG.md.
 
 universe: crypto_alts
-timeframe: 4h              # 4h or 1d. No scalping: fees and slippage eat short-horizon edges.
+timeframes: [4h, 1d]       # one separate arena per timeframe (decisions/arena/<tf>/). No scalping:
+                           # fees and slippage eat short-horizon edges.
 start: "2018-01-01"
 side: both                 # perps: long and short
 exit_id: 28                # trade_engine.EXIT_GRID[28] = 2 ATR stop + 3 ATR chandelier + rule exit
                            # (one pre-chosen exit = fewer trials; perps always need a hard stop)
+
+# Stage 2 runs on EVERY screen (switch it off here, or per run with the workflow input `stage2`).
+# Only candidates that passed S1 in stage 1 are widened, so the extra trials stay bounded.
+# Every stage-2 trial is added to the Deflated Sharpe count; the same S1-S7 steps apply.
+stage2:
+  enabled: true
+  filters: [none, trend_sma200, adx20, htf_week_sma10, regime_bench200, low_vol]   # regime_bench200 = BTC trend
+  exits: [28, 0, 23, 13, 18, 37]   # 28 base | 0 rule signal only | 23 3 ATR chandelier | 13 2 ATR stop + 3R target
+                                   # | 18 partial at 1R + trail | 37 2 ATR stop + 10-bar time exit
+  combos:
+    enabled: true
+    top_families: 6        # confirmation rules: the most frequent S1-passing rule of each top family
+    within: [0, 3, 5]      # confirmation on the same bar or within the last 3 / 5 bars
+  # Robust pick per candidate: score = min(own Sharpe, mean of neighbours). Filter/exit neighbours = same
+  # filter with other exits + same exit with other filters; combo neighbours = the other windows.
+  # S4 then needs BOTH the parameter plateau AND this neighbourhood to be >= 50% profitable.
+  # A combo is a candidate only when it beats the rule alone.
+
+# Settings that depend on the bar length (merged over the values below for that timeframe)
+by_timeframe:
+  1d:
+    regime: {er_days: 20, vol_days: 20, trend_ma_days: 50, confirm_bars: 2}
 
 # Report card windows in YEARS (0 = full history). No window is shorter than 3 years.
 report_windows_years: [3, 5, 0]

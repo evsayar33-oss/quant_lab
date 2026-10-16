@@ -141,6 +141,15 @@ Sonra adım adım elenir. İlk takıldığı adım sade Türkçe ile yazılır (
 | S7 | PSR ≥ 0.90 |
 | Tier A | Ayrıca DSR ≥ 0.90 (tüm huni denemeleri sayılır) → rapora **önerilen hipotez YAML** olarak yazılır |
 
+**2. aşama (her taramada, isteğe bağlı):** S1'i geçen adaylarda filtre × çıkış matrisi (6 filtre × 6 çıkış:
+trend SMA200, ADX20, haftalık trend, BTC rejimi, düşük volatilite) ve iki sinyal kombosu (en sık 6 kural ailesi,
+0/3/5 bar onay penceresi) denenir. Her aday için en sağlam hücre seçilir (kendisi ve komşuları birlikte iyi olmalı);
+kombo, kuralın tek başına halini geçmezse aday olmaz. Bütün ek denemeler DSR'a eklenir ve aynı S1–S7 adımları
+uygulanır. Kapatmak için `stage2.enabled: false` veya workflow girişi `stage2: off`.
+
+**Zaman dilimleri:** `timeframes: [4h, 1d]`. Her biri ayrı arenadır (`decisions/arena/4h/`, `decisions/arena/1d/`),
+tarama paralel iki işte çalışır. Bar uzunluğuna bağlı rejim ayarları `by_timeframe` altında.
+
 Sonuç bir **aday listesidir**, karar değildir. Tier A adaylar `hypotheses/registry.yaml`'a eklenirse (tek coin için
 `tickers: [SNX/USDT]`) normal karar kapısından geçer. Rapor: `results` dalı → `results/arena_screen_*.md` + `.csv`.
 
@@ -162,7 +171,7 @@ Volatil; değilse ADX ≥ 25 ve Kaufman verimlilik oranı ≥ 0.30 → Trend; di
 ≤ %40, kalanı nakit. Her yeni barla skorlar güncellenir: kendini geliştirir. Ayar ızgarası (3 yarı ömür × 3 top-k)
 raporda tamamen gösterilir.
 
-**Botlar switcher'ı ne zaman kullanır?** `lab/client.py` → `arena_allocation()` boş döner, ta ki:
+**Botlar switcher'ı ne zaman kullanır?** `lab/client.py` → `arena_allocation("4h")` / `arena_allocation("1d")` boş döner, ta ki:
 backtest kapısı (her pencerede eşit ağırlığı yener + 2× maliyette kârlı + düşüş ≥ −%45) **ve** ≥ 180 gün ileri
 kayıtta eşit ağırlığı yenene kadar.
 
