@@ -19,3 +19,11 @@ This repo is the decision center for every trading bot of the owner.
 - A scan result is a lead, never a decision. Only `run.py --hypothesis` / `--all` writes `decisions/registry.json`.
 - Run `python tests/test_core.py` before every commit. All tests must pass.
 - Data and tools must be free (no paid API). The owner works only from an Android phone and GitHub Actions.
+
+# Gerçekçilik kuralı (sahibin isteği — tüm çalışmalar)
+
+Sahibe canlıda en iyi çalışacak sonuç lazım, testte en iyi görüneni değil.
+- Kabul kuralını sonuçlara bakmadan ÖNCE yaz (alt dönemlerin hepsinde geçmeli, komşu ayarlarda da geçmeli, yüksek maliyette de geçmeli).
+- Çok deneme = şans riski (aşırı uyum). Deneme sayısını söyle; tek en iyi noktayı değil, düz/sağlam bölgeyi seç.
+- Daha iyisi kurala göre çıkmazsa açıkça yaz: "daha iyisi bulunamadı" veya "canlıda aynısı olmayabilir, bu yüzden önermiyorum".
+- Zayıf yönleri (geride kalınan dönemler, test edilemeyen veriler, tek sektöre bağımlılık) her raporda yaz.
