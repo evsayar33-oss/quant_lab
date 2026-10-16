@@ -60,7 +60,7 @@ jobs:
         name: Commit arena state to main
         run: bash scripts/commit_arena.sh "Arena $(date -u +%F_%H%M)"
       - uses: actions/upload-pages-artifact@v3
-        if: steps.ready.outputs.go == 'true' && hashFiles('site/data.json') != ''
+        if: steps.ready.outputs.go == 'true' && hashFiles('site/tfs.json') != ''
         with:
           path: site
 
