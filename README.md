@@ -89,6 +89,8 @@ Bunlar örneklem içi teşhislerdir. Daha iyi bir çıkış bulunursa hipoteze `
 | **Validate hypotheses** | Cumartesi + elle (id veya id listesi) | Her hipotez **paralel** bir işte doğrulanır. Sonra kayıt birleştirilir, commit edilir, Telegram'a gönderilir |
 | **Live tracking** | Hafta içi 21:47 | ACCEPT stratejileri dondurulmuş varyantla paper takip edilir. Bozulma olursa DEGRADED yapılır |
 | **Ad-hoc backtest** | Elle | `strategy`, `rule`, `scan`, `vbt`, `bt` modları; zaman dilimi seçilir. Karar yazmaz |
+| **Arena screen** | Her ayın 2'si + elle | Eleme motoru → arena kadrosu + switcher backtest kapısı. Karar yazmaz |
+| **Arena** | Her 4 saatte bir | ~100 strateji paper takip, emeklilik, rejim switcher, Telegram, panel (Pages) |
 
 Secrets: `TELEGRAM_TOKEN`, `CHAT_ID`. İsteğe bağlı: `SEC_USER_AGENT` ("ad eposta").
 Settings → Actions → General → Workflow permissions → **Read and write**.
@@ -112,6 +114,69 @@ Settings → Actions → General → Workflow permissions → **Read and write**
   status: active
   note: "neden test ediyoruz"
 ```
+
+## Strateji arenası (LLM yok) — `config/arena.yaml`
+
+Video tarzı "AI ajan + 100 canlı strateji + rejime göre geçiş" sistemi, **kural tabanlı** olarak.
+
+```
+Eleme motoru (aylık)  →  Arena (~100 strateji, her 4h kapanmış bar)  →  Rejim switcher  →  Panel + Telegram
+ lab/screen.py            lab/arena.py                                  lab/switcher.py     dashboard/index.html
+```
+
+**1. Eleme motoru (`python run.py --screen`, workflow "Arena screen", her ayın 2'si):**
+Her kural × tüm parametre ızgarası × her coin denenir (hepsi deneme sayılır). Her (coin, kural) için tek en iyi
+nokta değil, **en sağlam bölgenin merkezi** seçilir: skor = min(kendi Sharpe, komşuların ortalama Sharpe).
+Sonra adım adım elenir. İlk takıldığı adım sade Türkçe ile yazılır (ajan günlüğü).
+
+| Adım | Kontrol (eşikler sonuçlara bakılmadan yazıldı) |
+|---|---|
+| S0 | En az 3 yıl veri |
+| S1 | **Son 3 yıl, son 5 yıl ve tüm geçmiş** pencerelerinin hepsinde net kâr + ≥ 30 işlem |
+| S2 | Kâr faktörü ≥ 1.15, 1x maks. düşüş ≥ −%40 |
+| S3 | 2× maliyette hâlâ kârlı |
+| S4 | Komşu ayarların ≥ %50'si kârlı (plato) |
+| S5 | 1 bar geç girişte Sharpe'ın ≥ %40'ı kalır |
+| S6 | Takvim yıllarının ≥ %60'ı kârlı |
+| S7 | PSR ≥ 0.90 |
+| Tier A | Ayrıca DSR ≥ 0.90 (tüm huni denemeleri sayılır) → rapora **önerilen hipotez YAML** olarak yazılır |
+
+Sonuç bir **aday listesidir**, karar değildir. Tier A adaylar `hypotheses/registry.yaml`'a eklenirse (tek coin için
+`tickers: [SNX/USDT]`) normal karar kapısından geçer. Rapor: `results` dalı → `results/arena_screen_*.md` + `.csv`.
+
+**Karne:** her strateji için 3 yıl / 5 yıl / tüm geçmiş (`report_windows_years`). Veri bir pencereyi kapsamıyorsa
+"veri yok" yazılır, uzatılmaz. Yanında **perp simülasyonu**: $1000, işlem başı %10 marjin, 1x/3x/5x/10x kaldıraç,
+izole marjin likidasyonu. Kaldıraç edge yaratmaz; tablo likidasyon maliyetini görünür yapar.
+
+**2. Arena (`python run.py --arena`, workflow "Arena", her 4 saatte bir, bar kapanışından 9 dk sonra):**
+En fazla 100 üye. Eleme geçenler **aktif**; boş yerler en yakın adaylarla **kontrol** üyesi olarak dolar (switcher
+kullanmaz). Ayarlar katılım anında dondurulur, asla yeniden fit edilmez. Her çalışmada yeni veriyle yeniden hesaplanır,
+katılım tarihinden sonraki barlar **ileri (paper) kayıt**tır. Kapanmamış bar her zaman atılır. Emeklilik: ileri düşüş
+> 1.5× backtest düşüşü (her an) veya 120 gün sonra ileri Sharpe < 0.
+
+**3. Rejim (`lab/regime.py`):** coin başına Trend ↑ / Trend ↓ / Yatay / Volatil. Geçmiş 1 yılın en oynak %20'si →
+Volatil; değilse ADX ≥ 25 ve Kaufman verimlilik oranı ≥ 0.30 → Trend; diğerleri Yatay. Yeni rejim 3 bar sürmeden kullanılmaz.
+
+**4. Switcher (`lab/switcher.py`):** her gün, her stratejinin **kendi coininin şu anki rejiminde** geçmişte nasıl
+çalıştığına bakar (üstel azalan Sharpe, az kanıtta 0'a çekilir). Pozitif skorlu en iyi 5'e eşit ağırlık, coin başı
+≤ %40, kalanı nakit. Her yeni barla skorlar güncellenir: kendini geliştirir. Ayar ızgarası (3 yarı ömür × 3 top-k)
+raporda tamamen gösterilir.
+
+**Botlar switcher'ı ne zaman kullanır?** `lab/client.py` → `arena_allocation()` boş döner, ta ki:
+backtest kapısı (her pencerede eşit ağırlığı yener + 2× maliyette kârlı + düşüş ≥ −%45) **ve** ≥ 180 gün ileri
+kayıtta eşit ağırlığı yenene kadar.
+
+**Panel (telefondan):** GitHub Pages. Bir kez: Settings → Pages → Source: **GitHub Actions**. Adres:
+`https://evsayar33-oss.github.io/quant_lab/`. Sekmeler: Özet (switcher, tutulanlar, ileri kayıt), Arena (100
+strateji, karne + kaldıraç + rejim Sharpe'ı), Rejimler, Eleme hunisi. Panel artifact olarak yayınlanır, repo büyümez.
+Repo public olduğu için panel de public'tir.
+
+**İlk çalıştırma sırası:** Actions → "Arena screen" → Run workflow (≈ 30–90 dk). Bittikten sonra "Arena" kendi
+saatinde çalışır (veya elle çalıştır).
+
+**Dürüst sınırlar:** üyeler aynı geçmişte seçildiği için backtest ve switcher backtest'i iyimserdir; gerçek test ileri
+kayıttır. Survivorship: bugünün coin listesi. Funding sabit oran, likidasyon yaklaşık. GitHub Actions zamanlaması
+5–30 dk gecikebilir; bu yüzden sadece 4h/1d barlar (scalping yok).
 
 ## Botlara bağlama
 
@@ -139,6 +204,8 @@ Kayıt alınamazsa veya 10 günden eskiyse boş döner; bot kendi varsayılanın
 ```bash
 pip install -r requirements.txt
 python tests/test_core.py      # 23 test
+python tests/test_arena.py     # arena testleri
+python run.py --screen --synthetic && python run.py --arena --synthetic --site site
 python run.py --synthetic --rule rsi_reversal
 python run.py --scan --synthetic
 ```
@@ -163,5 +230,13 @@ lab/metrics.py         performans, risk, anlamlılık (PSR, DSR, PBO, Reality Ch
 lab/charts.py          grafikler
 lab/decision.py        karar kaydı + HRP dağılımı
 lab/live.py            canlı takip + bozulma tespiti
-lab/client.py          botlar için okuyucu
+lab/client.py          botlar için okuyucu (+ arena_allocation)
+lab/screen.py          arena eleme motoru (huni, plato seçimi, ajan günlüğü)
+lab/perp.py            karne (3y/5y/tüm) + izole marjin perp simülasyonu
+lab/regime.py          coin başı rejim (trend/yatay/volatil) + histerezis
+lab/arena.py           arena kadrosu, ileri kayıt, emeklilik, sinyaller
+lab/switcher.py        rejime göre strateji seçen meta-strateji
+lab/dashboard.py       panel verisi (data.json)
+dashboard/index.html   telefon dostu panel (GitHub Pages)
+config/arena.yaml      arena eşikleri (sonuçlardan önce yazıldı)
 ```

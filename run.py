@@ -9,6 +9,9 @@
   python run.py --scan --universe bist30 [--families all|rules|strategies|factors] [--filters none,trend_sma200]
                                                 try everything, rank honestly, suggest hypotheses
   python run.py --synthetic [--rule NAME | --strategy NAME]        offline smoke test
+  python run.py --screen [--telegram]           arena screening funnel (config/arena.yaml): roster + switcher gate
+  python run.py --arena [--site site] [--telegram]
+                                                arena paper run on the latest closed bar + switcher + dashboard
 Options: --start YYYY-MM-DD  --telegram (needs TELEGRAM_TOKEN, CHAT_ID)
 """
 from __future__ import annotations
@@ -50,6 +53,8 @@ def get_panel(spec: dict, synthetic: bool) -> tuple[Panel, Costs]:
     if synthetic:
         return Panel.from_close(data.synthetic_prices(15, 2600, seed=11)), Costs()
     u = universe(spec["universe"])
+    if spec.get("tickers"):          # a hypothesis may test a subset of a universe (e.g. one coin)
+        u = {**u, "tickers": list(spec["tickers"])}
     tf = spec.get("timeframe", "1d")
     p = data.load_panel(u, spec.get("start", "2012-01-01"), spec["universe"], timeframe=tf)
     return p, Costs(**u.get("costs", {}))
@@ -214,6 +219,97 @@ def do_scan(a) -> None:
         telegram("\n".join(msg))
 
 
+def arena_cfg(a) -> dict:
+    cfg = load_yaml("config/arena.yaml")
+    if a.universe:
+        cfg["universe"] = a.universe
+    if "--timeframe" in sys.argv:
+        cfg["timeframe"] = a.timeframe
+    return cfg
+
+
+def arena_panel(cfg: dict, synthetic: bool) -> tuple[Panel, Costs]:
+    if synthetic:   # offline: random walks on a 4h-like calendar (no edge by construction)
+        import numpy as np
+        import pandas as pd
+        rng = np.random.default_rng(5)
+        idx = pd.date_range("2019-01-01", periods=int(6.2 * 2190), freq="4h")
+        cols = [f"C{i}/USDT" for i in range(8)]
+        rets = rng.normal(0.0001, 0.012, (len(idx), len(cols)))
+        c = pd.DataFrame(100 * np.exp(np.cumsum(rets, axis=0)), index=idx, columns=cols)
+        c.iloc[: 2190 * 4, -1] = np.nan          # one "late listing" coin with < 3 years of data
+        p = Panel.from_close(c.ffill().bfill(), seed=5)
+        p.c = c
+        p.o, p.h, p.l, p.v = (x.where(c.notna()) for x in (p.o, p.h, p.l, p.v))
+        p.freq, p.market = "4h", "crypto"
+        return p, Costs(0.0006, 0.0005, 0.0, 0.08)
+    u = universe(cfg["universe"])
+    p = data.load_panel(u, cfg.get("start", "2018-01-01"), cfg["universe"], with_fundamentals=False,
+                        timeframe=cfg["timeframe"])
+    return p, Costs(**u.get("costs", {}))
+
+
+def do_arena(a, hyps) -> None:
+    from lab import arena, dashboard, screen
+    cfg = arena_cfg(a)
+    p, costs = arena_panel(cfg, a.synthetic)
+    tag = f"{cfg['universe']}_{cfg['timeframe']}"
+    if a.screen:
+        res = screen.run(p, costs, cfg)
+        if res.get("error"):
+            print(res["error"])
+            if a.telegram:
+                telegram(f"🏟️ arena screen: {res['error']}")
+            return
+        ro, note = arena.update_roster(res, cfg)
+        gate = arena.gate_backtest(ro, p, costs, cfg)
+        RESULTS.mkdir(exist_ok=True)
+        md = screen.markdown(res, cfg, note)
+        ids = [int(h["id"][1:]) for h in hyps if str(h.get("id", "")).startswith("H") and h["id"][1:].isdigit()]
+        yml = screen.suggested_yaml(res, cfg, (max(ids) + 1) if ids else 1)
+        if yml:
+            md += "\n\n## Önerilen hipotezler (tier A — kapıya gönder)\n\n```yaml\n" + yml + "```\n"
+        md += ("\n\n## Switcher backtest kapısı\n\n" +
+               f"Geçti: **{gate.get('backtest_pass')}** — kontroller: `{_fmt_dict(gate.get('checks', {}))}`\n\n" +
+               f"Pencereler: `{_fmt_dict(gate.get('windows', {}))}`\n")
+        (RESULTS / f"arena_screen_{tag}.md").write_text(md)
+        screen.to_frame(res).to_csv(RESULTS / f"arena_screen_{tag}.csv", index=False)
+        ok = sorted([r for r in res["rows"].values() if r["stage"] == "OK"], key=screen.rank_key)
+        surv = []
+        for r in ok[:100]:
+            d = {"coin": r["coin"], "rule": r["rule"], "params": r["params"], "tier": r.get("tier"),
+                 "sharpe": r["sharpe"], "dsr": r.get("dsr")}
+            for w, v in r["card"].items():
+                d[f"ret_{w}"] = None if v.get("no_data") else v["ret"]
+            surv.append(d)
+        arena._write(arena.SUMMARY, {"date": date.today().isoformat(), "universe": cfg["universe"],
+                                     "timeframe": cfg["timeframe"], "n_trials": res["n_trials"],
+                                     "n_variant_runs": res["n_variant_runs"], "coins_ok": len(res["coins"]),
+                                     "coins_total": len(res["years"]), "funnel": res["funnel"], "survivors": surv,
+                                     "note": note})
+        print(md)
+        if a.telegram:
+            f = res["funnel"]
+            telegram("🏟️ arena eleme motoru " + tag + f"\n{res['n_trials']} deneme, {len(res['coins'])} coin\n" +
+                     "\n".join(f"{x['stage']} {x['label']}: -{x['eliminated']} → {x['remaining']}" for x in f) +
+                     f"\n{note}\nSwitcher backtest kapısı: {'✅' if gate.get('backtest_pass') else '❌'} {gate.get('checks', {})}")
+        return
+    out = arena.run(p, costs, cfg)
+    if out.get("error"):
+        print(out["error"])
+        return
+    if a.site:
+        print(f"[arena] dashboard -> {dashboard.build(out, cfg, a.site)}")
+    sw = out["switcher"]
+    print(json.dumps({"usable": sw["usable"], "checks": sw["checks"], "cash": sw["cash"],
+                      "picks": [(x["id"], x["coin"], x["weight"]) for x in sw["picks"]], "events": out["events"]},
+                     ensure_ascii=False, indent=1))
+    if a.telegram:
+        txt = arena.telegram_text(out, out["summary_due"])
+        if txt:
+            telegram(txt)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--list", action="store_true")
@@ -236,11 +332,16 @@ def main() -> None:
     ap.add_argument("--merge", action="store_true", help="rebuild decisions/registry.json from parts")
     ap.add_argument("--live", action="store_true", help="paper-track ACCEPT decisions, demote on decay")
     ap.add_argument("--calibrate", action="store_true", help="reproduce known results on real data")
+    ap.add_argument("--screen", action="store_true", help="arena screening funnel (monthly)")
+    ap.add_argument("--arena", action="store_true", help="arena paper run + regime switcher (every closed bar)")
+    ap.add_argument("--site", default="", help="with --arena: write the dashboard (index.html + data.json) here")
     ap.add_argument("--prefetch", action="store_true",
                     help="download & cache all data needed by active hypotheses (or --universe/--timeframe)")
     a = ap.parse_args()
 
     hyps = load_yaml("hypotheses/registry.yaml") or []
+    if a.screen or a.arena:
+        return do_arena(a, hyps)
     if a.ids:
         print(json.dumps([h["id"] for h in hyps if h.get("status") == "active"]))
         return

@@ -1,0 +1,77 @@
+name: Arena screen (monthly)
+
+# Rule-based screening funnel (no LLM): every rule x full parameter grid x every coin, eliminated step by
+# step with thresholds written in config/arena.yaml. Survivors join the paper arena; the switcher backtest
+# gate is re-checked. Never writes decisions/registry.json (a funnel result is a lead, not a decision).
+
+on:
+  schedule:
+    - cron: '17 3 2 * *'
+  workflow_dispatch:
+    inputs:
+      universe:
+        description: 'universe (empty = config/arena.yaml)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: quant-lab-arena
+  cancel-in-progress: false
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - run: pip install -r requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: data/cache
+          key: arena-data-${{ github.run_id }}
+          restore-keys: arena-data-
+      - name: Screen
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+          LAB_CACHE_HOURS: "0"
+        run: |
+          if [ -n "${{ github.event.inputs.universe }}" ]; then
+            python run.py --screen --universe "${{ github.event.inputs.universe }}" --telegram
+          else
+            python run.py --screen --telegram
+          fi
+      - name: Commit roster to main
+        run: bash scripts/commit_arena.sh "Arena screen $(date -u +%F)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arena-screen
+          retention-days: 14
+          path: results/arena_screen_*
+
+  publish:
+    needs: screen
+    if: always()
+    runs-on: ubuntu-latest
+    concurrency:
+      group: quant-lab-results
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/fetch_results.sh
+      - uses: actions/download-artifact@v4
+        with:
+          name: arena-screen
+          path: _parts
+      - run: |
+          mkdir -p results
+          cp -r _parts/. results/ 2>/dev/null || true
+          rm -rf _parts
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/publish_results.sh

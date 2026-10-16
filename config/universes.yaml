@@ -131,3 +131,16 @@ metals_etf:          # same exposure via ETFs (no roll jumps, dividend/fee adjus
   macro: [^VIX, ^TNX, ^IRX, DX-Y.NYB, TIP, IEF, GC=F, SI=F, HG=F]
   cot: {GLD: "088691", SLV: "084691", CPER: "085692", PPLT: "076651", PALL: "075651"}
   tickers: [GLD, SLV, CPER, PPLT, PALL, GDX, SIL, COPX]
+
+crypto_alts:         # strategy arena universe (Bitget USDT pairs). Coins with < 3 years of data are
+                     # dropped by the screening funnel (stage S0) and the report says so.
+  market: crypto
+  benchmark: BTC/USDT
+  costs: {commission: 0.0006, slippage: 0.0005, funding_annual: 0.08}
+  risk_free: ^IRX
+  macro: [^VIX]
+  tickers: [BTC/USDT, ETH/USDT, SOL/USDT, BNB/USDT, XRP/USDT, ADA/USDT, DOGE/USDT, AVAX/USDT,
+            LINK/USDT, DOT/USDT, LTC/USDT, BCH/USDT, TRX/USDT, ATOM/USDT, NEAR/USDT, FIL/USDT,
+            UNI/USDT, AAVE/USDT, ETC/USDT, XLM/USDT, ALGO/USDT, SAND/USDT, MANA/USDT, AXS/USDT,
+            CRV/USDT, SNX/USDT, THETA/USDT, IMX/USDT, INJ/USDT, OP/USDT, ARB/USDT, APT/USDT,
+            SUI/USDT, PYTH/USDT, MINA/USDT]

@@ -1,0 +1,69 @@
+# Strategy arena = rule-based screening funnel -> paper arena of ~100 strategies -> regime switcher.
+# No LLM. Every threshold below is written BEFORE looking at any result (CLAUDE.md realism rule).
+# Do not loosen a threshold to let more strategies through; a change needs a line in hypotheses/CHANGELOG.md.
+
+universe: crypto_alts
+timeframe: 4h              # 4h or 1d. No scalping: fees and slippage eat short-horizon edges.
+start: "2018-01-01"
+side: both                 # perps: long and short
+exit_id: 28                # trade_engine.EXIT_GRID[28] = 2 ATR stop + 3 ATR chandelier + rule exit
+                           # (one pre-chosen exit = fewer trials; perps always need a hard stop)
+
+# Report card windows in YEARS (0 = full history). No window is shorter than 3 years.
+report_windows_years: [3, 5, 0]
+
+account:                   # perp simulation shown in the report card (isolated margin)
+  balance: 1000
+  margin_frac: 0.10        # margin per trade as a share of equity
+  leverages: [1, 3, 5, 10] # shown side by side: leverage does not create an edge, it adds liquidation risk
+  maint_margin: 0.005
+
+screen:                    # the funnel. A strategy = one rule (one parameter set) on one coin.
+  rules: all               # or a list of rule names from lab/rules.py
+  min_years: 3.0           # S0 data: at least this much history
+  min_trades: 30           # S1
+  min_profit_factor: 1.15  # S2
+  max_dd_floor: -0.40      # S2: 1x max drawdown, full history
+  cost_stress: 2.0         # S3: still profitable with 2x commission + slippage
+  min_neighbour_share_pos: 0.50   # S4: >= 50% of neighbour parameter sets are profitable (plateau, not a peak)
+  min_delay_retained: 0.40 # S5: entering one bar late keeps >= 40% of the return
+  min_pos_year_frac: 0.60  # S6: >= 60% of calendar years profitable
+  min_psr: 0.90            # S7: P(true Sharpe > 0) >= 0.90 on the full history
+  tier_a_min_dsr: 0.90     # survivors that ALSO pass the Deflated Sharpe (all funnel trials counted)
+                           # are written as suggested hypotheses for the real decision gate
+
+arena:
+  max_members: 100
+  fill_controls: true      # empty slots -> best near-misses as "control" members (never used by the switcher)
+  retire:                  # forward (paper) demotion, checked every run
+    min_forward_days: 120
+    dd_mult: 1.5           # forward drawdown worse than 1.5x the backtest drawdown
+    min_forward_sharpe: 0.0
+  notify: switcher         # Telegram signals: switcher (only strategies the switcher holds) | all | none
+  daily_summary_hour_utc: 20
+
+regime:                    # per coin, closed bars only, with hysteresis
+  adx_n: 14
+  adx_trend: 25
+  er_days: 5               # Kaufman efficiency ratio window (days)
+  er_trend: 0.30
+  vol_days: 5              # realized volatility window (days)
+  vol_rank_days: 365       # volatility percentile versus the PAST year only
+  vol_hi_pct: 0.80         # top 20% of the past year's volatility = VOLATILE
+  trend_ma_days: 17        # direction of a trend: close vs SMA (about 100 bars on 4h)
+  confirm_bars: 3          # a new regime must hold this many bars before it is used
+
+switcher:                  # "trading agent": picks the strategies that worked in the CURRENT regime
+  pool: survivors          # survivors | all
+  halflife_days: [15, 30, 60]
+  top_k: [3, 5, 8]
+  default: {halflife_days: 30, top_k: 5}   # pre-chosen centre of the grid (the report shows all 9)
+  rebalance_days: 1
+  prior_days: 10           # shrinkage: a score needs evidence before it counts
+  min_regime_days: 20      # a strategy needs this much past history in a regime to be chosen in it
+  max_asset_weight: 0.40
+  gate:                    # bots may use the switcher only when ALL of these hold
+    beat_equal_weight_all_windows: true
+    positive_at_cost_stress: true
+    max_dd_floor: -0.45
+    min_forward_days: 180  # plus a forward (paper) record: switcher Sharpe > equal-weight Sharpe

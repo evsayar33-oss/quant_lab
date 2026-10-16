@@ -5,6 +5,10 @@
         print(h["id"], h["kind"], h["timeframe"], h["targets"])
     print(allocation("bist_orderflow_quant"))      # {"H001": 0.6, "H013": 0.4}  (HRP across ACCEPT ideas)
 
+    from quant_lab_client import arena_allocation   # regime switcher of the strategy arena
+    for x in arena_allocation():                   # [] until the switcher gate passes (backtest + forward)
+        print(x["coin"], x["rule"], x["params"], x["weight"], x["position"])
+
 Only verdict == "ACCEPT" is returned (WATCH / REJECT / DEGRADED are ignored).
 Fail-safe: if the registry cannot be fetched or is stale, everything returns empty ->
 the bot must fall back to its own default (never fail-open).
@@ -66,3 +70,25 @@ def allocation(system: str, url: str = URL) -> dict:
     alloc = {k: v for k, v in reg.get("systems", {}).get(system, {}).get("allocation", {}).items() if k in ok}
     s = sum(alloc.values())
     return {k: round(v / s, 4) for k, v in alloc.items()} if s > 0 else {}
+
+
+ARENA_URL = os.environ.get("QUANT_LAB_ARENA_URL",
+                           "https://raw.githubusercontent.com/evsayar33-oss/quant_lab/main/decisions/arena/switcher.json")
+ARENA_MAX_AGE_HOURS = 30
+
+
+def arena_allocation(url: str = ARENA_URL) -> list[dict]:
+    """Strategies the arena regime switcher holds now, with weights (sum <= 1, the rest is cash).
+    Empty (fail-safe) unless: the switcher gate passed (backtest AND forward paper record) and the
+    file is fresh. Each item: id, coin, rule, params, exit_id, side, timeframe, weight, position, regime."""
+    sw = fetch(url)
+    if not sw or not sw.get("usable"):
+        return []
+    try:
+        age = datetime.now(timezone.utc) - datetime.fromisoformat(sw["updated_at"])
+    except Exception:  # noqa: BLE001
+        return []
+    if age > timedelta(hours=ARENA_MAX_AGE_HOURS):
+        print("[quant_lab] arena switcher is stale -> ignored")
+        return []
+    return list(sw.get("picks", []))

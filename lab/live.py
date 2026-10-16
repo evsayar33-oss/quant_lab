@@ -66,6 +66,8 @@ def run(hypotheses: list[dict]) -> dict:
         if not h or h.get("verdict") not in ("ACCEPT", "DEGRADED") or not h.get("accepted_at"):
             continue
         u = uni[spec["universe"]]
+        if spec.get("tickers"):
+            u = {**u, "tickers": list(spec["tickers"])}
         acc = pd.Timestamp(h["accepted_at"]).tz_localize(None)
         start = str((acc - timedelta(days=4 * 365)).date())
         try:

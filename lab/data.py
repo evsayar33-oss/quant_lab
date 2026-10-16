@@ -86,19 +86,37 @@ def _split(raw: pd.DataFrame, tickers: list[str]) -> dict[str, pd.DataFrame]:
     return out
 
 
-def _ccxt_download(symbol: str, start: str, timeframe: str = "1d") -> pd.DataFrame | None:
+TF_DELTA = {"1h": pd.Timedelta(hours=1), "4h": pd.Timedelta(hours=4), "1d": pd.Timedelta(days=1)}
+
+
+def _drop_open_bar(df: pd.DataFrame, timeframe: str) -> pd.DataFrame:
+    """Exchanges also return the bar that is still forming. Drop it: a live signal must use closed bars only.
+    ccxt rows are labelled with the bar OPEN time (daily rows normalized to the date)."""
+    d = TF_DELTA.get(timeframe)
+    if d is None or df is None or not len(df):
+        return df
+    now = pd.Timestamp.now(tz="UTC").tz_localize(None)
+    return df[df.index + d <= now]
+
+
+def _ccxt_download(symbol: str, start: str, timeframe: str = "1d", since_ms: int | None = None) -> pd.DataFrame | None:
     import ccxt
 
     tf = {"1mo": "1M"}.get(timeframe, timeframe)
-    since0 = int(pd.Timestamp(start, tz="UTC").timestamp() * 1000)
+    since0 = since_ms if since_ms is not None else int(pd.Timestamp(start, tz="UTC").timestamp() * 1000)
+    step = int(TF_DELTA.get(timeframe, pd.Timedelta(days=1)).total_seconds() * 1000) * 200
+    now_ms = int(time.time() * 1000)
     for ex_id in ("bitget", "okx", "kucoin"):
         try:
             ex = getattr(ccxt, ex_id)({"enableRateLimit": True})
             rows, since = [], since0
-            for _ in range(2000):
+            for _ in range(4000):
                 batch = ex.fetch_ohlcv(symbol, tf, since=since, limit=200)
                 if not batch:
-                    break
+                    if rows or since + step > now_ms:
+                        break
+                    since += step          # coin listed after `start`: walk forward to the listing date
+                    continue
                 rows += batch
                 nxt = batch[-1][0] + 1
                 if nxt <= since or len(batch) < 2:
@@ -108,10 +126,47 @@ def _ccxt_download(symbol: str, start: str, timeframe: str = "1d") -> pd.DataFra
                 df = pd.DataFrame(rows, columns=["ts", "Open", "High", "Low", "Close", "Volume"]).drop_duplicates("ts")
                 idx = pd.to_datetime(df["ts"], unit="ms")
                 df.index = idx.dt.normalize() if timeframe == "1d" else idx
-                return df.drop(columns="ts").sort_index()
+                return _drop_open_bar(df.drop(columns="ts").sort_index(), timeframe)
         except Exception as e:  # noqa: BLE001 - try next exchange
             print(f"[data] {ex_id} {symbol} {timeframe} failed: {e}")
     return None
+
+
+def _ccxt_update(symbol: str, cached: pd.DataFrame, start: str, timeframe: str) -> pd.DataFrame:
+    """Incremental refresh: download only the bars after the cached ones (re-fetch the last 3 bars)."""
+    if cached is None or len(cached) < 10:
+        return _ccxt_download(symbol, start, timeframe)
+    d = TF_DELTA.get(timeframe, pd.Timedelta(days=1))
+    since = int((cached.index[-1] - 3 * d).tz_localize("UTC").timestamp() * 1000)
+    new = _ccxt_download(symbol, start, timeframe, since_ms=since)
+    if new is None or not len(new):
+        return _drop_open_bar(cached, timeframe)
+    out = pd.concat([cached[cached.index < new.index[0]], new]).sort_index()
+    return _drop_open_bar(out[~out.index.duplicated(keep="last")], timeframe)
+
+
+def _crypto_cached(t: str, p: Path, start: str, timeframe: str) -> pd.DataFrame | None:
+    """Crypto cache with incremental refresh. A sidecar file stores the requested start date, so a coin
+    listed after `start` is not re-downloaded on every run, and a request for an EARLIER start does a full download."""
+    meta = p.with_suffix(".start")
+    old, cached_start = None, start
+    if p.exists() and meta.exists():
+        try:
+            cached_start = meta.read_text().strip()
+            if pd.Timestamp(cached_start) <= pd.Timestamp(start):
+                old = pd.read_csv(p, index_col=0, parse_dates=True)
+            else:
+                cached_start = start
+        except Exception:  # noqa: BLE001
+            old, cached_start = None, start
+    if old is not None and len(old) and _fresh(p):
+        return old[old.index >= pd.Timestamp(start)]
+    df = _ccxt_update(t, old, start, timeframe) if old is not None else _ccxt_download(t, start, timeframe)
+    if df is None:
+        return None if old is None else old[old.index >= pd.Timestamp(start)]
+    df.to_csv(p)
+    meta.write_text(cached_start)
+    return df[df.index >= pd.Timestamp(start)]
 
 
 def load_ohlcv(tickers: list[str], start: str = "2010-01-01", timeframe: str = "1d") -> dict[str, pd.DataFrame]:
@@ -125,18 +180,17 @@ def load_ohlcv(tickers: list[str], start: str = "2010-01-01", timeframe: str = "
     need_yf: list[str] = []
     for t in tickers:
         p = _cache_path(t, f"ohlcv_{timeframe}")
+        if _is_crypto(t):
+            got = _crypto_cached(t, p, start, timeframe)
+            if got is not None:
+                result[t] = got
+            continue
         if _fresh(p):
             df = pd.read_csv(p, index_col=0, parse_dates=True)
             if len(df) and (timeframe != "1d" or df.index[0] <= pd.Timestamp(start) + pd.Timedelta(days=10)):
                 result[t] = df
                 continue
-        if _is_crypto(t):
-            df = _ccxt_download(t, start, timeframe)
-            if df is not None:
-                df.to_csv(p)
-                result[t] = df
-        else:
-            need_yf.append(t)
+        need_yf.append(t)
     yf_iv = "1h" if timeframe in ("1h", "4h") else "1d"
     for t, df in _yf_download(need_yf, start, yf_iv).items():
         if timeframe == "4h":
