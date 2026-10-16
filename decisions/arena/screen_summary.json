@@ -1,0 +1,161 @@
+{
+ "date": "2026-10-16",
+ "universe": "crypto_alts",
+ "timeframe": "4h",
+ "n_trials": 17612,
+ "n_variant_runs": 518,
+ "coins_ok": 34,
+ "coins_total": 35,
+ "funnel": [
+  {
+   "stage": "S0",
+   "label": "veri yetersiz",
+   "eliminated": 53,
+   "remaining": 1802
+  },
+  {
+   "stage": "S1",
+   "label": "her dönemde kârlı değil / az işlem",
+   "eliminated": 1655,
+   "remaining": 147
+  },
+  {
+   "stage": "S2",
+   "label": "kâr faktörü veya düşüş zayıf",
+   "eliminated": 119,
+   "remaining": 28
+  },
+  {
+   "stage": "S3",
+   "label": "yüksek maliyette zarar",
+   "eliminated": 2,
+   "remaining": 26
+  },
+  {
+   "stage": "S4",
+   "label": "plato yok (komşu ayarlar zararda)",
+   "eliminated": 8,
+   "remaining": 18
+  },
+  {
+   "stage": "S5",
+   "label": "1 bar gecikmeye dayanıksız",
+   "eliminated": 2,
+   "remaining": 16
+  },
+  {
+   "stage": "S6",
+   "label": "yılların çoğunda kârlı değil",
+   "eliminated": 3,
+   "remaining": 13
+  },
+  {
+   "stage": "S7",
+   "label": "istatistiksel güven düşük (PSR)",
+   "eliminated": 4,
+   "remaining": 9
+  }
+ ],
+ "survivors": [
+  {
+   "coin": "XLM/USDT",
+   "rule": "high_52w_break",
+   "params": "n=126,exit_ma=50",
+   "tier": "B",
+   "sharpe": 1.182,
+   "dsr": 0.015,
+   "ret_3y": 2.4415,
+   "ret_5y": null,
+   "ret_full": 2.4415
+  },
+  {
+   "coin": "ARB/USDT",
+   "rule": "hurst_switch",
+   "params": "n=200,fast=20,rsi_n=5",
+   "tier": "B",
+   "sharpe": 0.959,
+   "dsr": 0.004,
+   "ret_3y": 1.4333,
+   "ret_5y": null,
+   "ret_full": 1.3467
+  },
+  {
+   "coin": "ETH/USDT",
+   "rule": "bollinger_breakout",
+   "params": "n=50,k=2.5",
+   "tier": "B",
+   "sharpe": 1.153,
+   "dsr": 0.001,
+   "ret_3y": 3.2182,
+   "ret_5y": 4.0551,
+   "ret_full": 28.6907
+  },
+  {
+   "coin": "XRP/USDT",
+   "rule": "high_52w_break",
+   "params": "n=126,exit_ma=50",
+   "tier": "B",
+   "sharpe": 0.957,
+   "dsr": 0.0,
+   "ret_3y": 1.4056,
+   "ret_5y": 1.5727,
+   "ret_full": 7.4027
+  },
+  {
+   "coin": "ETH/USDT",
+   "rule": "keltner_breakout",
+   "params": "n=20,k=2.5",
+   "tier": "B",
+   "sharpe": 0.785,
+   "dsr": 0.0,
+   "ret_3y": 0.7543,
+   "ret_5y": 0.8949,
+   "ret_full": 6.7357
+  },
+  {
+   "coin": "SOL/USDT",
+   "rule": "volume_breakout",
+   "params": "n=50,rv=1.5",
+   "tier": "B",
+   "sharpe": 0.659,
+   "dsr": 0.0,
+   "ret_3y": 0.9829,
+   "ret_5y": 1.5832,
+   "ret_full": 1.9622
+  },
+  {
+   "coin": "ETH/USDT",
+   "rule": "high_52w_break",
+   "params": "n=126,exit_ma=50",
+   "tier": "B",
+   "sharpe": 0.658,
+   "dsr": 0.0,
+   "ret_3y": 0.4387,
+   "ret_5y": 0.2504,
+   "ret_full": 2.4375
+  },
+  {
+   "coin": "ETH/USDT",
+   "rule": "volume_breakout",
+   "params": "n=50,rv=2.0",
+   "tier": "B",
+   "sharpe": 0.642,
+   "dsr": 0.0,
+   "ret_3y": 1.1053,
+   "ret_5y": 1.0247,
+   "ret_full": 2.0745
+  },
+  {
+   "coin": "OP/USDT",
+   "rule": "cmf_flow",
+   "params": "n=40,th=0.2",
+   "tier": "B",
+   "sharpe": 0.609,
+   "dsr": 0.0,
+   "ret_3y": 1.1497,
+   "ret_5y": null,
+   "ret_full": 1.0953
+  }
+ ],
+ "note": "Arena: 9 aktif (eleme geçen), 91 kontrol (yakın aday, switcher kullanmaz), 100 yeni üye, 0 kontrolden aktife. Üst sınır 100."
+}
