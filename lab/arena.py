@@ -305,7 +305,14 @@ def run(p: Panel, costs: Costs, cfg: dict) -> dict:
                           "ew_sharpe": round(e_sr, 3) if e_sr is not None else None,
                           "max_dd": round(metrics.max_drawdown(sf), 4) if len(sf) else 0.0},
               "regimes": regime.summary(reg)}
-    _write(SWITCH, sw_out)
+    # write only on a real change, or once a day as a heartbeat (bots need a fresh file) -> few commits
+    old = _read(SWITCH, {})
+    def core(x):
+        return json.dumps({"usable": x.get("usable"), "checks": x.get("checks"), "picks": x.get("picks"),
+                           "regimes": {c: v.get("now") for c, v in (x.get("regimes") or {}).items()}},
+                          sort_keys=True, default=str)
+    if core(old) != core(sw_out) or str(old.get("updated_at", ""))[:10] != now_iso()[:10]:
+        _write(SWITCH, sw_out)
 
     # ---- changes since the last run (for Telegram)
     st = _read(STATE, {})
@@ -326,9 +333,10 @@ def run(p: Panel, costs: Costs, cfg: dict) -> dict:
     hour = datetime.now(timezone.utc).hour
     today = datetime.now(timezone.utc).date().isoformat()
     summary_due = hour >= ac.get("daily_summary_hour_utc", 20) and st.get("last_summary") != today
-    _write(STATE, {"last_bar": str(end), "positions": {x["id"]: x["position"] for x in members_out},
-                   "switcher": new_w, "last_summary": today if summary_due else st.get("last_summary"),
-                   "updated_at": now_iso()})
+    new_st = {"positions": {x["id"]: x["position"] for x in members_out}, "switcher": new_w,
+              "last_summary": today if summary_due else st.get("last_summary")}
+    if any(new_st[k] != st.get(k) for k in new_st):      # unchanged positions -> no write, no commit
+        _write(STATE, {**new_st, "last_bar": str(end), "updated_at": now_iso()})
     return {"members": members_out, "switcher": sw_out, "gate": gate, "events": events if new_bar else [],
             "summary_due": summary_due, "regimes": sw_out["regimes"], "data_end": str(end),
             "spark_switch_fwd": perp.sparkline(sf, 90), "spark_ew_fwd": perp.sparkline(ef, 90)}
