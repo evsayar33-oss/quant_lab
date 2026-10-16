@@ -105,7 +105,11 @@ SIZE_GRID: list[SizeCfg] = [SizeCfg(), SizeCfg("atr_risk", 0.005), SizeCfg("atr_
 
 
 def run_trades(p: Panel, sig: Signals, ex: ExitCfg = ExitCfg(), costs: Costs = Costs(),
-               side: str = "long", max_positions: int | None = None, size: SizeCfg = SizeCfg()) -> Result:
+               side: str = "long", max_positions: int | None = None, size: SizeCfg = SizeCfg(),
+               per_asset: bool = False) -> Result:
+    """per_asset=True also returns meta["asset_returns"]: each asset's net bar return contribution
+    (already net of its own costs and carry). With equal sizing and no slot limit, multiplying by
+    the number of assets gives each asset's stand-alone single-asset return series (exact, linear in weight)."""
     idx, cols = p.index, p.columns
     T, N = p.c.shape
     ppy = p.ppy
@@ -155,6 +159,7 @@ def run_trades(p: Panel, sig: Signals, ex: ExitCfg = ExitCfg(), costs: Costs = C
 
     pendL = np.zeros(N, bool); pendS = np.zeros(N, bool)
     port = np.zeros(T); turn = np.zeros(T); wts = np.zeros((T, N))
+    aret = np.zeros((T, N)) if per_asset else None
     trades: list[tuple] = []
 
     def finish(j, i, px, reason):
@@ -320,6 +325,8 @@ def run_trades(p: Panel, sig: Signals, ex: ExitCfg = ExitCfg(), costs: Costs = C
         gross_long = w[pos > 0].sum(); gross_short = w[pos < 0].sum()
         carry_cost = (gross_short * carry[0] + (gross_long + gross_short) * carry[1]) / ppy
         port[i] = contrib.sum() - cpt * traded.sum() - carry_cost
+        if aret is not None:
+            aret[i] = contrib - cpt * traded - (np.where(pos < 0, w, 0) * carry[0] + np.where(pos != 0, w, 0) * carry[1]) / ppy
         turn[i] = traded.sum()
         wts[i] = pos * w
 
@@ -329,9 +336,12 @@ def run_trades(p: Panel, sig: Signals, ex: ExitCfg = ExitCfg(), costs: Costs = C
     held_w = pd.DataFrame(wts, idx, cols)
     first = held_w.abs().sum(axis=1).gt(0)
     s = first.idxmax() if first.any() else idx[0]
-    return Result(ret.loc[s:], ret.loc[s:], held_w.loc[s:], pd.Series(turn, idx).loc[s:],
-                  meta={"trades": tlog, "exit": ex.label(), "size": size.label(),
-                        "exposure": float((held_w.abs().sum(axis=1) > 0).loc[s:].mean())})
+    meta = {"trades": tlog, "exit": ex.label(), "size": size.label(),
+            "exposure": float((held_w.abs().sum(axis=1) > 0).loc[s:].mean())}
+    if aret is not None:
+        meta["asset_returns"] = pd.DataFrame(aret, idx, cols)   # full index (not trimmed)
+        meta["held_weights"] = held_w
+    return Result(ret.loc[s:], ret.loc[s:], held_w.loc[s:], pd.Series(turn, idx).loc[s:], meta=meta)
 
 
 def trade_stats(tlog: pd.DataFrame, years: float | None = None) -> dict:
