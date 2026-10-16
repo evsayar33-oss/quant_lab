@@ -6,7 +6,7 @@
     print(allocation("bist_orderflow_quant"))      # {"H001": 0.6, "H013": 0.4}  (HRP across ACCEPT ideas)
 
     from quant_lab_client import arena_allocation   # regime switcher of the strategy arena
-    for x in arena_allocation():                   # [] until the switcher gate passes (backtest + forward)
+    for x in arena_allocation("4h"):               # [] until the switcher gate passes (backtest + forward)
         print(x["coin"], x["rule"], x["params"], x["weight"], x["position"])
 
 Only verdict == "ACCEPT" is returned (WATCH / REJECT / DEGRADED are ignored).
@@ -73,15 +73,16 @@ def allocation(system: str, url: str = URL) -> dict:
 
 
 ARENA_URL = os.environ.get("QUANT_LAB_ARENA_URL",
-                           "https://raw.githubusercontent.com/evsayar33-oss/quant_lab/main/decisions/arena/switcher.json")
+                           "https://raw.githubusercontent.com/evsayar33-oss/quant_lab/main/decisions/arena/{tf}/switcher.json")
 ARENA_MAX_AGE_HOURS = 30
 
 
-def arena_allocation(url: str = ARENA_URL) -> list[dict]:
+def arena_allocation(timeframe: str = "4h", url: str = ARENA_URL) -> list[dict]:
     """Strategies the arena regime switcher holds now, with weights (sum <= 1, the rest is cash).
     Empty (fail-safe) unless: the switcher gate passed (backtest AND forward paper record) and the
-    file is fresh. Each item: id, coin, rule, params, exit_id, side, timeframe, weight, position, regime."""
-    sw = fetch(url)
+    file is fresh. Each item: id, coin, rule, params, exit_id, filter, confirm, side, timeframe, weight,
+    position, regime. One arena per timeframe: arena_allocation("4h") or arena_allocation("1d")."""
+    sw = fetch(url.format(tf=timeframe))
     if not sw or not sw.get("usable"):
         return []
     try:

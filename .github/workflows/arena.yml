@@ -1,6 +1,6 @@
 name: Arena (paper, every 4h)
 
-# 9 minutes after every 4h bar closes (UTC): recompute the ~100 arena strategies on the latest CLOSED bar,
+# 9 minutes after every 4h bar closes (UTC): for every timeframe arena (4h, 1d) recompute its strategies on the latest CLOSED bar,
 # retire decaying ones, run the regime switcher, send Telegram changes, deploy the dashboard to GitHub Pages.
 # Starts by itself: until the monthly "Arena screen" has put members in decisions/arena/roster.json,
 # every run stops after a 5-second check (no install, no download, no commit).
@@ -31,7 +31,7 @@ jobs:
       - name: Is the arena populated?
         id: ready
         run: |
-          if python3 -c "import json,sys; r=json.load(open('decisions/arena/roster.json')); sys.exit(0 if any(m['status'] in ('active','control') for m in r['members']) else 1)" 2>/dev/null; then
+          if python3 -c "import json,sys,glob; sys.exit(0 if any(m['status'] in ('active','control') for f in glob.glob('decisions/arena/*/roster.json') for m in json.load(open(f))['members']) else 1)" 2>/dev/null; then
             echo "go=true" >> "$GITHUB_OUTPUT"
           else
             echo "go=false" >> "$GITHUB_OUTPUT"; echo "Arena is empty: run 'Arena screen' first. Skipping."
@@ -45,8 +45,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: data/cache
-          key: arena-data-${{ github.run_id }}
-          restore-keys: arena-data-
+          key: arena-data-all-${{ github.run_id }}
+          restore-keys: |
+            arena-data-all-
+            arena-data-
       - if: steps.ready.outputs.go == 'true'
         name: Arena run
         env:
