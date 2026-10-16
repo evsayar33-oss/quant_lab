@@ -1,0 +1,21 @@
+name: SEC export (geçici)
+on:
+  push:
+    branches: ['research/sec-export']
+    paths: ['sec_export/run.py']
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install requests pandas numpy
+      - env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: python sec_export/run.py
+      - run: |
+          git config user.name research-bot; git config user.email research@local
+          git add sec_export/sec_parsed.json && git commit -m "sec export [data]" && git push
