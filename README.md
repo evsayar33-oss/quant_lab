@@ -172,7 +172,7 @@ Volatil; değilse ADX ≥ 25 ve Kaufman verimlilik oranı ≥ 0.30 → Trend; di
 raporda tamamen gösterilir.
 
 **Kasa koruma testi (`python run.py --protect`, workflow "Protection study", her aylık taramadan sonra):**
-arenadaki aktif üyelerin eşit ağırlıklı portföyünde 4 koruma kuralı test edilir: kasa düşüş sigortası, günlük kayıp
+arenadaki aktif üyelerin eşit ağırlıklı portföyünde 6 koruma kuralı test edilir: kasa düşüş sigortası, volatilite hedefi, kasa eğrisi filtresi, günlük kayıp
 limiti, BTC çöküş bekçisi, felaket stopu. Ölçüm: tüm geçmiş (CAGR, Sharpe, maks. düşüş, CVaR), 6 gerçek kriz
 (COVID 2020, Mayıs 2021, LUNA, FTX, Ağustos 2024, Ekim 2025) ve Monte Carlo iflas olasılığı. Bir kural sadece
 komşu eşiklerin hepsinde ve her zaman diliminde kabul kurallarını geçerse açılır. Likidasyon tamponu ve coin

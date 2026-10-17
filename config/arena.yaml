@@ -16,8 +16,9 @@ exit_id: 28                # trade_engine.EXIT_GRID[28] = 2 ATR stop + 3 ATR cha
 stage2:
   enabled: true
   filters: [none, trend_sma200, adx20, htf_week_sma10, regime_bench200, low_vol]   # regime_bench200 = BTC trend
-  exits: [28, 0, 23, 13, 18, 37]   # 28 base | 0 rule signal only | 23 3 ATR chandelier | 13 2 ATR stop + 3R target
-                                   # | 18 partial at 1R + trail | 37 2 ATR stop + 10-bar time exit
+  exits: [28, 0, 23, 13, 18, 37, 20]   # 28 base | 0 rule signal only | 23 3 ATR chandelier | 13 2 ATR stop + 3R target
+                                   # | 18 partial at 1R + stop to entry + trail | 37 2 ATR stop + 10-bar time exit
+                                   # | 20 2 ATR stop, stop moves to ENTRY (breakeven) at +1R
   combos:
     enabled: true
     top_families: 6        # confirmation rules: the most frequent S1-passing rule of each top family
@@ -106,6 +107,8 @@ protection:
     daily_limit: [0.04, 0.05, 0.07]                       # no exposure for the rest of the UTC day after -x
     crash_guard: [0.08, 0.10, 0.15]                       # BTC falls > x in one day -> close longs, 1 day pause
     catastrophe_stop: [0.10, 0.12, 0.15]                  # hard % stop on members whose exit has no stop
+    vol_target: [0.25, 0.35, 0.50]                        # scale = min(1, target / trailing 30-day vol): de-risk only
+    equity_ma: [30, 60, 90]                               # flat while the (shadow) book is below its N-day average
   crises:                                                 # real crash windows (inclusive)
     covid_2020: ["2020-03-05", "2020-03-31"]
     may_2021: ["2021-05-08", "2021-07-20"]
