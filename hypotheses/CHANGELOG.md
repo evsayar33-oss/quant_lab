@@ -21,3 +21,4 @@
 - 2026-10-17: Core variants of H052 pre-registered (more coins, long/short, 10% no-trade band, 1h), compared against H052 with fixed acceptance. H052 manual Telegram signal (target % of capital per coin) in the 4h arena run.
 - 2026-10-17: Variant results: V_band passed (registered as H054); V_alts, V_short, V_1h failed vs H052.
 - 2026-10-17: Pre-registered H054 risk levels (vol target 40/60/80%, no leverage, pick highest with DD >= -40%) and funding-rate arbitrage (always-on / positive-only, Binance free funding history as Bitget proxy, accepted only if positive with DD >= -5% and 50/50 with H054 beats H054 Sharpe in every window).
+- 2026-10-17: Pre-registered idle-cash funding arbitrage on top of H054 (owner criterion: most profit in forward windows; accept only if more profit than H054 in every window with DD at most 3 points deeper).

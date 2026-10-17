@@ -69,3 +69,14 @@ funding_arb:
     positive_return: true
     max_dd_floor: -0.05
     combo_beats_h054_sharpe: true # 50/50 with H054 has a higher Sharpe than H054 alone
+
+# Idle-cash funding arbitrage (written 2026-10-17 BEFORE results). H054 runs unchanged; the cash it does
+# NOT use (1 - H054 exposure) is put into the long-spot + short-perp hedge (hedge_share of that idle cash
+# is the hedged notional, the rest is perp margin). Hedge size follows the idle cash daily; resizing costs.
+# Owner's criterion: MOST PROFIT in the forward (unseen) windows. A candidate is accepted only if, in EVERY
+# forward window, it earns more than H054 alone and its max drawdown is at most 3 points deeper.
+# Among accepted candidates the bot uses the one with the highest return in the forward windows.
+idle_arb:
+  rules: [always_on, positive_only]
+  hedge_share: 0.5
+  max_extra_dd: 0.03

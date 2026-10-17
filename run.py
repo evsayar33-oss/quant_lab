@@ -444,6 +444,10 @@ def do_core(a) -> None:
                 o["risk_levels"] = {k: v for k, v in rl.items() if k != "series"}
                 o["funding_arb"] = fu
                 md += "\n" + core.markdown_risk_funding(rl, fu, cfg)
+                if cfg.get("idle_arb") and not a.synthetic:
+                    ia = core.run_idle_arb(cfg, _core_panel_loader(cfg, a.synthetic))
+                    o["idle_arb"] = ia
+                    md += "\n" + core.markdown_idle(ia, cfg)
         RESULTS.mkdir(exist_ok=True)
         (RESULTS / f"core_{tf}.md").write_text(md)
         slim = {**o, "spark": {}}

@@ -91,8 +91,8 @@ def book_returns(closes: dict, rule: str, prm: dict, ppy: float, cps: float, ban
     return out[out.index >= first]
 
 
-def book_exposure(closes: dict, rule: str, prm: dict, ppy: float) -> pd.Series:
-    ex = [exposure(c, rule, prm, ppy).shift(1).fillna(0.0) for c in closes.values()]
+def book_exposure(closes: dict, rule: str, prm: dict, ppy: float, band: float = 0.0) -> pd.Series:
+    ex = [apply_band(exposure(c, rule, prm, ppy), band).shift(1).fillna(0.0) for c in closes.values()]
     return sum(ex) / len(ex)
 
 
@@ -327,4 +327,85 @@ def markdown_risk_funding(rl: dict, fu: dict, cfg: dict) -> str:
             L.append(f"|  ↳ {c[:7]} → | {w.get('final_1000', 0):,.0f} | {f(w.get('cagr'))} | {w.get('sharpe')} | {f(w.get('max_dd'))} | | "
                      f"{cw.get('sharpe')} (DD {f(cw.get('max_dd'))}) | {hw.get('sharpe')} (DD {f(hw.get('max_dd'))}) | |")
     L += ["", "Sınırlar: spot–perp baz farkı ve Binance/Bitget farkı modellenmez; büyük yükselişte short perp için marjin eklemek gerekir."]
+    return "\n".join(L)
+
+
+def run_idle_arb(cfg: dict, panel_of) -> dict:
+    """H054 + funding arbitrage on the cash H054 leaves idle. Daily bookkeeping."""
+    from lab import funding as F
+    ic, fc, rl = cfg["idle_arb"], cfg["funding_arb"], cfg["risk_levels"]
+    cps = cfg["costs"]["commission"] + cfg["costs"]["slippage"]
+    fa = cfg["variants"].get("funding_annual", 0.0)
+    prm = cfg["rules"]["dual_trend_vt"]
+    band = rl.get("band", 0.10)
+    p = panel_of("4h", ["BTC/USDT", "ETH/USDT"])
+    closes = {a: p.c[a] for a in ["BTC/USDT", "ETH/USDT"] if a in p.columns}
+    h = book_returns(closes, "dual_trend_vt", prm, p.ppy, cps, band, fa)
+    ex = book_exposure(closes, "dual_trend_vt", prm, p.ppy, band)
+    h_d = (1 + h).groupby(h.index.normalize()).prod() - 1
+    idle = (1 - ex.groupby(ex.index.normalize()).mean()).clip(0, 1)
+    daily = {}
+    for sym in fc["assets"]:
+        try:
+            daily[sym] = F.daily_funding(F.load(sym, fc.get("start", "2020-01")))
+        except Exception as e:  # noqa: BLE001
+            print(f"[idle_arb] {sym}: {e}")
+    if not daily:
+        return {"error": "no funding data"}
+    fund = pd.concat(daily.values(), axis=1).mean(axis=1)          # equal BTC/ETH hedge
+    idx = h_d.index.intersection(fund.index)
+    h_d, fund, idle_ = h_d.reindex(idx), fund.reindex(idx), idle.reindex(idx).fillna(0)
+    rows = [{"name": "H054 tek başına", "id": "h054", "r": h_d}]
+    for rule in ic["rules"]:
+        on = F.book(fund, rule, fc["rules"].get(rule) or {}, 1.0, 0.0) / 1.0   # funding earned per unit hedged
+        on_flag = (on != 0).astype(float) if rule != "always_on" else pd.Series(1.0, index=idx)
+        if rule == "positive_only":   # recompute the on/off state to size the hedge
+            ann = fund.rolling(fc["rules"][rule].get("lookback_days", 3), min_periods=1).mean() * 365
+            st, cur = [], 0.0
+            for v in ann.to_numpy():
+                if cur == 0 and v > fc["rules"][rule].get("enter_ann", 0.10):
+                    cur = 1.0
+                elif cur == 1 and v < fc["rules"][rule].get("exit_ann", 0.0):
+                    cur = 0.0
+                st.append(cur)
+            on_flag = pd.Series(st, index=idx).shift(1).fillna(0.0)
+        hedge = (idle_.shift(1).fillna(0) * ic["hedge_share"] * on_flag)          # notional / capital, decided at t-1
+        cost = hedge.diff().abs().fillna(hedge) * 2 * fc["cost_per_leg"]          # spot + perp resize
+        r = h_d + hedge * fund - cost
+        rows.append({"name": f"H054 + boştaki nakitle arbitraj ({rule})", "id": f"idle_{rule}", "r": r,
+                     "avg_hedge": round(float(hedge.mean()), 3)})
+    out, base = [], rows[0]["r"]
+    for row in rows:
+        r = row.pop("r")
+        row["full"] = F.stats(r)
+        row["windows"] = {c: F.stats(r[r.index > pd.Timestamp(c)]) for c in cfg["cutoffs"]}
+        if row["id"] != "h054":
+            ok = True
+            for c in cfg["cutoffs"]:
+                w, b = row["windows"][c] or {}, (out[0]["windows"][c] or {})
+                ok &= w.get("final_1000", 0) > b.get("final_1000", 0)
+                ok &= w.get("max_dd", -1) >= b.get("max_dd", 0) - ic.get("max_extra_dd", 0.03)
+            row["approved"] = bool(ok)
+        out.append(row)
+    acc = [r for r in out if r.get("approved")]
+    best = max(acc, key=lambda r: sum((r["windows"][c] or {}).get("final_1000", 0) for c in cfg["cutoffs"])) if acc else out[0]
+    return {"rows": out, "chosen": best["id"], "avg_idle": round(float(idle_.mean()), 3)}
+
+
+def markdown_idle(o: dict, cfg: dict) -> str:
+    f = lambda v: "–" if v is None else f"{v:+.0%}"   # noqa: E731
+    cut = cfg["cutoffs"]
+    if o.get("error"):
+        return f"\n## Boştaki nakitle arbitraj\n\nVeri yok: {o['error']}"
+    L = ["", "## Boştaki nakitle funding arbitrajı (kriter: ileri dönemlerde en yüksek kâr)", "",
+         f"H054'ün ortalama boştaki nakdi: %{o['avg_idle'] * 100:.0f}. Kabul: her ileri pencerede H054'ten fazla kazanmalı, "
+         "düşüşü en fazla 3 puan derin olmalı. Kabul edilenlerden ileri dönemlerde en çok kazanan seçilir.", "",
+         "| Seçenek | Tüm geçmiş → | Yıllık | Maks. düşüş | " + " | ".join(f"{c[:7]} →" for c in cut) + " | Onay |",
+         "|---|---|---|---|" + "---|" * len(cut) + "---|"]
+    for r in o["rows"]:
+        fu = r["full"]
+        ap = "–" if "approved" not in r else ("✅" if r["approved"] else "❌")
+        L.append(f"| {r['name']} | {fu.get('final_1000', 0):,.0f} | {f(fu.get('cagr'))} | {f(fu.get('max_dd'))} | "
+                 + " | ".join(f"{(r['windows'][c] or {}).get('final_1000', 0):,.0f}" for c in cut) + f" | {ap} |")
+    L.append(f"\n**Bot için seçilen:** `{o['chosen']}`")
     return "\n".join(L)
