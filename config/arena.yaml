@@ -122,3 +122,17 @@ protection:
     max_sharpe_drop: 0.10          # full-history Sharpe may fall by at most 10%
     max_cagr_drop: 0.25            # full-history CAGR may fall by at most 25% (the price of insurance)
   monte_carlo: {paths: 3000, years: 1, block_days: 10, ruin_dd: -0.50}
+
+# Paper portfolio books (owner's request 2026-10-17): candidate bot books tracked forward for ~3 months
+# BEFORE any real money. Membership is FROZEN on the first run (decisions/arena/<tf>/books.json):
+# nothing is re-picked with hindsight. A retired member's share goes to cash (not replaced).
+# Leverage multiplies returns, costs and funding; a position's loss in one bar is capped at its margin
+# (isolated-margin liquidation: 1/leverage - maint_margin).
+books:
+  timeframes: [4h]
+  maint_margin: 0.005
+  list:
+    - {id: A, name: "Hepsi eşit ağırlık, 1x", select: all, leverage: 1}
+    - {id: B, name: "En iyi 10, 1x", select: top, n: 10, leverage: 1}
+    - {id: C, name: "En iyi 5, 3x", select: top, n: 5, leverage: 3}
+    - {id: C2, name: "En iyi 5, 3x + volatilite hedefi %35", select: top, n: 5, leverage: 3, vol_target: 0.35}

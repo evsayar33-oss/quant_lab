@@ -174,6 +174,39 @@ def test_protection_study_runs_and_is_causal():
     assert (s1.iloc[:5001] == s2.iloc[:5001]).all()
 
 
+def test_books_frozen_leverage_and_cash(tmp_path=None):
+    import tempfile
+    from pathlib import Path as P
+    from lab import arena, books
+    rng = np.random.default_rng(9)
+    idx = pd.date_range("2020-01-01", periods=2190 * 4, freq="4h")
+    cols = ["BTC/USDT", "ETH/USDT", "SOL/USDT", "ADA/USDT"]
+    c = pd.DataFrame(100 * np.exp(np.cumsum(rng.normal(0, 0.01, (len(idx), 4)), axis=0)), idx, cols)
+    p = Panel.from_close(c, seed=9)
+    mem = [{"id": f"A{i}", "coin": co, "rule": "donchian_breakout", "params": {"entry": 20, "exit": 10},
+            "exit_id": 28, "side": "both", "status": "active", "backtest": {"sharpe": 1.0 + i},
+            "added_at": "2023-06-01T00:00:00+00:00"} for i, co in enumerate(cols)]
+    ro = {"members": mem}
+    R, X, _ = arena.compute(ro, p, Costs(0.0006, 0.0005), mem)
+    cfg = {"books": {"list": [{"id": "A", "name": "all", "select": "all", "leverage": 1},
+                              {"id": "C", "name": "top2 3x", "select": "top", "n": 2, "leverage": 3},
+                              {"id": "V", "name": "top2 3x vt", "select": "top", "n": 2, "leverage": 3, "vol_target": 0.3}]}}
+    path = P(tempfile.mkdtemp()) / "books.json"
+    d = books.ensure(path, ro, cfg)
+    assert d["books"]["C"]["members"] == ["A3", "A2"]          # highest backtest Sharpe, frozen
+    mem[0]["backtest"]["sharpe"] = 99                            # later changes must not re-pick
+    assert books.ensure(path, ro, cfg)["books"]["C"]["members"] == ["A3", "A2"]
+    r1 = books.returns({"members": ["A3", "A2"], "leverage": 1}, R, X, ro, p, 0.0011, 0.005)
+    r3 = books.returns({"members": ["A3", "A2"], "leverage": 3}, R, X, ro, p, 0.0011, 0.005)
+    assert abs(r3.std() / r1.std() - 3) < 0.3                    # leverage scales risk
+    assert (r3 >= -1.0).all()
+    mem[3].update(status="retired", retired_at="2022-01-01T00:00:00+00:00")
+    rr = books.returns({"members": ["A3"], "leverage": 1}, R, X, ro, p, 0.0011, 0.005)
+    assert (rr[rr.index > pd.Timestamp("2022-01-02")] == 0).all()   # retired share -> cash
+    rep = books.report(d, R, X, ro, p, 0.0011, cfg)
+    assert {b["id"] for b in rep} == {"A", "C", "V"}
+
+
 def test_drop_open_bar():
     now = pd.Timestamp.now(tz="UTC").tz_localize(None).floor("4h")
     idx = pd.date_range(end=now, periods=5, freq="4h")

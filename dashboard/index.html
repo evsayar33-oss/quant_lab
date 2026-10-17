@@ -83,6 +83,7 @@ svg.chart{width:100%;height:160px;display:block}
   <div id="tfbar" class="tools" style="margin:0 0 8px"></div>
   <nav role="tablist">
     <button role="tab" aria-selected="true" data-t="ozet">Özet</button>
+    <button role="tab" aria-selected="false" data-t="defter">Portföyler</button>
     <button role="tab" aria-selected="false" data-t="arena">Arena</button>
     <button role="tab" aria-selected="false" data-t="rejim">Rejimler</button>
     <button role="tab" aria-selected="false" data-t="huni">Eleme hunisi</button>
@@ -90,6 +91,7 @@ svg.chart{width:100%;height:160px;display:block}
 </div></header>
 <main class="wrap">
   <section id="ozet" class="on"></section>
+  <section id="defter"></section>
   <section id="arena"></section>
   <section id="rejim"></section>
   <section id="huni"></section>
@@ -133,6 +135,19 @@ function tabs(){document.querySelectorAll("nav button").forEach(b=>b.onclick=()=
   if(t){const b=document.querySelector(`nav button[data-t="${t}"]`);if(b)b.click();}
 }
 
+function defter(D){
+  const B=D.books||[];
+  if(!B.length){$("#defter").innerHTML='<div class="card empty">Bu zaman diliminde paper portföy yok (sadece 4h).</div>';return}
+  const rows=B.map(b=>`<tr><td><b>${esc(b.id)}</b> ${esc(b.name)}<div class="small muted">${b.members.length} strateji · ${b.leverage}x${b.vol_target?" · vol hedefi %"+Math.round(b.vol_target*100):""} · başlangıç ${b.created_at}</div></td>
+    <td><b>$${Number(b.forward.balance_1000).toLocaleString("tr-TR",{maximumFractionDigits:0})}</b><div class="small ${cls(b.forward.ret)}">${pct(b.forward.ret)}</div></td>
+    <td class="neg">${pct(b.forward.max_dd)}</td><td>${spark(b.spark_fwd)}</td></tr>`).join("");
+  const bt=B.map(b=>`<tr><td>${esc(b.id)}</td><td>${pct(b.backtest.cagr,0)}</td><td>${num(b.backtest.sharpe)}</td><td class="neg">${pct(b.backtest.max_dd,0)}</td><td>${spark(b.spark_bt)}</td></tr>`).join("");
+  $("#defter").innerHTML=`<div class="grid"><div class="card"><h2>İleri (paper) kayıt · $1000 ile</h2>
+   <div class="tscroll"><table><tr><th>Portföy</th><th>Bakiye</th><th>Maks. düşüş</th><th></th></tr>${rows}</table></div>
+   <div class="note small">İçerik ilk gün donduruldu. Emekli olan stratejinin payı nakde geçer. Kaldıraç, maliyet, funding ve pozisyon başı likidasyon sınırı dahil.</div></div>
+   <div class="card"><h2>Aynı portföylerin backtest'i (iyimser)</h2><div class="tscroll"><table><tr><th></th><th>Yıllık</th><th>Sharpe</th><th>Maks. düşüş</th><th></th></tr>${bt}</table></div>
+   <div class="note small">Üyeler aynı geçmişte seçildi; gerçek test soldaki ileri kayıttır.</div></div></div>`;
+}
 function ozet(D){
   const S=D.switcher,F=S.forward||{},G=D.gate||{};
   const chk=Object.entries(S.checks||{}).map(([k,v])=>`<li>${v?"✅":"⏳"} ${({backtest_gate:"Backtest kapısı (her pencerede eşit ağırlığı yener, 2× maliyette kârlı, düşüş sınırı)",forward_days:"İleri kayıt süresi yeterli",forward_beats_equal_weight:"İleri kayıtta eşit ağırlığı yener"})[k]||k}</li>`).join("");
@@ -243,7 +258,7 @@ function load(tf){
   fetch(`data_${tf}.json`,{cache:"no-store"}).then(r=>r.json()).then(D=>{
     $("#sub").textContent=` ${D.universe} · ${D.timeframe}`;
     const u=new Date(D.updated_at);$("#upd").innerHTML=`güncelleme ${u.toLocaleString("tr-TR",{dateStyle:"short",timeStyle:"short"})}<br>son bar ${esc(String(D.data_end).slice(0,16))}`;
-    window.D=D;ozet(D);arena(D);rejim(D);huni(D);
+    window.D=D;ozet(D);defter(D);arena(D);rejim(D);huni(D);
   }).catch(e=>{$("#ozet").innerHTML=`<div class="card empty">Veri yüklenemedi: ${esc(e)}</div>`;$("#upd").textContent="hata"});
 }
 document.body.addEventListener("click",e=>{const t=e.target.closest("[data-m]");if(t&&window.D){e.preventDefault();detail(window.D,t.dataset.m)}});

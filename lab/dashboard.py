@@ -35,7 +35,7 @@ def build(out: dict, cfg: dict, site: str | Path = "site") -> Path:
         "windows": cfg.get("report_windows_years", [3, 5, 0]), "account": cfg.get("account", {}),
         "switcher": out["switcher"], "gate": gate, "screen": summ,
         "spark_switch_fwd": out.get("spark_switch_fwd", []), "spark_ew_fwd": out.get("spark_ew_fwd", []),
-        "members": out["members"],
+        "members": out["members"], "books": out.get("books", []),
     }
     tf = cfg.get("timeframe", "4h")
     (site / f"data_{tf}.json").write_text(json.dumps(_clean(data), ensure_ascii=False, default=str, separators=(",", ":")))

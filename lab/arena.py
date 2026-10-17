@@ -363,7 +363,16 @@ def run(p: Panel, costs: Costs, cfg: dict) -> dict:
               "last_summary": today if summary_due else st.get("last_summary")}
     if any(new_st[k] != st.get(k) for k in new_st):      # unchanged positions -> no write, no commit
         _write(STATE, {**new_st, "last_bar": str(end), "updated_at": now_iso()})
+    books_out = []
+    if cfg.get("timeframe") in (cfg.get("books", {}).get("timeframes") or []):
+        from lab import books as BK
+        try:
+            bdata = BK.ensure(DIR / "books.json", ro, cfg)
+            books_out = BK.report(bdata, R, X, ro, p, cps, cfg)
+        except Exception as e:  # noqa: BLE001 - books are a report; they must not stop the arena
+            print(f"[arena] books failed: {e}")
     return {"members": members_out, "switcher": sw_out, "gate": gate, "events": events if new_bar else [],
+            "books": books_out,
             "summary_due": summary_due, "regimes": sw_out["regimes"], "data_end": str(end),
             "spark_switch_fwd": perp.sparkline(sf, 90), "spark_ew_fwd": perp.sparkline(ef, 90)}
 
@@ -383,6 +392,9 @@ def telegram_text(out: dict, summary: bool) -> str:
         for x in sw["picks"]:
             L.append(f"  {x['id']} {x['coin']} {x['rule']} {x['weight']:.0%} [{x['regime']}] {x['position']}")
         L.append(f"  nakit {sw['cash']:.0%}")
+        for b in out.get("books") or []:
+            f = b["forward"]
+            L.append(f"📒 {b['id']} {b['name']}: ${f['balance_1000']:,.0f} ({f['ret']:+.1%}, düşüş {f['max_dd']:.0%}, {f['days']} gün)")
         act = [m for m in out["members"] if m["status"] == "active"]
         top = sorted(act, key=lambda m: -(m["forward"]["ret"]))[:5]
         if top:
