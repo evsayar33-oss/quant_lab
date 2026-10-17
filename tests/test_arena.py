@@ -141,6 +141,36 @@ def test_stage2_filters_exits_combos():
         assert res["stage2"]["trials"] > 0
 
 
+def test_protection_study_runs_and_is_causal():
+    from lab import arena, protect
+    rng = np.random.default_rng(4)
+    idx = pd.date_range("2019-06-01", periods=2190 * 5, freq="4h")
+    cols = ["BTC/USDT", "ETH/USDT", "SOL/USDT"]
+    c = pd.DataFrame(100 * np.exp(np.cumsum(rng.normal(0, 0.01, (len(idx), 3)), axis=0)), idx, cols)
+    p = Panel.from_close(c, seed=4)
+    mem = [{"id": f"A{i}", "coin": co, "rule": "donchian_breakout", "params": {"entry": 20, "exit": 10},
+            "exit_id": e, "side": "both", "status": "active"} for i, (co, e) in enumerate(
+        [("BTC/USDT", 28), ("ETH/USDT", 0), ("SOL/USDT", 28), ("SOL/USDT", 23)])]
+    R, X, _ = arena.compute({"members": mem}, p, Costs(0.0006, 0.0005), mem)
+    cfg = {"universe": "syn", "timeframe": "4h", "protection": {
+        "max_coin_weight": 0.4, "tests": {"dd_brake": [[0.1, 0.2]], "daily_limit": [0.05],
+                                          "crash_guard": [0.1], "catastrophe_stop": [0.12]},
+        "crises": {"c1": ["2020-03-01", "2020-04-01"], "c2": ["2022-05-01", "2022-07-01"]},
+        "accept": {}, "monte_carlo": {"paths": 50}}}
+    res = protect.run(p, Costs(0.0006, 0.0005), cfg, R, X, mem)
+    assert set(res["tests"]) == {"dd_brake", "daily_limit", "crash_guard", "catastrophe_stop"}
+    assert res["catastrophe_members"] == 2                      # exits 0 and 23 have no hard stop
+    assert "max_leverage" in res["leverage"] and res["leverage"]["max_leverage"] < 5
+    md = protect.markdown(res, cfg)
+    assert "Kasa koruma" in md
+    # brake decisions use only the past: changing the future does not change earlier scales
+    base = res["series"]["base"]
+    s1 = protect.dd_brake_scale(base, 0.1, 0.2)
+    b2 = base.copy(); b2.iloc[5000:] = -0.05
+    s2 = protect.dd_brake_scale(b2, 0.1, 0.2)
+    assert (s1.iloc[:5001] == s2.iloc[:5001]).all()
+
+
 def test_drop_open_bar():
     now = pd.Timestamp.now(tz="UTC").tz_localize(None).floor("4h")
     idx = pd.date_range(end=now, periods=5, freq="4h")

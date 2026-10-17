@@ -90,3 +90,32 @@ switcher:                  # "trading agent": picks the strategies that worked i
     positive_at_cost_stress: true
     max_dd_floor: -0.45
     min_forward_days: 180  # plus a forward (paper) record: switcher Sharpe > equal-weight Sharpe
+
+# Capital protection study (lab/protect.py). Written BEFORE any result was seen.
+# The study runs on the equal-weight portfolio of the ACTIVE arena members of each timeframe.
+# Mechanical rules (no test needed, they follow from arithmetic) are always on:
+#   leverage buffer: leverage <= 1 / (buffer_mult x catastrophe distance)   -> a stop always fires before liquidation
+#   concentration:   one coin <= max_coin_weight of the capital
+# Tested rules: each is switched ON only if it passes `accept` in EVERY timeframe and for EVERY
+# neighbouring threshold (a plateau, not one lucky setting). The middle value is the proposal.
+protection:
+  max_coin_weight: 0.20
+  leverage_buffer_mult: 2.0
+  tests:
+    dd_brake: [[0.08, 0.16], [0.10, 0.20], [0.12, 0.25]]  # half size below -a, flat below -b (portfolio peak)
+    daily_limit: [0.04, 0.05, 0.07]                       # no exposure for the rest of the UTC day after -x
+    crash_guard: [0.08, 0.10, 0.15]                       # BTC falls > x in one day -> close longs, 1 day pause
+    catastrophe_stop: [0.10, 0.12, 0.15]                  # hard % stop on members whose exit has no stop
+  crises:                                                 # real crash windows (inclusive)
+    covid_2020: ["2020-03-05", "2020-03-31"]
+    may_2021: ["2021-05-08", "2021-07-20"]
+    luna_2022: ["2022-05-04", "2022-06-30"]
+    ftx_2022: ["2022-11-05", "2022-12-31"]
+    aug_2024: ["2024-07-29", "2024-08-15"]
+    oct_2025: ["2025-10-06", "2025-10-20"]
+  accept:
+    min_crises_better_frac: 0.67   # max drawdown less deep in >= 2/3 of the crises the data covers
+    must_lower_full_dd: true       # and a less deep max drawdown on the full history
+    max_sharpe_drop: 0.10          # full-history Sharpe may fall by at most 10%
+    max_cagr_drop: 0.25            # full-history CAGR may fall by at most 25% (the price of insurance)
+  monte_carlo: {paths: 3000, years: 1, block_days: 10, ruin_dd: -0.50}
