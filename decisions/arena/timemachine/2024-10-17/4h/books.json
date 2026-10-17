@@ -99,6 +99,51 @@
     "A0008"
    ],
    "created_at": "2024-10-17T00:00:00+00:00"
+  },
+  "K1": {
+   "id": "K1",
+   "name": "Çekirdek: BTC+ETH SMA200 + momentum + vol hedefi",
+   "select": "core",
+   "rule": "dual_trend_vt",
+   "assets": [
+    "BTC/USDT",
+    "ETH/USDT"
+   ],
+   "funding_annual": 0.08,
+   "params": {
+    "sma_days": 200,
+    "horizons_days": [
+     30,
+     90,
+     180
+    ],
+    "target": 0.4,
+    "lookback_days": 30
+   },
+   "members": [],
+   "created_at": "2024-10-17T00:00:00+00:00"
+  },
+  "K2": {
+   "id": "K2",
+   "name": "Çekirdek: BTC+ETH momentum + vol hedefi",
+   "select": "core",
+   "rule": "tsmom_vt",
+   "assets": [
+    "BTC/USDT",
+    "ETH/USDT"
+   ],
+   "funding_annual": 0.08,
+   "params": {
+    "horizons_days": [
+     30,
+     90,
+     180
+    ],
+    "target": 0.4,
+    "lookback_days": 30
+   },
+   "members": [],
+   "created_at": "2024-10-17T00:00:00+00:00"
   }
  }
 }
