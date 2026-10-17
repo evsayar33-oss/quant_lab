@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-16T21:26:28+00:00",
- "data_end": "2026-10-16 16:00:00",
+ "updated_at": "2026-10-17T04:19:25+00:00",
+ "data_end": "2026-10-17 00:00:00",
  "universe": "crypto_alts",
  "timeframe": "4h",
  "usable": false,
@@ -124,7 +124,7 @@
   "days": 0,
   "ret": 0.0,
   "sharpe": null,
-  "ew_ret": 0.0,
+  "ew_ret": -0.0017,
   "ew_sharpe": null,
   "max_dd": 0.0
  },
@@ -339,13 +339,13 @@
    }
   },
   "XLM/USDT": {
-   "now": "range",
-   "now_tr": "Yatay",
-   "since": "2026-10-11 20:00:00",
+   "now": "trend_down",
+   "now_tr": "Trend ↓",
+   "since": "2026-10-16 20:00:00",
    "share": {
-    "range": 0.694,
+    "range": 0.693,
     "trend_up": 0.032,
-    "trend_down": 0.062,
+    "trend_down": 0.063,
     "volatile": 0.213
    }
   },
@@ -367,7 +367,7 @@
    "share": {
     "range": 0.691,
     "trend_up": 0.049,
-    "trend_down": 0.098,
+    "trend_down": 0.099,
     "volatile": 0.161
    }
   },
@@ -394,9 +394,9 @@
    }
   },
   "CRV/USDT": {
-   "now": "volatile",
-   "now_tr": "Volatil",
-   "since": "2026-10-15 12:00:00",
+   "now": "range",
+   "now_tr": "Yatay",
+   "since": "2026-10-16 20:00:00",
    "share": {
     "range": 0.738,
     "trend_up": 0.046,
@@ -416,9 +416,9 @@
    }
   },
   "THETA/USDT": {
-   "now": "range",
-   "now_tr": "Yatay",
-   "since": "2026-10-16 00:00:00",
+   "now": "trend_down",
+   "now_tr": "Trend ↓",
+   "since": "2026-10-16 20:00:00",
    "share": {
     "range": 0.708,
     "trend_up": 0.051,
@@ -456,7 +456,7 @@
     "range": 0.69,
     "trend_up": 0.073,
     "trend_down": 0.086,
-    "volatile": 0.151
+    "volatile": 0.152
    }
   },
   "ARB/USDT": {
