@@ -1,0 +1,76 @@
+name: Time machine test
+
+# Replay the whole arena pipeline as if today were `cutoff` (funnel, roster, books frozen), then measure
+# what those frozen choices did after the cutoff. Never touches the live arena or decisions/registry.json.
+
+on:
+  workflow_dispatch:
+    inputs:
+      cutoff:
+        description: 'cutoff date YYYY-MM-DD'
+        required: true
+        default: '2024-10-17'
+      timeframes:
+        description: 'JSON list: ["4h"] or ["4h","1d"]'
+        required: false
+        default: '["4h","1d"]'
+
+permissions:
+  contents: write
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      matrix:
+        timeframe: ${{ fromJSON(github.event.inputs.timeframes || '["4h","1d"]') }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - run: pip install -r requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: data/cache
+          key: arena-data-tm-${{ matrix.timeframe }}-${{ github.run_id }}
+          restore-keys: |
+            arena-data-${{ matrix.timeframe }}-
+            arena-data-all-
+            arena-data-
+      - name: Replay
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+          LAB_CACHE_HOURS: "0"
+        run: python run.py --timemachine "${{ github.event.inputs.cutoff }}" --timeframe ${{ matrix.timeframe }} --telegram
+      - name: Commit summary to main
+        run: bash scripts/commit_arena.sh "Time machine ${{ matrix.timeframe }} ${{ github.event.inputs.cutoff }}" "timemachine/${{ matrix.timeframe }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: timemachine-${{ matrix.timeframe }}
+          retention-days: 14
+          path: results/timemachine_*
+
+  publish:
+    needs: replay
+    if: always()
+    runs-on: ubuntu-latest
+    concurrency:
+      group: quant-lab-results
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/fetch_results.sh
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: timemachine-*
+          path: _parts
+      - run: |
+          mkdir -p results
+          for d in _parts/*; do cp -r "$d"/. results/ 2>/dev/null || true; done
+          rm -rf _parts
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/publish_results.sh

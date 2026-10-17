@@ -288,6 +288,23 @@ def _arena_one(a, hyps, cfg) -> dict | None:
     from lab import arena, dashboard, screen
     p, costs = arena_panel(cfg, a.synthetic)
     tag = f"{cfg['universe']}_{cfg['timeframe']}"
+    if a.timemachine:
+        from lab import timemachine
+        o = timemachine.run(p, costs, cfg, a.timemachine)
+        if o.get("error"):
+            print(o["error"]); return None
+        md = timemachine.markdown(o)
+        RESULTS.mkdir(exist_ok=True)
+        (RESULTS / f"timemachine_{tag}.md").write_text(md)
+        print(md)
+        if a.telegram:
+            f = lambda v: "–" if v is None else f"{v:+.0%}"   # noqa: E731
+            telegram(f"⏳ zaman makinesi {cfg['timeframe']} (kesim {o['cutoff']} → bugün)\n" + "\n".join(
+                f"{b['id']} {b['name']}: $1000 → {b['forward'].get('final_1000', 0):,.0f} "
+                f"(yıllık {f(b['forward'].get('cagr'))}, düşüş {f(b['forward'].get('max_dd'))}) — {(b.get('band_status') or {}).get('text', '')}"
+                for b in o["books"]) + "\n" + "\n".join(
+                f"{g}: $1000 → {s_.get('final_1000', 0):,.0f}, SR {s_.get('sharpe')}" for g, s_ in o["groups"].items()))
+        return None
     if a.protect:
         from lab import protect
         ro = arena._read(arena.ROSTER, None)
@@ -395,6 +412,7 @@ def main() -> None:
     ap.add_argument("--calibrate", action="store_true", help="reproduce known results on real data")
     ap.add_argument("--screen", action="store_true", help="arena screening funnel (monthly)")
     ap.add_argument("--arena", action="store_true", help="arena paper run + regime switcher (every closed bar)")
+    ap.add_argument("--timemachine", default="", help="cutoff date YYYY-MM-DD: replay the arena as if today were then")
     ap.add_argument("--protect", action="store_true", help="capital protection study on the active arena members")
     ap.add_argument("--stage2", default="", help="with --screen: on | off (default: config/arena.yaml)")
     ap.add_argument("--site", default="", help="with --arena: write the dashboard (index.html + data.json) here")
@@ -403,7 +421,7 @@ def main() -> None:
     a = ap.parse_args()
 
     hyps = load_yaml("hypotheses/registry.yaml") or []
-    if a.screen or a.arena or a.protect:
+    if a.screen or a.arena or a.protect or a.timemachine:
         return do_arena(a, hyps)
     if a.ids:
         print(json.dumps([h["id"] for h in hyps if h.get("status") == "active"]))
