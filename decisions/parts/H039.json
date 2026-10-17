@@ -1,14 +1,14 @@
 {
   "verdict": "REJECT",
-  "previous_verdict": "WATCH",
+  "previous_verdict": "REJECT",
   "reasons": [
     "DSR 0.432 < 0.9 (luck not excluded after 26 trials)",
     "OOS Sharpe (excess of T-bill) 0.002 < 0.5",
-    "bootstrap P(SR>0) 0.678 < 0.85",
+    "bootstrap P(SR>0) 0.674 < 0.85",
     "only 31% of OOS years positive",
     "with 2x costs it does not beat the equal-weight benchmark",
-    "PBO 0.869 > 0.5 (variant selection is overfit)",
-    "Reality Check p 0.932 > 0.1 (best variant may be data-mined)"
+    "PBO 0.879 > 0.5 (variant selection is overfit)",
+    "Reality Check p 0.942 > 0.1 (best variant may be data-mined)"
   ],
   "strategy": "macro_risk_switch",
   "kind": "strategy",
@@ -33,14 +33,14 @@
   "targets": {},
   "targets_observe_only": {},
   "gate_sharpe": 0.002,
-  "pbo": 0.869,
-  "reality_check_p": 0.932,
+  "pbo": 0.879,
+  "reality_check_p": 0.942,
   "dsr": 0.432,
   "n_trials": 26,
   "oos": {
     "start": "2014-01-13 00:00:00",
-    "end": "2026-10-14 00:00:00",
-    "years": 12.75,
+    "end": "2026-10-16 00:00:00",
+    "years": 12.76,
     "cagr": 0.0086,
     "vol": 0.1451,
     "sharpe": 0.132,
@@ -49,20 +49,20 @@
     "max_dd": -0.335,
     "max_dd_bars": 2299,
     "calmar": 0.026,
-    "ulcer": 0.1965,
+    "ulcer": 0.1966,
     "var95": -0.0127,
     "cvar95": -0.0244,
     "omega": 1.042,
-    "tail_ratio": 1.081,
+    "tail_ratio": 1.082,
     "skew": -2.012,
-    "kurtosis": 32.336,
+    "kurtosis": 32.358,
     "hit_rate": 0.172,
     "psr": 0.68,
     "time_in_market": null,
-    "turnover_ann": 13.88,
-    "bench_cagr": 0.0958,
-    "bench_sharpe": 0.496,
-    "info_ratio": -0.519,
+    "turnover_ann": 13.87,
+    "bench_cagr": 0.0974,
+    "bench_sharpe": 0.502,
+    "info_ratio": -0.526,
     "beta": 0.35,
     "up_capture": 0.322,
     "down_capture": 0.337
@@ -76,13 +76,13 @@
     },
     "bear": {
       "sharpe": -1.68,
-      "ann_ret": -0.0868,
-      "bars": 1170
+      "ann_ret": -0.0867,
+      "bars": 1172
     },
     "calm": {
       "sharpe": 0.67,
-      "ann_ret": 0.0725,
-      "bars": 1699
+      "ann_ret": 0.0724,
+      "bars": 1701
     },
     "stressed": {
       "sharpe": -0.23,
@@ -91,12 +91,12 @@
     },
     "vix_lt_20": {
       "sharpe": 0.59,
-      "ann_ret": 0.084,
-      "bars": 2333
+      "ann_ret": 0.0839,
+      "bars": 2335
     },
     "vix_20_30": {
       "sharpe": -0.9,
-      "ann_ret": -0.1483,
+      "ann_ret": -0.1484,
       "bars": 717
     },
     "vix_ge_30": {
@@ -112,7 +112,7 @@
     "curve_normal": {
       "sharpe": 0.17,
       "ann_ret": 0.0271,
-      "bars": 2594
+      "bars": 2596
     }
   },
   "robustness": {
@@ -130,14 +130,14 @@
     },
     "noise": {
       "noise_bp": 0.002,
-      "sharpe_min": 0.433,
+      "sharpe_min": 0.434,
       "sharpe_median": 0.447
     }
   },
   "recommended_overlay": "equity_ma_41",
   "kelly_fraction": null,
   "oos_csv": "results/H039_macro_risk_switch_metals_etf_1d_oos.csv",
-  "validated_at": "2026-10-15T07:28:37+00:00",
+  "validated_at": "2026-10-17T09:02:57+00:00",
   "accepted_at": null,
-  "data_end": "2026-10-14 00:00:00"
+  "data_end": "2026-10-16 00:00:00"
 }

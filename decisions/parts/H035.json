@@ -7,7 +7,7 @@
     "bootstrap P(SR>0) 0.791 < 0.85",
     "only 50% of OOS years positive",
     "with 2x costs it does not beat the equal-weight benchmark",
-    "Reality Check p 0.962 > 0.1 (best variant may be data-mined)",
+    "Reality Check p 0.966 > 0.1 (best variant may be data-mined)",
     "random entries match it (p=0.48): the edge is in the exits, not the signal"
   ],
   "strategy": "supertrend_flip",
@@ -48,7 +48,7 @@
   },
   "gate_sharpe": -0.003,
   "pbo": 0.343,
-  "reality_check_p": 0.962,
+  "reality_check_p": 0.966,
   "dsr": 0.018,
   "n_trials": 163,
   "oos": {
@@ -74,9 +74,9 @@
     "psr": 0.815,
     "time_in_market": null,
     "turnover_ann": 1.43,
-    "bench_cagr": 0.0953,
-    "bench_sharpe": 0.526,
-    "info_ratio": -0.536,
+    "bench_cagr": 0.0956,
+    "bench_sharpe": 0.528,
+    "info_ratio": -0.538,
     "beta": 0.169,
     "up_capture": 0.176,
     "down_capture": 0.189
@@ -162,8 +162,8 @@
   "robustness": {
     "delay": {
       "sharpe": 0.378,
-      "sharpe_delayed_1bar": 0.486,
-      "retained": 1.285
+      "sharpe_delayed_1bar": 0.485,
+      "retained": 1.284
     },
     "neighbourhood": {
       "neighbours": 1,
@@ -194,7 +194,7 @@
   "recommended_overlay": "equity_ma_8",
   "kelly_fraction": 0.074,
   "oos_csv": "results/H035_supertrend_flip_metals_1w_oos.csv",
-  "validated_at": "2026-10-15T06:26:10+00:00",
+  "validated_at": "2026-10-17T09:02:05+00:00",
   "accepted_at": null,
   "data_end": "2026-10-16 00:00:00"
 }

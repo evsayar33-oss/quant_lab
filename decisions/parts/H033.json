@@ -2,10 +2,10 @@
   "verdict": "WATCH",
   "previous_verdict": "WATCH",
   "reasons": [
-    "OOS Sharpe (excess of T-bill) 0.281 < 0.5",
+    "OOS Sharpe (excess of T-bill) 0.28 < 0.5",
     "only 46% of OOS years positive",
-    "PBO 0.92 > 0.5 (variant selection is overfit)",
-    "Reality Check p 0.92 > 0.1 (best variant may be data-mined)"
+    "PBO 0.929 > 0.5 (variant selection is overfit)",
+    "Reality Check p 0.934 > 0.1 (best variant may be data-mined)"
   ],
   "strategy": "ts_momentum",
   "kind": "strategy",
@@ -28,89 +28,89 @@
   },
   "targets": {},
   "targets_observe_only": {
-    "CPER": 0.0812
+    "CPER": 0.0817
   },
-  "gate_sharpe": 0.281,
-  "pbo": 0.92,
-  "reality_check_p": 0.92,
-  "dsr": 0.933,
+  "gate_sharpe": 0.28,
+  "pbo": 0.929,
+  "reality_check_p": 0.934,
+  "dsr": 0.935,
   "n_trials": 20,
   "oos": {
     "start": "2014-01-13 00:00:00",
-    "end": "2026-10-14 00:00:00",
-    "years": 12.75,
-    "cagr": 0.0361,
-    "vol": 0.0669,
-    "sharpe": 0.563,
-    "sharpe_excess_rf": 0.281,
-    "sortino": 0.386,
-    "max_dd": -0.1381,
-    "max_dd_bars": 1035,
-    "calmar": 0.261,
-    "ulcer": 0.0639,
+    "end": "2026-10-16 00:00:00",
+    "years": 12.76,
+    "cagr": 0.036,
+    "vol": 0.0666,
+    "sharpe": 0.564,
+    "sharpe_excess_rf": 0.28,
+    "sortino": 0.385,
+    "max_dd": -0.1468,
+    "max_dd_bars": 1045,
+    "calmar": 0.245,
+    "ulcer": 0.064,
     "var95": -0.006,
-    "cvar95": -0.0109,
+    "cvar95": -0.0108,
     "omega": 1.142,
-    "tail_ratio": 1.11,
-    "skew": -0.813,
-    "kurtosis": 13.093,
-    "hit_rate": 0.338,
+    "tail_ratio": 1.115,
+    "skew": -0.836,
+    "kurtosis": 13.275,
+    "hit_rate": 0.337,
     "psr": 0.976,
     "time_in_market": null,
-    "turnover_ann": 4.33,
-    "bench_cagr": 0.0958,
-    "bench_sharpe": 0.496,
-    "info_ratio": -0.415,
+    "turnover_ann": 4.23,
+    "bench_cagr": 0.0974,
+    "bench_sharpe": 0.502,
+    "info_ratio": -0.423,
     "beta": 0.197,
-    "up_capture": 0.199,
+    "up_capture": 0.198,
     "down_capture": 0.189
   },
   "trade_stats": null,
   "regimes": {
     "bull": {
-      "sharpe": 0.94,
-      "ann_ret": 0.0749,
+      "sharpe": 0.95,
+      "ann_ret": 0.0756,
       "bars": 2038
     },
     "bear": {
-      "sharpe": -0.79,
-      "ann_ret": -0.0271,
-      "bars": 1170
+      "sharpe": -0.86,
+      "ann_ret": -0.0287,
+      "bars": 1172
     },
     "calm": {
-      "sharpe": 1.34,
-      "ann_ret": 0.0692,
-      "bars": 1699
+      "sharpe": 1.28,
+      "ann_ret": 0.0649,
+      "bars": 1701
     },
     "stressed": {
-      "sharpe": 0.03,
-      "ann_ret": 0.0022,
+      "sharpe": 0.08,
+      "ann_ret": 0.0067,
       "bars": 1509
     },
     "vix_lt_20": {
       "sharpe": 0.82,
-      "ann_ret": 0.0489,
-      "bars": 2333
+      "ann_ret": 0.048,
+      "bars": 2335
     },
     "vix_20_30": {
-      "sharpe": 0.51,
-      "ann_ret": 0.0342,
+      "sharpe": 0.55,
+      "ann_ret": 0.0369,
       "bars": 717
     },
     "vix_ge_30": {
-      "sharpe": -0.84,
-      "ann_ret": -0.1127,
+      "sharpe": -0.85,
+      "ann_ret": -0.1144,
       "bars": 158
     },
     "curve_inverted": {
-      "sharpe": -0.29,
-      "ann_ret": -0.0195,
+      "sharpe": -0.32,
+      "ann_ret": -0.0221,
       "bars": 614
     },
     "curve_normal": {
-      "sharpe": 0.76,
-      "ann_ret": 0.0512,
-      "bars": 2594
+      "sharpe": 0.79,
+      "ann_ret": 0.0517,
+      "bars": 2596
     }
   },
   "robustness": {
@@ -121,21 +121,21 @@
     },
     "neighbourhood": {
       "neighbours": 1,
-      "best_sharpe": 0.466,
+      "best_sharpe": 0.465,
       "neighbour_median": 0.482,
       "share_positive": 1.0,
       "stability": 1.035
     },
     "noise": {
       "noise_bp": 0.002,
-      "sharpe_min": 0.462,
-      "sharpe_median": 0.48
+      "sharpe_min": 0.452,
+      "sharpe_median": 0.466
     }
   },
   "recommended_overlay": "equity_ma_41",
   "kelly_fraction": null,
   "oos_csv": "results/H033_ts_momentum_metals_etf_1d_oos.csv",
-  "validated_at": "2026-10-15T07:28:45+00:00",
+  "validated_at": "2026-10-17T09:00:52+00:00",
   "accepted_at": null,
-  "data_end": "2026-10-14 00:00:00"
+  "data_end": "2026-10-16 00:00:00"
 }

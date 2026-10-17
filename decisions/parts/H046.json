@@ -1,13 +1,13 @@
 {
   "verdict": "WATCH",
-  "previous_verdict": null,
+  "previous_verdict": "WATCH",
   "reasons": [
-    "DSR 0.741 < 0.9 (luck not excluded after 20 trials)",
-    "OOS Sharpe (excess of T-bill) 0.126 < 0.5",
+    "DSR 0.742 < 0.9 (luck not excluded after 20 trials)",
+    "OOS Sharpe (excess of T-bill) 0.127 < 0.5",
     "only 52% of OOS years positive",
     "with 2x costs it does not beat the equal-weight benchmark",
-    "PBO 0.803 > 0.5 (variant selection is overfit)",
-    "Reality Check p 0.994 > 0.1 (best variant may be data-mined)"
+    "PBO 0.798 > 0.5 (variant selection is overfit)",
+    "Reality Check p 0.996 > 0.1 (best variant may be data-mined)"
   ],
   "strategy": "ts_seasonality",
   "kind": "strategy",
@@ -30,36 +30,36 @@
   },
   "targets": {},
   "targets_observe_only": {},
-  "gate_sharpe": 0.126,
-  "pbo": 0.803,
-  "reality_check_p": 0.994,
-  "dsr": 0.741,
+  "gate_sharpe": 0.127,
+  "pbo": 0.798,
+  "reality_check_p": 0.996,
+  "dsr": 0.742,
   "n_trials": 20,
   "oos": {
     "start": "2004-01-28 00:00:00",
-    "end": "2026-10-15 00:00:00",
+    "end": "2026-10-16 00:00:00",
     "years": 22.75,
-    "cagr": 0.0254,
+    "cagr": 0.0255,
     "vol": 0.1243,
-    "sharpe": 0.264,
-    "sharpe_excess_rf": 0.126,
-    "sortino": 0.172,
+    "sharpe": 0.265,
+    "sharpe_excess_rf": 0.127,
+    "sortino": 0.173,
     "max_dd": -0.4057,
     "max_dd_bars": 2328,
     "calmar": 0.063,
     "ulcer": 0.1798,
     "var95": -0.0125,
-    "cvar95": -0.0203,
+    "cvar95": -0.0202,
     "omega": 1.059,
-    "tail_ratio": 0.992,
-    "skew": -0.531,
-    "kurtosis": 9.028,
+    "tail_ratio": 0.993,
+    "skew": -0.53,
+    "kurtosis": 9.03,
     "hit_rate": 0.388,
-    "psr": 0.895,
+    "psr": 0.896,
     "time_in_market": null,
     "turnover_ann": 7.85,
-    "bench_cagr": 0.0891,
-    "bench_sharpe": 0.492,
+    "bench_cagr": 0.0893,
+    "bench_sharpe": 0.493,
     "info_ratio": -0.499,
     "beta": 0.411,
     "up_capture": 0.427,
@@ -74,13 +74,13 @@
     },
     "bear": {
       "sharpe": -1.43,
-      "ann_ret": -0.1671,
-      "bars": 1746
+      "ann_ret": -0.1666,
+      "bars": 1747
     },
     "calm": {
-      "sharpe": 0.62,
-      "ann_ret": 0.0667,
-      "bars": 2894
+      "sharpe": 0.63,
+      "ann_ret": 0.0669,
+      "bars": 2895
     },
     "stressed": {
       "sharpe": -0.01,
@@ -89,8 +89,8 @@
     },
     "vix_lt_20": {
       "sharpe": 0.52,
-      "ann_ret": 0.0602,
-      "bars": 3941
+      "ann_ret": 0.0604,
+      "bars": 3942
     },
     "vix_20_30": {
       "sharpe": 0.07,
@@ -108,34 +108,34 @@
       "bars": 813
     },
     "curve_normal": {
-      "sharpe": 0.39,
-      "ann_ret": 0.0483,
-      "bars": 4905
+      "sharpe": 0.4,
+      "ann_ret": 0.0484,
+      "bars": 4906
     }
   },
   "robustness": {
     "delay": {
-      "sharpe": 0.393,
-      "sharpe_delayed_1bar": 0.328,
+      "sharpe": 0.394,
+      "sharpe_delayed_1bar": 0.329,
       "retained": 0.835
     },
     "neighbourhood": {
       "neighbours": 1,
-      "best_sharpe": 0.354,
-      "neighbour_median": 0.352,
+      "best_sharpe": 0.355,
+      "neighbour_median": 0.353,
       "share_positive": 1.0,
       "stability": 0.995
     },
     "noise": {
       "noise_bp": 0.002,
-      "sharpe_min": 0.347,
-      "sharpe_median": 0.383
+      "sharpe_min": 0.342,
+      "sharpe_median": 0.378
     }
   },
   "recommended_overlay": "vol_target_0.1",
   "kelly_fraction": null,
   "oos_csv": "results/H046_ts_seasonality_metals_1d_oos.csv",
-  "validated_at": "2026-10-15T07:28:46+00:00",
+  "validated_at": "2026-10-17T09:04:22+00:00",
   "accepted_at": null,
-  "data_end": "2026-10-15 00:00:00"
+  "data_end": "2026-10-16 00:00:00"
 }

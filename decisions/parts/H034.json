@@ -4,10 +4,10 @@
   "reasons": [
     "DSR 0.008 < 0.9 (luck not excluded after 177 trials)",
     "OOS Sharpe (excess of T-bill) -0.466 < 0.5",
-    "bootstrap P(SR>0) 0.139 < 0.85",
+    "bootstrap P(SR>0) 0.147 < 0.85",
     "only 33% of OOS years positive",
     "with 2x costs it does not beat the equal-weight benchmark",
-    "Reality Check p 0.998 > 0.1 (best variant may be data-mined)",
+    "Reality Check p 0.996 > 0.1 (best variant may be data-mined)",
     "1-bar delay keeps only -41% of Sharpe (latency-fragile)"
   ],
   "strategy": "donchian_breakout",
@@ -46,13 +46,13 @@
     "entry_short_next_open": []
   },
   "gate_sharpe": -0.466,
-  "pbo": 0.336,
-  "reality_check_p": 0.998,
+  "pbo": 0.333,
+  "reality_check_p": 0.996,
   "dsr": 0.008,
   "n_trials": 177,
   "oos": {
     "start": "2012-01-09 00:00:00",
-    "end": "2026-10-15 00:00:00",
+    "end": "2026-10-16 00:00:00",
     "years": 14.76,
     "cagr": -0.0231,
     "vol": 0.0788,
@@ -60,22 +60,22 @@
     "sharpe_excess_rf": -0.466,
     "sortino": -0.618,
     "max_dd": -0.402,
-    "max_dd_bars": 3540,
-    "calmar": -0.058,
+    "max_dd_bars": 3541,
+    "calmar": -0.057,
     "ulcer": 0.3196,
     "var95": -0.0063,
     "cvar95": -0.0128,
     "omega": 0.927,
     "tail_ratio": 0.913,
     "skew": -1.563,
-    "kurtosis": 58.286,
+    "kurtosis": 58.303,
     "hit_rate": 0.274,
     "psr": 0.159,
     "time_in_market": null,
     "turnover_ann": 10.41,
-    "bench_cagr": 0.0594,
-    "bench_sharpe": 0.373,
-    "info_ratio": -0.437,
+    "bench_cagr": 0.0598,
+    "bench_sharpe": 0.375,
+    "info_ratio": -0.439,
     "beta": -0.003,
     "up_capture": 0.005,
     "down_capture": 0.022
@@ -123,12 +123,12 @@
     "bear": {
       "sharpe": -0.43,
       "ann_ret": -0.0346,
-      "bars": 1489
+      "bars": 1490
     },
     "calm": {
       "sharpe": 0.37,
       "ann_ret": 0.0234,
-      "bars": 1958
+      "bars": 1959
     },
     "stressed": {
       "sharpe": -0.74,
@@ -138,7 +138,7 @@
     "vix_lt_20": {
       "sharpe": -0.16,
       "ann_ret": -0.0104,
-      "bars": 2795
+      "bars": 2796
     },
     "vix_20_30": {
       "sharpe": -0.28,
@@ -147,7 +147,7 @@
     },
     "vix_ge_30": {
       "sharpe": -0.91,
-      "ann_ret": -0.1956,
+      "ann_ret": -0.1957,
       "bars": 158
     },
     "curve_inverted": {
@@ -158,7 +158,7 @@
     "curve_normal": {
       "sharpe": -0.27,
       "ann_ret": -0.0227,
-      "bars": 3099
+      "bars": 3100
     }
   },
   "robustness": {
@@ -176,13 +176,13 @@
     },
     "noise": {
       "noise_bp": 0.002,
-      "sharpe_min": 0.098,
-      "sharpe_median": 0.2
+      "sharpe_min": 0.02,
+      "sharpe_median": 0.256
     },
     "random_entry": {
       "actual_ret_per_exposure_ann": 0.2255,
-      "random_median_ann": -0.0012,
-      "random_p95_ann": 0.0968,
+      "random_median_ann": 0.043,
+      "random_p95_ann": 0.0947,
       "trades_actual": 430,
       "p_value": 0.0
     },
@@ -196,7 +196,7 @@
   "recommended_overlay": "equity_ma_41",
   "kelly_fraction": 0.11,
   "oos_csv": "results/H034_donchian_breakout_metals_1d_oos.csv",
-  "validated_at": "2026-10-15T06:28:11+00:00",
+  "validated_at": "2026-10-17T09:03:33+00:00",
   "accepted_at": null,
-  "data_end": "2026-10-15 00:00:00"
+  "data_end": "2026-10-16 00:00:00"
 }

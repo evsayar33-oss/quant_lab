@@ -3,12 +3,12 @@
   "previous_verdict": "REJECT",
   "reasons": [
     "DSR 0.1 < 0.9 (luck not excluded after 38 trials)",
-    "OOS Sharpe (excess of T-bill) -0.509 < 0.5",
-    "bootstrap P(SR>0) 0.63 < 0.85",
+    "OOS Sharpe (excess of T-bill) -0.511 < 0.5",
+    "bootstrap P(SR>0) 0.625 < 0.85",
     "only 54% of OOS years positive",
     "with 2x costs it does not beat the equal-weight benchmark",
-    "PBO 0.773 > 0.5 (variant selection is overfit)",
-    "Reality Check p 0.886 > 0.1 (best variant may be data-mined)"
+    "PBO 0.753 > 0.5 (variant selection is overfit)",
+    "Reality Check p 0.88 > 0.1 (best variant may be data-mined)"
   ],
   "strategy": "pairs_zscore",
   "kind": "strategy",
@@ -38,20 +38,20 @@
     "GDX": -0.05,
     "PPLT": -0.1
   },
-  "gate_sharpe": -0.509,
-  "pbo": 0.773,
-  "reality_check_p": 0.886,
+  "gate_sharpe": -0.511,
+  "pbo": 0.753,
+  "reality_check_p": 0.88,
   "dsr": 0.1,
   "n_trials": 38,
   "oos": {
     "start": "2014-01-13 00:00:00",
-    "end": "2026-10-14 00:00:00",
-    "years": 12.75,
+    "end": "2026-10-16 00:00:00",
+    "years": 12.76,
     "cagr": 0.0018,
     "vol": 0.0325,
-    "sharpe": 0.072,
-    "sharpe_excess_rf": -0.509,
-    "sortino": -0.732,
+    "sharpe": 0.07,
+    "sharpe_excess_rf": -0.511,
+    "sortino": -0.734,
     "max_dd": -0.105,
     "max_dd_bars": 2575,
     "calmar": 0.017,
@@ -61,14 +61,14 @@
     "omega": 1.02,
     "tail_ratio": 0.952,
     "skew": 1.376,
-    "kurtosis": 34.539,
+    "kurtosis": 34.541,
     "hit_rate": 0.287,
-    "psr": 0.601,
+    "psr": 0.6,
     "time_in_market": null,
-    "turnover_ann": 6.55,
-    "bench_cagr": 0.0958,
-    "bench_sharpe": 0.496,
-    "info_ratio": -0.474,
+    "turnover_ann": 6.56,
+    "bench_cagr": 0.0974,
+    "bench_sharpe": 0.502,
+    "info_ratio": -0.479,
     "beta": -0.019,
     "up_capture": -0.012,
     "down_capture": -0.015
@@ -83,12 +83,12 @@
     "bear": {
       "sharpe": 0.19,
       "ann_ret": 0.0039,
-      "bars": 1170
+      "bars": 1172
     },
     "calm": {
       "sharpe": -0.27,
       "ann_ret": -0.0065,
-      "bars": 1699
+      "bars": 1701
     },
     "stressed": {
       "sharpe": 0.31,
@@ -98,7 +98,7 @@
     "vix_lt_20": {
       "sharpe": -0.1,
       "ann_ret": -0.0031,
-      "bars": 2333
+      "bars": 2335
     },
     "vix_20_30": {
       "sharpe": 0.77,
@@ -118,32 +118,32 @@
     "curve_normal": {
       "sharpe": -0.06,
       "ann_ret": -0.002,
-      "bars": 2594
+      "bars": 2596
     }
   },
   "robustness": {
     "delay": {
-      "sharpe": 0.352,
-      "sharpe_delayed_1bar": 0.352,
-      "retained": 0.998
+      "sharpe": 0.349,
+      "sharpe_delayed_1bar": 0.342,
+      "retained": 0.982
     },
     "neighbourhood": {
       "neighbours": 4,
-      "best_sharpe": 0.335,
-      "neighbour_median": 0.288,
+      "best_sharpe": 0.332,
+      "neighbour_median": 0.29,
       "share_positive": 1.0,
-      "stability": 0.858
+      "stability": 0.874
     },
     "noise": {
       "noise_bp": 0.002,
-      "sharpe_min": 0.231,
-      "sharpe_median": 0.391
+      "sharpe_min": 0.226,
+      "sharpe_median": 0.396
     }
   },
   "recommended_overlay": "none",
   "kelly_fraction": null,
   "oos_csv": "results/H036_pairs_zscore_metals_etf_1d_oos.csv",
-  "validated_at": "2026-10-15T06:26:10+00:00",
+  "validated_at": "2026-10-17T09:01:56+00:00",
   "accepted_at": null,
-  "data_end": "2026-10-14 00:00:00"
+  "data_end": "2026-10-16 00:00:00"
 }
