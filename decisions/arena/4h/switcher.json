@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-17T04:19:25+00:00",
- "data_end": "2026-10-17 00:00:00",
+ "updated_at": "2026-10-17T11:53:10+00:00",
+ "data_end": "2026-10-17 04:00:00",
  "universe": "crypto_alts",
  "timeframe": "4h",
  "usable": false,
@@ -43,21 +43,21 @@
    "regime": "range"
   },
   {
-   "id": "A0124",
-   "coin": "INJ/USDT",
-   "rule": "volume_breakout",
+   "id": "A0142",
+   "coin": "SOL/USDT",
+   "rule": "high_52w_break",
    "params": {
-    "n": 50,
-    "rv": 3.0
+    "n": 126,
+    "exit_ma": 50
    },
-   "exit_id": 18,
-   "filter": "htf_week_sma10",
+   "exit_id": 20,
+   "filter": "regime_bench200",
    "confirm": null,
    "side": "both",
    "timeframe": "4h",
    "weight": 0.2,
    "position": "flat",
-   "regime": "volatile"
+   "regime": "range"
   },
   {
    "id": "A0002",
@@ -124,7 +124,7 @@
   "days": 0,
   "ret": 0.0,
   "sharpe": null,
-  "ew_ret": -0.0017,
+  "ew_ret": -0.0036,
   "ew_sharpe": null,
   "max_dd": 0.0
  },
@@ -207,9 +207,9 @@
    }
   },
   "AVAX/USDT": {
-   "now": "volatile",
-   "now_tr": "Volatil",
-   "since": "2026-10-15 20:00:00",
+   "now": "range",
+   "now_tr": "Yatay",
+   "since": "2026-10-17 04:00:00",
    "share": {
     "range": 0.707,
     "trend_up": 0.063,
@@ -301,7 +301,7 @@
    "share": {
     "range": 0.674,
     "trend_up": 0.041,
-    "trend_down": 0.076,
+    "trend_down": 0.075,
     "volatile": 0.209
    }
   },
@@ -346,7 +346,7 @@
     "range": 0.693,
     "trend_up": 0.032,
     "trend_down": 0.063,
-    "volatile": 0.213
+    "volatile": 0.212
    }
   },
   "ALGO/USDT": {
@@ -398,7 +398,7 @@
    "now_tr": "Yatay",
    "since": "2026-10-16 20:00:00",
    "share": {
-    "range": 0.738,
+    "range": 0.739,
     "trend_up": 0.046,
     "trend_down": 0.069,
     "volatile": 0.146
@@ -431,7 +431,7 @@
    "now_tr": "Trend ↓",
    "since": "2026-10-15 04:00:00",
    "share": {
-    "range": 0.726,
+    "range": 0.725,
     "trend_up": 0.052,
     "trend_down": 0.081,
     "volatile": 0.141
@@ -489,7 +489,7 @@
     "range": 0.698,
     "trend_up": 0.051,
     "trend_down": 0.071,
-    "volatile": 0.18
+    "volatile": 0.179
    }
   },
   "PYTH/USDT": {
@@ -504,9 +504,9 @@
    }
   },
   "MINA/USDT": {
-   "now": "trend_down",
-   "now_tr": "Trend ↓",
-   "since": "2026-10-15 08:00:00",
+   "now": "range",
+   "now_tr": "Yatay",
+   "since": "2026-10-17 04:00:00",
    "share": {
     "range": 0.726,
     "trend_up": 0.036,
