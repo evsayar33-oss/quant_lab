@@ -1,0 +1,532 @@
+{
+  "name": "cot_commercial_follow",
+  "kind": "strategy",
+  "source": "Commercial hedgers' positioning leads prices (Bessembinder & Chan 1992)",
+  "timeframe": "1d",
+  "bars_per_year": 251.7,
+  "n_assets": 5,
+  "data_start": "2008-01-02 00:00:00",
+  "data_end": "2026-10-16 00:00:00",
+  "costs": {
+    "commission": 0.0002,
+    "slippage": 0.0005,
+    "funding_annual": 0.0,
+    "borrow_annual": 0.0
+  },
+  "survivorship_mask": false,
+  "n_trials": 18,
+  "train_years": 3.0,
+  "test_months": 6,
+  "failed_variants": 0,
+  "full_sample_top": [
+    {
+      "variant": "cot_commercial_follow|look=156,thr=0.5|overlay=vt20",
+      "sharpe": 0.383
+    },
+    {
+      "variant": "cot_commercial_follow|look=156,thr=0.5",
+      "sharpe": 0.372
+    },
+    {
+      "variant": "cot_commercial_follow|look=156,thr=0.5|overlay=vt15",
+      "sharpe": 0.37
+    },
+    {
+      "variant": "cot_commercial_follow|look=156,thr=0.5|overlay=dd20",
+      "sharpe": 0.363
+    },
+    {
+      "variant": "cot_commercial_follow|look=156,thr=1.0|overlay=vt20",
+      "sharpe": 0.342
+    },
+    {
+      "variant": "cot_commercial_follow|look=156,thr=0.5|overlay=vt10",
+      "sharpe": 0.336
+    },
+    {
+      "variant": "cot_commercial_follow|look=156,thr=1.0|overlay=vt15",
+      "sharpe": 0.335
+    },
+    {
+      "variant": "cot_commercial_follow|look=156,thr=1.0",
+      "sharpe": 0.319
+    },
+    {
+      "variant": "cot_commercial_follow|look=260,thr=0.5",
+      "sharpe": 0.313
+    },
+    {
+      "variant": "cot_commercial_follow|look=156,thr=1.0|overlay=dd20",
+      "sharpe": 0.311
+    },
+    {
+      "variant": "cot_commercial_follow|look=156,thr=0.5|overlay=eqma_l",
+      "sharpe": 0.297
+    },
+    {
+      "variant": "cot_commercial_follow|look=156,thr=1.0|overlay=vt10",
+      "sharpe": 0.292
+    },
+    {
+      "variant": "cot_commercial_follow|look=156,thr=0.5|overlay=dd10",
+      "sharpe": 0.26
+    },
+    {
+      "variant": "cot_commercial_follow|look=260,thr=1.0",
+      "sharpe": 0.243
+    },
+    {
+      "variant": "cot_commercial_follow|look=156,thr=1.0|overlay=dd10",
+      "sharpe": 0.236
+    }
+  ],
+  "oos": {
+    "start": "2012-01-09 00:00:00",
+    "end": "2026-10-16 00:00:00",
+    "years": 14.76,
+    "cagr": 0.0413,
+    "vol": 0.0959,
+    "sharpe": 0.47,
+    "sharpe_excess_rf": 0.299,
+    "sortino": 0.435,
+    "max_dd": -0.1693,
+    "max_dd_bars": 1450,
+    "calmar": 0.244,
+    "ulcer": 0.0494,
+    "var95": -0.0078,
+    "cvar95": -0.015,
+    "omega": 1.126,
+    "tail_ratio": 1.116,
+    "skew": 0.518,
+    "kurtosis": 22.198,
+    "hit_rate": 0.329,
+    "psr": 0.965,
+    "time_in_market": null,
+    "turnover_ann": 5.4,
+    "bench_cagr": 0.0598,
+    "bench_sharpe": 0.375,
+    "info_ratio": -0.22,
+    "beta": 0.297,
+    "up_capture": 0.29,
+    "down_capture": 0.272
+  },
+  "oos_usd": null,
+  "gate_sharpe": 0.299,
+  "gate_sharpe_basis": "excess of T-bill",
+  "dsr": 0.873,
+  "pbo": 0.392,
+  "reality_check_p": 0.956,
+  "benchmark": {
+    "start": "2012-01-09 00:00:00",
+    "end": "2026-10-16 00:00:00",
+    "years": 14.76,
+    "cagr": 0.0598,
+    "vol": 0.2196,
+    "sharpe": 0.375,
+    "sharpe_excess_rf": null,
+    "sortino": 0.518,
+    "max_dd": -0.4673,
+    "max_dd_bars": 2108,
+    "calmar": 0.128,
+    "ulcer": 0.2199,
+    "var95": -0.0209,
+    "cvar95": -0.0323,
+    "omega": 1.069,
+    "tail_ratio": 1.035,
+    "skew": -0.712,
+    "kurtosis": 8.895,
+    "hit_rate": 0.529,
+    "psr": 0.923,
+    "time_in_market": null
+  },
+  "stress_2x_cost": {
+    "sharpe": 0.431
+  },
+  "bootstrap": {
+    "p_sharpe_pos": 0.991,
+    "cagr_p05": 0.0098,
+    "maxdd_p05": -0.3309
+  },
+  "yearly_sharpe": {
+    "2012": 0.52,
+    "2013": -0.29,
+    "2014": 0.25,
+    "2015": -0.91,
+    "2016": 0.98,
+    "2017": 1.29,
+    "2018": 0.06,
+    "2019": 1.22,
+    "2020": 0.94,
+    "2021": 0.2,
+    "2022": 0.53,
+    "2023": 0.37,
+    "2024": 0.25,
+    "2025": 2.76,
+    "2026": 0.03
+  },
+  "regimes": {
+    "bull": {
+      "sharpe": 1.34,
+      "ann_ret": 0.1138,
+      "bars": 2225
+    },
+    "bear": {
+      "sharpe": -0.52,
+      "ann_ret": -0.0575,
+      "bars": 1490
+    },
+    "calm": {
+      "sharpe": 0.38,
+      "ann_ret": 0.0299,
+      "bars": 1959
+    },
+    "stressed": {
+      "sharpe": 0.55,
+      "ann_ret": 0.062,
+      "bars": 1756
+    },
+    "vix_lt_20": {
+      "sharpe": 0.58,
+      "ann_ret": 0.0447,
+      "bars": 2796
+    },
+    "vix_20_30": {
+      "sharpe": 0.3,
+      "ann_ret": 0.0345,
+      "bars": 761
+    },
+    "vix_ge_30": {
+      "sharpe": 0.47,
+      "ann_ret": 0.1024,
+      "bars": 158
+    },
+    "curve_inverted": {
+      "sharpe": 0.29,
+      "ann_ret": 0.0134,
+      "bars": 615
+    },
+    "curve_normal": {
+      "sharpe": 0.5,
+      "ann_ret": 0.0514,
+      "bars": 3100
+    }
+  },
+  "calendar": {
+    "weekday": {
+      "0": 0.00015,
+      "1": 0.00013,
+      "2": 0.00024,
+      "3": 5e-05,
+      "4": 0.00032
+    },
+    "month": {
+      "1": 0.00062,
+      "2": 0.00038,
+      "3": 0.00017,
+      "4": 0.00028,
+      "5": 0.00015,
+      "6": -0.00047,
+      "7": 0.00043,
+      "8": 0.00012,
+      "9": -0.00014,
+      "10": 0.00023,
+      "11": -2e-05,
+      "12": 0.00041
+    }
+  },
+  "trade_stats": null,
+  "walk_forward": [
+    {
+      "test_start": "2012-01-09 00:00:00",
+      "test_end": "2012-07-06 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=1.0|overlay=vt15",
+      "is_sharpe": 0.83,
+      "oos_sharpe": 0.81
+    },
+    {
+      "test_start": "2012-07-09 00:00:00",
+      "test_end": "2013-01-07 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=1.0|overlay=vt20",
+      "is_sharpe": 0.778,
+      "oos_sharpe": -0.05
+    },
+    {
+      "test_start": "2013-01-08 00:00:00",
+      "test_end": "2013-07-08 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=1.0|overlay=vt20",
+      "is_sharpe": 0.762,
+      "oos_sharpe": -1.487
+    },
+    {
+      "test_start": "2013-07-09 00:00:00",
+      "test_end": "2014-01-03 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=1.0",
+      "is_sharpe": 0.329,
+      "oos_sharpe": 2.759
+    },
+    {
+      "test_start": "2014-01-06 00:00:00",
+      "test_end": "2014-07-03 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=0.5",
+      "is_sharpe": 0.386,
+      "oos_sharpe": 2.396
+    },
+    {
+      "test_start": "2014-07-07 00:00:00",
+      "test_end": "2014-12-31 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=0.5",
+      "is_sharpe": 0.463,
+      "oos_sharpe": -1.031
+    },
+    {
+      "test_start": "2015-01-02 00:00:00",
+      "test_end": "2015-07-01 00:00:00",
+      "variant": "cot_commercial_follow|look=260,thr=1.0",
+      "is_sharpe": 0.515,
+      "oos_sharpe": -1.273
+    },
+    {
+      "test_start": "2015-07-02 00:00:00",
+      "test_end": "2015-12-29 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=0.5|overlay=eqma_l",
+      "is_sharpe": 0.977,
+      "oos_sharpe": -0.467
+    },
+    {
+      "test_start": "2015-12-30 00:00:00",
+      "test_end": "2016-06-28 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=0.5|overlay=eqma_l",
+      "is_sharpe": 0.61,
+      "oos_sharpe": 1.774
+    },
+    {
+      "test_start": "2016-06-29 00:00:00",
+      "test_end": "2016-12-28 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=0.5|overlay=eqma_l",
+      "is_sharpe": 0.929,
+      "oos_sharpe": 0.134
+    },
+    {
+      "test_start": "2016-12-29 00:00:00",
+      "test_end": "2017-06-28 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=1.0|overlay=eqma_l",
+      "is_sharpe": 0.647,
+      "oos_sharpe": 0.751
+    },
+    {
+      "test_start": "2017-06-29 00:00:00",
+      "test_end": "2017-12-26 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=1.0|overlay=eqma_s",
+      "is_sharpe": 0.259,
+      "oos_sharpe": 1.079
+    },
+    {
+      "test_start": "2017-12-27 00:00:00",
+      "test_end": "2018-06-27 00:00:00",
+      "variant": "cot_commercial_follow|look=260,thr=1.0",
+      "is_sharpe": 0.554,
+      "oos_sharpe": 0.513
+    },
+    {
+      "test_start": "2018-06-28 00:00:00",
+      "test_end": "2018-12-26 00:00:00",
+      "variant": "cot_commercial_follow|look=260,thr=1.0",
+      "is_sharpe": 0.865,
+      "oos_sharpe": 0.138
+    },
+    {
+      "test_start": "2018-12-27 00:00:00",
+      "test_end": "2019-06-26 00:00:00",
+      "variant": "cot_commercial_follow|look=260,thr=1.0",
+      "is_sharpe": 0.864,
+      "oos_sharpe": 0.777
+    },
+    {
+      "test_start": "2019-06-27 00:00:00",
+      "test_end": "2019-12-23 00:00:00",
+      "variant": "cot_commercial_follow|look=260,thr=1.0",
+      "is_sharpe": 0.603,
+      "oos_sharpe": 1.178
+    },
+    {
+      "test_start": "2019-12-24 00:00:00",
+      "test_end": "2020-06-23 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=0.5",
+      "is_sharpe": 0.779,
+      "oos_sharpe": 1.027
+    },
+    {
+      "test_start": "2020-06-24 00:00:00",
+      "test_end": "2020-12-18 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=0.5",
+      "is_sharpe": 0.73,
+      "oos_sharpe": 0.94
+    },
+    {
+      "test_start": "2020-12-21 00:00:00",
+      "test_end": "2021-06-21 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=0.5",
+      "is_sharpe": 0.662,
+      "oos_sharpe": 0.907
+    },
+    {
+      "test_start": "2021-06-22 00:00:00",
+      "test_end": "2021-12-16 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=0.5",
+      "is_sharpe": 0.714,
+      "oos_sharpe": -0.606
+    },
+    {
+      "test_start": "2021-12-17 00:00:00",
+      "test_end": "2022-06-16 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=1.0",
+      "is_sharpe": 0.604,
+      "oos_sharpe": 1.503
+    },
+    {
+      "test_start": "2022-06-17 00:00:00",
+      "test_end": "2022-12-14 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=1.0",
+      "is_sharpe": 0.78,
+      "oos_sharpe": 0.34
+    },
+    {
+      "test_start": "2022-12-15 00:00:00",
+      "test_end": "2023-06-15 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=1.0",
+      "is_sharpe": 0.716,
+      "oos_sharpe": 0.095
+    },
+    {
+      "test_start": "2023-06-16 00:00:00",
+      "test_end": "2023-12-12 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=1.0",
+      "is_sharpe": 0.587,
+      "oos_sharpe": 0.73
+    },
+    {
+      "test_start": "2023-12-13 00:00:00",
+      "test_end": "2024-06-12 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=1.0",
+      "is_sharpe": 0.552,
+      "oos_sharpe": -0.106
+    },
+    {
+      "test_start": "2024-06-13 00:00:00",
+      "test_end": "2024-12-10 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=1.0",
+      "is_sharpe": 0.342,
+      "oos_sharpe": 2.853
+    },
+    {
+      "test_start": "2024-12-11 00:00:00",
+      "test_end": "2025-06-11 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=1.0|overlay=dd10",
+      "is_sharpe": 0.66,
+      "oos_sharpe": 1.848
+    },
+    {
+      "test_start": "2025-06-12 00:00:00",
+      "test_end": "2025-12-08 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=0.5|overlay=vt10",
+      "is_sharpe": 0.741,
+      "oos_sharpe": 2.292
+    },
+    {
+      "test_start": "2025-12-09 00:00:00",
+      "test_end": "2026-06-09 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=0.5|overlay=vt10",
+      "is_sharpe": 1.253,
+      "oos_sharpe": 0.996
+    },
+    {
+      "test_start": "2026-06-10 00:00:00",
+      "test_end": "2026-10-16 00:00:00",
+      "variant": "cot_commercial_follow|look=156,thr=0.5|overlay=vt10",
+      "is_sharpe": 1.365,
+      "oos_sharpe": -0.374
+    }
+  ],
+  "wf_efficiency": 0.677,
+  "final_variant": "cot_commercial_follow|look=156,thr=0.5|overlay=vt10",
+  "final_params": {
+    "look": 156,
+    "thr": 0.5,
+    "_overlay": "vt10"
+  },
+  "robustness": {
+    "delay": {
+      "sharpe": 0.339,
+      "sharpe_delayed_1bar": 0.336,
+      "retained": 0.992
+    },
+    "neighbourhood": {
+      "neighbours": 1,
+      "best_sharpe": 0.336,
+      "neighbour_median": 0.292,
+      "share_positive": 1.0,
+      "stability": 0.869
+    },
+    "noise": {
+      "noise_bp": 0.002,
+      "sharpe_min": 0.337,
+      "sharpe_median": 0.342
+    }
+  },
+  "studies": {
+    "overlays": {
+      "none": {
+        "sharpe": 0.47,
+        "cagr": 0.0413,
+        "max_dd": -0.1693
+      },
+      "vol_target_0.1": {
+        "sharpe": 0.456,
+        "cagr": 0.0429,
+        "max_dd": -0.1871
+      },
+      "vol_target_0.15": {
+        "sharpe": 0.402,
+        "cagr": 0.0447,
+        "max_dd": -0.2464
+      },
+      "vol_target_0.2": {
+        "sharpe": 0.39,
+        "cagr": 0.0483,
+        "max_dd": -0.279
+      },
+      "dd_brake_0.1": {
+        "sharpe": 0.409,
+        "cagr": 0.0325,
+        "max_dd": -0.1555
+      },
+      "dd_brake_0.2": {
+        "sharpe": 0.47,
+        "cagr": 0.0413,
+        "max_dd": -0.1693
+      },
+      "equity_ma_41": {
+        "sharpe": 0.238,
+        "cagr": 0.0133,
+        "max_dd": -0.2004
+      },
+      "equity_ma_125": {
+        "sharpe": 0.291,
+        "cagr": 0.0168,
+        "max_dd": -0.1474
+      },
+      "best_by_calmar": "none"
+    }
+  },
+  "verdict": "WATCH",
+  "reasons": [
+    "DSR 0.873 < 0.9 (luck not excluded after 18 trials)",
+    "OOS Sharpe (excess of T-bill) 0.299 < 0.5",
+    "Reality Check p 0.956 > 0.1 (best variant may be data-mined)"
+  ],
+  "targets": {
+    "HG=F": 0.1504,
+    "PL=F": 0.1504,
+    "PA=F": 0.1504
+  }
+}
