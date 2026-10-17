@@ -67,6 +67,40 @@ def returns(book: dict, R: pd.DataFrame, X: pd.DataFrame, ro: dict, p, cps: floa
     return r
 
 
+def expected_band(bt: pd.Series, days: int = 365, paths: int = 1000, block: int = 10, seed: int = 5) -> dict:
+    """Range the forward record should stay in IF the book behaves like its backtest:
+    block bootstrap of the backtest's daily returns -> 5th / 50th / 95th percentile of the cumulative
+    return after 0..days days. Below the 5th percentile = worse than 95% of backtest-like paths."""
+    d = ((1 + bt).groupby(bt.index.normalize()).prod() - 1).to_numpy()
+    if len(d) < 120:
+        return {}
+    rng = np.random.default_rng(seed)
+    nb = days // block + 1
+    starts = rng.integers(0, len(d) - block, size=(paths, nb))
+    sims = np.stack([np.concatenate([d[s:s + block] for s in row])[:days] for row in starts])
+    cum = np.cumprod(1 + sims, axis=1) - 1
+    q = np.percentile(cum, [5, 50, 95], axis=0)
+    step = 7
+    return {"day": list(range(0, days + 1, step)),
+            "p5": [0.0] + [round(float(x), 4) for x in q[0][step - 1::step]],
+            "p50": [0.0] + [round(float(x), 4) for x in q[1][step - 1::step]],
+            "p95": [0.0] + [round(float(x), 4) for x in q[2][step - 1::step]]}
+
+
+def band_status(band: dict, days: int, ret: float) -> dict:
+    if not band or days < 7:
+        return {"status": "early", "text": "çok erken (< 1 hafta)"}
+    i = min(len(band["day"]) - 1, int(round(days / 7)))
+    lo, mid, hi = band["p5"][i], band["p50"][i], band["p95"][i]
+    if ret < lo:
+        st, tx = "below", "⚠️ beklenen aralığın ALTINDA: backtest gibi davranmıyor olabilir"
+    elif ret > hi:
+        st, tx = "above", "aralığın üstünde: iyi, ama şans payı yüksek"
+    else:
+        st, tx = "inside", "beklenen aralıkta"
+    return {"status": st, "text": tx, "p5": lo, "p50": mid, "p95": hi}
+
+
 def report(data: dict, R, X, ro, p, cps, cfg) -> list[dict]:
     mmr = cfg.get("books", {}).get("maint_margin", 0.005)
     metrics.set_periods(p.ppy)
@@ -78,7 +112,13 @@ def report(data: dict, R, X, ro, p, cps, cfg) -> list[dict]:
         f = r[r.index > a]
         bt = r[r.index <= a]
         bt = bt[bt.ne(0).cummax()]
+        band = expected_band(bt) if len(bt) else {}
+        fdays = max(0, (end - a).days)
+        fret = float((1 + f).prod() - 1) if len(f) else 0.0
+        cum_f = ((1 + f).groupby(f.index.normalize()).prod()).cumprod() - 1 if len(f) else pd.Series(dtype=float)
         out.append({
+            "band": band, "band_status": band_status(band, fdays, fret),
+            "fwd_daily": [round(float(x), 4) for x in cum_f.to_numpy()[::max(1, len(cum_f) // 120)]] if len(cum_f) else [],
             "id": bid, "name": b["name"], "members": b["members"], "leverage": b.get("leverage", 1),
             "vol_target": b.get("vol_target"), "created_at": b["created_at"][:10],
             "forward": {"days": max(0, (end - a).days), "ret": round(float((1 + f).prod() - 1), 4) if len(f) else 0.0,

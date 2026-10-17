@@ -371,6 +371,15 @@ def run(p: Panel, costs: Costs, cfg: dict) -> dict:
             books_out = BK.report(bdata, R, X, ro, p, cps, cfg)
         except Exception as e:  # noqa: BLE001 - books are a report; they must not stop the arena
             print(f"[arena] books failed: {e}")
+    prev_b = st.get("book_status", {}) if isinstance(st, dict) else {}
+    cur_b = {b["id"]: (b.get("band_status") or {}).get("status") for b in books_out}
+    for b in books_out:
+        if cur_b[b["id"]] == "below" and prev_b.get(b["id"]) != "below":
+            events.append(f"⚠️ portföy {b['id']} ({b['name']}) beklenen aralığın altına düştü: {b['forward']['ret']:+.1%}")
+    if cur_b != prev_b and books_out:
+        stx = _read(STATE, {})
+        stx["book_status"] = cur_b
+        _write(STATE, stx)
     return {"members": members_out, "switcher": sw_out, "gate": gate, "events": events if new_bar else [],
             "books": books_out,
             "summary_due": summary_due, "regimes": sw_out["regimes"], "data_end": str(end),
@@ -394,7 +403,8 @@ def telegram_text(out: dict, summary: bool) -> str:
         L.append(f"  nakit {sw['cash']:.0%}")
         for b in out.get("books") or []:
             f = b["forward"]
-            L.append(f"📒 {b['id']} {b['name']}: ${f['balance_1000']:,.0f} ({f['ret']:+.1%}, düşüş {f['max_dd']:.0%}, {f['days']} gün)")
+            bs = (b.get("band_status") or {}).get("text", "")
+            L.append(f"📒 {b['id']} {b['name']}: ${f['balance_1000']:,.0f} ({f['ret']:+.1%}, düşüş {f['max_dd']:.0%}, {f['days']} gün) — {bs}")
         act = [m for m in out["members"] if m["status"] == "active"]
         top = sorted(act, key=lambda m: -(m["forward"]["ret"]))[:5]
         if top:

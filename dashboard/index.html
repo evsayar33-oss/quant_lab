@@ -142,11 +142,26 @@ function defter(D){
     <td><b>$${Number(b.forward.balance_1000).toLocaleString("tr-TR",{maximumFractionDigits:0})}</b><div class="small ${cls(b.forward.ret)}">${pct(b.forward.ret)}</div></td>
     <td class="neg">${pct(b.forward.max_dd)}</td><td>${spark(b.spark_fwd)}</td></tr>`).join("");
   const bt=B.map(b=>`<tr><td>${esc(b.id)}</td><td>${pct(b.backtest.cagr,0)}</td><td>${num(b.backtest.sharpe)}</td><td class="neg">${pct(b.backtest.max_dd,0)}</td><td>${spark(b.spark_bt)}</td></tr>`).join("");
+  const bands=B.map(b=>{const bd=b.band||{};const bs=b.band_status||{};
+    const n=Math.max(2,Math.min((bd.day||[]).length, Math.max(8, Math.ceil((b.forward.days||0)/7)+4)));
+    const W=600,H=150,P5=(bd.p5||[]).slice(0,n),P95=(bd.p95||[]).slice(0,n),P50=(bd.p50||[]).slice(0,n);
+    const fw=(b.fwd_daily||[]);const all=[...P5,...P95,...fw,0];const mn=Math.min(...all),mx=Math.max(...all),rg=mx-mn||1;
+    const X=i=>(i/(n-1)*W).toFixed(1),Y=v=>(H-6-(v-mn)/rg*(H-12)).toFixed(1);
+    const area=P95.map((v,i)=>`${X(i)},${Y(v)}`).join(" ")+" "+P5.map((v,i)=>`${X(i)},${Y(v)}`).reverse().join(" ");
+    const days=b.forward.days||0;const fx=fw.map((v,i)=>`${((i/(Math.max(fw.length-1,1)))*(days/7)/(n-1)*W).toFixed(1)},${Y(v)}`).join(" ");
+    const col=bs.status==="below"?"var(--neg)":bs.status==="above"?"var(--pos)":"var(--accent)";
+    return `<div class="card"><h2>${esc(b.id)} · ${esc(b.name)}</h2>
+      <div class="small" style="color:${col};margin-bottom:6px"><b>${esc(bs.text||"")}</b>${bs.p5!=null?` · bugün beklenen: ${pct(bs.p5)} … ${pct(bs.p95)} (medyan ${pct(bs.p50)})`:""}</div>
+      ${P5.length?`<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><polygon points="${area}" fill="var(--accent)" opacity=".13"/><polyline fill="none" stroke="var(--ink3)" stroke-dasharray="4 4" stroke-width="1.5" vector-effect="non-scaling-stroke" points="${P50.map((v,i)=>`${X(i)},${Y(v)}`).join(" ")}"/>${fw.length>1?`<polyline fill="none" stroke="${col}" stroke-width="2.5" vector-effect="non-scaling-stroke" points="${fx}"/>`:""}</svg>
+      <div class="legend"><span><i style="background:var(--accent);opacity:.3"></i>beklenen aralık (%5–%95)</span><span><i style="background:var(--ink3)"></i>medyan</span><span><i style="background:${col}"></i>ileri kayıt</span></div>`:'<div class="empty small">Bant için yeterli backtest yok.</div>'}</div>`}).join("");
   $("#defter").innerHTML=`<div class="grid"><div class="card"><h2>İleri (paper) kayıt · $1000 ile</h2>
    <div class="tscroll"><table><tr><th>Portföy</th><th>Bakiye</th><th>Maks. düşüş</th><th></th></tr>${rows}</table></div>
    <div class="note small">İçerik ilk gün donduruldu. Emekli olan stratejinin payı nakde geçer. Kaldıraç, maliyet, funding ve pozisyon başı likidasyon sınırı dahil.</div></div>
    <div class="card"><h2>Aynı portföylerin backtest'i (iyimser)</h2><div class="tscroll"><table><tr><th></th><th>Yıllık</th><th>Sharpe</th><th>Maks. düşüş</th><th></th></tr>${bt}</table></div>
-   <div class="note small">Üyeler aynı geçmişte seçildi; gerçek test soldaki ileri kayıttır.</div></div></div>`;
+   <div class="note small">Üyeler aynı geçmişte seçildi; gerçek test soldaki ileri kayıttır.</div></div></div>
+   <h2 style="font-size:13px;color:var(--ink3);margin:18px 0 8px;text-transform:uppercase;letter-spacing:.6px">Beklenen aralık bandı</h2>
+   <div class="note small" style="margin-bottom:10px">Bant: portföy backtest'teki gibi davranırsa ileri kaydın %90 olasılıkla kalacağı aralık (backtest günlerinden 1.000 rastgele yol). Altına düşmek = "backtest'teki gibi çalışmıyor olabilir" uyarısı (Telegram'a da gelir). Backtest iyimser olduğu için bant da iyimserdir: alt sınır sıkı bir test sayılır.</div>
+   <div class="grid">${bands}</div>`;
 }
 function ozet(D){
   const S=D.switcher,F=S.forward||{},G=D.gate||{};
