@@ -25,3 +25,20 @@ accept:
   dd_reduction_vs_buyhold: 0.33   # max drawdown at least 1/3 less deep than buy-and-hold
   max_sharpe_gap: 0.10            # Sharpe not more than 0.10 below buy-and-hold
   positive_return: true           # and a positive return
+
+# Variants of the H052 rule (dual_trend_vt on BTC+ETH, 4h). Written 2026-10-17 BEFORE any result.
+# One setting each (4 trials). A variant REPLACES the baseline idea only if, against the baseline on the
+# same data, it has a higher Sharpe on the full history AND in every forward window, and its max drawdown
+# is at most 5 points deeper. Passing variants are then registered as hypotheses for the decision gate.
+variants:
+  baseline: {rule: dual_trend_vt, assets: [BTC/USDT, ETH/USDT], timeframe: 4h}
+  list:
+    - {id: V_alts,  name: "Daha fazla büyük coin (BTC, ETH, SOL, BNB, XRP)", rule: dual_trend_vt,
+       assets: [BTC/USDT, ETH/USDT, SOL/USDT, BNB/USDT, XRP/USDT], timeframe: 4h}
+    - {id: V_short, name: "Düşüşte short (perp)", rule: dual_trend_vt_ls, assets: [BTC/USDT, ETH/USDT], timeframe: 4h}
+    - {id: V_band,  name: "İşlem yapmama bandı %10", rule: dual_trend_vt, band: 0.10, assets: [BTC/USDT, ETH/USDT], timeframe: 4h}
+    - {id: V_1h,    name: "1h zaman dilimi", rule: dual_trend_vt, assets: [BTC/USDT, ETH/USDT], timeframe: 1h}
+  accept:
+    beat_sharpe_full_and_all_windows: true
+    max_extra_dd: 0.05
+  funding_annual: 0.08     # perp funding on |exposure| (all variants, so the comparison is fair)

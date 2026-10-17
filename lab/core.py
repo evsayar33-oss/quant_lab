@@ -39,9 +39,30 @@ def exposure(close: pd.Series, rule: str, prm: dict, ppy: float) -> pd.Series:
         n = _bars(prm["sma_days"], ppy)
         up = (close > close.rolling(n, min_periods=n).mean()).astype(float)
         e = up * (_tsmom(close, prm, ppy) > 0).astype(float) * _vt(r, prm, ppy)
+    elif rule == "dual_trend_vt_ls":   # long as dual_trend_vt; SHORT only when below SMA200 AND every horizon is negative
+        n = _bars(prm["sma_days"], ppy)
+        sma = close.rolling(n, min_periods=n).mean()
+        ts = _tsmom(close, prm, ppy)
+        side = ((close > sma) & (ts > 0)).astype(float) - ((close < sma) & (ts == 0) & sma.notna()).astype(float)
+        e = side * _vt(r, prm, ppy)
+        return e.where(close.notna()).fillna(0.0).clip(-1, 1)
     else:
         raise ValueError(rule)
     return e.where(close.notna()).fillna(0.0).clip(0, 1)
+
+
+def apply_band(e: pd.Series, band: float) -> pd.Series:
+    """No-trade band: keep the current position until the target moves more than `band` away from it."""
+    if not band:
+        return e
+    v = e.to_numpy()
+    out = np.empty_like(v)
+    cur = 0.0
+    for i, t in enumerate(v):
+        if abs(t - cur) > band or (t == 0.0 and cur != 0.0):
+            cur = t
+        out[i] = cur
+    return pd.Series(out, e.index)
 
 
 def _vt(r, prm, ppy):
@@ -55,15 +76,18 @@ def _tsmom(close, prm, ppy):
     return sum(sig) / len(sig)
 
 
-def book_returns(closes: dict, rule: str, prm: dict, ppy: float, cps: float) -> pd.Series:
-    """Equal capital across the assets in `closes`; each asset follows the rule; costs on exposure changes."""
+def book_returns(closes: dict, rule: str, prm: dict, ppy: float, cps: float, band: float = 0.0,
+                 funding_annual: float = 0.0) -> pd.Series:
+    """Equal capital across the assets in `closes`; each asset follows the rule; costs on exposure changes;
+    optional no-trade band and perp funding on |exposure|. Assets join the book when their data starts."""
     parts = []
     for _, c in closes.items():
-        e = exposure(c, rule, prm, ppy).shift(1).fillna(0.0)       # decided at t-1, held during t
+        e = apply_band(exposure(c, rule, prm, ppy), band).shift(1).fillna(0.0)   # decided at t-1, held during t
         r = c.pct_change(fill_method=None).fillna(0.0)
-        parts.append(e * r - e.diff().abs().fillna(e) * cps)
-    out = sum(parts) / len(parts)
-    first = max(c.first_valid_index() for c in closes.values())
+        parts.append(e * r - e.diff().abs().fillna(e.abs()) * cps - e.abs() * funding_annual / ppy)
+    alive = sum(c.notna().astype(float) for c in closes.values()).replace(0, np.nan)
+    out = (sum(parts) / alive).fillna(0.0)            # equal capital across the coins that exist at t
+    first = min(c.first_valid_index() for c in closes.values())
     return out[out.index >= first]
 
 
@@ -155,4 +179,64 @@ def markdown(o: dict, cfg: dict) -> str:
           "- Sadece BTC/ETH: alt-coin getirisi yok; buna karşılık survivorship riski çok düşük.",
           "- Spot varsayımı: perp ile yapılırsa funding maliyeti eklenir.",
           "- Üç ileri pencere iç içedir (2022 penceresi 2023 ve 2024'ü de içerir); bağımsız üç test değildir."]
+    return "\n".join(L)
+
+
+def run_variants(cfg: dict, panel_of) -> dict:
+    """Compare the pre-registered variants with the H052 baseline (config core.yaml `variants`)."""
+    vc = cfg["variants"]
+    cps = cfg["costs"]["commission"] + cfg["costs"]["slippage"]
+    fa = vc.get("funding_annual", 0.0)
+    prm = cfg["rules"]["dual_trend_vt"]
+    acc = vc.get("accept", {})
+    base_cache, rows = {}, []
+
+    def series(v):
+        p = panel_of(v["timeframe"], v["assets"])
+        closes = {a: p.c[a] for a in v["assets"] if a in p.columns}
+        return book_returns(closes, v["rule"], prm, p.ppy, cps, v.get("band", 0.0), fa), p.ppy
+
+    def evaluate(r, ppy):
+        return {"full": stats(r, ppy), "windows": {c: stats(r[r.index > pd.Timestamp(c)], ppy) for c in cfg["cutoffs"]}}
+
+    for v in vc["list"]:
+        b = vc["baseline"]                  # always H052 as registered (4h): the 1h variant is judged against it
+        if b["timeframe"] not in base_cache:
+            rb, ppb = series(b)
+            base_cache[b["timeframe"]] = (rb, ppb, evaluate(rb, ppb))
+        rb, ppb, eb = base_cache[b["timeframe"]]
+        try:
+            rv, ppv = series(v)
+        except Exception as e:  # noqa: BLE001
+            rows.append({**v, "error": str(e)})
+            continue
+        # compare on the common period only
+        start = max(rv.index[0], rb.index[0])
+        ev = evaluate(rv[rv.index >= start], ppv)
+        eb2 = evaluate(rb[rb.index >= start], ppb)
+        sr_ok = ev["full"].get("sharpe", -9) > eb2["full"].get("sharpe", 9) and all(
+            (ev["windows"].get(c) or {}).get("sharpe", -9) > (eb2["windows"].get(c) or {}).get("sharpe", 9) for c in cfg["cutoffs"])
+        dd_ok = ev["full"].get("max_dd", -1) >= eb2["full"].get("max_dd", 0) - acc.get("max_extra_dd", 0.05)
+        rows.append({**v, "variant": ev, "baseline": eb2, "sharpe_ok": bool(sr_ok), "dd_ok": bool(dd_ok),
+                     "approved": bool(sr_ok and dd_ok)})
+    return {"rows": rows}
+
+
+def markdown_variants(o: dict, cfg: dict) -> str:
+    f = lambda v: "–" if v is None else f"{v:+.0%}"   # noqa: E731
+    cut = cfg["cutoffs"]
+    L = ["", "## H052 varyantları (4 deneme, kabul kuralları önceden yazıldı)", "",
+         "Kabul: tüm geçmişte VE her ileri pencerede Sharpe temel kuraldan (H052) yüksek, maks. düşüş en fazla 5 puan derin. "
+         "Karşılaştırma aynı zaman diliminde ve ortak dönemde; perp funding her ikisinde de düşüldü.", "",
+         "| Varyant | Sharpe (tüm) | Temel | Maks. düşüş | Temel | " + " | ".join(f"{c[:7]} SR v/t" for c in cut) + " | Onay |",
+         "|---|---|---|---|---|" + "---|" * len(cut) + "---|"]
+    for r in o["rows"]:
+        if r.get("error"):
+            L.append(f"| {r['name']} | hata: {r['error'][:60]} |" + " |" * (4 + len(cut) + 1))
+            continue
+        v, b = r["variant"], r["baseline"]
+        L.append(f"| {r['name']} | {v['full'].get('sharpe')} | {b['full'].get('sharpe')} | {f(v['full'].get('max_dd'))} | "
+                 f"{f(b['full'].get('max_dd'))} | " + " | ".join(
+                     f"{(v['windows'].get(c) or {}).get('sharpe')}/{(b['windows'].get(c) or {}).get('sharpe')}" for c in cut)
+                 + f" | {'✅' if r['approved'] else '❌'} |")
     return "\n".join(L)

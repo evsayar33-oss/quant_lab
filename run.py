@@ -387,6 +387,30 @@ def _arena_one(a, hyps, cfg) -> dict | None:
     return out
 
 
+def _core_panel_loader(cfg: dict, synthetic: bool):
+    cache: dict = {}
+
+    def get(tf: str, assets: list[str]):
+        allx = sorted({x for v in [cfg["variants"]["baseline"], *cfg["variants"]["list"]] for x in v["assets"]})
+        if tf not in cache:
+            if synthetic:
+                import numpy as np
+                import pandas as pd
+                per = {"1h": 24 * 365, "4h": 2190, "1d": 365}[tf]
+                n = per * 6
+                idx = pd.date_range("2019-01-01", periods=n, freq={"1h": "h", "4h": "4h", "1d": "D"}[tf])
+                rng = np.random.default_rng(4)
+                c = pd.DataFrame(100 * np.exp(np.cumsum(rng.normal(0.0002, 0.02 / np.sqrt(per / 365), (n, len(allx))), axis=0)),
+                                 idx, allx)
+                p = Panel.from_close(c, seed=4); p.freq = tf
+            else:
+                u = {"tickers": allx, "benchmark": "BTC/USDT", "market": "crypto", "risk_free": None, "macro": []}
+                p = data.load_panel(u, cfg.get("start", "2018-01-01"), "core", with_fundamentals=False, timeframe=tf)
+            cache[tf] = p
+        return cache[tf]
+    return get
+
+
 def do_core(a) -> None:
     from lab import core
     cfg = load_yaml("config/core.yaml")
@@ -408,6 +432,10 @@ def do_core(a) -> None:
             p = data.load_panel(u, cfg.get("start", "2018-01-01"), "core", with_fundamentals=False, timeframe=tf)
         o = core.run(p, cfg)
         md = core.markdown(o, cfg)
+        if cfg.get("variants") and tf == cfg["variants"]["baseline"]["timeframe"]:
+            vo = core.run_variants(cfg, _core_panel_loader(cfg, a.synthetic))
+            o["variants"] = vo
+            md += "\n" + core.markdown_variants(vo, cfg)
         RESULTS.mkdir(exist_ok=True)
         (RESULTS / f"core_{tf}.md").write_text(md)
         slim = {**o, "spark": {}}
@@ -417,7 +445,11 @@ def do_core(a) -> None:
             ok = [r for r in o["rows"] if r.get("approved")]
             telegram(f"🧱 çekirdek çalışma {tf}: {len(ok)} kural onaylandı\n" + "\n".join(
                 f"{'✅' if r.get('approved') else ('▫️' if r['approved'] is None else '❌')} {r['book']} {core.NAMES.get(r['rule'], r['rule'])}: "
-                f"$1000→{r['full'].get('final_1000', 0):,.0f}, DD {r['full'].get('max_dd', 0):.0%}" for r in o["rows"]))
+                f"$1000→{r['full'].get('final_1000', 0):,.0f}, DD {r['full'].get('max_dd', 0):.0%}" for r in o["rows"])
+                + ("\n\nH052 varyantları:\n" + "\n".join(
+                    f"{'✅' if v.get('approved') else '❌'} {v['name']}: SR {(v.get('variant') or {}).get('full', {}).get('sharpe')} "
+                    f"vs temel {(v.get('baseline') or {}).get('full', {}).get('sharpe')}" for v in o["variants"]["rows"])
+                   if o.get("variants") else ""))
 
 
 def main() -> None:

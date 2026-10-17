@@ -371,6 +371,30 @@ def run(p: Panel, costs: Costs, cfg: dict) -> dict:
             books_out = BK.report(bdata, R, X, ro, p, cps, cfg)
         except Exception as e:  # noqa: BLE001 - books are a report; they must not stop the arena
             print(f"[arena] books failed: {e}")
+    # ---- H052 manual-trading signal: target share of capital per coin (only on the H052 timeframe)
+    h052 = None
+    sig_cfg = cfg.get("signals", {}).get("H052") or {}
+    if sig_cfg.get("enabled") and cfg.get("timeframe") == sig_cfg.get("timeframe", "4h"):
+        try:
+            from lab import core as CORE
+            import yaml as _y
+            ccfg = _y.safe_load((ROOT / "config" / "core.yaml").read_text())
+            prm = ccfg["rules"]["dual_trend_vt"]
+            assets = [x for x in sig_cfg.get("assets", ["BTC/USDT", "ETH/USDT"]) if x in p.columns]
+            tgt = {x: round(float(CORE.exposure(p.c[x], "dual_trend_vt", prm, ppy).iloc[-1]) / len(assets), 3) for x in assets}
+            reg = _read(ROOT / "decisions" / "registry.json", {}).get("hypotheses", {}).get("H052", {})
+            prev = (st.get("h052") or {}) if isinstance(st, dict) else {}
+            moves = {x: round(tgt[x] - prev.get(x, 0.0), 3) for x in assets}
+            h052 = {"targets": tgt, "verdict": reg.get("verdict"), "bar": str(end)}
+            if any(abs(v) >= sig_cfg.get("min_change", 0.05) for v in moves.values()):
+                txt = ", ".join(f"{x.split('/')[0]} %{tgt[x] * 100:.0f} ({moves[x] * 100:+.0f})" for x in assets)
+                events.append(f"🎯 H052 [{reg.get('verdict', '?')}] hedef (kasanın %'si): {txt}; kalan nakit "
+                              f"%{(1 - sum(tgt.values())) * 100:.0f}. Bir sonraki bar açılışında uygulanır.")
+                stx = _read(STATE, {})
+                stx["h052"] = tgt
+                _write(STATE, stx)
+        except Exception as e:  # noqa: BLE001
+            print(f"[arena] H052 signal failed: {e}")
     prev_b = st.get("book_status", {}) if isinstance(st, dict) else {}
     cur_b = {b["id"]: (b.get("band_status") or {}).get("status") for b in books_out}
     for b in books_out:
@@ -381,7 +405,7 @@ def run(p: Panel, costs: Costs, cfg: dict) -> dict:
         stx["book_status"] = cur_b
         _write(STATE, stx)
     return {"members": members_out, "switcher": sw_out, "gate": gate, "events": events if new_bar else [],
-            "books": books_out,
+            "books": books_out, "h052": h052,
             "summary_due": summary_due, "regimes": sw_out["regimes"], "data_end": str(end),
             "spark_switch_fwd": perp.sparkline(sf, 90), "spark_ew_fwd": perp.sparkline(ef, 90)}
 
@@ -401,6 +425,10 @@ def telegram_text(out: dict, summary: bool) -> str:
         for x in sw["picks"]:
             L.append(f"  {x['id']} {x['coin']} {x['rule']} {x['weight']:.0%} [{x['regime']}] {x['position']}")
         L.append(f"  nakit {sw['cash']:.0%}")
+        if out.get("h052"):
+            h = out["h052"]
+            L.append("🎯 H052 hedef: " + ", ".join(f"{k.split('/')[0]} %{v * 100:.0f}" for k, v in h["targets"].items())
+                     + f" · nakit %{(1 - sum(h['targets'].values())) * 100:.0f} [{h.get('verdict')}]")
         for b in out.get("books") or []:
             f = b["forward"]
             bs = (b.get("band_status") or {}).get("text", "")
