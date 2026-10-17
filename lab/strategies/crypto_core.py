@@ -38,3 +38,16 @@ def core_dual_trend_vt(prices, sma_days, horizons_days, target, lookback_days):
 def core_tsmom_vt(prices, horizons_days, target, lookback_days):
     return _weights(prices, "tsmom_vt", {"horizons_days": list(horizons_days), "target": target,
                                          "lookback_days": lookback_days})
+
+
+@strategy("core_dual_trend_vt_band", grid={},
+          defaults={"sma_days": 200, "horizons_days": (30, 90, 180), "target": 0.40, "lookback_days": 30, "band": 0.10},
+          source="H052 + 10% no-trade band (pre-registered variant V_band, config/core.yaml)",
+          kind="time_series")
+def core_dual_trend_vt_band(prices, sma_days, horizons_days, target, lookback_days, band):
+    ppy = _ppy(prices)
+    prm = {"sma_days": sma_days, "horizons_days": list(horizons_days), "target": target, "lookback_days": lookback_days}
+    w = pd.DataFrame({c: core.apply_band(core.exposure(prices[c], "dual_trend_vt", prm, ppy), band)
+                      for c in prices.columns}, index=prices.index)
+    n = prices.notna().sum(axis=1).replace(0, float("nan"))
+    return w.div(n, axis=0).fillna(0.0)

@@ -19,3 +19,4 @@
 - 2026-10-17: Hypotheses H052 (core_dual_trend_vt) and H053 (core_tsmom_vt) on crypto_core (BTC+ETH, perp costs incl. funding), fixed settings (1 trial each). Arena paper books K1/K2 for the same rules. Gate unchanged.
 - 2026-10-17: Time machine becomes an optional standing check (config/arena.yaml timemachine: enabled, years_ago [2,3,4], min_inside 2), quarterly schedule; books show their replay record; rule documented in CLAUDE.md.
 - 2026-10-17: Core variants of H052 pre-registered (more coins, long/short, 10% no-trade band, 1h), compared against H052 with fixed acceptance. H052 manual Telegram signal (target % of capital per coin) in the 4h arena run.
+- 2026-10-17: Variant results: V_band passed (registered as H054); V_alts, V_short, V_1h failed vs H052.
