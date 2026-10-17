@@ -166,5 +166,9 @@
   "B2": "early",
   "K1": "early",
   "K2": "early"
+ },
+ "h052": {
+  "BTC/USDT": 0.5,
+  "ETH/USDT": 0.438
  }
 }
