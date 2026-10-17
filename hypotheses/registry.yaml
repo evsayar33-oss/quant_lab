@@ -555,3 +555,12 @@
   start: "2021-01-01"
   status: untestable
   note: "Price / new-address value factor (Borri et al. 2026). Needs on-chain address data; no free source in our stack."
+
+- id: H061
+  strategy: cppi_floor80
+  universe: crypto_core
+  timeframe: 1d
+  for_system: h054_spot_bot
+  start: "2021-01-01"
+  status: active
+  note: "CPPI (Black-Jones 1987; Perold-Sharpe 1988): floor 80% of peak, multiplier 3. Risky = 50% bot + 50% H056, safe = H057. config/cppi.yaml."
