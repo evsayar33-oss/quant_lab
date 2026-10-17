@@ -285,6 +285,25 @@ def _arena_one(a, hyps, cfg) -> dict | None:
     from lab import arena, dashboard, screen
     p, costs = arena_panel(cfg, a.synthetic)
     tag = f"{cfg['universe']}_{cfg['timeframe']}"
+    if a.protect:
+        from lab import protect
+        ro = arena._read(arena.ROSTER, None)
+        act = [m for m in (ro or {}).get("members", []) if m["status"] == "active"]
+        if not act:
+            print("[protect] no active members")
+            return None
+        R, X, _ = arena.compute(ro, p, costs, act)
+        res = protect.run(p, costs, cfg, R, X, act)
+        md = protect.markdown(res, cfg)
+        RESULTS.mkdir(exist_ok=True)
+        (RESULTS / f"protection_{tag}.md").write_text(md)
+        arena._write(arena.DIR / "protection.json", {"date": date.today().isoformat(), **protect.summary_json(res)})
+        print(md)
+        if a.telegram:
+            telegram(f"🛡️ kasa koruma testi {cfg['timeframe']} ({res['members']} üye)\n" + "\n".join(
+                f"{'✅' if v['pass'] else '❌'} {protect.NAMES_TR.get(k, k)}" for k, v in res["tests"].items()) +
+                f"\nkaldıraç tavanı: {res['leverage']['max_leverage']}x")
+        return None
     if a.screen:
         res = screen.run(p, costs, cfg)
         if res.get("error"):
@@ -372,6 +391,7 @@ def main() -> None:
     ap.add_argument("--calibrate", action="store_true", help="reproduce known results on real data")
     ap.add_argument("--screen", action="store_true", help="arena screening funnel (monthly)")
     ap.add_argument("--arena", action="store_true", help="arena paper run + regime switcher (every closed bar)")
+    ap.add_argument("--protect", action="store_true", help="capital protection study on the active arena members")
     ap.add_argument("--stage2", default="", help="with --screen: on | off (default: config/arena.yaml)")
     ap.add_argument("--site", default="", help="with --arena: write the dashboard (index.html + data.json) here")
     ap.add_argument("--prefetch", action="store_true",
@@ -379,7 +399,7 @@ def main() -> None:
     a = ap.parse_args()
 
     hyps = load_yaml("hypotheses/registry.yaml") or []
-    if a.screen or a.arena:
+    if a.screen or a.arena or a.protect:
         return do_arena(a, hyps)
     if a.ids:
         print(json.dumps([h["id"] for h in hyps if h.get("status") == "active"]))

@@ -61,7 +61,7 @@ def shift_signals(s: Signals, k: int = 1) -> Signals:
 
 
 def run_variant(p: Panel, rule: str, params: dict, exit_id: int, side: str, costs: Costs, delay: int = 0,
-                filt: str = "none", confirm: dict | None = None):
+                filt: str = "none", confirm: dict | None = None, exit_cfg=None):
     """Run one rule variant on every coin of `p` at once (equal 1/N sizing, no slot limit, so each coin
     trades independently). Optional entry filter (rules.FILTERS) and two-signal confirmation
     confirm = {"rule": name, "params": {...}, "within": bars}: entry only when the confirming rule fired
@@ -77,7 +77,7 @@ def run_variant(p: Panel, rule: str, params: dict, exit_id: int, side: str, cost
     if delay:
         sig = shift_signals(sig, delay)
     n = p.c.shape[1]
-    res = run_trades(p, sig, EXIT_GRID[exit_id], costs, side, None, per_asset=True)
+    res = run_trades(p, sig, exit_cfg or EXIT_GRID[exit_id], costs, side, None, per_asset=True)
     R = res.meta["asset_returns"] * n
     X = res.meta["held_weights"].reindex(R.index).fillna(0.0) * n
     R = R.where(p.c.notna().cummax(), np.nan)          # NaN before a coin has data
@@ -100,9 +100,9 @@ def spec_label(spec: dict) -> str:
     return " · ".join(out)
 
 
-def run_spec(p: Panel, spec: dict, side: str, costs: Costs, delay: int = 0):
+def run_spec(p: Panel, spec: dict, side: str, costs: Costs, delay: int = 0, exit_cfg=None):
     return run_variant(p, spec["rule"], _tuples(spec["params"]), spec["exit_id"], side, costs, delay,
-                       spec.get("filter", "none"), spec.get("confirm"))
+                       spec.get("filter", "none"), spec.get("confirm"), exit_cfg)
 
 
 def first_valid(p: Panel) -> dict:

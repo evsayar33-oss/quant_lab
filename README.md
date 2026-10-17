@@ -171,6 +171,13 @@ Volatil; değilse ADX ≥ 25 ve Kaufman verimlilik oranı ≥ 0.30 → Trend; di
 ≤ %40, kalanı nakit. Her yeni barla skorlar güncellenir: kendini geliştirir. Ayar ızgarası (3 yarı ömür × 3 top-k)
 raporda tamamen gösterilir.
 
+**Kasa koruma testi (`python run.py --protect`, workflow "Protection study", her aylık taramadan sonra):**
+arenadaki aktif üyelerin eşit ağırlıklı portföyünde 4 koruma kuralı test edilir: kasa düşüş sigortası, günlük kayıp
+limiti, BTC çöküş bekçisi, felaket stopu. Ölçüm: tüm geçmiş (CAGR, Sharpe, maks. düşüş, CVaR), 6 gerçek kriz
+(COVID 2020, Mayıs 2021, LUNA, FTX, Ağustos 2024, Ekim 2025) ve Monte Carlo iflas olasılığı. Bir kural sadece
+komşu eşiklerin hepsinde ve her zaman diliminde kabul kurallarını geçerse açılır. Likidasyon tamponu ve coin
+başı sınır matematiktir, hep açıktır. Rapor: `results/protection_*.md`, özet: `decisions/arena/<tf>/protection.json`.
+
 **Botlar switcher'ı ne zaman kullanır?** `lab/client.py` → `arena_allocation("4h")` / `arena_allocation("1d")` boş döner, ta ki:
 backtest kapısı (her pencerede eşit ağırlığı yener + 2× maliyette kârlı + düşüş ≥ −%45) **ve** ≥ 180 gün ileri
 kayıtta eşit ağırlığı yenene kadar.
