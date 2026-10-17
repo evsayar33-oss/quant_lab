@@ -4,29 +4,57 @@ name: Time machine test
 # what those frozen choices did after the cutoff. Never touches the live arena or decisions/registry.json.
 
 on:
+  schedule:
+    - cron: '7 5 5 1,4,7,10 *'      # quarterly; cutoffs and on/off come from config/arena.yaml (timemachine)
   workflow_dispatch:
     inputs:
       cutoffs:
         description: 'JSON list of cutoff dates: ["2022-10-17","2023-10-17","2024-10-17"]'
-        required: true
-        default: '["2024-10-17"]'
+        required: false
+        default: ''   # empty = config/arena.yaml timemachine.years_ago
       timeframes:
         description: 'JSON list: ["4h"] or ["4h","1d"]'
         required: false
-        default: '["4h","1d"]'
+        default: ''
 
 permissions:
   contents: write
 
 jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      cutoffs: ${{ steps.p.outputs.cutoffs }}
+      timeframes: ${{ steps.p.outputs.timeframes }}
+      go: ${{ steps.p.outputs.go }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: p
+        env:
+          IN_CUT: ${{ github.event.inputs.cutoffs }}
+          IN_TF: ${{ github.event.inputs.timeframes }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, datetime, yaml
+          c = yaml.safe_load(open("config/arena.yaml")).get("timemachine", {})
+          today = datetime.date.today()
+          cut = os.environ.get("IN_CUT") or json.dumps([str(today - datetime.timedelta(days=round(365.25 * y))) for y in c.get("years_ago", [2, 3, 4])])
+          tf = os.environ.get("IN_TF") or json.dumps(c.get("timeframes", ["4h"]))
+          go = "true" if (os.environ["EVENT"] == "workflow_dispatch" or c.get("enabled", False)) else "false"
+          print(f"cutoffs={cut}"); print(f"timeframes={tf}"); print(f"go={go}")
+          PY
+
   replay:
+    needs: plan
+    if: needs.plan.outputs.go == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 350
     strategy:
       fail-fast: false
       matrix:
-        timeframe: ${{ fromJSON(github.event.inputs.timeframes || '["4h","1d"]') }}
-        cutoff: ${{ fromJSON(github.event.inputs.cutoffs || '["2024-10-17"]') }}
+        timeframe: ${{ fromJSON(needs.plan.outputs.timeframes) }}
+        cutoff: ${{ fromJSON(needs.plan.outputs.cutoffs) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -56,7 +84,7 @@ jobs:
 
   publish:
     needs: replay
-    if: always()
+    if: always() && needs.replay.result != 'skipped'
     runs-on: ubuntu-latest
     concurrency:
       group: quant-lab-results

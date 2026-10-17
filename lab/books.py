@@ -112,7 +112,29 @@ def band_status(band: dict, days: int, ret: float) -> dict:
     return {"status": st, "text": tx, "p5": lo, "p50": mid, "p95": hi}
 
 
+def timemachine_record(tf: str, cfg: dict) -> dict:
+    """{book_id: {"inside": n, "total": m, "candidate": bool, "cutoffs": {...}}} from every replay on disk."""
+    from lab.arena import BASE
+    out: dict = {}
+    need = int((cfg.get("timemachine") or {}).get("min_inside", 2))
+    for f in sorted((BASE / "timemachine").glob(f"*/{tf}/summary.json")):
+        try:
+            o = json.loads(f.read_text())
+        except Exception:  # noqa: BLE001
+            continue
+        for b in o.get("books", []):
+            d = out.setdefault(b["id"], {"inside": 0, "total": 0, "cutoffs": {}})
+            st = (b.get("band_status") or {}).get("status")
+            d["total"] += 1
+            d["inside"] += st in ("inside", "above")
+            d["cutoffs"][o["cutoff"]] = {"status": st, "final_1000": (b.get("forward") or {}).get("final_1000")}
+    for d in out.values():
+        d["candidate"] = d["total"] >= need and d["inside"] >= need
+    return out
+
+
 def report(data: dict, R, X, ro, p, cps, cfg) -> list[dict]:
+    tmr = timemachine_record(cfg.get("timeframe", "4h"), cfg)
     mmr = cfg.get("books", {}).get("maint_margin", 0.005)
     metrics.set_periods(p.ppy)
     end = R.index[-1]
@@ -130,6 +152,7 @@ def report(data: dict, R, X, ro, p, cps, cfg) -> list[dict]:
         out.append({
             "band": band, "band_status": band_status(band, fdays, fret),
             "fwd_daily": [round(float(x), 4) for x in cum_f.to_numpy()[::max(1, len(cum_f) // 120)]] if len(cum_f) else [],
+            "timemachine": tmr.get(bid),
             "id": bid, "name": b["name"], "members": b["members"], "leverage": b.get("leverage", 1),
             "vol_target": b.get("vol_target"), "created_at": b["created_at"][:10],
             "forward": {"days": max(0, (end - a).days), "ret": round(float((1 + f).prod() - 1), 4) if len(f) else 0.0,

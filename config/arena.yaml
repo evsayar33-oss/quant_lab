@@ -144,3 +144,14 @@ books:
     - {id: K2, name: "Çekirdek: BTC+ETH momentum + vol hedefi", select: core, rule: tsmom_vt,
        assets: [BTC/USDT, ETH/USDT], funding_annual: 0.08,
        params: {horizons_days: [30, 90, 180], target: 0.40, lookback_days: 30}}
+
+# Time-machine test as a standing, OPTIONAL check for every SELECTION process (funnel, top-N books, switcher).
+# A single hypothesis does not need it: the decision gate's walk-forward already does this for one strategy.
+timemachine:
+  enabled: true                 # false = the quarterly run skips itself (manual runs still work)
+  years_ago: [2, 3, 4]          # cutoffs relative to the run date
+  timeframes: [4h]
+  # Rule (written 2026-10-17, after the arena books failed 6 of 6 replays): a book or selection process is
+  # a real-money CANDIDATE only if its forward record stayed inside the expected band in at least
+  # `min_inside` of the cutoffs. The dashboard shows this; bots never read books anyway.
+  min_inside: 2

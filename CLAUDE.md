@@ -27,3 +27,13 @@ Sahibe canlıda en iyi çalışacak sonuç lazım, testte en iyi görüneni değ
 - Çok deneme = şans riski (aşırı uyum). Deneme sayısını söyle; tek en iyi noktayı değil, düz/sağlam bölgeyi seç.
 - Daha iyisi kurala göre çıkmazsa açıkça yaz: "daha iyisi bulunamadı" veya "canlıda aynısı olmayabilir, bu yüzden önermiyorum".
 - Zayıf yönleri (geride kalınan dönemler, test edilemeyen veriler, tek sektöre bağımlılık) her raporda yaz.
+
+# Seçim süreçleri için zaman makinesi kuralı (2026-10-17)
+
+- Binlerce aday arasından seçim yapan her süreç (eleme motoru, "en iyi N" portföyleri, switcher, yeni tarama
+  yöntemleri) gerçek paraya aday olmadan önce zaman makinesi testinden geçmelidir (`lab/timemachine.py`,
+  workflow "Time machine test"). Ölçüt: kesim tarihlerinin en az `timemachine.min_inside`'ında (varsayılan 2/3)
+  ileri kayıt beklenen aralıkta kalmalı. Ayar: `config/arena.yaml` → `timemachine` (enabled ile açılıp kapanır).
+- Tek bir hipotez için gerekmez: karar kapısının walk-forward'ı aynı işi tek strateji için yapar.
+- Neden: 2026-10-17'de arena portföyleri backtest'te çok iyi görünüp 6 replay'in 6'sında beklenen aralığın
+  altında kaldı; backtest sırası ile ileri sıra arasında ilişki ~0 çıktı.

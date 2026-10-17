@@ -17,3 +17,4 @@
 - 2026-10-17: Time-machine test (lab/timemachine.py): the full arena pipeline replayed with data cut at a past date, books frozen there, forward result measured on the unseen period; active vs control comparison. Separate folder decisions/arena/timemachine/, never touches the live arena or the registry.
 - 2026-10-17: Core study (lab/core.py, config/core.yaml): 6 fixed-setting literature rules on BTC/ETH/50-50, acceptance pre-registered vs buy-and-hold in 3 forward windows. No parameter search.
 - 2026-10-17: Hypotheses H052 (core_dual_trend_vt) and H053 (core_tsmom_vt) on crypto_core (BTC+ETH, perp costs incl. funding), fixed settings (1 trial each). Arena paper books K1/K2 for the same rules. Gate unchanged.
+- 2026-10-17: Time machine becomes an optional standing check (config/arena.yaml timemachine: enabled, years_ago [2,3,4], min_inside 2), quarterly schedule; books show their replay record; rule documented in CLAUDE.md.
