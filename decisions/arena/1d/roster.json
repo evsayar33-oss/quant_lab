@@ -3,7 +3,7 @@
  "timeframe": "1d",
  "start": "2018-01-01",
  "created_at": "2026-10-16T19:33:03+00:00",
- "next_id": 101,
+ "next_id": 104,
  "members": [
   {
    "id": "A0001",
@@ -25,7 +25,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 2.5023,
       "cagr": 0.5187,
@@ -66,7 +66,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 6.6713,
       "cagr": 0.503,
@@ -110,7 +110,7 @@
       "start": "2021-06-22",
       "years": 5.32,
       "ret": 15.5261,
-      "cagr": 0.6951,
+      "cagr": 0.6946,
       "sharpe": 1.45,
       "max_dd": -0.3212,
       "trades": 32,
@@ -150,11 +150,11 @@
     },
     "sharpe": 1.45,
     "max_dd": -0.3212,
-    "dsr": 0.165,
+    "dsr": 0.167,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -179,11 +179,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 6.3284,
-      "cagr": 0.9425,
-      "sharpe": 1.907,
+      "ret": 6.1374,
+      "cagr": 0.9255,
+      "sharpe": 1.885,
       "max_dd": -0.2975,
       "trades": 24,
       "win_rate": 0.792,
@@ -226,8 +226,8 @@
       "start": "2022-10-19",
       "years": 3.99,
       "ret": 5.1446,
-      "cagr": 0.5761,
-      "sharpe": 1.405,
+      "cagr": 0.5756,
+      "sharpe": 1.404,
       "max_dd": -0.3147,
       "trades": 30,
       "win_rate": 0.733,
@@ -264,13 +264,13 @@
       }
      }
     },
-    "sharpe": 1.405,
+    "sharpe": 1.404,
     "max_dd": -0.3147,
-    "dsr": 0.163,
+    "dsr": 0.164,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -409,11 +409,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 2.537,
-      "cagr": 0.5237,
-      "sharpe": 1.262,
+      "ret": 2.5578,
+      "cagr": 0.5267,
+      "sharpe": 1.267,
       "max_dd": -0.3274,
       "trades": 41,
       "win_rate": 0.439,
@@ -454,10 +454,10 @@
      },
      "full": {
       "start": "2022-10-11",
-      "years": 4.01,
+      "years": 4.02,
       "ret": 3.6235,
-      "cagr": 0.4646,
-      "sharpe": 1.221,
+      "cagr": 0.4642,
+      "sharpe": 1.22,
       "max_dd": -0.3274,
       "trades": 47,
       "win_rate": 0.447,
@@ -494,13 +494,13 @@
       }
      }
     },
-    "sharpe": 1.221,
+    "sharpe": 1.22,
     "max_dd": -0.3274,
-    "dsr": 0.087,
+    "dsr": 0.088,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -522,11 +522,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 4.0259,
-      "cagr": 0.713,
-      "sharpe": 1.246,
+      "ret": 4.0083,
+      "cagr": 0.711,
+      "sharpe": 1.244,
       "max_dd": -0.3564,
       "trades": 76,
       "win_rate": 0.447,
@@ -568,9 +568,9 @@
      "full": {
       "start": "2023-03-23",
       "years": 3.57,
-      "ret": 4.0918,
-      "cagr": 0.5784,
-      "sharpe": 1.15,
+      "ret": 3.9747,
+      "cagr": 0.5676,
+      "sharpe": 1.136,
       "max_dd": -0.3564,
       "trades": 77,
       "win_rate": 0.455,
@@ -607,13 +607,13 @@
       }
      }
     },
-    "sharpe": 1.15,
+    "sharpe": 1.136,
     "max_dd": -0.3564,
-    "dsr": 0.085,
+    "dsr": 0.082,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -636,7 +636,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 1.3294,
       "cagr": 0.3256,
@@ -677,7 +677,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 3.3442,
       "cagr": 0.3414,
@@ -721,8 +721,8 @@
       "start": "2021-06-22",
       "years": 5.32,
       "ret": 8.3586,
-      "cagr": 0.5231,
-      "sharpe": 1.188,
+      "cagr": 0.5227,
+      "sharpe": 1.187,
       "max_dd": -0.3855,
       "trades": 33,
       "win_rate": 0.758,
@@ -759,13 +759,13 @@
       }
      }
     },
-    "sharpe": 1.188,
+    "sharpe": 1.187,
     "max_dd": -0.3855,
-    "dsr": 0.052,
+    "dsr": 0.053,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -788,40 +788,40 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 2.0674,
-      "cagr": 0.453,
-      "sharpe": 1.108,
+      "ret": 2.1425,
+      "cagr": 0.4648,
+      "sharpe": 1.128,
       "max_dd": -0.276,
       "trades": 35,
       "win_rate": 0.314,
-      "profit_factor": 5.49,
+      "profit_factor": 5.493,
       "perp": {
        "1x": {
-        "final": 1192.16,
+        "final": 1192.19,
         "ret": 0.1922,
         "liquidations": 0,
         "max_dd": -0.0161,
         "trades": 35
        },
        "3x": {
-        "final": 1619.07,
-        "ret": 0.6191,
+        "final": 1619.17,
+        "ret": 0.6192,
         "liquidations": 0,
         "max_dd": -0.0478,
         "trades": 35
        },
        "5x": {
-        "final": 2099.64,
-        "ret": 1.0996,
+        "final": 2099.87,
+        "ret": 1.0999,
         "liquidations": 0,
         "max_dd": -0.0786,
         "trades": 35
        },
        "10x": {
-        "final": 3506.05,
-        "ret": 2.5061,
+        "final": 3506.82,
+        "ret": 2.5068,
         "liquidations": 0,
         "max_dd": -0.1521,
         "trades": 35
@@ -834,38 +834,38 @@
      "full": {
       "start": "2022-12-21",
       "years": 3.82,
-      "ret": 2.0918,
-      "cagr": 0.344,
-      "sharpe": 0.979,
+      "ret": 2.0925,
+      "cagr": 0.3438,
+      "sharpe": 0.978,
       "max_dd": -0.276,
       "trades": 42,
       "win_rate": 0.286,
-      "profit_factor": 4.776,
+      "profit_factor": 4.778,
       "perp": {
        "1x": {
-        "final": 1191.19,
+        "final": 1191.22,
         "ret": 0.1912,
         "liquidations": 0,
         "max_dd": -0.0161,
         "trades": 42
        },
        "3x": {
-        "final": 1614.72,
-        "ret": 0.6147,
+        "final": 1614.82,
+        "ret": 0.6148,
         "liquidations": 0,
         "max_dd": -0.0478,
         "trades": 42
        },
        "5x": {
-        "final": 2089.38,
-        "ret": 1.0894,
+        "final": 2089.6,
+        "ret": 1.0896,
         "liquidations": 0,
         "max_dd": -0.0786,
         "trades": 42
        },
        "10x": {
-        "final": 3464.89,
-        "ret": 2.4649,
+        "final": 3465.65,
+        "ret": 2.4657,
         "liquidations": 0,
         "max_dd": -0.1521,
         "trades": 42
@@ -873,13 +873,13 @@
       }
      }
     },
-    "sharpe": 0.979,
+    "sharpe": 0.978,
     "max_dd": -0.276,
-    "dsr": 0.041,
+    "dsr": 0.042,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -902,11 +902,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 3.042,
-      "cagr": 0.593,
-      "sharpe": 1.3,
+      "ret": 2.9925,
+      "cagr": 0.5865,
+      "sharpe": 1.29,
       "max_dd": -0.2995,
       "trades": 35,
       "win_rate": 0.4,
@@ -948,9 +948,9 @@
      "full": {
       "start": "2023-03-23",
       "years": 3.57,
-      "ret": 1.9843,
-      "cagr": 0.3588,
-      "sharpe": 0.95,
+      "ret": 1.9189,
+      "cagr": 0.3501,
+      "sharpe": 0.934,
       "max_dd": -0.3347,
       "trades": 46,
       "win_rate": 0.326,
@@ -987,13 +987,13 @@
       }
      }
     },
-    "sharpe": 0.95,
+    "sharpe": 0.934,
     "max_dd": -0.3347,
-    "dsr": 0.041,
+    "dsr": 0.039,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -1017,7 +1017,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 1.2928,
       "cagr": 0.3187,
@@ -1064,7 +1064,7 @@
       "start": "2023-03-23",
       "years": 3.57,
       "ret": 1.2863,
-      "cagr": 0.261,
+      "cagr": 0.2607,
       "sharpe": 0.96,
       "max_dd": -0.2964,
       "trades": 68,
@@ -1108,7 +1108,7 @@
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -1132,11 +1132,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 1.0133,
-      "cagr": 0.2627,
-      "sharpe": 0.911,
+      "ret": 0.9948,
+      "cagr": 0.2588,
+      "sharpe": 0.901,
       "max_dd": -0.3347,
       "trades": 35,
       "win_rate": 0.714,
@@ -1177,10 +1177,10 @@
      },
      "full": {
       "start": "2023-08-24",
-      "years": 3.14,
+      "years": 3.15,
       "ret": 0.9517,
-      "cagr": 0.2369,
-      "sharpe": 0.853,
+      "cagr": 0.2367,
+      "sharpe": 0.852,
       "max_dd": -0.3448,
       "trades": 37,
       "win_rate": 0.703,
@@ -1217,13 +1217,13 @@
       }
      }
     },
-    "sharpe": 0.853,
+    "sharpe": 0.852,
     "max_dd": -0.3448,
     "dsr": 0.037,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -1365,11 +1365,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 0.9567,
-      "cagr": 0.2508,
-      "sharpe": 0.935,
+      "ret": 0.9245,
+      "cagr": 0.2439,
+      "sharpe": 0.915,
       "max_dd": -0.2584,
       "trades": 19,
       "win_rate": 0.737,
@@ -1406,11 +1406,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 1.3261,
-      "cagr": 0.1839,
-      "sharpe": 0.705,
+      "ret": 1.2902,
+      "cagr": 0.1802,
+      "sharpe": 0.694,
       "max_dd": -0.3755,
       "trades": 36,
       "win_rate": 0.722,
@@ -1449,9 +1449,9 @@
      "full": {
       "start": "2020-10-23",
       "years": 5.98,
-      "ret": 4.5406,
-      "cagr": 0.3317,
-      "sharpe": 0.962,
+      "ret": 4.4493,
+      "cagr": 0.3278,
+      "sharpe": 0.954,
       "max_dd": -0.3755,
       "trades": 45,
       "win_rate": 0.778,
@@ -1488,13 +1488,13 @@
       }
      }
     },
-    "sharpe": 0.962,
+    "sharpe": 0.954,
     "max_dd": -0.3755,
-    "dsr": 0.011,
+    "dsr": 0.01,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -1516,136 +1516,136 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 0.788,
-      "cagr": 0.2138,
-      "sharpe": 0.676,
+      "ret": 0.7861,
+      "cagr": 0.2133,
+      "sharpe": 0.675,
       "max_dd": -0.3958,
-      "trades": 60,
-      "win_rate": 0.717,
-      "profit_factor": 1.597,
+      "trades": 61,
+      "win_rate": 0.721,
+      "profit_factor": 1.605,
       "perp": {
        "1x": {
-        "final": 1075.57,
-        "ret": 0.0756,
+        "final": 1076.7,
+        "ret": 0.0767,
         "liquidations": 0,
         "max_dd": -0.0425,
-        "trades": 60
+        "trades": 61
        },
        "3x": {
-        "final": 1231.41,
-        "ret": 0.2314,
+        "final": 1235.32,
+        "ret": 0.2353,
         "liquidations": 0,
         "max_dd": -0.1249,
-        "trades": 60
+        "trades": 61
        },
        "5x": {
-        "final": 1194.77,
-        "ret": 0.1948,
+        "final": 1201.09,
+        "ret": 0.2011,
         "liquidations": 5,
         "max_dd": -0.2967,
-        "trades": 60
+        "trades": 61
        },
        "10x": {
-        "final": 1687.8,
-        "ret": 0.6878,
-        "liquidations": 12,
-        "max_dd": -0.2801,
-        "trades": 60
+        "final": 1517.16,
+        "ret": 0.5172,
+        "liquidations": 13,
+        "max_dd": -0.3035,
+        "trades": 61
        }
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 2.098,
-      "cagr": 0.2537,
+      "ret": 2.0946,
+      "cagr": 0.2535,
       "sharpe": 0.779,
       "max_dd": -0.3958,
-      "trades": 88,
-      "win_rate": 0.727,
-      "profit_factor": 1.807,
+      "trades": 89,
+      "win_rate": 0.73,
+      "profit_factor": 1.814,
       "perp": {
        "1x": {
-        "final": 1142.92,
-        "ret": 0.1429,
+        "final": 1144.13,
+        "ret": 0.1441,
         "liquidations": 0,
         "max_dd": -0.0425,
-        "trades": 88
+        "trades": 89
        },
        "3x": {
-        "final": 1376.28,
-        "ret": 0.3763,
+        "final": 1380.65,
+        "ret": 0.3806,
         "liquidations": 1,
         "max_dd": -0.1249,
-        "trades": 88
+        "trades": 89
        },
        "5x": {
-        "final": 1399.05,
-        "ret": 0.399,
+        "final": 1406.45,
+        "ret": 0.4064,
         "liquidations": 7,
         "max_dd": -0.2967,
-        "trades": 88
+        "trades": 89
        },
        "10x": {
-        "final": 2260.78,
-        "ret": 1.2608,
-        "liquidations": 18,
+        "final": 2032.22,
+        "ret": 1.0322,
+        "liquidations": 19,
         "max_dd": -0.3741,
-        "trades": 88
+        "trades": 89
        }
       }
      },
      "full": {
       "start": "2021-05-13",
-      "years": 5.42,
-      "ret": 3.1165,
-      "cagr": 0.298,
+      "years": 5.43,
+      "ret": 3.112,
+      "cagr": 0.2976,
       "sharpe": 0.874,
       "max_dd": -0.3958,
-      "trades": 96,
-      "win_rate": 0.74,
-      "profit_factor": 1.953,
+      "trades": 97,
+      "win_rate": 0.742,
+      "profit_factor": 1.959,
       "perp": {
        "1x": {
-        "final": 1177.12,
-        "ret": 0.1771,
+        "final": 1178.37,
+        "ret": 0.1784,
         "liquidations": 0,
         "max_dd": -0.0425,
-        "trades": 96
+        "trades": 97
        },
        "3x": {
-        "final": 1502.53,
-        "ret": 0.5025,
+        "final": 1507.31,
+        "ret": 0.5073,
         "liquidations": 1,
         "max_dd": -0.1249,
-        "trades": 96
+        "trades": 97
        },
        "5x": {
-        "final": 1617.58,
-        "ret": 0.6176,
+        "final": 1626.14,
+        "ret": 0.6261,
         "liquidations": 7,
         "max_dd": -0.2967,
-        "trades": 96
+        "trades": 97
        },
        "10x": {
-        "final": 2841.86,
-        "ret": 1.8419,
-        "liquidations": 19,
+        "final": 2554.55,
+        "ret": 1.5545,
+        "liquidations": 20,
         "max_dd": -0.3741,
-        "trades": 96
+        "trades": 97
        }
       }
      }
     },
     "sharpe": 0.874,
     "max_dd": -0.3958,
-    "dsr": 0.009,
+    "dsr": 0.01,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -1670,7 +1670,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 1.0728,
       "cagr": 0.2751,
@@ -1711,7 +1711,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 1.7017,
       "cagr": 0.2199,
@@ -1755,7 +1755,7 @@
       "start": "2021-04-15",
       "years": 5.5,
       "ret": 1.7017,
-      "cagr": 0.198,
+      "cagr": 0.1979,
       "sharpe": 0.774,
       "max_dd": -0.3105,
       "trades": 38,
@@ -1799,7 +1799,7 @@
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -1824,11 +1824,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 0.6648,
-      "cagr": 0.1852,
-      "sharpe": 0.59,
+      "ret": 0.6578,
+      "cagr": 0.1836,
+      "sharpe": 0.587,
       "max_dd": -0.3796,
       "trades": 60,
       "win_rate": 0.7,
@@ -1865,14 +1865,52 @@
       }
      },
      "5y": {
-      "no_data": true
+      "start": "2021-10-15",
+      "years": 5.0,
+      "ret": 2.1137,
+      "cagr": 0.2553,
+      "sharpe": 0.698,
+      "max_dd": -0.3816,
+      "trades": 84,
+      "win_rate": 0.69,
+      "profit_factor": 1.601,
+      "perp": {
+       "1x": {
+        "final": 1172.82,
+        "ret": 0.1728,
+        "liquidations": 0,
+        "max_dd": -0.0413,
+        "trades": 84
+       },
+       "3x": {
+        "final": 1565.4,
+        "ret": 0.5654,
+        "liquidations": 0,
+        "max_dd": -0.1211,
+        "trades": 84
+       },
+       "5x": {
+        "final": 1962.74,
+        "ret": 0.9627,
+        "liquidations": 3,
+        "max_dd": -0.1976,
+        "trades": 84
+       },
+       "10x": {
+        "final": 1559.52,
+        "ret": 0.5595,
+        "liquidations": 26,
+        "max_dd": -0.4131,
+        "trades": 84
+       }
+      }
      },
      "full": {
       "start": "2021-10-18",
-      "years": 4.99,
-      "ret": 2.1266,
-      "cagr": 0.2565,
-      "sharpe": 0.7,
+      "years": 5.0,
+      "ret": 2.1137,
+      "cagr": 0.2553,
+      "sharpe": 0.698,
       "max_dd": -0.3816,
       "trades": 84,
       "win_rate": 0.69,
@@ -1909,13 +1947,13 @@
       }
      }
     },
-    "sharpe": 0.7,
+    "sharpe": 0.698,
     "max_dd": -0.3816,
     "dsr": 0.005,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -1941,7 +1979,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.7551,
       "cagr": 0.2063,
@@ -1982,7 +2020,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 1.9388,
       "cagr": 0.2406,
@@ -2026,7 +2064,7 @@
       "start": "2018-07-24",
       "years": 8.23,
       "ret": 7.2969,
-      "cagr": 0.2933,
+      "cagr": 0.2932,
       "sharpe": 0.936,
       "max_dd": -0.3838,
       "trades": 31,
@@ -2070,7 +2108,7 @@
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -2096,11 +2134,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 0.5077,
-      "cagr": 0.1467,
-      "sharpe": 0.709,
+      "ret": 0.5389,
+      "cagr": 0.1545,
+      "sharpe": 0.739,
       "max_dd": -0.1836,
       "trades": 17,
       "win_rate": 0.647,
@@ -2137,7 +2175,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 0.9919,
       "cagr": 0.1478,
@@ -2181,8 +2219,8 @@
       "start": "2018-09-28",
       "years": 8.05,
       "ret": 6.5063,
-      "cagr": 0.2847,
-      "sharpe": 0.929,
+      "cagr": 0.2846,
+      "sharpe": 0.928,
       "max_dd": -0.2691,
       "trades": 49,
       "win_rate": 0.633,
@@ -2219,13 +2257,13 @@
       }
      }
     },
-    "sharpe": 0.929,
+    "sharpe": 0.928,
     "max_dd": -0.2691,
     "dsr": 0.003,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -2250,7 +2288,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.759,
       "cagr": 0.2072,
@@ -2291,7 +2329,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 2.1417,
       "cagr": 0.2573,
@@ -2335,7 +2373,7 @@
       "start": "2021-07-06",
       "years": 5.28,
       "ret": 2.1417,
-      "cagr": 0.2423,
+      "cagr": 0.2421,
       "sharpe": 0.726,
       "max_dd": -0.3811,
       "trades": 49,
@@ -2379,7 +2417,7 @@
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -2403,7 +2441,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.8066,
       "cagr": 0.218,
@@ -2444,7 +2482,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 1.1853,
       "cagr": 0.1692,
@@ -2488,7 +2526,7 @@
       "start": "2018-08-06",
       "years": 8.19,
       "ret": 3.1797,
-      "cagr": 0.1908,
+      "cagr": 0.1907,
       "sharpe": 0.803,
       "max_dd": -0.2365,
       "trades": 44,
@@ -2532,7 +2570,7 @@
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -2558,7 +2596,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.4988,
       "cagr": 0.1444,
@@ -2599,11 +2637,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 0.5413,
-      "cagr": 0.0904,
-      "sharpe": 0.561,
+      "ret": 0.433,
+      "cagr": 0.0746,
+      "sharpe": 0.488,
       "max_dd": -0.2623,
       "trades": 23,
       "win_rate": 0.652,
@@ -2643,7 +2681,7 @@
       "start": "2018-01-11",
       "years": 8.76,
       "ret": 2.2509,
-      "cagr": 0.1441,
+      "cagr": 0.144,
       "sharpe": 0.79,
       "max_dd": -0.2623,
       "trades": 37,
@@ -2687,7 +2725,7 @@
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -2710,7 +2748,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.7509,
       "cagr": 0.2053,
@@ -2751,7 +2789,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 1.4288,
       "cagr": 0.1942,
@@ -2795,7 +2833,7 @@
       "start": "2018-01-11",
       "years": 8.76,
       "ret": 4.1125,
-      "cagr": 0.2048,
+      "cagr": 0.2047,
       "sharpe": 0.883,
       "max_dd": -0.1644,
       "trades": 37,
@@ -2839,7 +2877,7 @@
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -2866,11 +2904,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 0.5939,
-      "cagr": 0.1681,
-      "sharpe": 0.609,
+      "ret": 0.6439,
+      "cagr": 0.1802,
+      "sharpe": 0.638,
       "max_dd": -0.3563,
       "trades": 36,
       "win_rate": 0.389,
@@ -2913,7 +2951,7 @@
       "start": "2022-12-21",
       "years": 3.82,
       "ret": 0.3416,
-      "cagr": 0.08,
+      "cagr": 0.0799,
       "sharpe": 0.393,
       "max_dd": -0.3563,
       "trades": 48,
@@ -2957,7 +2995,7 @@
     "stage": "S7",
     "why": "PSR 0.781",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -2974,12 +3012,12 @@
    "stage_no": 1,
    "side": "both",
    "timeframe": "1d",
-   "status": "control",
+   "status": "retired",
    "added_at": "2026-10-16T19:33:03+00:00",
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.5293,
       "cagr": 0.1521,
@@ -3020,7 +3058,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 0.3422,
       "cagr": 0.0606,
@@ -3108,8 +3146,10 @@
     "stage": "S7",
     "why": "PSR 0.752",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
-   }
+    "screened_at": "2026-10-17T08:18:09+00:00"
+   },
+   "retired_at": "2026-10-17T08:18:09+00:00",
+   "why": "replaced by a funnel survivor"
   },
   {
    "id": "A0024",
@@ -3132,40 +3172,40 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 0.757,
-      "cagr": 0.2067,
+      "ret": 0.7564,
+      "cagr": 0.2065,
       "sharpe": 1.393,
       "max_dd": -0.0973,
       "trades": 26,
       "win_rate": 0.615,
-      "profit_factor": 5.863,
+      "profit_factor": 5.846,
       "perp": {
        "1x": {
-        "final": 1060.85,
-        "ret": 0.0609,
+        "final": 1060.82,
+        "ret": 0.0608,
         "liquidations": 0,
         "max_dd": -0.0076,
         "trades": 26
        },
        "3x": {
-        "final": 1191.74,
-        "ret": 0.1917,
+        "final": 1191.61,
+        "ret": 0.1916,
         "liquidations": 0,
         "max_dd": -0.0226,
         "trades": 26
        },
        "5x": {
-        "final": 1335.65,
-        "ret": 0.3356,
+        "final": 1335.41,
+        "ret": 0.3354,
         "liquidations": 0,
         "max_dd": -0.0376,
         "trades": 26
        },
        "10x": {
-        "final": 1260.0,
-        "ret": 0.26,
+        "final": 1259.54,
+        "ret": 0.2595,
         "liquidations": 3,
         "max_dd": -0.2389,
         "trades": 26
@@ -3173,40 +3213,40 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 0.9033,
-      "cagr": 0.1374,
+      "ret": 0.9026,
+      "cagr": 0.1373,
       "sharpe": 1.008,
       "max_dd": -0.1108,
       "trades": 35,
       "win_rate": 0.629,
-      "profit_factor": 3.326,
+      "profit_factor": 3.322,
       "perp": {
        "1x": {
-        "final": 1071.19,
+        "final": 1071.15,
         "ret": 0.0712,
         "liquidations": 0,
         "max_dd": -0.009,
         "trades": 35
        },
        "3x": {
-        "final": 1225.55,
-        "ret": 0.2255,
+        "final": 1225.42,
+        "ret": 0.2254,
         "liquidations": 0,
         "max_dd": -0.027,
         "trades": 35
        },
        "5x": {
-        "final": 1396.8,
-        "ret": 0.3968,
+        "final": 1396.55,
+        "ret": 0.3965,
         "liquidations": 0,
         "max_dd": -0.0451,
         "trades": 35
        },
        "10x": {
-        "final": 1365.31,
-        "ret": 0.3653,
+        "final": 1364.81,
+        "ret": 0.3648,
         "liquidations": 3,
         "max_dd": -0.2389,
         "trades": 35
@@ -3216,38 +3256,38 @@
      "full": {
       "start": "2020-01-01",
       "years": 6.79,
-      "ret": 1.4369,
-      "cagr": 0.1402,
-      "sharpe": 0.831,
+      "ret": 1.436,
+      "cagr": 0.1401,
+      "sharpe": 0.83,
       "max_dd": -0.2848,
       "trades": 47,
       "win_rate": 0.681,
-      "profit_factor": 2.605,
+      "profit_factor": 2.604,
       "perp": {
        "1x": {
-        "final": 1104.3,
+        "final": 1104.26,
         "ret": 0.1043,
         "liquidations": 0,
         "max_dd": -0.0299,
         "trades": 47
        },
        "3x": {
-        "final": 1337.77,
-        "ret": 0.3378,
+        "final": 1337.63,
+        "ret": 0.3376,
         "liquidations": 0,
         "max_dd": -0.0888,
         "trades": 47
        },
        "5x": {
-        "final": 1559.94,
-        "ret": 0.5599,
+        "final": 1559.65,
+        "ret": 0.5597,
         "liquidations": 1,
         "max_dd": -0.1711,
         "trades": 47
        },
        "10x": {
-        "final": 2064.16,
-        "ret": 1.0642,
+        "final": 2063.41,
+        "ret": 1.0634,
         "liquidations": 5,
         "max_dd": -0.2389,
         "trades": 47
@@ -3255,13 +3295,13 @@
       }
      }
     },
-    "sharpe": 0.831,
+    "sharpe": 0.83,
     "max_dd": -0.2848,
     "dsr": 0.006,
     "stage": "S6",
     "why": "yılların %57'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -3284,7 +3324,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.2829,
       "cagr": 0.0866,
@@ -3331,7 +3371,7 @@
       "start": "2022-12-21",
       "years": 3.82,
       "ret": 0.2041,
-      "cagr": 0.0499,
+      "cagr": 0.0498,
       "sharpe": 0.336,
       "max_dd": -0.3057,
       "trades": 52,
@@ -3375,7 +3415,7 @@
     "stage": "S6",
     "why": "yılların %50'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -3392,12 +3432,12 @@
    "stage_no": 1,
    "side": "both",
    "timeframe": "1d",
-   "status": "control",
+   "status": "retired",
    "added_at": "2026-10-16T19:33:03+00:00",
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.0048,
       "cagr": 0.0016,
@@ -3438,7 +3478,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 0.1275,
       "cagr": 0.0243,
@@ -3526,8 +3566,10 @@
     "stage": "S6",
     "why": "yılların %44'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
-   }
+    "screened_at": "2026-10-17T08:18:09+00:00"
+   },
+   "retired_at": "2026-10-17T08:18:09+00:00",
+   "why": "replaced by a funnel survivor"
   },
   {
    "id": "A0027",
@@ -3549,7 +3591,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 10.9476,
       "cagr": 1.2862,
@@ -3594,9 +3636,9 @@
      },
      "full": {
       "start": "2023-05-03",
-      "years": 3.45,
+      "years": 3.46,
       "ret": 11.6206,
-      "cagr": 1.0834,
+      "cagr": 1.0822,
       "sharpe": 1.55,
       "max_dd": -0.3607,
       "trades": 66,
@@ -3636,11 +3678,11 @@
     },
     "sharpe": 1.55,
     "max_dd": -0.3607,
-    "dsr": 0.281,
+    "dsr": 0.282,
     "stage": "S5",
     "why": "1 bar geç girişte Sharpe'ın %20'i kalıyor",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -3663,7 +3705,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 1.9715,
       "cagr": 0.4377,
@@ -3708,9 +3750,9 @@
      },
      "full": {
       "start": "2022-10-11",
-      "years": 4.01,
+      "years": 4.02,
       "ret": 2.7215,
-      "cagr": 0.3875,
+      "cagr": 0.3872,
       "sharpe": 0.941,
       "max_dd": -0.3596,
       "trades": 53,
@@ -3754,7 +3796,7 @@
     "stage": "S5",
     "why": "1 bar geç girişte Sharpe'ın %35'i kalıyor",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -3780,7 +3822,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.164,
       "cagr": 0.0519,
@@ -3871,7 +3913,7 @@
     "stage": "S5",
     "why": "1 bar geç girişte Sharpe'ın %6'i kalıyor",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -3893,11 +3935,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 0.3885,
-      "cagr": 0.1156,
-      "sharpe": 0.602,
+      "ret": 0.3749,
+      "cagr": 0.112,
+      "sharpe": 0.587,
       "max_dd": -0.2512,
       "trades": 16,
       "win_rate": 0.688,
@@ -3939,9 +3981,9 @@
      "full": {
       "start": "2021-11-18",
       "years": 4.91,
-      "ret": 0.406,
-      "cagr": 0.0719,
-      "sharpe": 0.397,
+      "ret": 0.3922,
+      "cagr": 0.0697,
+      "sharpe": 0.389,
       "max_dd": -0.3358,
       "trades": 37,
       "win_rate": 0.622,
@@ -3978,13 +4020,13 @@
       }
      }
     },
-    "sharpe": 0.397,
+    "sharpe": 0.389,
     "max_dd": -0.3358,
     "dsr": 0.001,
     "stage": "S5",
-    "why": "1 bar geç girişte Sharpe'ın %6'i kalıyor",
+    "why": "1 bar geç girişte Sharpe'ın %7'i kalıyor",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -4011,7 +4053,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 11.6718,
       "cagr": 1.3315,
@@ -4056,9 +4098,9 @@
      },
      "full": {
       "start": "2023-08-24",
-      "years": 3.14,
+      "years": 3.15,
       "ret": 11.6718,
-      "cagr": 1.2423,
+      "cagr": 1.2407,
       "sharpe": 1.488,
       "max_dd": -0.3261,
       "trades": 42,
@@ -4102,7 +4144,7 @@
     "stage": "S4",
     "why": "komşu ayarların %33'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -4124,43 +4166,43 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 3.1147,
-      "cagr": 0.6025,
-      "sharpe": 1.329,
+      "ret": 3.1102,
+      "cagr": 0.6019,
+      "sharpe": 1.328,
       "max_dd": -0.2733,
-      "trades": 80,
-      "win_rate": 0.713,
-      "profit_factor": 2.313,
+      "trades": 81,
+      "win_rate": 0.716,
+      "profit_factor": 2.318,
       "perp": {
        "1x": {
-        "final": 1169.96,
-        "ret": 0.17,
+        "final": 1170.59,
+        "ret": 0.1706,
         "liquidations": 0,
         "max_dd": -0.0247,
-        "trades": 80
+        "trades": 81
        },
        "3x": {
-        "final": 1583.92,
-        "ret": 0.5839,
+        "final": 1586.44,
+        "ret": 0.5864,
         "liquidations": 0,
         "max_dd": -0.0734,
-        "trades": 80
+        "trades": 81
        },
        "5x": {
-        "final": 1651.54,
-        "ret": 0.6515,
+        "final": 1655.93,
+        "ret": 0.6559,
         "liquidations": 4,
         "max_dd": -0.1211,
-        "trades": 80
+        "trades": 81
        },
        "10x": {
-        "final": 827.88,
-        "ret": -0.1721,
+        "final": 832.28,
+        "ret": -0.1677,
         "liquidations": 24,
         "max_dd": -0.5139,
-        "trades": 80
+        "trades": 81
        }
       }
      },
@@ -4169,53 +4211,53 @@
      },
      "full": {
       "start": "2023-05-03",
-      "years": 3.45,
-      "ret": 3.1147,
-      "cagr": 0.5061,
-      "sharpe": 1.238,
+      "years": 3.46,
+      "ret": 3.1102,
+      "cagr": 0.5052,
+      "sharpe": 1.237,
       "max_dd": -0.2733,
-      "trades": 80,
-      "win_rate": 0.713,
-      "profit_factor": 2.313,
+      "trades": 81,
+      "win_rate": 0.716,
+      "profit_factor": 2.318,
       "perp": {
        "1x": {
-        "final": 1169.96,
-        "ret": 0.17,
+        "final": 1170.59,
+        "ret": 0.1706,
         "liquidations": 0,
         "max_dd": -0.0247,
-        "trades": 80
+        "trades": 81
        },
        "3x": {
-        "final": 1583.92,
-        "ret": 0.5839,
+        "final": 1586.44,
+        "ret": 0.5864,
         "liquidations": 0,
         "max_dd": -0.0734,
-        "trades": 80
+        "trades": 81
        },
        "5x": {
-        "final": 1651.54,
-        "ret": 0.6515,
+        "final": 1655.93,
+        "ret": 0.6559,
         "liquidations": 4,
         "max_dd": -0.1211,
-        "trades": 80
+        "trades": 81
        },
        "10x": {
-        "final": 827.88,
-        "ret": -0.1721,
+        "final": 832.28,
+        "ret": -0.1677,
         "liquidations": 24,
         "max_dd": -0.5139,
-        "trades": 80
+        "trades": 81
        }
       }
      }
     },
-    "sharpe": 1.238,
+    "sharpe": 1.237,
     "max_dd": -0.2733,
     "dsr": null,
     "stage": "S4",
     "why": "komşu ayarların %0'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -4241,7 +4283,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 2.1084,
       "cagr": 0.4595,
@@ -4286,10 +4328,10 @@
      },
      "full": {
       "start": "2023-08-24",
-      "years": 3.14,
+      "years": 3.15,
       "ret": 2.1084,
-      "cagr": 0.4342,
-      "sharpe": 1.131,
+      "cagr": 0.4338,
+      "sharpe": 1.13,
       "max_dd": -0.2615,
       "trades": 75,
       "win_rate": 0.467,
@@ -4326,13 +4368,13 @@
       }
      }
     },
-    "sharpe": 1.131,
+    "sharpe": 1.13,
     "max_dd": -0.2615,
     "dsr": null,
     "stage": "S4",
     "why": "komşu ayarların %33'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -4355,7 +4397,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 2.3277,
       "cagr": 0.493,
@@ -4402,7 +4444,7 @@
       "start": "2021-11-09",
       "years": 4.93,
       "ret": 3.1558,
-      "cagr": 0.3349,
+      "cagr": 0.3346,
       "sharpe": 1.083,
       "max_dd": -0.3634,
       "trades": 69,
@@ -4446,7 +4488,7 @@
     "stage": "S4",
     "why": "komşu ayarların %33'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -4469,7 +4511,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 1.7571,
       "cagr": 0.4023,
@@ -4510,7 +4552,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 4.8479,
       "cagr": 0.4236,
@@ -4552,9 +4594,9 @@
      },
      "full": {
       "start": "2021-05-13",
-      "years": 5.42,
+      "years": 5.43,
       "ret": 4.8479,
-      "cagr": 0.3848,
+      "cagr": 0.3846,
       "sharpe": 1.022,
       "max_dd": -0.3861,
       "trades": 44,
@@ -4598,7 +4640,7 @@
     "stage": "S4",
     "why": "komşu ayarların %25'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -4623,7 +4665,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 1.2009,
       "cagr": 0.3008,
@@ -4670,8 +4712,8 @@
       "start": "2023-03-23",
       "years": 3.57,
       "ret": 1.7549,
-      "cagr": 0.3286,
-      "sharpe": 0.977,
+      "cagr": 0.3284,
+      "sharpe": 0.976,
       "max_dd": -0.2473,
       "trades": 38,
       "win_rate": 0.684,
@@ -4708,13 +4750,13 @@
       }
      }
     },
-    "sharpe": 0.977,
+    "sharpe": 0.976,
     "max_dd": -0.2473,
     "dsr": null,
     "stage": "S4",
     "why": "komşu ayarların %40'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -4736,11 +4778,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 0.4345,
-      "cagr": 0.1278,
-      "sharpe": 0.815,
+      "ret": 0.4127,
+      "cagr": 0.1221,
+      "sharpe": 0.785,
       "max_dd": -0.1875,
       "trades": 10,
       "win_rate": 0.8,
@@ -4777,7 +4819,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 2.0064,
       "cagr": 0.2462,
@@ -4819,9 +4861,9 @@
      },
      "full": {
       "start": "2021-05-13",
-      "years": 5.42,
+      "years": 5.43,
       "ret": 2.3319,
-      "cagr": 0.2484,
+      "cagr": 0.2483,
       "sharpe": 0.914,
       "max_dd": -0.2877,
       "trades": 31,
@@ -4865,7 +4907,7 @@
     "stage": "S4",
     "why": "komşu ayarların %0'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -5007,7 +5049,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.6917,
       "cagr": 0.1916,
@@ -5048,11 +5090,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 1.2101,
-      "cagr": 0.1719,
-      "sharpe": 0.937,
+      "ret": 1.0549,
+      "cagr": 0.1549,
+      "sharpe": 0.87,
       "max_dd": -0.1952,
       "trades": 14,
       "win_rate": 0.571,
@@ -5136,7 +5178,7 @@
     "stage": "S4",
     "why": "komşu ayar yok",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -5159,7 +5201,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.9486,
       "cagr": 0.2491,
@@ -5200,7 +5242,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 1.722,
       "cagr": 0.2217,
@@ -5244,7 +5286,7 @@
       "start": "2021-05-15",
       "years": 5.42,
       "ret": 1.7701,
-      "cagr": 0.2068,
+      "cagr": 0.2067,
       "sharpe": 0.803,
       "max_dd": -0.3346,
       "trades": 77,
@@ -5288,7 +5330,7 @@
     "stage": "S4",
     "why": "komşu ayarların %33'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -5310,7 +5352,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.2319,
       "cagr": 0.072,
@@ -5357,8 +5399,8 @@
       "start": "2022-09-29",
       "years": 4.05,
       "ret": 0.873,
-      "cagr": 0.1678,
-      "sharpe": 0.621,
+      "cagr": 0.1677,
+      "sharpe": 0.62,
       "max_dd": -0.366,
       "trades": 30,
       "win_rate": 0.633,
@@ -5395,13 +5437,13 @@
       }
      }
     },
-    "sharpe": 0.621,
+    "sharpe": 0.62,
     "max_dd": -0.366,
     "dsr": null,
     "stage": "S4",
     "why": "komşu ayarların %0'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -5424,7 +5466,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.3168,
       "cagr": 0.0961,
@@ -5465,7 +5507,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 0.5122,
       "cagr": 0.0862,
@@ -5509,7 +5551,7 @@
       "start": "2021-04-15",
       "years": 5.5,
       "ret": 0.5254,
-      "cagr": 0.0798,
+      "cagr": 0.0797,
       "sharpe": 0.552,
       "max_dd": -0.2214,
       "trades": 53,
@@ -5553,7 +5595,7 @@
     "stage": "S4",
     "why": "komşu ayarların %33'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -5575,7 +5617,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.2067,
       "cagr": 0.0646,
@@ -5616,7 +5658,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 0.6462,
       "cagr": 0.1048,
@@ -5704,7 +5746,7 @@
     "stage": "S4",
     "why": "komşu ayarların %0'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -5730,11 +5772,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 0.4541,
-      "cagr": 0.1329,
-      "sharpe": 0.526,
+      "ret": 0.47,
+      "cagr": 0.137,
+      "sharpe": 0.536,
       "max_dd": -0.3049,
       "trades": 35,
       "win_rate": 0.429,
@@ -5776,9 +5818,9 @@
      "full": {
       "start": "2022-12-21",
       "years": 3.82,
-      "ret": 0.5923,
-      "cagr": 0.1296,
-      "sharpe": 0.527,
+      "ret": 0.6096,
+      "cagr": 0.1327,
+      "sharpe": 0.535,
       "max_dd": -0.3049,
       "trades": 40,
       "win_rate": 0.425,
@@ -5815,13 +5857,13 @@
       }
      }
     },
-    "sharpe": 0.527,
+    "sharpe": 0.535,
     "max_dd": -0.3049,
     "dsr": null,
     "stage": "S4",
     "why": "komşu ayarların %0'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -5839,16 +5881,16 @@
    "stage_no": 1,
    "side": "both",
    "timeframe": "1d",
-   "status": "control",
+   "status": "retired",
    "added_at": "2026-10-16T19:33:03+00:00",
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 0.5695,
-      "cagr": 0.1621,
-      "sharpe": 0.792,
+      "ret": 0.5658,
+      "cagr": 0.1612,
+      "sharpe": 0.789,
       "max_dd": -0.2495,
       "trades": 13,
       "win_rate": 0.769,
@@ -5885,11 +5927,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 0.3108,
-      "cagr": 0.0556,
-      "sharpe": 0.35,
+      "ret": 0.3077,
+      "cagr": 0.0551,
+      "sharpe": 0.348,
       "max_dd": -0.3416,
       "trades": 24,
       "win_rate": 0.708,
@@ -5928,9 +5970,9 @@
      "full": {
       "start": "2020-01-01",
       "years": 6.79,
-      "ret": 0.1644,
-      "cagr": 0.0227,
-      "sharpe": 0.218,
+      "ret": 0.1616,
+      "cagr": 0.0223,
+      "sharpe": 0.217,
       "max_dd": -0.3616,
       "trades": 33,
       "win_rate": 0.636,
@@ -5967,14 +6009,16 @@
       }
      }
     },
-    "sharpe": 0.218,
+    "sharpe": 0.217,
     "max_dd": -0.3616,
     "dsr": null,
     "stage": "S4",
     "why": "komşu ayarların %0'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
-   }
+    "screened_at": "2026-10-17T08:18:09+00:00"
+   },
+   "retired_at": "2026-10-17T08:18:09+00:00",
+   "why": "replaced by a funnel survivor"
   },
   {
    "id": "A0046",
@@ -5996,11 +6040,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 14.2155,
-      "cagr": 1.4782,
-      "sharpe": 1.613,
+      "ret": 14.519,
+      "cagr": 1.4945,
+      "sharpe": 1.622,
       "max_dd": -0.5643,
       "trades": 65,
       "win_rate": 0.323,
@@ -6043,7 +6087,7 @@
       "start": "2023-03-23",
       "years": 3.57,
       "ret": 11.9715,
-      "cagr": 1.0516,
+      "cagr": 1.0504,
       "sharpe": 1.394,
       "max_dd": -0.5643,
       "trades": 77,
@@ -6087,7 +6131,7 @@
     "stage": "S2",
     "why": "PF 2.59, 1x maks. düşüş -56%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -6113,11 +6157,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 12.3082,
-      "cagr": 1.3699,
-      "sharpe": 1.703,
+      "ret": 13.7968,
+      "cagr": 1.4552,
+      "sharpe": 1.764,
       "max_dd": -0.3283,
       "trades": 54,
       "win_rate": 0.5,
@@ -6154,11 +6198,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 39.4054,
-      "cagr": 1.0953,
-      "sharpe": 1.412,
+      "ret": 39.7798,
+      "cagr": 1.0992,
+      "sharpe": 1.415,
       "max_dd": -0.4824,
       "trades": 98,
       "win_rate": 0.418,
@@ -6197,9 +6241,9 @@
      "full": {
       "start": "2021-06-22",
       "years": 5.32,
-      "ret": 39.4054,
-      "cagr": 1.0055,
-      "sharpe": 1.369,
+      "ret": 39.7798,
+      "cagr": 1.0083,
+      "sharpe": 1.372,
       "max_dd": -0.4824,
       "trades": 98,
       "win_rate": 0.418,
@@ -6236,13 +6280,13 @@
       }
      }
     },
-    "sharpe": 1.369,
+    "sharpe": 1.372,
     "max_dd": -0.4824,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.978, 1x maks. düşüş -48%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -6421,11 +6465,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 9.6715,
-      "cagr": 1.2018,
-      "sharpe": 1.813,
+      "ret": 9.9035,
+      "cagr": 1.2176,
+      "sharpe": 1.828,
       "max_dd": -0.3184,
       "trades": 45,
       "win_rate": 0.467,
@@ -6462,11 +6506,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 15.7345,
-      "cagr": 0.7567,
-      "sharpe": 1.188,
+      "ret": 15.6258,
+      "cagr": 0.7544,
+      "sharpe": 1.186,
       "max_dd": -0.4658,
       "trades": 85,
       "win_rate": 0.459,
@@ -6504,9 +6548,9 @@
      },
      "full": {
       "start": "2019-05-06",
-      "years": 7.44,
+      "years": 7.45,
       "ret": 99.9684,
-      "cagr": 0.8587,
+      "cagr": 0.8583,
       "sharpe": 1.295,
       "max_dd": -0.4658,
       "trades": 110,
@@ -6535,7 +6579,7 @@
         "trades": 110
        },
        "10x": {
-        "final": 75297.55,
+        "final": 75297.54,
         "ret": 74.2975,
         "liquidations": 12,
         "max_dd": -0.4467,
@@ -6550,7 +6594,7 @@
     "stage": "S2",
     "why": "PF 4.202, 1x maks. düşüş -47%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -6573,10 +6617,10 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 3.9394,
-      "cagr": 0.7031,
+      "ret": 3.9381,
+      "cagr": 0.703,
       "sharpe": 1.236,
       "max_dd": -0.4053,
       "trades": 40,
@@ -6618,9 +6662,9 @@
      },
      "full": {
       "start": "2023-05-03",
-      "years": 3.45,
+      "years": 3.46,
       "ret": 4.5529,
-      "cagr": 0.6427,
+      "cagr": 0.642,
       "sharpe": 1.215,
       "max_dd": -0.4053,
       "trades": 41,
@@ -6664,7 +6708,7 @@
     "stage": "S2",
     "why": "PF 2.909, 1x maks. düşüş -41%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -6687,10 +6731,10 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 3.751,
-      "cagr": 0.6812,
+      "ret": 3.7498,
+      "cagr": 0.681,
       "sharpe": 1.293,
       "max_dd": -0.4154,
       "trades": 34,
@@ -6732,10 +6776,10 @@
      },
      "full": {
       "start": "2023-05-03",
-      "years": 3.45,
+      "years": 3.46,
       "ret": 3.8344,
-      "cagr": 0.5781,
-      "sharpe": 1.213,
+      "cagr": 0.5775,
+      "sharpe": 1.212,
       "max_dd": -0.4154,
       "trades": 36,
       "win_rate": 0.611,
@@ -6772,13 +6816,13 @@
       }
      }
     },
-    "sharpe": 1.213,
+    "sharpe": 1.212,
     "max_dd": -0.4154,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.684, 1x maks. düşüş -42%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -6916,11 +6960,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 2.2583,
-      "cagr": 0.4826,
-      "sharpe": 0.978,
+      "ret": 2.6769,
+      "cagr": 0.5435,
+      "sharpe": 1.053,
       "max_dd": -0.6134,
       "trades": 62,
       "win_rate": 0.548,
@@ -6957,7 +7001,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 8.7292,
       "cagr": 0.5761,
@@ -7001,7 +7045,7 @@
       "start": "2021-06-22",
       "years": 5.32,
       "ret": 18.6583,
-      "cagr": 0.7513,
+      "cagr": 0.7508,
       "sharpe": 1.172,
       "max_dd": -0.6134,
       "trades": 108,
@@ -7045,7 +7089,7 @@
     "stage": "S2",
     "why": "PF 2.112, 1x maks. düşüş -61%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -7068,7 +7112,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 4.5629,
       "cagr": 0.772,
@@ -7115,8 +7159,8 @@
       "start": "2021-11-18",
       "years": 4.91,
       "ret": 14.9857,
-      "cagr": 0.7591,
-      "sharpe": 1.159,
+      "cagr": 0.7585,
+      "sharpe": 1.158,
       "max_dd": -0.486,
       "trades": 55,
       "win_rate": 0.364,
@@ -7153,13 +7197,13 @@
       }
      }
     },
-    "sharpe": 1.159,
+    "sharpe": 1.158,
     "max_dd": -0.486,
     "dsr": null,
     "stage": "S2",
     "why": "PF 3.302, 1x maks. düşüş -49%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -7182,7 +7226,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 3.6526,
       "cagr": 0.6695,
@@ -7223,7 +7267,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 3.9025,
       "cagr": 0.3743,
@@ -7267,8 +7311,8 @@
       "start": "2021-06-22",
       "years": 5.32,
       "ret": 19.256,
-      "cagr": 0.7612,
-      "sharpe": 1.14,
+      "cagr": 0.7607,
+      "sharpe": 1.139,
       "max_dd": -0.5987,
       "trades": 126,
       "win_rate": 0.365,
@@ -7305,13 +7349,13 @@
       }
      }
     },
-    "sharpe": 1.14,
+    "sharpe": 1.139,
     "max_dd": -0.5987,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.874, 1x maks. düşüş -60%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -7338,11 +7382,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 11.3484,
-      "cagr": 1.3115,
-      "sharpe": 1.681,
+      "ret": 12.7297,
+      "cagr": 1.3947,
+      "sharpe": 1.743,
       "max_dd": -0.3777,
       "trades": 67,
       "win_rate": 0.478,
@@ -7379,11 +7423,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 15.8645,
-      "cagr": 0.7594,
-      "sharpe": 1.159,
+      "ret": 16.0208,
+      "cagr": 0.7627,
+      "sharpe": 1.161,
       "max_dd": -0.5644,
       "trades": 125,
       "win_rate": 0.432,
@@ -7422,9 +7466,9 @@
      "full": {
       "start": "2021-06-22",
       "years": 5.32,
-      "ret": 15.8645,
-      "cagr": 0.7015,
-      "sharpe": 1.124,
+      "ret": 16.0208,
+      "cagr": 0.704,
+      "sharpe": 1.126,
       "max_dd": -0.5644,
       "trades": 125,
       "win_rate": 0.432,
@@ -7461,13 +7505,13 @@
       }
      }
     },
-    "sharpe": 1.124,
+    "sharpe": 1.126,
     "max_dd": -0.5644,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.23, 1x maks. düşüş -56%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -7490,7 +7534,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 7.4713,
       "cagr": 1.0387,
@@ -7537,8 +7581,8 @@
       "start": "2023-03-23",
       "years": 3.57,
       "ret": 6.467,
-      "cagr": 0.7572,
-      "sharpe": 1.111,
+      "cagr": 0.7565,
+      "sharpe": 1.11,
       "max_dd": -0.6513,
       "trades": 34,
       "win_rate": 0.412,
@@ -7575,13 +7619,13 @@
       }
      }
     },
-    "sharpe": 1.111,
+    "sharpe": 1.11,
     "max_dd": -0.6513,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.243, 1x maks. düşüş -65%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -7608,11 +7652,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 7.2597,
-      "cagr": 1.0215,
-      "sharpe": 1.329,
+      "ret": 7.3579,
+      "cagr": 1.0295,
+      "sharpe": 1.335,
       "max_dd": -0.5053,
       "trades": 91,
       "win_rate": 0.396,
@@ -7653,9 +7697,9 @@
      },
      "full": {
       "start": "2022-10-11",
-      "years": 4.01,
+      "years": 4.02,
       "ret": 7.1382,
-      "cagr": 0.6863,
+      "cagr": 0.6857,
       "sharpe": 1.089,
       "max_dd": -0.5068,
       "trades": 120,
@@ -7699,7 +7743,7 @@
     "stage": "S2",
     "why": "PF 1.787, 1x maks. düşüş -51%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -7875,11 +7919,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 3.2582,
-      "cagr": 0.6209,
-      "sharpe": 1.42,
+      "ret": 3.1936,
+      "cagr": 0.6127,
+      "sharpe": 1.408,
       "max_dd": -0.2587,
       "trades": 46,
       "win_rate": 0.761,
@@ -7922,8 +7966,8 @@
       "start": "2022-03-23",
       "years": 4.57,
       "ret": 3.5529,
-      "cagr": 0.3938,
-      "sharpe": 1.046,
+      "cagr": 0.3935,
+      "sharpe": 1.045,
       "max_dd": -0.45,
       "trades": 69,
       "win_rate": 0.71,
@@ -7960,13 +8004,13 @@
       }
      }
     },
-    "sharpe": 1.046,
+    "sharpe": 1.045,
     "max_dd": -0.45,
     "dsr": null,
     "stage": "S2",
     "why": "PF 1.907, 1x maks. düşüş -45%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -7989,11 +8033,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 4.6018,
-      "cagr": 0.7761,
-      "sharpe": 1.143,
+      "ret": 4.6684,
+      "cagr": 0.7831,
+      "sharpe": 1.148,
       "max_dd": -0.7355,
       "trades": 26,
       "win_rate": 0.5,
@@ -8034,10 +8078,10 @@
      },
      "full": {
       "start": "2022-10-11",
-      "years": 4.01,
+      "years": 4.02,
       "ret": 6.0372,
-      "cagr": 0.6263,
-      "sharpe": 1.031,
+      "cagr": 0.6257,
+      "sharpe": 1.03,
       "max_dd": -0.7355,
       "trades": 32,
       "win_rate": 0.469,
@@ -8074,13 +8118,13 @@
       }
      }
     },
-    "sharpe": 1.031,
+    "sharpe": 1.03,
     "max_dd": -0.7355,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.447, 1x maks. düşüş -74%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -8103,7 +8147,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 1.1654,
       "cagr": 0.2938,
@@ -8150,8 +8194,8 @@
       "start": "2022-05-31",
       "years": 4.38,
       "ret": 6.9252,
-      "cagr": 0.6048,
-      "sharpe": 1.003,
+      "cagr": 0.6043,
+      "sharpe": 1.002,
       "max_dd": -0.5417,
       "trades": 69,
       "win_rate": 0.638,
@@ -8188,13 +8232,13 @@
       }
      }
     },
-    "sharpe": 1.003,
+    "sharpe": 1.002,
     "max_dd": -0.5417,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.334, 1x maks. düşüş -54%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -8217,11 +8261,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 3.1744,
-      "cagr": 0.6102,
-      "sharpe": 1.778,
+      "ret": 3.3808,
+      "cagr": 0.6363,
+      "sharpe": 1.84,
       "max_dd": -0.24,
       "trades": 12,
       "win_rate": 0.667,
@@ -8258,43 +8302,43 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 3.0782,
-      "cagr": 0.3246,
-      "sharpe": 0.978,
+      "ret": 2.9991,
+      "cagr": 0.3194,
+      "sharpe": 0.967,
       "max_dd": -0.5765,
-      "trades": 29,
-      "win_rate": 0.483,
-      "profit_factor": 2.407,
+      "trades": 28,
+      "win_rate": 0.464,
+      "profit_factor": 2.364,
       "perp": {
        "1x": {
-        "final": 1166.12,
-        "ret": 0.1661,
+        "final": 1160.93,
+        "ret": 0.1609,
         "liquidations": 0,
         "max_dd": -0.068,
-        "trades": 29
+        "trades": 28
        },
        "3x": {
-        "final": 1547.65,
-        "ret": 0.5476,
+        "final": 1527.17,
+        "ret": 0.5272,
         "liquidations": 0,
         "max_dd": -0.1931,
-        "trades": 29
+        "trades": 28
        },
        "5x": {
-        "final": 1992.74,
-        "ret": 0.9927,
+        "final": 1949.17,
+        "ret": 0.9492,
         "liquidations": 0,
         "max_dd": -0.3046,
-        "trades": 29
+        "trades": 28
        },
        "10x": {
-        "final": 3566.48,
-        "ret": 2.5665,
+        "final": 3413.87,
+        "ret": 2.4139,
         "liquidations": 4,
         "max_dd": -0.4935,
-        "trades": 29
+        "trades": 28
        }
       }
      },
@@ -8302,7 +8346,7 @@
       "start": "2018-07-24",
       "years": 8.23,
       "ret": 10.8036,
-      "cagr": 0.3499,
+      "cagr": 0.3498,
       "sharpe": 1.002,
       "max_dd": -0.5765,
       "trades": 46,
@@ -8346,7 +8390,7 @@
     "stage": "S2",
     "why": "PF 2.589, 1x maks. düşüş -58%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -8368,11 +8412,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 1.8403,
-      "cagr": 0.4162,
-      "sharpe": 0.952,
+      "ret": 1.941,
+      "cagr": 0.4328,
+      "sharpe": 0.976,
       "max_dd": -0.3416,
       "trades": 26,
       "win_rate": 0.308,
@@ -8409,11 +8453,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 1.1305,
-      "cagr": 0.1633,
-      "sharpe": 0.549,
+      "ret": 1.1024,
+      "cagr": 0.1602,
+      "sharpe": 0.544,
       "max_dd": -0.5911,
       "trades": 62,
       "win_rate": 0.274,
@@ -8452,9 +8496,9 @@
      "full": {
       "start": "2018-07-24",
       "years": 8.23,
-      "ret": 27.4133,
-      "cagr": 0.502,
-      "sharpe": 0.994,
+      "ret": 27.6235,
+      "cagr": 0.5031,
+      "sharpe": 0.996,
       "max_dd": -0.5911,
       "trades": 86,
       "win_rate": 0.302,
@@ -8491,13 +8535,13 @@
       }
      }
     },
-    "sharpe": 0.994,
+    "sharpe": 0.996,
     "max_dd": -0.5911,
     "dsr": null,
     "stage": "S2",
     "why": "PF 3.794, 1x maks. düşüş -59%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -8520,11 +8564,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 0.7617,
-      "cagr": 0.2078,
-      "sharpe": 0.661,
+      "ret": 0.7408,
+      "cagr": 0.203,
+      "sharpe": 0.651,
       "max_dd": -0.5387,
       "trades": 25,
       "win_rate": 0.48,
@@ -8561,11 +8605,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 3.1087,
-      "cagr": 0.3266,
-      "sharpe": 0.836,
+      "ret": 3.0322,
+      "cagr": 0.3216,
+      "sharpe": 0.828,
       "max_dd": -0.5387,
       "trades": 44,
       "win_rate": 0.545,
@@ -8603,10 +8647,10 @@
      },
      "full": {
       "start": "2020-12-04",
-      "years": 5.86,
-      "ret": 6.0695,
-      "cagr": 0.396,
-      "sharpe": 0.968,
+      "years": 5.87,
+      "ret": 5.9378,
+      "cagr": 0.3913,
+      "sharpe": 0.96,
       "max_dd": -0.5387,
       "trades": 45,
       "win_rate": 0.556,
@@ -8643,13 +8687,13 @@
       }
      }
     },
-    "sharpe": 0.968,
+    "sharpe": 0.96,
     "max_dd": -0.5387,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.044, 1x maks. düşüş -54%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -8830,7 +8874,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 1.3151,
       "cagr": 0.3229,
@@ -8871,11 +8915,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 0.9271,
-      "cagr": 0.1402,
-      "sharpe": 0.534,
+      "ret": 0.7918,
+      "cagr": 0.1237,
+      "sharpe": 0.497,
       "max_dd": -0.4594,
       "trades": 65,
       "win_rate": 0.308,
@@ -8915,7 +8959,7 @@
       "start": "2018-01-11",
       "years": 8.76,
       "ret": 18.1051,
-      "cagr": 0.4005,
+      "cagr": 0.4003,
       "sharpe": 0.964,
       "max_dd": -0.4594,
       "trades": 97,
@@ -8959,7 +9003,7 @@
     "stage": "S2",
     "why": "PF 3.471, 1x maks. düşüş -46%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -8982,7 +9026,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 2.8421,
       "cagr": 0.5663,
@@ -9029,8 +9073,8 @@
       "start": "2023-03-23",
       "years": 3.57,
       "ret": 3.273,
-      "cagr": 0.5027,
-      "sharpe": 0.958,
+      "cagr": 0.5022,
+      "sharpe": 0.957,
       "max_dd": -0.453,
       "trades": 40,
       "win_rate": 0.475,
@@ -9067,13 +9111,13 @@
       }
      }
     },
-    "sharpe": 0.958,
+    "sharpe": 0.957,
     "max_dd": -0.453,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.536, 1x maks. düşüş -45%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -9095,11 +9139,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 2.6714,
-      "cagr": 0.5427,
-      "sharpe": 1.063,
+      "ret": 2.7077,
+      "cagr": 0.5478,
+      "sharpe": 1.069,
       "max_dd": -0.4905,
       "trades": 74,
       "win_rate": 0.432,
@@ -9142,8 +9186,8 @@
       "start": "2023-03-23",
       "years": 3.57,
       "ret": 2.6128,
-      "cagr": 0.4336,
-      "sharpe": 0.957,
+      "cagr": 0.4332,
+      "sharpe": 0.956,
       "max_dd": -0.4905,
       "trades": 84,
       "win_rate": 0.417,
@@ -9180,13 +9224,13 @@
       }
      }
     },
-    "sharpe": 0.957,
+    "sharpe": 0.956,
     "max_dd": -0.4905,
     "dsr": null,
     "stage": "S2",
     "why": "PF 1.739, 1x maks. düşüş -49%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -9322,7 +9366,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 3.2065,
       "cagr": 0.6143,
@@ -9369,8 +9413,8 @@
       "start": "2022-09-29",
       "years": 4.05,
       "ret": 2.9828,
-      "cagr": 0.4072,
-      "sharpe": 0.955,
+      "cagr": 0.4069,
+      "sharpe": 0.954,
       "max_dd": -0.5905,
       "trades": 39,
       "win_rate": 0.692,
@@ -9407,13 +9451,13 @@
       }
      }
     },
-    "sharpe": 0.955,
+    "sharpe": 0.954,
     "max_dd": -0.5905,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.387, 1x maks. düşüş -59%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -9588,11 +9632,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 3.1556,
-      "cagr": 0.6078,
-      "sharpe": 1.023,
+      "ret": 2.9838,
+      "cagr": 0.5853,
+      "sharpe": 1.001,
       "max_dd": -0.6113,
       "trades": 37,
       "win_rate": 0.595,
@@ -9633,10 +9677,10 @@
      },
      "full": {
       "start": "2022-10-11",
-      "years": 4.01,
-      "ret": 4.1004,
-      "cagr": 0.5009,
-      "sharpe": 0.936,
+      "years": 4.02,
+      "ret": 3.8322,
+      "cagr": 0.4804,
+      "sharpe": 0.914,
       "max_dd": -0.6113,
       "trades": 48,
       "win_rate": 0.562,
@@ -9673,13 +9717,13 @@
       }
      }
     },
-    "sharpe": 0.936,
+    "sharpe": 0.914,
     "max_dd": -0.6113,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.31, 1x maks. düşüş -61%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -9815,11 +9859,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 7.446,
-      "cagr": 1.0366,
-      "sharpe": 1.33,
+      "ret": 7.7748,
+      "cagr": 1.0627,
+      "sharpe": 1.348,
       "max_dd": -0.4637,
       "trades": 83,
       "win_rate": 0.554,
@@ -9860,10 +9904,10 @@
      },
      "full": {
       "start": "2021-11-05",
-      "years": 4.94,
-      "ret": 7.2188,
-      "cagr": 0.5313,
-      "sharpe": 0.926,
+      "years": 4.95,
+      "ret": 7.2777,
+      "cagr": 0.5332,
+      "sharpe": 0.927,
       "max_dd": -0.6366,
       "trades": 155,
       "win_rate": 0.503,
@@ -9900,13 +9944,13 @@
       }
      }
     },
-    "sharpe": 0.926,
+    "sharpe": 0.927,
     "max_dd": -0.6366,
     "dsr": null,
     "stage": "S2",
     "why": "PF 1.695, 1x maks. düşüş -64%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -9933,11 +9977,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 7.1912,
-      "cagr": 1.0159,
-      "sharpe": 1.505,
+      "ret": 7.2477,
+      "cagr": 1.0206,
+      "sharpe": 1.509,
       "max_dd": -0.47,
       "trades": 32,
       "win_rate": 0.531,
@@ -9974,7 +10018,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 16.657,
       "cagr": 0.7757,
@@ -10006,7 +10050,7 @@
         "trades": 70
        },
        "10x": {
-        "final": 26842.15,
+        "final": 26842.14,
         "ret": 25.8421,
         "liquidations": 16,
         "max_dd": -0.4139,
@@ -10016,9 +10060,9 @@
      },
      "full": {
       "start": "2020-12-04",
-      "years": 5.86,
+      "years": 5.87,
       "ret": 10.916,
-      "cagr": 0.526,
+      "cagr": 0.5257,
       "sharpe": 0.92,
       "max_dd": -0.5115,
       "trades": 73,
@@ -10062,7 +10106,7 @@
     "stage": "S2",
     "why": "PF 2.25, 1x maks. düşüş -51%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -10088,7 +10132,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 1.5765,
       "cagr": 0.3709,
@@ -10135,7 +10179,7 @@
       "start": "2022-05-31",
       "years": 4.38,
       "ret": 5.3803,
-      "cagr": 0.5272,
+      "cagr": 0.5268,
       "sharpe": 0.916,
       "max_dd": -0.6018,
       "trades": 41,
@@ -10179,7 +10223,7 @@
     "stage": "S2",
     "why": "PF 2.581, 1x maks. düşüş -60%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -10202,11 +10246,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 1.5756,
-      "cagr": 0.3708,
-      "sharpe": 0.849,
+      "ret": 1.6473,
+      "cagr": 0.3834,
+      "sharpe": 0.866,
       "max_dd": -0.438,
       "trades": 14,
       "win_rate": 0.714,
@@ -10243,7 +10287,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 0.7238,
       "cagr": 0.115,
@@ -10287,8 +10331,8 @@
       "start": "2018-07-24",
       "years": 8.23,
       "ret": 17.2452,
-      "cagr": 0.4233,
-      "sharpe": 0.889,
+      "cagr": 0.4231,
+      "sharpe": 0.888,
       "max_dd": -0.6732,
       "trades": 35,
       "win_rate": 0.657,
@@ -10325,13 +10369,13 @@
       }
      }
     },
-    "sharpe": 0.889,
+    "sharpe": 0.888,
     "max_dd": -0.6732,
     "dsr": null,
     "stage": "S2",
     "why": "PF 5.28, 1x maks. düşüş -67%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -10354,11 +10398,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 1.3919,
-      "cagr": 0.3374,
-      "sharpe": 0.757,
+      "ret": 1.3186,
+      "cagr": 0.3236,
+      "sharpe": 0.743,
       "max_dd": -0.7394,
       "trades": 22,
       "win_rate": 0.409,
@@ -10395,11 +10439,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 2.7382,
-      "cagr": 0.3017,
-      "sharpe": 0.719,
+      "ret": 2.5989,
+      "cagr": 0.2919,
+      "sharpe": 0.708,
       "max_dd": -0.7394,
       "trades": 36,
       "win_rate": 0.444,
@@ -10437,10 +10481,10 @@
      },
      "full": {
       "start": "2020-12-04",
-      "years": 5.86,
-      "ret": 9.5053,
-      "cagr": 0.4936,
-      "sharpe": 0.888,
+      "years": 5.87,
+      "ret": 9.1139,
+      "cagr": 0.4836,
+      "sharpe": 0.879,
       "max_dd": -0.7394,
       "trades": 41,
       "win_rate": 0.463,
@@ -10477,13 +10521,13 @@
       }
      }
     },
-    "sharpe": 0.888,
+    "sharpe": 0.879,
     "max_dd": -0.7394,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.301, 1x maks. düşüş -74%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -10506,11 +10550,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 0.1226,
-      "cagr": 0.0393,
-      "sharpe": 0.452,
+      "ret": 0.0882,
+      "cagr": 0.0286,
+      "sharpe": 0.439,
       "max_dd": -0.8819,
       "trades": 36,
       "win_rate": 0.444,
@@ -10547,11 +10591,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 1.3777,
-      "cagr": 0.1891,
-      "sharpe": 0.625,
+      "ret": 1.2891,
+      "cagr": 0.1801,
+      "sharpe": 0.616,
       "max_dd": -0.8819,
       "trades": 58,
       "win_rate": 0.5,
@@ -10589,10 +10633,10 @@
      },
      "full": {
       "start": "2020-12-04",
-      "years": 5.86,
-      "ret": 9.7567,
-      "cagr": 0.4996,
-      "sharpe": 0.887,
+      "years": 5.87,
+      "ret": 9.3559,
+      "cagr": 0.4896,
+      "sharpe": 0.88,
       "max_dd": -0.8819,
       "trades": 66,
       "win_rate": 0.515,
@@ -10629,13 +10673,13 @@
       }
      }
     },
-    "sharpe": 0.887,
+    "sharpe": 0.88,
     "max_dd": -0.8819,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.117, 1x maks. düşüş -88%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -10657,11 +10701,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 2.1275,
-      "cagr": 0.4624,
-      "sharpe": 0.885,
+      "ret": 2.1266,
+      "cagr": 0.4623,
+      "sharpe": 0.884,
       "max_dd": -0.6449,
       "trades": 32,
       "win_rate": 0.5,
@@ -10702,9 +10746,9 @@
      },
      "full": {
       "start": "2023-05-03",
-      "years": 3.45,
+      "years": 3.46,
       "ret": 2.7374,
-      "cagr": 0.4648,
+      "cagr": 0.4643,
       "sharpe": 0.887,
       "max_dd": -0.6449,
       "trades": 39,
@@ -10748,7 +10792,7 @@
     "stage": "S2",
     "why": "PF 3.04, 1x maks. düşüş -64%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -10773,11 +10817,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 2.5583,
-      "cagr": 0.5267,
-      "sharpe": 0.965,
+      "ret": 2.491,
+      "cagr": 0.5171,
+      "sharpe": 0.954,
       "max_dd": -0.4576,
       "trades": 38,
       "win_rate": 0.684,
@@ -10819,9 +10863,9 @@
      "full": {
       "start": "2022-03-23",
       "years": 4.57,
-      "ret": 3.9382,
-      "cagr": 0.4188,
-      "sharpe": 0.884,
+      "ret": 3.8448,
+      "cagr": 0.4126,
+      "sharpe": 0.876,
       "max_dd": -0.4576,
       "trades": 54,
       "win_rate": 0.648,
@@ -10858,13 +10902,13 @@
       }
      }
     },
-    "sharpe": 0.884,
+    "sharpe": 0.876,
     "max_dd": -0.4576,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.271, 1x maks. düşüş -46%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -10887,7 +10931,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 1.5528,
       "cagr": 0.3667,
@@ -10934,7 +10978,7 @@
       "start": "2022-10-19",
       "years": 3.99,
       "ret": 1.943,
-      "cagr": 0.3106,
+      "cagr": 0.3104,
       "sharpe": 0.882,
       "max_dd": -0.4647,
       "trades": 30,
@@ -10978,7 +11022,7 @@
     "stage": "S2",
     "why": "PF 2.702, 1x maks. düşüş -46%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -11008,11 +11052,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 3.0,
-      "cagr": 0.5875,
-      "sharpe": 0.985,
+      "ret": 2.9905,
+      "cagr": 0.5862,
+      "sharpe": 0.984,
       "max_dd": -0.448,
       "trades": 28,
       "win_rate": 0.571,
@@ -11054,9 +11098,9 @@
      "full": {
       "start": "2023-03-23",
       "years": 3.57,
-      "ret": 2.7874,
-      "cagr": 0.4527,
-      "sharpe": 0.877,
+      "ret": 2.7044,
+      "cagr": 0.4433,
+      "sharpe": 0.867,
       "max_dd": -0.4805,
       "trades": 32,
       "win_rate": 0.531,
@@ -11093,13 +11137,13 @@
       }
      }
     },
-    "sharpe": 0.877,
+    "sharpe": 0.867,
     "max_dd": -0.4805,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.43, 1x maks. düşüş -48%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -11122,11 +11166,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 1.3919,
-      "cagr": 0.3374,
-      "sharpe": 0.938,
+      "ret": 1.3699,
+      "cagr": 0.3333,
+      "sharpe": 0.93,
       "max_dd": -0.4263,
       "trades": 44,
       "win_rate": 0.75,
@@ -11167,9 +11211,9 @@
      },
      "full": {
       "start": "2023-08-24",
-      "years": 3.14,
+      "years": 3.15,
       "ret": 1.2839,
-      "cagr": 0.3003,
+      "cagr": 0.3,
       "sharpe": 0.875,
       "max_dd": -0.4263,
       "trades": 46,
@@ -11213,7 +11257,7 @@
     "stage": "S2",
     "why": "PF 1.811, 1x maks. düşüş -43%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -11236,7 +11280,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.7179,
       "cagr": 0.1977,
@@ -11277,7 +11321,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 0.0686,
       "cagr": 0.0134,
@@ -11321,7 +11365,7 @@
       "start": "2018-07-24",
       "years": 8.23,
       "ret": 5.9421,
-      "cagr": 0.2655,
+      "cagr": 0.2654,
       "sharpe": 0.875,
       "max_dd": -0.6515,
       "trades": 62,
@@ -11365,7 +11409,7 @@
     "stage": "S2",
     "why": "PF 2.252, 1x maks. düşüş -65%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -11542,7 +11586,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 1.7089,
       "cagr": 0.394,
@@ -11587,9 +11631,9 @@
      },
      "full": {
       "start": "2023-08-24",
-      "years": 3.14,
+      "years": 3.15,
       "ret": 1.8615,
-      "cagr": 0.397,
+      "cagr": 0.3966,
       "sharpe": 0.855,
       "max_dd": -0.4981,
       "trades": 91,
@@ -11633,7 +11677,7 @@
     "stage": "S2",
     "why": "PF 2.003, 1x maks. düşüş -50%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -11656,11 +11700,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 1.7854,
-      "cagr": 0.407,
-      "sharpe": 0.819,
+      "ret": 1.8185,
+      "cagr": 0.4126,
+      "sharpe": 0.825,
       "max_dd": -0.5509,
       "trades": 42,
       "win_rate": 0.548,
@@ -11701,9 +11745,9 @@
      },
      "full": {
       "start": "2022-10-11",
-      "years": 4.01,
+      "years": 4.02,
       "ret": 3.0856,
-      "cagr": 0.4202,
+      "cagr": 0.4198,
       "sharpe": 0.852,
       "max_dd": -0.5509,
       "trades": 50,
@@ -11747,7 +11791,7 @@
     "stage": "S2",
     "why": "PF 2.135, 1x maks. düşüş -55%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -11770,11 +11814,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 1.2387,
-      "cagr": 0.3082,
-      "sharpe": 0.746,
+      "ret": 1.1594,
+      "cagr": 0.2926,
+      "sharpe": 0.725,
       "max_dd": -0.7632,
       "trades": 32,
       "win_rate": 0.562,
@@ -11811,11 +11855,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 0.8067,
-      "cagr": 0.1256,
-      "sharpe": 0.487,
+      "ret": 0.7394,
+      "cagr": 0.1171,
+      "sharpe": 0.474,
       "max_dd": -0.7632,
       "trades": 49,
       "win_rate": 0.551,
@@ -11853,10 +11897,10 @@
      },
      "full": {
       "start": "2020-12-04",
-      "years": 5.86,
-      "ret": 6.81,
-      "cagr": 0.4199,
-      "sharpe": 0.846,
+      "years": 5.87,
+      "ret": 6.519,
+      "cagr": 0.4105,
+      "sharpe": 0.836,
       "max_dd": -0.7632,
       "trades": 57,
       "win_rate": 0.561,
@@ -11893,13 +11937,13 @@
       }
      }
     },
-    "sharpe": 0.846,
+    "sharpe": 0.836,
     "max_dd": -0.7632,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.17, 1x maks. düşüş -76%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -12073,11 +12117,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 4.344,
-      "cagr": 0.7484,
-      "sharpe": 1.119,
+      "ret": 4.4795,
+      "cagr": 0.7631,
+      "sharpe": 1.131,
       "max_dd": -0.5284,
       "trades": 41,
       "win_rate": 0.415,
@@ -12120,7 +12164,7 @@
       "start": "2021-11-18",
       "years": 4.91,
       "ret": 4.5809,
-      "cagr": 0.4196,
+      "cagr": 0.4193,
       "sharpe": 0.832,
       "max_dd": -0.7638,
       "trades": 66,
@@ -12164,7 +12208,7 @@
     "stage": "S2",
     "why": "PF 1.91, 1x maks. düşüş -76%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -12187,11 +12231,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 1.256,
-      "cagr": 0.3116,
-      "sharpe": 0.915,
+      "ret": 1.3563,
+      "cagr": 0.3307,
+      "sharpe": 0.955,
       "max_dd": -0.3524,
       "trades": 26,
       "win_rate": 0.231,
@@ -12228,11 +12272,11 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
-      "ret": 1.5268,
-      "cagr": 0.2037,
-      "sharpe": 0.646,
+      "ret": 1.3312,
+      "cagr": 0.1844,
+      "sharpe": 0.609,
       "max_dd": -0.4269,
       "trades": 45,
       "win_rate": 0.244,
@@ -12271,9 +12315,9 @@
      "full": {
       "start": "2018-01-11",
       "years": 8.76,
-      "ret": 12.4708,
-      "cagr": 0.3457,
-      "sharpe": 0.828,
+      "ret": 12.367,
+      "cagr": 0.3444,
+      "sharpe": 0.826,
       "max_dd": -0.6226,
       "trades": 78,
       "win_rate": 0.269,
@@ -12310,13 +12354,13 @@
       }
      }
     },
-    "sharpe": 0.828,
+    "sharpe": 0.826,
     "max_dd": -0.6226,
     "dsr": null,
     "stage": "S2",
     "why": "PF 4.42, 1x maks. düşüş -62%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -12339,11 +12383,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 3.8252,
-      "cagr": 0.6899,
-      "sharpe": 1.105,
+      "ret": 3.7646,
+      "cagr": 0.6828,
+      "sharpe": 1.099,
       "max_dd": -0.5153,
       "trades": 145,
       "win_rate": 0.697,
@@ -12380,14 +12424,52 @@
       }
      },
      "5y": {
-      "no_data": true
+      "start": "2021-10-15",
+      "years": 5.0,
+      "ret": 4.4456,
+      "cagr": 0.404,
+      "sharpe": 0.825,
+      "max_dd": -0.7341,
+      "trades": 230,
+      "win_rate": 0.678,
+      "profit_factor": 1.4,
+      "perp": {
+       "1x": {
+        "final": 1307.04,
+        "ret": 0.307,
+        "liquidations": 0,
+        "max_dd": -0.0949,
+        "trades": 230
+       },
+       "3x": {
+        "final": 2093.63,
+        "ret": 1.0936,
+        "liquidations": 0,
+        "max_dd": -0.2655,
+        "trades": 230
+       },
+       "5x": {
+        "final": 3216.95,
+        "ret": 2.217,
+        "liquidations": 6,
+        "max_dd": -0.3892,
+        "trades": 230
+       },
+       "10x": {
+        "final": 2204.69,
+        "ret": 1.2047,
+        "liquidations": 73,
+        "max_dd": -0.7131,
+        "trades": 230
+       }
+      }
      },
      "full": {
       "start": "2021-10-18",
-      "years": 4.99,
-      "ret": 4.4683,
-      "cagr": 0.4054,
-      "sharpe": 0.826,
+      "years": 5.0,
+      "ret": 4.4456,
+      "cagr": 0.404,
+      "sharpe": 0.825,
       "max_dd": -0.7341,
       "trades": 230,
       "win_rate": 0.678,
@@ -12424,13 +12506,13 @@
       }
      }
     },
-    "sharpe": 0.826,
+    "sharpe": 0.825,
     "max_dd": -0.7341,
     "dsr": null,
     "stage": "S2",
     "why": "PF 1.4, 1x maks. düşüş -73%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -12453,7 +12535,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 2.9857,
       "cagr": 0.5856,
@@ -12500,7 +12582,7 @@
       "start": "2021-11-18",
       "years": 4.91,
       "ret": 3.7995,
-      "cagr": 0.3766,
+      "cagr": 0.3764,
       "sharpe": 0.824,
       "max_dd": -0.6516,
       "trades": 53,
@@ -12544,7 +12626,7 @@
     "stage": "S2",
     "why": "PF 2.257, 1x maks. düşüş -65%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -12566,11 +12648,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 3.781,
-      "cagr": 0.6847,
-      "sharpe": 1.081,
+      "ret": 3.5296,
+      "cagr": 0.6546,
+      "sharpe": 1.055,
       "max_dd": -0.6106,
       "trades": 86,
       "win_rate": 0.395,
@@ -12611,10 +12693,10 @@
      },
      "full": {
       "start": "2022-10-11",
-      "years": 4.01,
-      "ret": 2.9068,
-      "cagr": 0.4044,
-      "sharpe": 0.824,
+      "years": 4.02,
+      "ret": 2.7014,
+      "cagr": 0.3853,
+      "sharpe": 0.805,
       "max_dd": -0.6335,
       "trades": 113,
       "win_rate": 0.407,
@@ -12651,13 +12733,13 @@
       }
      }
     },
-    "sharpe": 0.824,
+    "sharpe": 0.805,
     "max_dd": -0.6335,
     "dsr": null,
     "stage": "S2",
     "why": "PF 1.61, 1x maks. düşüş -63%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -12680,11 +12762,11 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
-      "ret": 4.2681,
-      "cagr": 0.7401,
-      "sharpe": 1.346,
+      "ret": 4.4342,
+      "cagr": 0.7582,
+      "sharpe": 1.367,
       "max_dd": -0.4993,
       "trades": 21,
       "win_rate": 0.667,
@@ -12725,10 +12807,10 @@
      },
      "full": {
       "start": "2021-11-05",
-      "years": 4.94,
+      "years": 4.95,
       "ret": 2.97,
-      "cagr": 0.3217,
-      "sharpe": 0.817,
+      "cagr": 0.3215,
+      "sharpe": 0.816,
       "max_dd": -0.4993,
       "trades": 32,
       "win_rate": 0.562,
@@ -12765,13 +12847,13 @@
       }
      }
     },
-    "sharpe": 0.817,
+    "sharpe": 0.816,
     "max_dd": -0.4993,
     "dsr": null,
     "stage": "S2",
     "why": "PF 2.392, 1x maks. düşüş -50%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   },
   {
@@ -13069,7 +13151,7 @@
    "backtest": {
     "card": {
      "3y": {
-      "start": "2023-10-15",
+      "start": "2023-10-16",
       "years": 3.0,
       "ret": 0.8391,
       "cagr": 0.2252,
@@ -13110,7 +13192,7 @@
       }
      },
      "5y": {
-      "start": "2021-10-14",
+      "start": "2021-10-15",
       "years": 5.0,
       "ret": 3.9913,
       "cagr": 0.3792,
@@ -13154,7 +13236,7 @@
       "start": "2021-03-19",
       "years": 5.58,
       "ret": 3.9913,
-      "cagr": 0.3342,
+      "cagr": 0.3341,
       "sharpe": 0.813,
       "max_dd": -0.5525,
       "trades": 73,
@@ -13198,9 +13280,391 @@
     "stage": "S2",
     "why": "PF 2.191, 1x maks. düşüş -55%",
     "tier": null,
-    "screened_at": "2026-10-16T19:33:03+00:00"
+    "screened_at": "2026-10-17T08:18:09+00:00"
+   }
+  },
+  {
+   "id": "A0101",
+   "key": "XLM/USDT|stoch_reversal|k=9,d=5,smooth=3,lo=20|x=20|both|1d|f=low_vol",
+   "coin": "XLM/USDT",
+   "rule": "stoch_reversal",
+   "params": {
+    "k": 9,
+    "d": 5,
+    "smooth": 3,
+    "lo": 20
+   },
+   "exit_id": 20,
+   "filter": "low_vol",
+   "confirm": null,
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "active",
+   "added_at": "2026-10-17T08:18:09+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2023-10-16",
+      "years": 3.0,
+      "ret": 2.4,
+      "cagr": 0.5037,
+      "sharpe": 1.18,
+      "max_dd": -0.2689,
+      "trades": 43,
+      "win_rate": 0.674,
+      "profit_factor": 2.28,
+      "perp": {
+       "1x": {
+        "final": 1170.59,
+        "ret": 0.1706,
+        "liquidations": 0,
+        "max_dd": -0.0275,
+        "trades": 43
+       },
+       "3x": {
+        "final": 1559.99,
+        "ret": 0.56,
+        "liquidations": 0,
+        "max_dd": -0.0814,
+        "trades": 43
+       },
+       "5x": {
+        "final": 2011.64,
+        "ret": 1.0116,
+        "liquidations": 0,
+        "max_dd": -0.1338,
+        "trades": 43
+       },
+       "10x": {
+        "final": 2915.27,
+        "ret": 1.9153,
+        "liquidations": 10,
+        "max_dd": -0.2721,
+        "trades": 43
+       }
+      }
+     },
+     "5y": {
+      "no_data": true
+     },
+     "full": {
+      "start": "2023-08-24",
+      "years": 3.15,
+      "ret": 2.4,
+      "cagr": 0.4752,
+      "sharpe": 1.152,
+      "max_dd": -0.2689,
+      "trades": 43,
+      "win_rate": 0.674,
+      "profit_factor": 2.28,
+      "perp": {
+       "1x": {
+        "final": 1170.59,
+        "ret": 0.1706,
+        "liquidations": 0,
+        "max_dd": -0.0275,
+        "trades": 43
+       },
+       "3x": {
+        "final": 1559.99,
+        "ret": 0.56,
+        "liquidations": 0,
+        "max_dd": -0.0814,
+        "trades": 43
+       },
+       "5x": {
+        "final": 2011.64,
+        "ret": 1.0116,
+        "liquidations": 0,
+        "max_dd": -0.1338,
+        "trades": 43
+       },
+       "10x": {
+        "final": 2915.27,
+        "ret": 1.9153,
+        "liquidations": 10,
+        "max_dd": -0.2721,
+        "trades": 43
+       }
+      }
+     }
+    },
+    "sharpe": 1.152,
+    "max_dd": -0.2689,
+    "dsr": 0.09,
+    "stage": "OK",
+    "why": "tüm adımlar geçti",
+    "tier": "B",
+    "screened_at": "2026-10-17T08:18:09+00:00"
+   }
+  },
+  {
+   "id": "A0102",
+   "key": "ADA/USDT|trix_cross|n=21,signal=9|x=37|both|1d|f=low_vol",
+   "coin": "ADA/USDT",
+   "rule": "trix_cross",
+   "params": {
+    "n": 21,
+    "signal": 9
+   },
+   "exit_id": 37,
+   "filter": "low_vol",
+   "confirm": null,
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "active",
+   "added_at": "2026-10-17T08:18:09+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2023-10-16",
+      "years": 3.0,
+      "ret": 1.0247,
+      "cagr": 0.2651,
+      "sharpe": 0.876,
+      "max_dd": -0.2719,
+      "trades": 19,
+      "win_rate": 0.579,
+      "profit_factor": 2.652,
+      "perp": {
+       "1x": {
+        "final": 1099.05,
+        "ret": 0.0991,
+        "liquidations": 0,
+        "max_dd": -0.0222,
+        "trades": 19
+       },
+       "3x": {
+        "final": 1303.9,
+        "ret": 0.3039,
+        "liquidations": 0,
+        "max_dd": -0.0657,
+        "trades": 19
+       },
+       "5x": {
+        "final": 1514.62,
+        "ret": 0.5146,
+        "liquidations": 0,
+        "max_dd": -0.1081,
+        "trades": 19
+       },
+       "10x": {
+        "final": 1975.86,
+        "ret": 0.9759,
+        "liquidations": 6,
+        "max_dd": -0.2155,
+        "trades": 19
+       }
+      }
+     },
+     "5y": {
+      "no_data": true
+     },
+     "full": {
+      "start": "2022-03-23",
+      "years": 4.57,
+      "ret": 1.3323,
+      "cagr": 0.2037,
+      "sharpe": 0.752,
+      "max_dd": -0.3157,
+      "trades": 32,
+      "win_rate": 0.562,
+      "profit_factor": 2.101,
+      "perp": {
+       "1x": {
+        "final": 1120.75,
+        "ret": 0.1207,
+        "liquidations": 0,
+        "max_dd": -0.0242,
+        "trades": 32
+       },
+       "3x": {
+        "final": 1375.55,
+        "ret": 0.3756,
+        "liquidations": 0,
+        "max_dd": -0.0719,
+        "trades": 32
+       },
+       "5x": {
+        "final": 1642.04,
+        "ret": 0.642,
+        "liquidations": 0,
+        "max_dd": -0.1189,
+        "trades": 32
+       },
+       "10x": {
+        "final": 2326.6,
+        "ret": 1.3266,
+        "liquidations": 9,
+        "max_dd": -0.2155,
+        "trades": 32
+       }
+      }
+     }
+    },
+    "sharpe": 0.752,
+    "max_dd": -0.3157,
+    "dsr": 0.007,
+    "stage": "OK",
+    "why": "tüm adımlar geçti",
+    "tier": "B",
+    "screened_at": "2026-10-17T08:18:09+00:00"
+   }
+  },
+  {
+   "id": "A0103",
+   "key": "BTC/USDT|obv_trend|n=50,price_n=50|x=20|both|1d|f=low_vol",
+   "coin": "BTC/USDT",
+   "rule": "obv_trend",
+   "params": {
+    "n": 50,
+    "price_n": 50
+   },
+   "exit_id": 20,
+   "filter": "low_vol",
+   "confirm": null,
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "active",
+   "added_at": "2026-10-17T08:18:09+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2023-10-16",
+      "years": 3.0,
+      "ret": 0.6451,
+      "cagr": 0.1805,
+      "sharpe": 0.677,
+      "max_dd": -0.2962,
+      "trades": 40,
+      "win_rate": 0.275,
+      "profit_factor": 2.357,
+      "perp": {
+       "1x": {
+        "final": 1074.9,
+        "ret": 0.0749,
+        "liquidations": 0,
+        "max_dd": -0.0217,
+        "trades": 40
+       },
+       "3x": {
+        "final": 1229.19,
+        "ret": 0.2292,
+        "liquidations": 0,
+        "max_dd": -0.064,
+        "trades": 40
+       },
+       "5x": {
+        "final": 1388.09,
+        "ret": 0.3881,
+        "liquidations": 0,
+        "max_dd": -0.1048,
+        "trades": 40
+       },
+       "10x": {
+        "final": 1793.95,
+        "ret": 0.794,
+        "liquidations": 0,
+        "max_dd": -0.2003,
+        "trades": 40
+       }
+      }
+     },
+     "5y": {
+      "start": "2021-10-15",
+      "years": 5.0,
+      "ret": 1.2915,
+      "cagr": 0.1804,
+      "sharpe": 0.619,
+      "max_dd": -0.3667,
+      "trades": 75,
+      "win_rate": 0.307,
+      "profit_factor": 2.571,
+      "perp": {
+       "1x": {
+        "final": 1149.89,
+        "ret": 0.1499,
+        "liquidations": 0,
+        "max_dd": -0.0217,
+        "trades": 75
+       },
+       "3x": {
+        "final": 1494.1,
+        "ret": 0.4941,
+        "liquidations": 0,
+        "max_dd": -0.064,
+        "trades": 75
+       },
+       "5x": {
+        "final": 1900.32,
+        "ret": 0.9003,
+        "liquidations": 0,
+        "max_dd": -0.1048,
+        "trades": 75
+       },
+       "10x": {
+        "final": 2670.78,
+        "ret": 1.6708,
+        "liquidations": 1,
+        "max_dd": -0.2485,
+        "trades": 75
+       }
+      }
+     },
+     "full": {
+      "start": "2018-01-11",
+      "years": 8.76,
+      "ret": 8.2671,
+      "cagr": 0.2893,
+      "sharpe": 0.778,
+      "max_dd": -0.3864,
+      "trades": 133,
+      "win_rate": 0.286,
+      "profit_factor": 2.995,
+      "perp": {
+       "1x": {
+        "final": 1458.25,
+        "ret": 0.4582,
+        "liquidations": 0,
+        "max_dd": -0.0343,
+        "trades": 133
+       },
+       "3x": {
+        "final": 2826.42,
+        "ret": 1.8264,
+        "liquidations": 0,
+        "max_dd": -0.1001,
+        "trades": 133
+       },
+       "5x": {
+        "final": 4978.3,
+        "ret": 3.9783,
+        "liquidations": 0,
+        "max_dd": -0.1621,
+        "trades": 133
+       },
+       "10x": {
+        "final": 12923.79,
+        "ret": 11.9238,
+        "liquidations": 3,
+        "max_dd": -0.3021,
+        "trades": 133
+       }
+      }
+     }
+    },
+    "sharpe": 0.778,
+    "max_dd": -0.3864,
+    "dsr": 0.001,
+    "stage": "OK",
+    "why": "tüm adımlar geçti",
+    "tier": "B",
+    "screened_at": "2026-10-17T08:18:09+00:00"
    }
   }
  ],
- "updated_at": "2026-10-16T19:33:03+00:00"
+ "updated_at": "2026-10-17T08:18:09+00:00"
 }
