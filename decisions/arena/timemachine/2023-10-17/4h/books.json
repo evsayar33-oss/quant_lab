@@ -1,0 +1,95 @@
+{
+ "books": {
+  "A": {
+   "id": "A",
+   "name": "Hepsi eşit ağırlık, 1x",
+   "select": "all",
+   "leverage": 1,
+   "members": [
+    "A0001",
+    "A0002",
+    "A0003",
+    "A0004",
+    "A0005",
+    "A0006",
+    "A0007",
+    "A0008",
+    "A0009",
+    "A0010",
+    "A0011",
+    "A0012",
+    "A0013",
+    "A0014",
+    "A0015",
+    "A0016"
+   ],
+   "created_at": "2023-10-17T00:00:00+00:00"
+  },
+  "B": {
+   "id": "B",
+   "name": "En iyi 10, 1x",
+   "select": "top",
+   "n": 10,
+   "leverage": 1,
+   "members": [
+    "A0002",
+    "A0003",
+    "A0004",
+    "A0005",
+    "A0001",
+    "A0006",
+    "A0007"
+   ],
+   "created_at": "2023-10-17T00:00:00+00:00"
+  },
+  "B2": {
+   "id": "B2",
+   "name": "En iyi 10, ters volatilite ağırlık, 1x",
+   "select": "top",
+   "n": 10,
+   "leverage": 1,
+   "weighting": "invvol",
+   "members": [
+    "A0002",
+    "A0003",
+    "A0004",
+    "A0005",
+    "A0001",
+    "A0006",
+    "A0007"
+   ],
+   "created_at": "2023-10-17T00:00:00+00:00"
+  },
+  "C": {
+   "id": "C",
+   "name": "En iyi 5, 3x",
+   "select": "top",
+   "n": 5,
+   "leverage": 3,
+   "members": [
+    "A0002",
+    "A0003",
+    "A0004",
+    "A0005",
+    "A0001"
+   ],
+   "created_at": "2023-10-17T00:00:00+00:00"
+  },
+  "C2": {
+   "id": "C2",
+   "name": "En iyi 5, 3x + volatilite hedefi %35",
+   "select": "top",
+   "n": 5,
+   "leverage": 3,
+   "vol_target": 0.35,
+   "members": [
+    "A0002",
+    "A0003",
+    "A0004",
+    "A0005",
+    "A0001"
+   ],
+   "created_at": "2023-10-17T00:00:00+00:00"
+  }
+ }
+}
