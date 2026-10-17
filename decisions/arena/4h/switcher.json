@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-17T12:19:11+00:00",
- "data_end": "2026-10-17 08:00:00",
+ "updated_at": "2026-10-17T17:56:54+00:00",
+ "data_end": "2026-10-17 12:00:00",
  "universe": "crypto_alts",
  "timeframe": "4h",
  "usable": false,
@@ -118,11 +118,11 @@
  "forward": {
   "since": "2026-10-16",
   "days": 0,
-  "ret": -0.0001,
+  "ret": -0.0029,
   "sharpe": null,
-  "ew_ret": -0.0034,
+  "ew_ret": -0.0035,
   "ew_sharpe": null,
-  "max_dd": -0.0001
+  "max_dd": -0.0029
  },
  "regimes": {
   "BTC/USDT": {
@@ -357,9 +357,9 @@
    }
   },
   "SAND/USDT": {
-   "now": "trend_down",
-   "now_tr": "Trend ↓",
-   "since": "2026-10-14 08:00:00",
+   "now": "volatile",
+   "now_tr": "Volatil",
+   "since": "2026-10-17 12:00:00",
    "share": {
     "range": 0.691,
     "trend_up": 0.049,
@@ -474,7 +474,7 @@
     "range": 0.702,
     "trend_up": 0.041,
     "trend_down": 0.084,
-    "volatile": 0.173
+    "volatile": 0.174
    }
   },
   "SUI/USDT": {
