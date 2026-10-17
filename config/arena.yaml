@@ -134,5 +134,6 @@ books:
   list:
     - {id: A, name: "Hepsi eşit ağırlık, 1x", select: all, leverage: 1}
     - {id: B, name: "En iyi 10, 1x", select: top, n: 10, leverage: 1}
+    - {id: B2, name: "En iyi 10, ters volatilite ağırlık, 1x", select: top, n: 10, leverage: 1, weighting: invvol}
     - {id: C, name: "En iyi 5, 3x", select: top, n: 5, leverage: 3}
     - {id: C2, name: "En iyi 5, 3x + volatilite hedefi %35", select: top, n: 5, leverage: 3, vol_target: 0.35}

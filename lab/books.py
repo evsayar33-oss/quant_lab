@@ -53,11 +53,14 @@ def returns(book: dict, R: pd.DataFrame, X: pd.DataFrame, ro: dict, p, cps: floa
         z = by_id[i].get("retired_at")
         if by_id[i]["status"] == "retired" and z:
             alive.loc[alive.index >= pd.Timestamp(z).tz_localize(None), i] = False
-    n0 = len(ids)
-    W = alive.astype(float) / n0                    # fixed 1/N slots: an empty slot stays in cash
     Rl = (R[ids] * L).clip(lower=-(1.0 - mmr * L))  # isolated margin: loss per bar capped at the margin
-    ones = pd.DataFrame(1.0, index=R.index, columns=ids)
-    r = protect.book(Rl, X[ids], W, ones, cps * L)
+    if book.get("weighting") == "invvol":             # past 90 days, monthly; retired -> cash
+        r = protect.weighted_book(Rl, X[ids], alive, ids, "invvol", cps * L, p.ppy)
+    else:
+        n0 = len(ids)
+        W = alive.astype(float) / n0                # fixed 1/N slots: an empty slot stays in cash
+        ones = pd.DataFrame(1.0, index=R.index, columns=ids)
+        r = protect.book(Rl, X[ids], W, ones, cps * L)
     if book.get("vol_target"):
         sc = protect.vol_target_scale(r, float(book["vol_target"]), p.ppy)
         r = r * sc - sc.diff().abs().fillna(0) * cps * L
