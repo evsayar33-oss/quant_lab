@@ -1,0 +1,27 @@
+# Core study: a FEW simple, literature-based rules with FIXED textbook settings. No parameter search, no
+# selection among variants. Written on 2026-10-17 BEFORE any result was seen; do not tune after the fact.
+# Long or cash only (spot, no funding). Signals on closed bars, traded at the next bar open.
+universe_assets: [BTC/USDT, ETH/USDT]
+start: "2018-01-01"
+timeframes: [1d, 4h]
+costs: {commission: 0.0006, slippage: 0.0005}
+
+rules:
+  buy_hold:      {}                                     # benchmark
+  vol_target:    {target: 0.40, lookback_days: 30}      # Moreira & Muir (2017); scale = min(1, target/vol)
+  trend_sma200:  {sma_days: 200}                        # Faber (2007): long above the 200-day SMA
+  tsmom:         {horizons_days: [30, 90, 180]}         # Moskowitz, Ooi & Pedersen (2012); Liu & Tsyvinski (2021):
+                                                        # exposure = share of horizons with a positive past return
+  tsmom_vt:      {horizons_days: [30, 90, 180], target: 0.40, lookback_days: 30}   # both combined
+  dual_trend_vt: {sma_days: 200, horizons_days: [30, 90, 180], target: 0.40, lookback_days: 30}
+                                                        # long only when price > SMA200 AND tsmom > 0, vol-targeted
+
+# Portfolios: each rule on BTC, on ETH, and on a 50/50 BTC+ETH book (rebalanced every bar).
+# Forward windows reuse the time-machine cutoffs: the rules are fixed, so "forward" = after that date.
+cutoffs: ["2022-10-17", "2023-10-17", "2024-10-17"]
+
+# A rule is APPROVED for the paper arena only if, for the SAME asset, in EVERY forward window:
+accept:
+  dd_reduction_vs_buyhold: 0.33   # max drawdown at least 1/3 less deep than buy-and-hold
+  max_sharpe_gap: 0.10            # Sharpe not more than 0.10 below buy-and-hold
+  positive_return: true           # and a positive return

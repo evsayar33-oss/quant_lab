@@ -387,6 +387,39 @@ def _arena_one(a, hyps, cfg) -> dict | None:
     return out
 
 
+def do_core(a) -> None:
+    from lab import core
+    cfg = load_yaml("config/core.yaml")
+    tfs = [a.timeframe] if "--timeframe" in sys.argv else cfg.get("timeframes", ["1d"])
+    out_dir = ROOT / "decisions" / "core"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for tf in tfs:
+        if a.synthetic:
+            import numpy as np
+            import pandas as pd
+            n = 2190 * 7 if tf == "4h" else 365 * 7
+            idx = pd.date_range("2018-01-01", periods=n, freq="4h" if tf == "4h" else "D")
+            rng = np.random.default_rng(3)
+            c = pd.DataFrame(100 * np.exp(np.cumsum(rng.normal(0.0003, 0.02, (n, 2)), axis=0)), idx, cfg["universe_assets"])
+            p = Panel.from_close(c, seed=3); p.freq = tf
+        else:
+            u = {"tickers": cfg["universe_assets"], "benchmark": cfg["universe_assets"][0], "market": "crypto",
+                 "risk_free": None, "macro": []}
+            p = data.load_panel(u, cfg.get("start", "2018-01-01"), "core", with_fundamentals=False, timeframe=tf)
+        o = core.run(p, cfg)
+        md = core.markdown(o, cfg)
+        RESULTS.mkdir(exist_ok=True)
+        (RESULTS / f"core_{tf}.md").write_text(md)
+        slim = {**o, "spark": {}}
+        (out_dir / f"{tf}.json").write_text(json.dumps(slim, indent=1, default=str, ensure_ascii=False))
+        print(md)
+        if a.telegram:
+            ok = [r for r in o["rows"] if r.get("approved")]
+            telegram(f"🧱 çekirdek çalışma {tf}: {len(ok)} kural onaylandı\n" + "\n".join(
+                f"{'✅' if r.get('approved') else ('▫️' if r['approved'] is None else '❌')} {r['book']} {core.NAMES.get(r['rule'], r['rule'])}: "
+                f"$1000→{r['full'].get('final_1000', 0):,.0f}, DD {r['full'].get('max_dd', 0):.0%}" for r in o["rows"]))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--list", action="store_true")
@@ -412,6 +445,7 @@ def main() -> None:
     ap.add_argument("--calibrate", action="store_true", help="reproduce known results on real data")
     ap.add_argument("--screen", action="store_true", help="arena screening funnel (monthly)")
     ap.add_argument("--arena", action="store_true", help="arena paper run + regime switcher (every closed bar)")
+    ap.add_argument("--core", action="store_true", help="core study: simple fixed rules on BTC/ETH (config/core.yaml)")
     ap.add_argument("--timemachine", default="", help="cutoff date YYYY-MM-DD: replay the arena as if today were then")
     ap.add_argument("--protect", action="store_true", help="capital protection study on the active arena members")
     ap.add_argument("--stage2", default="", help="with --screen: on | off (default: config/arena.yaml)")
@@ -421,6 +455,8 @@ def main() -> None:
     a = ap.parse_args()
 
     hyps = load_yaml("hypotheses/registry.yaml") or []
+    if a.core:
+        return do_core(a)
     if a.screen or a.arena or a.protect or a.timemachine:
         return do_arena(a, hyps)
     if a.ids:
