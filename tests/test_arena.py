@@ -154,11 +154,14 @@ def test_protection_study_runs_and_is_causal():
     R, X, _ = arena.compute({"members": mem}, p, Costs(0.0006, 0.0005), mem)
     cfg = {"universe": "syn", "timeframe": "4h", "protection": {
         "max_coin_weight": 0.4, "tests": {"dd_brake": [[0.1, 0.2]], "daily_limit": [0.05],
-                                          "crash_guard": [0.1], "catastrophe_stop": [0.12]},
+                                          "crash_guard": [0.1], "catastrophe_stop": [0.12],
+                                          "vol_target": [0.3], "equity_ma": [30]},
         "crises": {"c1": ["2020-03-01", "2020-04-01"], "c2": ["2022-05-01", "2022-07-01"]},
         "accept": {}, "monte_carlo": {"paths": 50}}}
     res = protect.run(p, Costs(0.0006, 0.0005), cfg, R, X, mem)
-    assert set(res["tests"]) == {"dd_brake", "daily_limit", "crash_guard", "catastrophe_stop"}
+    assert set(res["tests"]) == {"dd_brake", "daily_limit", "crash_guard", "catastrophe_stop", "vol_target", "equity_ma"}
+    vt = protect.vol_target_scale(base := res["series"]["base"], 0.3, p.ppy)
+    assert (vt <= 1.0).all() and (vt >= 0).all()
     assert res["catastrophe_members"] == 2                      # exits 0 and 23 have no hard stop
     assert "max_leverage" in res["leverage"] and res["leverage"]["max_leverage"] < 5
     md = protect.markdown(res, cfg)

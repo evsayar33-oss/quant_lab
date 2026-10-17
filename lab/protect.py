@@ -11,6 +11,10 @@ Rules (all decided on CLOSED bars, applied from the next bar; changing exposure 
   daily_limit x     : after the protected book lost x within one UTC day, no exposure until the next day
                       (on daily bars: sit out the next day).
   crash_guard x     : BTC fell more than x over the last day -> long members are closed, no longs for one day.
+  vol_target x      : scale = min(1, x / annualised vol of the last 30 days of the shadow book) - only de-risks
+                      (Moreira & Muir 2017; Harvey et al. 2018 "The impact of volatility targeting").
+  equity_ma n       : flat while the shadow book's equity is below its n-day moving average
+                      (equity-curve trading; the shadow book keeps running so the rule can switch back on).
   catastrophe x     : members whose exit has NO stop get a hard x% stop (members with a stop are unchanged:
                       on bar data a gap through a stop already fills at the open, a second stop adds nothing).
 
@@ -78,6 +82,18 @@ def dd_brake_scale(shadow: pd.Series, a: float, b: float) -> pd.Series:
             cur = 1.0
         s[i] = cur
     return pd.Series(s, shadow.index)
+
+
+def vol_target_scale(shadow: pd.Series, target: float, ppy: float) -> pd.Series:
+    look = regime.bars(30, ppy)
+    vol = shadow.rolling(look, min_periods=look // 2).std().shift(1) * math.sqrt(ppy)
+    return (target / vol).clip(upper=1.0).fillna(1.0)
+
+
+def equity_ma_scale(shadow: pd.Series, days: int, ppy: float) -> pd.Series:
+    eq = (1 + shadow.fillna(0)).cumprod()
+    ma = eq.rolling(regime.bars(days, ppy), min_periods=regime.bars(days, ppy) // 2).mean()
+    return (eq > ma).astype(float).shift(1).fillna(1.0)
 
 
 def daily_limit_scale(R, X, W, cps, limit: float, ppy: float) -> pd.Series:
@@ -199,6 +215,12 @@ def run(p: Panel, costs: Costs, cfg: dict, R: pd.DataFrame, X: pd.DataFrame, mem
     for a, b in tests.get("dd_brake", []):
         sc = dd_brake_scale(base, a, b)
         variants.setdefault("dd_brake", []).append(((a, b), book(R, X, W, ones.mul(sc, axis=0), cps)))
+    for x in tests.get("vol_target", []):
+        sc = vol_target_scale(base, x, ppy)
+        variants.setdefault("vol_target", []).append((x, book(R, X, W, ones.mul(sc, axis=0), cps)))
+    for n in tests.get("equity_ma", []):
+        sc = equity_ma_scale(base, n, ppy)
+        variants.setdefault("equity_ma", []).append((n, book(R, X, W, ones.mul(sc, axis=0), cps)))
     for x in tests.get("daily_limit", []):
         sc = daily_limit_scale(R, X, W, cps, x, ppy)
         variants.setdefault("daily_limit", []).append((x, book(R, X, W, ones.mul(sc, axis=0), cps)))
@@ -256,7 +278,8 @@ def run(p: Panel, costs: Costs, cfg: dict, R: pd.DataFrame, X: pd.DataFrame, mem
 
 
 NAMES_TR = {"dd_brake": "Kasa düşüş sigortası", "daily_limit": "Günlük kayıp limiti",
-            "crash_guard": "BTC çöküş bekçisi", "catastrophe_stop": "Felaket stopu"}
+            "crash_guard": "BTC çöküş bekçisi", "catastrophe_stop": "Felaket stopu",
+            "vol_target": "Volatilite hedefi", "equity_ma": "Kasa eğrisi filtresi"}
 
 
 def markdown(res: dict, cfg: dict) -> str:
