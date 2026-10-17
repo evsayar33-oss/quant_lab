@@ -194,6 +194,22 @@ saatinde çalışır (veya elle çalıştır).
 kayıttır. Survivorship: bugünün coin listesi. Funding sabit oran, likidasyon yaklaşık. GitHub Actions zamanlaması
 5–30 dk gecikebilir; bu yüzden sadece 4h/1d barlar (scalping yok).
 
+## İsteğe bağlı çıkış ve portföy katmanları (2026-10-17'den beri)
+
+- Hipotezde `exits:` yoksa sadece kuralın kendi çıkışı (#0) kullanılır. `exits: all` → 44 çıkışın hepsi;
+  `exits: [18, 20, 28]` → sadece bunlar. Her denenen çıkış DSR deneme sayısına eklenir.
+- `overlays:` yoksa portföy katmanı denenmez. `overlays: all` veya `[vt15, dd20, eqma_l]`.
+- Pozisyon boyutu taraması (`sizes`) değişmedi.
+
+## Kasa koruma teşhisi (her hipotez raporunda, her piyasada)
+
+Her doğrulama raporuna "Kasa koruma" bölümü eklenir: son varyantın tüm geçmişi üzerinde 5 kural (kasa düşüş
+sigortası, volatilite hedefi, kasa eğrisi filtresi, günlük kayıp limiti, piyasa çöküş bekçisi) piyasaya özel gerçek
+krizlerde test edilir (BIST: 2013 Gezi, Ağustos 2018 kur, COVID, Mart 2021, Aralık 2021, 2023 deprem, Mart 2025 ·
+ABD: 2008, 2011, 2015, 2018 Q4, COVID, 2022, Nisan 2025 · metaller/çoklu varlık · kripto). Eşikler ve kabul
+kuralları `config/protection.yaml` içinde. Bu bölüm stratejiyi ve kararı DEĞİŞTİRMEZ. Bir kuralı kullanmak için
+hipoteze `overlays:` olarak ekleyin; kapı ona karar verir. Kapatmak: `protection_study: false`.
+
 ## Botlara bağlama
 
 `lab/client.py` dosyasını bot reposuna `quant_lab_client.py` adıyla kopyala:

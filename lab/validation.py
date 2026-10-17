@@ -270,6 +270,13 @@ def validate(spec: dict, p: Panel, costs: Costs, train_years: float = 3.0, test_
             if sig.entry_short is not None and cand.side != "long":
                 rep["studies"]["event_study_short"] = RB.event_study(p, sig.entry_short, -1)
         rep["studies"]["overlays"] = RB.overlays(oos, ppy)
+    if studies and spec.get("protection_study", True):
+        try:   # capital-protection diagnostic on the final variant's FULL history (covers more crises)
+            from lab import protect
+            rep["protection"] = protect.study_series(runs[final_key][0], p.bench, ppy, costs.per_turnover,
+                                                     getattr(p, "market", "") or "multi")
+        except Exception as e:  # noqa: BLE001 - a diagnostic must never break a validation
+            rep["protection"] = {"error": str(e)}
     rep["verdict"], rep["reasons"] = verdict(rep)
     rep["targets"] = cand.targets(p, final_v)
     rep["_oos_returns"] = oos

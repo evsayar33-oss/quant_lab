@@ -330,12 +330,26 @@ def test_studies_accept_every_variant_kind():
     """Robustness studies must work when the selected variant carries internal keys (overlay etc.)."""
     from lab import candidates as CD, robustness as RB
     p = Panel.from_close(data.synthetic_prices(6, 900, seed=20))
-    for cand in (CD.StrategyCandidate("ts_momentum"), CD.from_spec({"rule": "rsi_reversal"})):
+    for cand in (CD.StrategyCandidate("ts_momentum", overlays=["vt15", "dd20"]),
+                 CD.from_spec({"rule": "rsi_reversal", "overlays": "all"})):
         base = cand.variants()[0]
         for v in [base] + cand.overlay_variants([base])[:2]:
             assert "sharpe_delayed_1bar" in RB.delay_test(cand, p, v, Costs())
             RB.noise_test(cand, p, v, Costs(), n=1)
             cand.targets(p, v)
+
+
+def test_exits_and_overlays_are_opt_in():
+    """Without `exits:` only the rule's own exit is used; without `overlays:` no overlay is tried."""
+    from lab import candidates as CD, overlays
+    c0 = CD.from_spec({"rule": "rsi_reversal"})
+    assert c0.exits == [0] and c0.overlays == []
+    seeds = c0.variants()[:2]
+    assert c0.variants(stage=2, seeds=seeds) == [] and c0.overlay_variants(seeds) == []
+    ca = CD.from_spec({"rule": "rsi_reversal", "exits": "all", "overlays": "all"})
+    assert len(ca.exits) > 40 and ca.overlays == list(overlays.KINDS)
+    cl = CD.from_spec({"strategy": "ts_momentum", "overlays": ["vt15"]})
+    assert len(cl.overlay_variants(cl.variants()[:1])) == 1
 
 
 if __name__ == "__main__":

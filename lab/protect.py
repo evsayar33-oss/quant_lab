@@ -335,3 +335,125 @@ def summary_json(res: dict) -> dict:
 
 
 __all__ = ["run", "markdown", "summary_json", "math"]
+
+
+# ================================================================== any strategy, any market (hypothesis reports)
+def load_cfg(market: str) -> dict:
+    import yaml
+    from pathlib import Path
+    c = yaml.safe_load((Path(__file__).resolve().parent.parent / "config" / "protection.yaml").read_text())
+    tests = {**c.get("tests", {}), **(c.get("by_market", {}).get(market) or {})}
+    crises = c.get("crises", {}).get(market) or c.get("crises", {}).get("multi", {})
+    return {"tests": tests, "accept": c.get("accept", {}), "monte_carlo": c.get("monte_carlo", {}), "crises": crises}
+
+
+def _judge(b_full, b_cr, ev, acc) -> tuple[bool, dict]:
+    f, cr = ev["full"], ev["crises"]
+    common = [k for k in cr if k in b_cr]
+    better = [k for k in common if cr[k]["max_dd"] > b_cr[k]["max_dd"] + 1e-6]
+    frac = len(better) / len(common) if common else 0.0
+    chk = {
+        "crises_better": f"{len(better)}/{len(common)}",
+        "crises_ok": bool(common) and frac >= acc.get("min_crises_better_frac", 0.67),
+        "full_dd_ok": (f["max_dd"] > b_full["max_dd"]) if acc.get("must_lower_full_dd", True) else True,
+        "sharpe_ok": f["sharpe"] >= b_full["sharpe"] * (1 - acc.get("max_sharpe_drop", 0.10)) if b_full["sharpe"] > 0
+        else f["sharpe"] >= b_full["sharpe"],
+        "cagr_ok": f["cagr"] >= b_full["cagr"] * (1 - acc.get("max_cagr_drop", 0.25)) if b_full["cagr"] > 0
+        else f["cagr"] >= b_full["cagr"],
+    }
+    return all(v for k, v in chk.items() if k.endswith("_ok")), chk
+
+
+def _daily_limit_series(r: pd.Series, limit: float, ppy: float) -> pd.Series:
+    day = r.index.normalize()
+    daily_bars = ppy < 400
+    s = np.ones(len(r))
+    blocked, pnl = None, 0.0
+    rv = r.fillna(0).to_numpy()
+    for i in range(1, len(r)):
+        if day[i] != day[i - 1]:
+            pnl = 0.0
+        sc = 0.0 if blocked is not None and day[i] <= blocked else 1.0
+        s[i] = sc
+        pnl = (1 + pnl) * (1 + sc * rv[i]) - 1
+        if pnl <= -limit:
+            blocked = day[i] + (pd.Timedelta(days=1) if daily_bars else pd.Timedelta(0))
+    return pd.Series(s, r.index)
+
+
+def _market_guard_series(r: pd.Series, bench: pd.Series | None, drop: float, ppy: float) -> pd.Series | None:
+    if bench is None:
+        return None
+    b = bench.reindex(r.index).ffill()
+    n = regime.bars(1, ppy) if ppy > 400 else 1
+    hit = (b / b.shift(n) - 1 <= -drop).fillna(False)
+    pause = hit.astype(int).rolling(max(n, 1), min_periods=1).max().astype(bool)
+    return (~pause.shift(1, fill_value=False).astype(bool)).astype(float)
+
+
+def study_series(r: pd.Series, bench: pd.Series | None, ppy: float, cps: float, market: str) -> dict:
+    """Capital-protection diagnostic for ONE strategy's return series (any market).
+    Switching cost assumes full exposure (conservative): |change in scale| x (commission + slippage)."""
+    c = load_cfg(market or "multi")
+    tests, acc, crises, mc = c["tests"], c["accept"], c["crises"], c["monte_carlo"]
+    r = r.dropna()
+    metrics.set_periods(ppy)
+
+    def ev(x):
+        return {"full": stats(x, ppy), "crises": crisis_table(x, crises)}
+
+    def apply(sc):
+        sc = sc.reindex(r.index).fillna(1.0)
+        return r * sc - sc.diff().abs().fillna(0) * cps
+
+    base = ev(r)
+    base["mc"] = monte_carlo(r, mc, None)
+    variants: dict[str, list] = {}
+    for a, b in tests.get("dd_brake", []):
+        variants.setdefault("dd_brake", []).append(((a, b), apply(dd_brake_scale(r, a, b))))
+    for x in tests.get("vol_target", []):
+        variants.setdefault("vol_target", []).append((x, apply(vol_target_scale(r, x, ppy))))
+    for n in tests.get("equity_ma", []):
+        variants.setdefault("equity_ma", []).append((n, apply(equity_ma_scale(r, n, ppy))))
+    for x in tests.get("daily_limit", []):
+        variants.setdefault("daily_limit", []).append((x, apply(_daily_limit_series(r, x, ppy))))
+    for x in tests.get("market_guard", []):
+        sc = _market_guard_series(r, bench, x, ppy)
+        if sc is not None:
+            variants.setdefault("market_guard", []).append((x, apply(sc)))
+    out = {"market": market, "crises_covered": list(base["crises"]), "base": base, "tests": {}}
+    for name, lst in variants.items():
+        rows, ok_all = [], True
+        for thr, x in lst:
+            e = ev(x)
+            ok, chk = _judge(base["full"], base["crises"], e, acc)
+            ok_all &= ok
+            row = {"threshold": thr, **e, "checks": chk, "pass": ok}
+            if name == "dd_brake":
+                row["mc"] = monte_carlo(r, mc, thr)
+            rows.append(row)
+        out["tests"][name] = {"pass": bool(rows) and ok_all, "rows": rows}
+    return out
+
+
+NAMES_TR.update({"market_guard": "Piyasa çöküş bekçisi"})
+
+
+def markdown_series(st: dict) -> list[str]:
+    """Report section for a hypothesis (Turkish, phone-friendly)."""
+    b = st["base"]
+    L = ["", "## Kasa koruma (kriz testi, teşhis)", "",
+         f"Piyasa: **{st['market']}**. Kapsanan krizler: {', '.join(st['crises_covered']) or 'yok (veri kısa)'}. "
+         "Eşikler ve kabul kuralları `config/protection.yaml` içinde, sonuçlardan önce yazıldı. "
+         "Bu bölüm stratejiyi DEĞİŞTİRMEZ. Bir kuralı kullanmak için hipoteze `overlays:` olarak ekleyin.", "",
+         f"Korumasız (tüm geçmiş): CAGR {b['full']['cagr']:+.1%}, Sharpe {b['full']['sharpe']}, "
+         f"maks. düşüş {b['full']['max_dd']:.1%}" + (f", MC P(≤−%50) {b['mc']['p_ruin']:.1%}" if b.get("mc") else ""), "",
+         "| Kriz | Getiri | Maks. düşüş |", "|---|---|---|"]
+    for k, v in b["crises"].items():
+        L.append(f"| {k} | {v['ret']:+.1%} | {v['max_dd']:.1%} |")
+    L += ["", "| Kural | Sonuç (tüm eşikler) | Eşik: krizlerde daha iyi · Sharpe · maks. düşüş |", "|---|---|---|"]
+    for name, v in st["tests"].items():
+        det = " / ".join(f"{r['threshold']}: {r['checks']['crises_better']} · {r['full']['sharpe']} · {r['full']['max_dd']:.0%}"
+                         for r in v["rows"])
+        L.append(f"| {NAMES_TR.get(name, name)} | {'✅ geçti' if v['pass'] else '❌ geçmedi'} | {det} |")
+    return L

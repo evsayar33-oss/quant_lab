@@ -60,6 +60,8 @@ def record(hid: str, meta: dict, report: dict, targets: dict, oos_csv: str | Non
         "trade_stats": report["trade_stats"],
         "regimes": report["regimes"],
         "robustness": report.get("robustness"),
+        "protection_rules_passed": [k for k, v in ((report.get("protection") or {}).get("tests") or {}).items()
+                                    if v.get("pass")],
         "recommended_overlay": (report.get("studies") or {}).get("overlays", {}).get("best_by_calmar"),
         "kelly_fraction": (report.get("trade_stats") or {}).get("kelly_fraction"),
         "oos_csv": oos_csv,

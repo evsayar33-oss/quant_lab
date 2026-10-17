@@ -122,6 +122,9 @@ def report_md(hid: str, spec: dict, rep: dict, charts: dict) -> str:
         if "overlays" in st:
             L.append(f"- Portfolio overlays (vol target, drawdown brake, equity-curve filter): `{_fmt_dict(st['overlays'])}`")
         L.append("> Studies are in-sample diagnostics. To use a better exit, register it (exits: [...]) and let the gate judge it.")
+    if rep.get("protection") and not rep["protection"].get("error"):
+        from lab import protect
+        L += protect.markdown_series(rep["protection"])
     L += ["", "## Walk-forward windows", *[f"- {w['test_start']} → {w['test_end']}: IS {w['is_sharpe']} / OOS {w['oos_sharpe']} — `{w['variant']}`" for w in rep["walk_forward"][-12:]],
           "", "## Best variants (full sample, reference only)",
           *[f"- {r['variant']}: Sharpe {r['sharpe']}" for r in rep["full_sample_top"][:10]],
@@ -379,6 +382,7 @@ def main() -> None:
     ap.add_argument("--timeframe", default="1d", help="1h | 4h | 1d | 1w | 1mo")
     ap.add_argument("--filters", default="none")
     ap.add_argument("--exits", default="")
+    ap.add_argument("--overlays", default="", help="opt-in portfolio overlays: all | vt15,dd20")
     ap.add_argument("--side", default="long")
     ap.add_argument("--scan", action="store_true")
     ap.add_argument("--families", default="all")
@@ -478,6 +482,8 @@ def main() -> None:
                          "exits": "all" if a.exits == "all" else ([int(x) for x in a.exits.split(",")] if a.exits else None)})
         else:
             spec["strategy"] = a.strategy or "xs_momentum"
+        if a.overlays:
+            spec["overlays"] = "all" if a.overlays == "all" else a.overlays.split(",")
         hid = "SYN" if a.synthetic else f"ADHOC_{date.today():%Y%m%d}"
         results[hid] = run_one(hid, spec, write_registry=False, synthetic=a.synthetic)
     else:
