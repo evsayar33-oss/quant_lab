@@ -33,10 +33,11 @@ class Variant:
 
 
 class StrategyCandidate:
-    def __init__(self, name: str):
+    def __init__(self, name: str, overlays=None):
         self.strat = get_strategy(name)
         self.name = name
         self.source = self.strat.source
+        self.overlays = list(overlays or [])
 
     def variants(self) -> list[Variant]:
         pts = rules.grid_points(self.strat.grid)
@@ -48,7 +49,7 @@ class StrategyCandidate:
         return overlays.apply(res, v.params["_overlay"], p.ppy, costs) if v.params.get("_overlay") else res
 
     def overlay_variants(self, seeds: list[Variant]) -> list[Variant]:
-        return _overlay_variants(seeds)
+        return _overlay_variants(seeds, self.overlays)
 
     def targets(self, p: Panel, v: Variant) -> dict:
         w = self.strat(p, **{k: x for k, x in v.params.items() if not k.startswith("_")}).iloc[-1]
@@ -64,7 +65,7 @@ class RuleCandidate:
 
     def __init__(self, rule: str, filters=("none",), exits=None, side: str = "long",
                  max_positions: int | None = None, staged: bool = True, stage2_top: int = 3,
-                 sizes=None, confirm: str | None = None, confirm_within=(0, 3), confirm_params=None):
+                 sizes=None, confirm: str | None = None, confirm_within=(0, 3), confirm_params=None, overlays=None):
         self.rule = rules.RULES[rule]
         self.name = rule
         self.source = self.rule.source
@@ -76,6 +77,7 @@ class RuleCandidate:
         self.stage2_top = stage2_top
         self.sizes = list(sizes) if sizes is not None else list(range(len(SIZE_GRID)))
         self.max_variants = 1500
+        self.overlays = list(overlays or [])
         self.confirm = rules.RULES[confirm] if confirm else None
         self.confirm_within = list(confirm_within) if isinstance(confirm_within, (list, tuple)) else [confirm_within]
         # confirmation rule: its own grid is swept unless fixed params are given
@@ -140,7 +142,7 @@ class RuleCandidate:
         return overlays.apply(res, v.params["_overlay"], p.ppy, costs) if v.params.get("_overlay") else res
 
     def overlay_variants(self, seeds: list[Variant]) -> list[Variant]:
-        return _overlay_variants(seeds)
+        return _overlay_variants(seeds, self.overlays)
 
     def targets(self, p: Panel, v: Variant) -> dict:
         res = self.run(p, v, Costs())
@@ -156,13 +158,14 @@ class RuleCandidate:
         }
 
 
-def _overlay_variants(seeds: list[Variant]) -> list[Variant]:
-    """Stage 4: every portfolio overlay on top of the best variants (counted as trials)."""
+def _overlay_variants(seeds: list[Variant], kinds: list[str]) -> list[Variant]:
+    """Stage 4: the chosen portfolio overlays on top of the best variants (counted as trials).
+    OPT-IN: a hypothesis lists them (`overlays: all` or `[vt15, dd20]`); none by default."""
     out = []
     for sd in seeds:
         if sd.params.get("_overlay"):
             continue
-        for k in overlays.KINDS:
+        for k in kinds:
             out.append(Variant(f"{sd.key}|overlay={k}", {**sd.params, "_overlay": k}))
     return out
 
@@ -205,8 +208,22 @@ def run_all(cand, p: Panel, variants: list[Variant], costs: Costs, workers: int 
     return out, errors
 
 
+def _overlay_list(spec: dict) -> list[str]:
+    o = spec.get("overlays")
+    if o in (None, "", "none", []):
+        return []
+    if o == "all":
+        return list(overlays.KINDS)
+    bad = [k for k in o if k not in overlays.KINDS]
+    if bad:
+        raise ValueError(f"unknown overlays {bad}; known: {overlays.KINDS}")
+    return list(o)
+
+
 def from_spec(spec: dict):
-    """Build a candidate from a hypotheses/registry.yaml entry."""
+    """Build a candidate from a hypotheses/registry.yaml entry.
+    Exits and overlays are OPT-IN: without `exits:` only the rule's own exit (#0) is used; without
+    `overlays:` no overlay is tried. `exits: all` / `overlays: all` search every one (all counted as trials)."""
     if "rule" in spec:
         filters = spec.get("filters", ["none"])
         if filters == "all":
@@ -214,13 +231,16 @@ def from_spec(spec: dict):
         exits = spec.get("exits")
         if exits == "all":
             exits = list(range(len(EXIT_GRID)))
+        elif exits in (None, "", []):
+            exits = [0]                       # opt-in: the rule's own exit only
         sizes = spec.get("sizes")
         if sizes == "all":
             sizes = None
         return RuleCandidate(spec["rule"], filters, exits, spec.get("side", "long"),
                              spec.get("max_positions"), spec.get("staged", True), spec.get("stage2_top", 3), sizes,
-                             spec.get("confirm"), spec.get("confirm_within", [0, 3]), spec.get("confirm_params"))
-    return StrategyCandidate(spec["strategy"])
+                             spec.get("confirm"), spec.get("confirm_within", [0, 3]), spec.get("confirm_params"),
+                             _overlay_list(spec))
+    return StrategyCandidate(spec["strategy"], _overlay_list(spec))
 
 
 __all__ = ["StrategyCandidate", "RuleCandidate", "Variant", "run_all", "from_spec", "ExitCfg"]

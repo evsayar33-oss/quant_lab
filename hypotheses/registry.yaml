@@ -6,10 +6,14 @@
 #   strategy: <name>     weight strategy (factor / rotation / calendar)     -> python run.py --list
 #   rule: <name>         entry/exit rule run through the trade engine
 #       filters: [none, trend_sma200, ...] | all       entry filters to sweep
-#       exits:   [0, 1, 5] | all                       exit configs (indexes in run.py --list); default = all, staged
+#       exits:   [0, 1, 5] | all                       exit configs (indexes in run.py --list). OPT-IN:
+#                                                      default = [0] (the rule's own exit); all = every exit, staged
 #       side:    long | short | both
 #       max_positions: 10                              optional slot limit
 # Common: universe, for_system, start, status (active|retired), note, train_years, test_months
+#   overlays: [vt15, dd20] | all                       portfolio overlays to try (OPT-IN, default none)
+#   tickers: [SNX/USDT]                                test a subset of the universe
+#   protection_study: false                            skip the capital-protection diagnostic (default on)
 # Ids are never reused. Gate changes are logged in hypotheses/CHANGELOG.md.
 
 # ---------------------------------------------------------------- BIST
