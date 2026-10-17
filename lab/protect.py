@@ -186,6 +186,65 @@ def leverage_table(cat: float, mult: float, mmr: float = 0.005) -> dict:
 
 
 # ------------------------------------------------------------------ the study
+def _growth_row(name: str, r: pd.Series, ppy: float, crises: dict, note: str = "") -> dict:
+    r = r.dropna()
+    first = r[r.ne(0)].index.min() if r.ne(0).any() else r.index[0]
+    r = r[r.index >= first]
+    metrics.set_periods(ppy)
+    eq = (1 + r).cumprod()
+    yr = (1 + r).groupby(r.index.year).prod() - 1
+    end = r.index[-1]
+
+    def last(y):
+        x = r[r.index > end - pd.Timedelta(days=365.25 * y)]
+        return round(float((1 + x).prod() - 1), 4) if (end - first).days >= 365.25 * y - 3 else None
+    cr = crisis_table(r, crises)
+    return {"name": name, "note": note, "start": str(first.date()), "end": str(end.date()),
+            "final_1000": round(1000 * float(eq.iloc[-1]), 0), "total": round(float(eq.iloc[-1] - 1), 4),
+            "cagr": round(metrics.cagr(r), 4), "sharpe": round(metrics.sharpe(r), 2),
+            "max_dd": round(metrics.max_drawdown(r), 4), "worst_year": round(float(yr.min()), 4) if len(yr) else None,
+            "worst_year_name": str(yr.idxmin()) if len(yr) else None, "ret_3y": last(3), "ret_5y": last(5),
+            "worst_crisis_dd": round(min((v["max_dd"] for v in cr.values()), default=0.0), 4),
+            "yearly": {str(k): round(float(v), 4) for k, v in yr.items()}}
+
+
+def portfolio_options(p, R, X, W, members, cols, coin_of, alive, cps, ppy, crises, btc) -> list[dict]:
+    """Candidate bot books side by side: how many strategies, how much leverage, which protection.
+    Top-N = highest backtest Sharpe, one strategy per coin (no single-coin book). Leverage multiplies
+    returns AND costs/funding; with a 2 ATR stop and <= 4x leverage a stop fires before liquidation."""
+    sharpe = {m["id"]: ((m.get("backtest") or {}).get("sharpe") or 0) for m in members if m["id"] in cols}
+    ranked, seen = [], set()
+    for i in sorted(sharpe, key=lambda k: -sharpe[k]):
+        if coin_of[i] not in seen:
+            ranked.append(i); seen.add(coin_of[i])
+
+    def book_of(ids, lev=1.0):
+        sub = [i for i in cols if i in ids]
+        Wn = base_weights(R[sub], alive[sub], coin_of, 1.0)
+        ones = pd.DataFrame(1.0, index=R.index, columns=sub)
+        return book(R[sub] * lev, X[sub], Wn, ones, cps * lev)
+
+    rows = []
+    all_ew = book(R, X, W, pd.DataFrame(1.0, index=R.index, columns=cols), cps)
+    rows.append(_growth_row(f"Hepsi eşit ağırlık ({len(cols)} strateji), 1x", all_ew, ppy, crises, "şu anki test portföyü"))
+    for n in (10, 5):
+        if len(ranked) >= n:
+            for lev in ((1.0, 2.0, 3.0) if n == 5 else (1.0,)):
+                rows.append(_growth_row(f"En iyi {n} (farklı coin), {lev:.0f}x", book_of(ranked[:n], lev), ppy, crises))
+    if len(ranked) >= 5:
+        b3 = book_of(ranked[:5], 3.0)
+        rows.append(_growth_row("En iyi 5, 3x + düşüş sigortası (−%10 yarım / −%20 nakit)",
+                                b3 * dd_brake_scale(b3, 0.10, 0.20) - dd_brake_scale(b3, 0.10, 0.20).diff().abs().fillna(0) * cps * 3,
+                                ppy, crises))
+        vt = vol_target_scale(b3, 0.35, ppy)
+        rows.append(_growth_row("En iyi 5, 3x + volatilite hedefi %35", b3 * vt - vt.diff().abs().fillna(0) * cps * 3,
+                                ppy, crises))
+    if btc is not None:
+        b = btc.reindex(R.index).ffill().pct_change(fill_method=None).fillna(0)
+        rows.append(_growth_row("Karşılaştırma: BTC al-tut", b, ppy, crises))
+    return rows
+
+
 def run(p: Panel, costs: Costs, cfg: dict, R: pd.DataFrame, X: pd.DataFrame, members: list[dict]) -> dict:
     pc = cfg.get("protection", {})
     ppy = p.ppy
@@ -272,6 +331,7 @@ def run(p: Panel, costs: Costs, cfg: dict, R: pd.DataFrame, X: pd.DataFrame, mem
     cat_mid = (tests.get("catastrophe_stop") or [0.12])[len(tests.get("catastrophe_stop") or [0.12]) // 2]
     res["leverage"] = leverage_table(cat_mid, pc.get("leverage_buffer_mult", 2.0))
     res["members"] = len(cols)
+    res["options"] = portfolio_options(p, R, X, W, members, cols, coin_of, alive, cps, ppy, crises, btc)
     res["series"] = {"base": base, **{f"{n}:{lst[len(lst) // 2][0]}": lst[len(lst) // 2][1]
                                       for n, lst in variants.items() if lst}}
     return res
@@ -313,6 +373,15 @@ def markdown(res: dict, cfg: dict) -> str:
     if res.get("catastrophe_members", 0) == 0:
         L += ["", "## Felaket stopu", "", "Test edilmedi: aktif üyelerin hepsinin çıkışında zaten bir stop var. "
               "Bar verisinde gap, stopu açılıştan doldurur; ikinci bir stop bir şey değiştirmez."]
+    if res.get("options"):
+        L += ["", "## Portföy seçenekleri ($1000 ile başlangıç, maliyet ve funding dahil)", "",
+              "| Portföy | Başlangıç | Bugün ($) | Yıllık | Sharpe | Maks. düşüş | En kötü yıl | Son 3y | Son 5y | En kötü kriz |",
+              "|---|---|---|---|---|---|---|---|---|---|"]
+        f = lambda v: "–" if v is None else f"{v:+.0%}"   # noqa: E731
+        for o in res["options"]:
+            L.append(f"| {o['name']} | {o['start']} | {o['final_1000']:,.0f} | {f(o['cagr'])} | {o['sharpe']} | "
+                     f"{o['max_dd']:.0%} | {f(o['worst_year'])} ({o['worst_year_name']}) | {f(o['ret_3y'])} | {f(o['ret_5y'])} | "
+                     f"{o['worst_crisis_dd']:.0%} |")
     lv = res["leverage"]
     L += ["", "## Likidasyon tamponu (matematik, test gerekmez)", "",
           f"Kural: likidasyon mesafesi ≥ {cfg['protection'].get('leverage_buffer_mult', 2.0)} × felaket stop mesafesi → "
@@ -329,6 +398,7 @@ def markdown(res: dict, cfg: dict) -> str:
 
 def summary_json(res: dict) -> dict:
     return {"members": res["members"], "base": res["base"], "leverage": res["leverage"],
+            "options": res.get("options", []),
             "catastrophe_members": res.get("catastrophe_members", 0),
             "tests": {k: {"pass": v["pass"], "rows": [{kk: vv for kk, vv in r.items()} for r in v["rows"]]}
                       for k, v in res["tests"].items()}}
