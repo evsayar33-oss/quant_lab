@@ -239,10 +239,100 @@ def portfolio_options(p, R, X, W, members, cols, coin_of, alive, cps, ppy, crise
         vt = vol_target_scale(b3, 0.35, ppy)
         rows.append(_growth_row("En iyi 5, 3x + volatilite hedefi %35", b3 * vt - vt.diff().abs().fillna(0) * cps * 3,
                                 ppy, crises))
+    # ---- weighting methods on the same top-10 / top-5 (DeMiguel et al. 2009: 1/N is hard to beat;
+    # inverse volatility and HRP (Lopez de Prado 2016) are the usual challengers). Weights use ONLY past
+    # returns (trailing 90 days, rebalanced monthly), so there is no look-ahead.
+    for n in (10, 5):
+        if len(ranked) >= n:
+            for meth in ("invvol", "hrp"):
+                rows.append(_growth_row(f"En iyi {n}, {'ters volatilite' if meth == 'invvol' else 'HRP'} ağırlık, 1x",
+                                        weighted_book(R, X, alive, ranked[:n], meth, cps, ppy), ppy, crises))
+    # ---- selection-luck test: random books of 5 strategies (one per coin) vs the top 5
+    if len(ranked) >= 6:
+        rows.append(random_books(R, X, alive, cols, coin_of, cps, ppy, crises, ranked[:5]))
     if btc is not None:
         b = btc.reindex(R.index).ffill().pct_change(fill_method=None).fillna(0)
         rows.append(_growth_row("Karşılaştırma: BTC al-tut", b, ppy, crises))
     return rows
+
+
+def weighted_book(R, X, alive, ids, method, cps, ppy) -> pd.Series:
+    sub = list(ids)
+    look = regime.bars(90, ppy)
+    r = R[sub].fillna(0.0)
+    months = r.index.to_period("M")
+    W = pd.DataFrame(0.0, index=r.index, columns=sub)
+    last_w = pd.Series(1.0 / len(sub), index=sub)
+    for i, (m, idx) in enumerate(pd.Series(r.index, index=r.index).groupby(months)):
+        start = idx.iloc[0]
+        hist = r[r.index < start].tail(look)
+        if len(hist) > look // 3:
+            if method == "invvol":
+                v = hist.std().replace(0, np.nan)
+                w = (1 / v).fillna(0)
+            else:
+                w = _hrp(hist)
+            if w.sum() > 0:
+                last_w = w / w.sum()
+        W.loc[idx.values] = last_w.values
+    W = W.where(alive[sub].reindex(W.index).fillna(False), 0.0)
+    ones = pd.DataFrame(1.0, index=R.index, columns=sub)
+    return book(R[sub], X[sub], W, ones, cps)
+
+
+def _hrp(hist: pd.DataFrame) -> pd.Series:
+    """Hierarchical risk parity (Lopez de Prado 2016): cluster by correlation, split risk top-down."""
+    from scipy.cluster.hierarchy import leaves_list, linkage
+    from scipy.spatial.distance import squareform
+    cov, corr = hist.cov(), hist.corr().fillna(0)
+    d = np.sqrt(np.clip((1 - corr.values) / 2, 0, None))
+    np.fill_diagonal(d, 0)
+    order = [hist.columns[i] for i in leaves_list(linkage(squareform(d, checks=False), "single"))]
+    w = pd.Series(1.0, index=order)
+    clusters = [order]
+    while clusters:
+        clusters = [c[j:k] for c in clusters for j, k in ((0, len(c) // 2), (len(c) // 2, len(c))) if len(c) > 1]
+        for a, b in zip(clusters[::2], clusters[1::2]):
+            va = _cvar(cov.loc[a, a]); vb = _cvar(cov.loc[b, b])
+            al = 1 - va / (va + vb) if va + vb > 0 else 0.5
+            w[a] *= al; w[b] *= 1 - al
+    return w.reindex(hist.columns).fillna(0)
+
+
+def _cvar(c: pd.DataFrame) -> float:
+    iv = 1 / np.diag(c.values).clip(min=1e-18)
+    iv /= iv.sum()
+    return float(iv @ c.values @ iv)
+
+
+def random_books(R, X, alive, cols, coin_of, cps, ppy, crises, top_ids, n_books: int = 300, k: int = 5) -> dict:
+    """Pick k strategies at random (one per coin) many times. Where does the top-k book rank?"""
+    rng = np.random.default_rng(17)
+    by_coin: dict[str, list] = {}
+    for i in cols:
+        by_coin.setdefault(coin_of[i], []).append(i)
+    coins = list(by_coin)
+    finals, dds, sharpes = [], [], []
+    metrics.set_periods(ppy)
+
+    def ew(ids):
+        Wn = base_weights(R[ids], alive[ids], coin_of, 1.0)
+        return book(R[ids], X[ids], Wn, pd.DataFrame(1.0, index=R.index, columns=ids), cps)
+    for _ in range(n_books):
+        pick = [by_coin[c][rng.integers(len(by_coin[c]))] for c in rng.choice(coins, size=min(k, len(coins)), replace=False)]
+        r = ew(pick)
+        r = r[r.ne(0).cummax()]
+        finals.append(float((1 + r).prod())); dds.append(metrics.max_drawdown(r)); sharpes.append(metrics.sharpe(r))
+    rt = ew(list(top_ids)); rt = rt[rt.ne(0).cummax()]
+    top_sr = metrics.sharpe(rt)
+    row = _growth_row(f"Rastgele {k} strateji (medyan of {n_books}), 1x", rt * 0, ppy, crises)
+    row.update({"name": f"Rastgele {k} strateji ({n_books} deneme), 1x — medyan",
+                "random": True, "final_1000": round(1000 * float(np.median(finals)), 0),
+                "sharpe": round(float(np.median(sharpes)), 2), "max_dd": round(float(np.median(dds)), 4),
+                "sharpe_p10_p90": [round(float(np.percentile(sharpes, 10)), 2), round(float(np.percentile(sharpes, 90)), 2)],
+                "top_sharpe": round(top_sr, 2), "top_sharpe_percentile": round(float(np.mean(np.array(sharpes) < top_sr)), 3),
+                "cagr": None, "worst_year": None, "ret_3y": None, "ret_5y": None, "worst_crisis_dd": 0.0})
+    return row
 
 
 def run(p: Panel, costs: Costs, cfg: dict, R: pd.DataFrame, X: pd.DataFrame, members: list[dict]) -> dict:
@@ -379,6 +469,11 @@ def markdown(res: dict, cfg: dict) -> str:
               "|---|---|---|---|---|---|---|---|---|---|"]
         f = lambda v: "–" if v is None else f"{v:+.0%}"   # noqa: E731
         for o in res["options"]:
+            if o.get("random"):
+                L.append(f"| {o['name']} | – | {o['final_1000']:,.0f} | – | {o['sharpe']} (p10–p90: {o['sharpe_p10_p90'][0]}–{o['sharpe_p10_p90'][1]}) | "
+                         f"{o['max_dd']:.0%} | – | – | – | – |")
+                L.append(f"|  | En iyi 5'in Sharpe'ı {o['top_sharpe']}: rastgele portföylerin %{o['top_sharpe_percentile'] * 100:.0f}'inden iyi |  |  |  |  |  |  |  |  |")
+                continue
             L.append(f"| {o['name']} | {o['start']} | {o['final_1000']:,.0f} | {f(o['cagr'])} | {o['sharpe']} | "
                      f"{o['max_dd']:.0%} | {f(o['worst_year'])} ({o['worst_year_name']}) | {f(o['ret_3y'])} | {f(o['ret_5y'])} | "
                      f"{o['worst_crisis_dd']:.0%} |")
