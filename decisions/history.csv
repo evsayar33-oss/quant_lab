@@ -76,3 +76,5 @@ validated_at,id,strategy,universe,timeframe,verdict,gate_sharpe,dsr,pbo,oos_cagr
 2026-10-17T09:05:07+00:00,H049,st_reversal,metals_etf,1d,WATCH,0.497,0.901,0.31,0.1165,-0.4997
 2026-10-17T09:05:09+00:00,H050,copper_gold_rotation,metals_etf,1w,WATCH,0.266,0.816,0.657,0.0516,-0.4708
 2026-10-17T09:05:11+00:00,H051,gold_silver_ratio,metals,1w,WATCH,0.273,0.631,0.63,0.0464,-0.4009
+2026-10-17T17:53:48+00:00,H052,core_dual_trend_vt,crypto_core,4h,ACCEPT,0.635,0.956,None,0.1855,-0.2437
+2026-10-17T17:53:52+00:00,H053,core_tsmom_vt,crypto_core,4h,WATCH,0.458,0.912,None,0.127,-0.2663
