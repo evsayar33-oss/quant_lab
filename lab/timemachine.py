@@ -79,7 +79,7 @@ def _stats(r: pd.Series, ppy: float) -> dict:
 def run(p_full: Panel, costs: Costs, cfg: dict, cutoff: str) -> dict:
     T = pd.Timestamp(cutoff)
     tf = cfg["timeframe"]
-    arena.use(f"timemachine/{tf}")
+    arena.use(f"timemachine/{T.date()}/{tf}")
     if arena.DIR.exists():
         shutil.rmtree(arena.DIR)                 # always a fresh replay
     arena.DIR.mkdir(parents=True, exist_ok=True)

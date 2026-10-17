@@ -295,7 +295,7 @@ def _arena_one(a, hyps, cfg) -> dict | None:
             print(o["error"]); return None
         md = timemachine.markdown(o)
         RESULTS.mkdir(exist_ok=True)
-        (RESULTS / f"timemachine_{tag}.md").write_text(md)
+        (RESULTS / f"timemachine_{a.timemachine}_{tag}.md").write_text(md)
         print(md)
         if a.telegram:
             f = lambda v: "–" if v is None else f"{v:+.0%}"   # noqa: E731
