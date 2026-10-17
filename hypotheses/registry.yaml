@@ -509,3 +509,49 @@
   status: active
   note: "H052 + 10% no-trade band. Passed the pre-registered variant test (Sharpe above H052 full + all 3 windows)."
 
+
+# ---------------------------------------------------------------- market-neutral cross-section (config/xsec.yaml)
+- id: H055
+  strategy: xsec_momentum
+  universe: binance_usdtm_top30
+  timeframe: 1d
+  for_system: h054_spot_bot
+  start: "2021-01-01"
+  status: active
+  note: "Long top / short bottom tercile of 14d return, weekly, inverse-vol, dollar neutral, 15% vol target. Liu-Tsyvinski-Wu 2022; Borri et al. 2026; Han-Kang-Ryu 2024 (14d/7d)."
+
+- id: H056
+  strategy: xsec_funding_carry
+  universe: binance_usdtm_top30
+  timeframe: 1d
+  for_system: h054_spot_bot
+  start: "2021-01-01"
+  status: active
+  note: "Long lowest / short highest tercile of 7d mean funding, weekly, inverse-vol, dollar neutral, 15% vol target. Carry literature (Koijen et al.); crypto evidence non-peer-reviewed."
+
+- id: H057
+  strategy: cash_and_carry_btc_eth
+  universe: crypto_core
+  timeframe: 1d
+  for_system: h054_spot_bot
+  start: "2020-01-01"
+  status: active
+  note: "Long spot + short perp BTC/ETH (config/core.yaml funding_arb). Schmeling-Schrimpf-Todorov (BIS WP 1087)."
+
+- id: H058
+  strategy: xsec_low_vol
+  universe: binance_usdtm_top30
+  timeframe: 1d
+  for_system: h054_spot_bot
+  start: "2021-01-01"
+  status: active
+  note: "Long lowest / short highest tercile of 90d volatility, weekly, inverse-vol, dollar neutral, 15% vol target. Pyo-Jang 2026 (FRL); Borri et al. 2026 (contra)."
+
+- id: H059
+  strategy: xsec_value_onchain
+  universe: crypto
+  timeframe: 1w
+  for_system: none
+  start: "2021-01-01"
+  status: untestable
+  note: "Price / new-address value factor (Borri et al. 2026). Needs on-chain address data; no free source in our stack."
