@@ -144,3 +144,11 @@ crypto_alts:         # strategy arena universe (Bitget USDT pairs). Coins with <
             UNI/USDT, AAVE/USDT, ETC/USDT, XLM/USDT, ALGO/USDT, SAND/USDT, MANA/USDT, AXS/USDT,
             CRV/USDT, SNX/USDT, THETA/USDT, IMX/USDT, INJ/USDT, OP/USDT, ARB/USDT, APT/USDT,
             SUI/USDT, PYTH/USDT, MINA/USDT]
+
+crypto_core:         # BTC + ETH only: the core study universe (perp costs incl. funding, for karma_perp_bot)
+  market: crypto
+  benchmark: BTC/USDT
+  costs: {commission: 0.0006, slippage: 0.0005, funding_annual: 0.08}
+  risk_free: ^IRX
+  macro: [^VIX]
+  tickers: [BTC/USDT, ETH/USDT]

@@ -480,3 +480,23 @@
   start: "2005-01-01"
   status: active
   note: "Scan lead: gold/silver ratio on weekly futures bars"
+
+# ---------------------------------------------------------------- crypto core (fixed literature rules, no grid)
+- id: H052
+  strategy: core_dual_trend_vt
+  universe: crypto_core
+  timeframe: 4h
+  for_system: karma_perp_bot
+  start: "2018-01-01"
+  status: active
+  note: "Core study winner: BTC+ETH long/cash, SMA200 + TSMOM(30/90/180d) + 40% vol target. Fixed settings, 1 trial."
+
+- id: H053
+  strategy: core_tsmom_vt
+  universe: crypto_core
+  timeframe: 4h
+  for_system: karma_perp_bot
+  start: "2018-01-01"
+  status: active
+  note: "Core study: BTC+ETH long/cash, TSMOM(30/90/180d) + 40% vol target. Fixed settings, 1 trial."
+

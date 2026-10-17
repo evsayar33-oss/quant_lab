@@ -137,3 +137,10 @@ books:
     - {id: B2, name: "En iyi 10, ters volatilite ağırlık, 1x", select: top, n: 10, leverage: 1, weighting: invvol}
     - {id: C, name: "En iyi 5, 3x", select: top, n: 5, leverage: 3}
     - {id: C2, name: "En iyi 5, 3x + volatilite hedefi %35", select: top, n: 5, leverage: 3, vol_target: 0.35}
+    # core rules (config/core.yaml, fixed settings), perp funding charged on exposure
+    - {id: K1, name: "Çekirdek: BTC+ETH SMA200 + momentum + vol hedefi", select: core, rule: dual_trend_vt,
+       assets: [BTC/USDT, ETH/USDT], funding_annual: 0.08,
+       params: {sma_days: 200, horizons_days: [30, 90, 180], target: 0.40, lookback_days: 30}}
+    - {id: K2, name: "Çekirdek: BTC+ETH momentum + vol hedefi", select: core, rule: tsmom_vt,
+       assets: [BTC/USDT, ETH/USDT], funding_annual: 0.08,
+       params: {horizons_days: [30, 90, 180], target: 0.40, lookback_days: 30}}

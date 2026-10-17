@@ -67,6 +67,11 @@ def book_returns(closes: dict, rule: str, prm: dict, ppy: float, cps: float) -> 
     return out[out.index >= first]
 
 
+def book_exposure(closes: dict, rule: str, prm: dict, ppy: float) -> pd.Series:
+    ex = [exposure(c, rule, prm, ppy).shift(1).fillna(0.0) for c in closes.values()]
+    return sum(ex) / len(ex)
+
+
 def stats(r: pd.Series, ppy: float) -> dict:
     metrics.set_periods(ppy)
     r = r.dropna()

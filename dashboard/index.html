@@ -138,7 +138,7 @@ function tabs(){document.querySelectorAll("nav button").forEach(b=>b.onclick=()=
 function defter(D){
   const B=D.books||[];
   if(!B.length){$("#defter").innerHTML='<div class="card empty">Bu zaman diliminde paper portföy yok (sadece 4h).</div>';return}
-  const rows=B.map(b=>`<tr><td><b>${esc(b.id)}</b> ${esc(b.name)}<div class="small muted">${b.members.length} strateji · ${b.leverage}x${b.vol_target?" · vol hedefi %"+Math.round(b.vol_target*100):""} · başlangıç ${b.created_at}</div></td>
+  const rows=B.map(b=>`<tr><td><b>${esc(b.id)}</b> ${esc(b.name)}<div class="small muted">${b.members.length?b.members.length+" strateji":"sabit kural (BTC+ETH)"} · ${b.leverage}x${b.vol_target?" · vol hedefi %"+Math.round(b.vol_target*100):""} · başlangıç ${b.created_at}</div></td>
     <td><b>$${Number(b.forward.balance_1000).toLocaleString("tr-TR",{maximumFractionDigits:0})}</b><div class="small ${cls(b.forward.ret)}">${pct(b.forward.ret)}</div></td>
     <td class="neg">${pct(b.forward.max_dd)}</td><td>${spark(b.spark_fwd)}</td></tr>`).join("");
   const bt=B.map(b=>`<tr><td>${esc(b.id)}</td><td>${pct(b.backtest.cagr,0)}</td><td>${num(b.backtest.sharpe)}</td><td class="neg">${pct(b.backtest.max_dd,0)}</td><td>${spark(b.spark_bt)}</td></tr>`).join("");

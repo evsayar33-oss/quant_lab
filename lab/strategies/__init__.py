@@ -205,6 +205,6 @@ def equal_weight(prices, freq):
     return rebalance(w.div(w.sum(axis=1).replace(0, np.nan), axis=0).fillna(0.0), freq)
 
 
-from lab.strategies import price_factors, fundamental_factors, advanced, metals  # noqa: E402,F401  (registers more)
+from lab.strategies import price_factors, fundamental_factors, advanced, metals, crypto_core  # noqa: E402,F401  (registers more)
 
 __all__ = ["REGISTRY", "get", "strategy", "Strategy", "vol_target"]

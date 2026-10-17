@@ -33,7 +33,10 @@ def ensure(path, ro: dict, cfg: dict) -> dict:
     for b in bc.get("list", []):
         if b["id"] in data["books"]:
             continue
-        ids = [m["id"] for m in active] if b.get("select") == "all" else ranked[: int(b.get("n", 5))]
+        if b.get("select") == "core":
+            ids = []
+        else:
+            ids = [m["id"] for m in active] if b.get("select") == "all" else ranked[: int(b.get("n", 5))]
         data["books"][b["id"]] = {**b, "members": ids, "created_at": _now()}
         changed = True
     if changed:
@@ -43,6 +46,14 @@ def ensure(path, ro: dict, cfg: dict) -> dict:
 
 
 def returns(book: dict, R: pd.DataFrame, X: pd.DataFrame, ro: dict, p, cps: float, mmr: float) -> pd.Series:
+    if book.get("select") == "core":       # a fixed core rule on its own assets (lab/core.py)
+        from lab import core
+        closes = {a: p.c[a] for a in book.get("assets", []) if a in p.columns}
+        if not closes:
+            return pd.Series(0.0, index=R.index)
+        r = core.book_returns(closes, book["rule"], dict(book.get("params") or {}), p.ppy, cps)
+        r = r - float(book.get("funding_annual", 0.0)) / p.ppy * core.book_exposure(closes, book["rule"], dict(book.get("params") or {}), p.ppy)
+        return r.reindex(R.index).fillna(0.0)
     ids = [i for i in book["members"] if i in R.columns]
     if not ids:
         return pd.Series(0.0, index=R.index)
