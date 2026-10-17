@@ -157,7 +157,8 @@ timemachine:
   min_inside: 2
 
 # Manual-trading signals sent to Telegram (owner's "way 2"). Information only: nothing is traded.
-# H052: target share of capital per coin; a message is sent when a target moves by >= min_change
-# (and in the daily summary). Apply at the next bar open. Status shown as the H052 gate verdict.
+# H054 (= H052 + 10% no-trade band, both ACCEPT; H054 trades less): target share of capital per coin.
+# A message is sent when a target moves by >= min_change (and in the daily summary). Apply at the next
+# bar open. Status shown as the gate verdict of that hypothesis.
 signals:
-  H052: {enabled: true, timeframe: 4h, assets: [BTC/USDT, ETH/USDT], min_change: 0.05}
+  H054: {enabled: true, timeframe: 4h, assets: [BTC/USDT, ETH/USDT], band: 0.10, min_change: 0.05}

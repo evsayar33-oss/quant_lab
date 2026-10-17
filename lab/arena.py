@@ -373,7 +373,7 @@ def run(p: Panel, costs: Costs, cfg: dict) -> dict:
             print(f"[arena] books failed: {e}")
     # ---- H052 manual-trading signal: target share of capital per coin (only on the H052 timeframe)
     h052 = None
-    sig_cfg = cfg.get("signals", {}).get("H052") or {}
+    sig_id, sig_cfg = next(iter((cfg.get("signals") or {}).items()), (None, {}))
     if sig_cfg.get("enabled") and cfg.get("timeframe") == sig_cfg.get("timeframe", "4h"):
         try:
             from lab import core as CORE
@@ -381,14 +381,16 @@ def run(p: Panel, costs: Costs, cfg: dict) -> dict:
             ccfg = _y.safe_load((ROOT / "config" / "core.yaml").read_text())
             prm = ccfg["rules"]["dual_trend_vt"]
             assets = [x for x in sig_cfg.get("assets", ["BTC/USDT", "ETH/USDT"]) if x in p.columns]
-            tgt = {x: round(float(CORE.exposure(p.c[x], "dual_trend_vt", prm, ppy).iloc[-1]) / len(assets), 3) for x in assets}
-            reg = _read(ROOT / "decisions" / "registry.json", {}).get("hypotheses", {}).get("H052", {})
+            band = float(sig_cfg.get("band", 0.0))
+            tgt = {x: round(float(CORE.apply_band(CORE.exposure(p.c[x], "dual_trend_vt", prm, ppy), band).iloc[-1]) / len(assets), 3)
+                   for x in assets}
+            reg = _read(ROOT / "decisions" / "registry.json", {}).get("hypotheses", {}).get(sig_id, {})
             prev = (st.get("h052") or {}) if isinstance(st, dict) else {}
             moves = {x: round(tgt[x] - prev.get(x, 0.0), 3) for x in assets}
-            h052 = {"targets": tgt, "verdict": reg.get("verdict"), "bar": str(end)}
+            h052 = {"id": sig_id, "targets": tgt, "verdict": reg.get("verdict"), "bar": str(end)}
             if any(abs(v) >= sig_cfg.get("min_change", 0.05) for v in moves.values()):
                 txt = ", ".join(f"{x.split('/')[0]} %{tgt[x] * 100:.0f} ({moves[x] * 100:+.0f})" for x in assets)
-                events.append(f"🎯 H052 [{reg.get('verdict', '?')}] hedef (kasanın %'si): {txt}; kalan nakit "
+                events.append(f"🎯 {sig_id} [{reg.get('verdict', '?')}] hedef (kasanın %'si): {txt}; kalan nakit "
                               f"%{(1 - sum(tgt.values())) * 100:.0f}. Bir sonraki bar açılışında uygulanır.")
                 stx = _read(STATE, {})
                 stx["h052"] = tgt
@@ -427,7 +429,7 @@ def telegram_text(out: dict, summary: bool) -> str:
         L.append(f"  nakit {sw['cash']:.0%}")
         if out.get("h052"):
             h = out["h052"]
-            L.append("🎯 H052 hedef: " + ", ".join(f"{k.split('/')[0]} %{v * 100:.0f}" for k, v in h["targets"].items())
+            L.append(f"🎯 {h.get('id')} hedef: " + ", ".join(f"{k.split('/')[0]} %{v * 100:.0f}" for k, v in h["targets"].items())
                      + f" · nakit %{(1 - sum(h['targets'].values())) * 100:.0f} [{h.get('verdict')}]")
         for b in out.get("books") or []:
             f = b["forward"]
