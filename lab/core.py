@@ -240,3 +240,91 @@ def markdown_variants(o: dict, cfg: dict) -> str:
                      f"{(v['windows'].get(c) or {}).get('sharpe')}/{(b['windows'].get(c) or {}).get('sharpe')}" for c in cut)
                  + f" | {'✅' if r['approved'] else '❌'} |")
     return "\n".join(L)
+
+
+def run_risk_levels(cfg: dict, panel_of) -> dict:
+    rl = cfg["risk_levels"]
+    cps = cfg["costs"]["commission"] + cfg["costs"]["slippage"]
+    fa = cfg["variants"].get("funding_annual", 0.0)
+    p = panel_of("4h", ["BTC/USDT", "ETH/USDT"])
+    closes = {a: p.c[a] for a in ["BTC/USDT", "ETH/USDT"] if a in p.columns}
+    rows, series = [], {}
+    for t in rl["targets"]:
+        prm = {**cfg["rules"]["dual_trend_vt"], "target": t}
+        r = book_returns(closes, "dual_trend_vt", prm, p.ppy, cps, rl.get("band", 0.10), fa)
+        series[t] = r
+        w = {c: stats(r[r.index > pd.Timestamp(c)], p.ppy) for c in cfg["cutoffs"]}
+        f = stats(r, p.ppy)
+        ok = f.get("max_dd", -1) >= rl["max_dd_floor"] and all((w[c] or {}).get("max_dd", -1) >= rl["max_dd_floor"] for c in w)
+        rows.append({"target": t, "full": f, "windows": w, "within_floor": bool(ok)})
+    allowed = [r["target"] for r in rows if r["within_floor"]]
+    return {"rows": rows, "chosen": max(allowed) if allowed else None, "series": series}
+
+
+def run_funding(cfg: dict, h054_daily: pd.Series | None) -> dict:
+    from lab import funding as F
+    fc = cfg["funding_arb"]
+    daily = {}
+    for sym in fc["assets"]:
+        try:
+            daily[sym] = F.daily_funding(F.load(sym, fc.get("start", "2020-01")))
+        except Exception as e:  # noqa: BLE001
+            print(f"[funding] {sym} failed: {e}")
+    if not daily:
+        return {"error": "no funding data"}
+    rows = []
+    for rule, prm in fc["rules"].items():
+        books = [F.book(d, rule, prm or {}, fc["hedge_share"], fc["cost_per_leg"]) for d in daily.values()]
+        r = F.combine(books)
+        row = {"rule": rule, "full": F.stats(r), "windows": {c: F.stats(r[r.index > pd.Timestamp(c)]) for c in cfg["cutoffs"]}}
+        if h054_daily is not None:
+            h = h054_daily.reindex(r.index).dropna()
+            rr = r.reindex(h.index).fillna(0.0)
+            combo = 0.5 * h + 0.5 * rr
+            row["corr_with_h054"] = round(float(np.corrcoef(h, rr)[0, 1]), 3) if len(h) > 30 else None
+            row["combo"] = {"full": F.stats(combo), "windows": {c: F.stats(combo[combo.index > pd.Timestamp(c)]) for c in cfg["cutoffs"]}}
+            row["h054"] = {"full": F.stats(h), "windows": {c: F.stats(h[h.index > pd.Timestamp(c)]) for c in cfg["cutoffs"]}}
+        acc = fc.get("accept", {})
+        ok = True
+        for c in cfg["cutoffs"]:
+            w = row["windows"].get(c) or {}
+            ok &= bool(w) and (w.get("final_1000", 0) > 1000 or not acc.get("positive_return", True))
+            ok &= w.get("max_dd", -1) >= acc.get("max_dd_floor", -0.05)
+            if acc.get("combo_beats_h054_sharpe", True) and row.get("combo"):
+                ok &= (row["combo"]["windows"].get(c) or {}).get("sharpe", -9) > (row["h054"]["windows"].get(c) or {}).get("sharpe", 9)
+        row["approved"] = bool(ok)
+        rows.append(row)
+    return {"rows": rows, "data": {k: [str(v.index[0].date()), str(v.index[-1].date())] for k, v in daily.items()}}
+
+
+def markdown_risk_funding(rl: dict, fu: dict, cfg: dict) -> str:
+    f = lambda v: "–" if v is None else f"{v:+.0%}"   # noqa: E731
+    cut = cfg["cutoffs"]
+    L = ["", "## H054 risk seviyeleri (kaldıraç yok; seçim kuralı önceden yazıldı)", "",
+         f"Kural: tüm geçmişte ve her ileri pencerede maks. düşüş ≥ {cfg['risk_levels']['max_dd_floor']:.0%} kalan EN YÜKSEK hedef.", "",
+         "| Vol hedefi | $1000 → | Yıllık | Sharpe | Maks. düşüş | " + " | ".join(f"{c[:7]} → $ / DD" for c in cut) + " | Sınırda |",
+         "|---|---|---|---|---|" + "---|" * len(cut) + "---|"]
+    for r in rl["rows"]:
+        fu_ = r["full"]
+        L.append(f"| %{r['target'] * 100:.0f} | {fu_.get('final_1000', 0):,.0f} | {f(fu_.get('cagr'))} | {fu_.get('sharpe')} | {f(fu_.get('max_dd'))} | "
+                 + " | ".join(f"{(r['windows'].get(c) or {}).get('final_1000', 0):,.0f} / {f((r['windows'].get(c) or {}).get('max_dd'))}" for c in cut)
+                 + f" | {'✅' if r['within_floor'] else '❌'} |")
+    L.append(f"\n**Seçilen:** {'%' + format(rl['chosen'] * 100, '.0f') if rl.get('chosen') else 'hiçbiri'}")
+    L += ["", "## Funding arbitrajı (spot long + perp short)", ""]
+    if fu.get("error"):
+        L.append(f"Veri alınamadı: {fu['error']}")
+        return "\n".join(L)
+    L.append(f"Veri (Binance, Bitget için vekil): {fu.get('data')}")
+    L += ["", "| Kural | $1000 → | Yıllık | Sharpe | Maks. düşüş | H054 ile korelasyon | 50/50 H054+arb Sharpe | H054 Sharpe | Onay |",
+          "|---|---|---|---|---|---|---|---|---|"]
+    for r in fu["rows"]:
+        fu_ = r["full"]
+        L.append(f"| {r['rule']} | {fu_.get('final_1000', 0):,.0f} | {f(fu_.get('cagr'))} | {fu_.get('sharpe')} | {f(fu_.get('max_dd'))} | "
+                 f"{r.get('corr_with_h054')} | {(r.get('combo') or {}).get('full', {}).get('sharpe')} | {(r.get('h054') or {}).get('full', {}).get('sharpe')} | "
+                 f"{'✅' if r['approved'] else '❌'} |")
+        for c in cut:
+            w, cw, hw = r["windows"].get(c) or {}, (r.get("combo") or {}).get("windows", {}).get(c) or {}, (r.get("h054") or {}).get("windows", {}).get(c) or {}
+            L.append(f"|  ↳ {c[:7]} → | {w.get('final_1000', 0):,.0f} | {f(w.get('cagr'))} | {w.get('sharpe')} | {f(w.get('max_dd'))} | | "
+                     f"{cw.get('sharpe')} (DD {f(cw.get('max_dd'))}) | {hw.get('sharpe')} (DD {f(hw.get('max_dd'))}) | |")
+    L += ["", "Sınırlar: spot–perp baz farkı ve Binance/Bitget farkı modellenmez; büyük yükselişte short perp için marjin eklemek gerekir."]
+    return "\n".join(L)

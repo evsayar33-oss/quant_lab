@@ -436,6 +436,14 @@ def do_core(a) -> None:
             vo = core.run_variants(cfg, _core_panel_loader(cfg, a.synthetic))
             o["variants"] = vo
             md += "\n" + core.markdown_variants(vo, cfg)
+            if cfg.get("risk_levels") or cfg.get("funding_arb"):
+                rl = core.run_risk_levels(cfg, _core_panel_loader(cfg, a.synthetic))
+                base = rl["series"].get(0.40)
+                h054_d = (1 + base).groupby(base.index.normalize()).prod() - 1 if base is not None else None
+                fu = core.run_funding(cfg, h054_d) if not a.synthetic else {"error": "synthetic run"}
+                o["risk_levels"] = {k: v for k, v in rl.items() if k != "series"}
+                o["funding_arb"] = fu
+                md += "\n" + core.markdown_risk_funding(rl, fu, cfg)
         RESULTS.mkdir(exist_ok=True)
         (RESULTS / f"core_{tf}.md").write_text(md)
         slim = {**o, "spark": {}}

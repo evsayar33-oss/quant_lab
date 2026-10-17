@@ -42,3 +42,30 @@ variants:
     beat_sharpe_full_and_all_windows: true
     max_extra_dd: 0.05
   funding_annual: 0.08     # perp funding on |exposure| (all variants, so the comparison is fair)
+
+# ---------------------------------------------------------------------------------------------
+# Risk levels for H054 (written 2026-10-17 BEFORE results). Same rule, only the vol target changes.
+# No leverage: exposure stays capped at 100%, so a higher target only adds exposure in calm markets.
+# This is a RISK choice, not an improvement: the report picks the HIGHEST target whose max drawdown
+# stays >= max_dd_floor on the full history AND in every forward window.
+risk_levels:
+  targets: [0.40, 0.60, 0.80]
+  band: 0.10
+  max_dd_floor: -0.40
+
+# Funding-rate arbitrage (cash-and-carry): long spot + short perp of the same coin, equal notional, so the
+# price move cancels and the book earns the funding the short side receives (pays it when funding < 0).
+# Data: Binance USDT-M funding history (free monthly files on data.binance.vision) as the proxy for Bitget.
+# Capital: `hedge_share` of capital is the hedged notional (spot), the rest is perp margin (1x on the short).
+funding_arb:
+  assets: [BTCUSDT, ETHUSDT]
+  start: "2020-01"
+  hedge_share: 0.5
+  cost_per_leg: 0.0011            # commission + slippage per side, 4 legs per round trip (spot+perp, in+out)
+  rules:
+    always_on: {}                 # hold the hedge all the time
+    positive_only: {enter_ann: 0.10, exit_ann: 0.0, lookback_days: 3}   # hold only while recent funding is high
+  accept:                         # a rule is APPROVED if in EVERY forward window (config `cutoffs`):
+    positive_return: true
+    max_dd_floor: -0.05
+    combo_beats_h054_sharpe: true # 50/50 with H054 has a higher Sharpe than H054 alone
