@@ -23,6 +23,9 @@ stage2:
     enabled: true
     top_families: 6        # confirmation rules: the most frequent S1-passing rule of each top family
     within: [0, 3, 5]      # confirmation on the same bar or within the last 3 / 5 bars
+    # 2026-10-18: SMC / divergence / pivot rules are also tried as confirmation for every candidate
+    extra_confirm: [smc_bos, smc_choch, smc_fvg, smc_order_block, smc_liquidity_sweep, smc_ote,
+                    rsi_divergence, macd_divergence, pivot_bounce]
   # Robust pick per candidate: score = min(own Sharpe, mean of neighbours). Filter/exit neighbours = same
   # filter with other exits + same exit with other filters; combo neighbours = the other windows.
   # S4 then needs BOTH the parameter plateau AND this neighbourhood to be >= 50% profitable.

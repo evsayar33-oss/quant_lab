@@ -660,3 +660,136 @@ def f_real(p):
     ok = r > r.rolling(100, min_periods=50).mean()
     m = pd.DataFrame(np.repeat(ok.values[:, None], p.c.shape[1], 1), index=p.index, columns=p.columns)
     return _b(m), _b(~m)
+
+
+# ================================================================ SMC / ICT family (added 2026-10-18)
+# Smart Money Concepts as defined by ICT (M. Huddleston) and coded in the open-source reference package
+# `smartmoneyconcepts` (github.com/joshyattridge/smart-money-concepts): swing structure, break of structure
+# (BOS), change of character (CHoCH), fair value gap (FVG), order block (OB), liquidity sweep and the
+# optimal trade entry (OTE) retracement. Academic evidence is close to none; these rules exist so the claim
+# can be tested. NO LOOK-AHEAD: a swing point at bar t-k is only known at bar t (k bars later), so every
+# level below is the last swing CONFIRMED up to close t.
+
+def _swings(p: Panel, k: int):
+    """Last confirmed swing high / low levels (known at t) and the previous distinct level."""
+    w = 2 * k + 1
+    hi_ok = p.h.shift(k) == p.h.rolling(w, min_periods=w).max()
+    lo_ok = p.l.shift(k) == p.l.rolling(w, min_periods=w).min()
+    sh = p.h.shift(k).where(hi_ok).ffill()
+    sl = p.l.shift(k).where(lo_ok).ffill()
+    sh_prev = sh.shift(1).where(sh != sh.shift(1)).ffill()
+    sl_prev = sl.shift(1).where(sl != sl.shift(1)).ffill()
+    return sh, sl, sh_prev, sl_prev
+
+
+def _since(ev: pd.DataFrame) -> pd.DataFrame:
+    """Bars since the last True (0 on the event bar, NaN before the first)."""
+    n = pd.DataFrame(np.arange(len(ev))[:, None].repeat(ev.shape[1], 1), ev.index, ev.columns)
+    return n - n.where(ev).ffill()
+
+
+@rule("smc_bos", "smc", {"k": [2, 3, 5, 8]}, "ICT break of structure; smartmoneyconcepts bos_choch")
+def smc_bos(p: Panel, k):
+    sh, sl, _, _ = _swings(p, k)
+    return Signals(_b(I.cross_up(p.c, sh)), _b(p.c < sl), _b(I.cross_down(p.c, sl)), _b(p.c > sh))
+
+
+@rule("smc_choch", "smc", {"k": [3, 5, 8]}, "ICT change of character (first break against the swing structure)")
+def smc_choch(p: Panel, k):
+    sh, sl, sh_prev, sl_prev = _swings(p, k)
+    down_struct, up_struct = sh < sh_prev, sl > sl_prev          # lower highs / higher lows
+    return Signals(_b(down_struct & I.cross_up(p.c, sh)), _b(p.c < sl),
+                   _b(up_struct & I.cross_down(p.c, sl)), _b(p.c > sh))
+
+
+@rule("smc_fvg", "smc", {"max_age": [10, 20, 40], "min_gap_atr": [0.0, 0.5]}, "ICT fair value gap retracement entry")
+def smc_fvg(p: Panel, max_age, min_gap_atr):
+    a = I.atr(p.h, p.l, p.c, 14)
+    bull = (p.l > p.h.shift(2)) & ((p.l - p.h.shift(2)) >= min_gap_atr * a)
+    bear = (p.h < p.l.shift(2)) & ((p.l.shift(2) - p.h) >= min_gap_atr * a)
+    b_top, b_bot = p.l.where(bull).ffill(), p.h.shift(2).where(bull).ffill()
+    s_bot, s_top = p.h.where(bear).ffill(), p.l.shift(2).where(bear).ffill()
+    ab, as_ = _since(_b(bull)), _since(_b(bear))
+    el = (ab >= 1) & (ab <= max_age) & (p.l <= b_top) & (p.c > b_bot)
+    es = (as_ >= 1) & (as_ <= max_age) & (p.h >= s_bot) & (p.c < s_top)
+    return Signals(_b(el), _b((p.c < b_bot) | bear), _b(es), _b((p.c > s_top) | bull))
+
+
+@rule("smc_order_block", "smc", {"k": [3, 5], "max_age": [20, 50]}, "ICT order block retest after a BOS")
+def smc_order_block(p: Panel, k, max_age):
+    sh, sl, _, _ = _swings(p, k)
+    bos_up, bos_dn = _b(I.cross_up(p.c, sh)), _b(I.cross_down(p.c, sl))
+    down_c, up_c = p.c < p.o, p.c > p.o
+    ob_hi = p.h.where(down_c).ffill().shift(1).where(bos_up).ffill()      # last bearish candle before the BOS
+    ob_lo = p.l.where(down_c).ffill().shift(1).where(bos_up).ffill()
+    os_hi = p.h.where(up_c).ffill().shift(1).where(bos_dn).ffill()
+    os_lo = p.l.where(up_c).ffill().shift(1).where(bos_dn).ffill()
+    au, ad = _since(bos_up), _since(bos_dn)
+    el = (au >= 1) & (au <= max_age) & (p.l <= ob_hi) & (p.c > ob_lo)
+    es = (ad >= 1) & (ad <= max_age) & (p.h >= os_lo) & (p.c < os_hi)
+    return Signals(_b(el), _b((p.c < ob_lo) | (p.c < sl)), _b(es), _b((p.c > os_hi) | (p.c > sh)))
+
+
+@rule("smc_liquidity_sweep", "smc", {"k": [3, 5, 10]}, "ICT liquidity sweep / stop hunt (Wyckoff spring/upthrust)")
+def smc_liquidity_sweep(p: Panel, k):
+    sh, sl, _, _ = _swings(p, k)
+    sw_lo = (p.l < sl.shift(1)) & (p.c > sl.shift(1))
+    sw_hi = (p.h > sh.shift(1)) & (p.c < sh.shift(1))
+    lo_ref = p.l.where(sw_lo).ffill()
+    hi_ref = p.h.where(sw_hi).ffill()
+    return Signals(_b(sw_lo), _b((p.c < lo_ref) | (p.c > sh)), _b(sw_hi), _b((p.c > hi_ref) | (p.c < sl)))
+
+
+@rule("smc_ote", "smc", {"k": [3, 5, 8], "fib_lo": [0.5, 0.618]}, "ICT optimal trade entry: retracement into the 50/61.8-79% zone of the last leg")
+def smc_ote(p: Panel, k, fib_lo):
+    sh, sl, sh_prev, sl_prev = _swings(p, k)
+    w = 2 * k + 1
+    t_hi = _since(_b(p.h.shift(k) == p.h.rolling(w, min_periods=w).max()))
+    t_lo = _since(_b(p.l.shift(k) == p.l.rolling(w, min_periods=w).min()))
+    up_leg, dn_leg = t_hi < t_lo, t_lo < t_hi              # last confirmed swing was the high -> bullish leg
+    rng = sh - sl
+    z_hi, z_lo = sh - fib_lo * rng, sh - 0.79 * rng          # discount zone of a bullish leg
+    s_lo, s_hi = sl + fib_lo * rng, sl + 0.79 * rng          # premium zone of a bearish leg
+    el = up_leg & (sl > sl_prev) & (p.l <= z_hi) & (p.c >= z_lo) & (p.c > p.o)
+    es = dn_leg & (sh < sh_prev) & (p.h >= s_lo) & (p.c <= s_hi) & (p.c < p.o)
+    return Signals(_b(el), _b((p.c > sh) | (p.c < z_lo)), _b(es), _b((p.c < sl) | (p.c > s_hi)))
+
+
+# ================================================================ divergence + pivot levels (added 2026-10-18)
+def _divergence(p: Panel, osc: pd.DataFrame, k: int):
+    """Regular divergence at a confirmed swing: price lower low + oscillator higher low (bull), and mirror."""
+    w = 2 * k + 1
+    lo_ok = p.l.shift(k) == p.l.rolling(w, min_periods=w).min()
+    hi_ok = p.h.shift(k) == p.h.rolling(w, min_periods=w).max()
+    pl, ol = p.l.shift(k).where(lo_ok), osc.shift(k).where(lo_ok)
+    ph, oh = p.h.shift(k).where(hi_ok), osc.shift(k).where(hi_ok)
+    pl_prev, ol_prev = pl.ffill().shift(1), ol.ffill().shift(1)
+    ph_prev, oh_prev = ph.ffill().shift(1), oh.ffill().shift(1)
+    bull = lo_ok & (pl < pl_prev) & (ol > ol_prev)
+    bear = hi_ok & (ph > ph_prev) & (oh < oh_prev)
+    return _b(bull), _b(bear)
+
+
+@rule("rsi_divergence", "divergence", {"n": [14], "k": [3, 5], "exit_level": [50, 70]}, "Wilder / Cardwell RSI regular divergence")
+def rsi_divergence(p: Panel, n, k, exit_level):
+    r = I.rsi(p.c, n)
+    bull, bear = _divergence(p, r, k)
+    return Signals(bull, _b(r > exit_level), bear, _b(r < 100 - exit_level))
+
+
+@rule("macd_divergence", "divergence", {"k": [3, 5], "fast": [12], "slow": [26]}, "Appel MACD histogram divergence")
+def macd_divergence(p: Panel, k, fast, slow):
+    m = I.macd(p.c, fast, slow, 9)
+    hist = m[2] if isinstance(m, tuple) else m
+    bull, bear = _divergence(p, hist, k)
+    return Signals(bull, _b(I.cross_down(hist, 0)), bear, _b(I.cross_up(hist, 0)))
+
+
+@rule("pivot_bounce", "levels", {"window": [1, 5, 20]}, "Floor-trader pivot points: bounce at S1/R1, target P")
+def pivot_bounce(p: Panel, window):
+    H, L, C = p.h.rolling(window).max().shift(1), p.l.rolling(window).min().shift(1), p.c.shift(1)
+    P = (H + L + C) / 3
+    S1, R1 = 2 * P - H, 2 * P - L
+    S2, R2 = P - (H - L), P + (H - L)
+    return Signals(_b((p.l <= S1) & (p.c > S1)), _b((p.c >= P) | (p.c < S2)),
+                   _b((p.h >= R1) & (p.c < R1)), _b((p.c <= P) | (p.c > R2)))

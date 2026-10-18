@@ -286,6 +286,11 @@ def run(p: Panel, costs: Costs, cfg: dict, workers: int | None = None) -> dict:
             fam_count[r["family"]][r["rule"]] += 1
         fams = sorted(fam_count, key=lambda f: -sum(fam_count[f].values()))[:top_fam]
         reps = {f: max(fam_count[f], key=fam_count[f].get) for f in fams}
+        # extra confirmation rules (config stage2.combos.extra_confirm): paired with EVERY candidate,
+        # same family allowed (e.g. SMC BOS + FVG), whether or not they passed stage 1 themselves
+        for r_x in (s2.get("combos", {}) or {}).get("extra_confirm", []) or []:
+            if r_x in rules.RULES:
+                reps[f"x:{r_x}"] = r_x
         centre = lambda rn: {k: v[len(v) // 2] for k, v in rules.RULES[rn].grid.items()}   # noqa: E731
         jobs, meta = [], {}
         for k in base:
@@ -300,7 +305,7 @@ def run(p: Panel, costs: Costs, cfg: dict, workers: int | None = None) -> dict:
                     jobs.append((tag, c, spec, side, costs)); meta[(c, tag)] = spec
             if use_combo:
                 for fam, r2 in reps.items():
-                    if fam == rows[k]["family"] or r2 == rn:
+                    if r2 == rn or (not fam.startswith("x:") and fam == rows[k]["family"]):
                         continue
                     for w in within:
                         tag = f"cb|{rn}|{r2}|{w}"
