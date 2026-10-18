@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-18T12:40:03+00:00",
- "data_end": "2026-10-18 08:00:00",
+ "updated_at": "2026-10-18T18:39:34+00:00",
+ "data_end": "2026-10-18 12:00:00",
  "universe": "crypto_alts",
  "timeframe": "4h",
  "usable": false,
@@ -118,9 +118,9 @@
  "forward": {
   "since": "2026-10-16",
   "days": 1,
-  "ret": -0.0027,
+  "ret": 0.0019,
   "sharpe": null,
-  "ew_ret": -0.004,
+  "ew_ret": -0.0022,
   "ew_sharpe": null,
   "max_dd": -0.0045
  },
@@ -269,9 +269,9 @@
    }
   },
   "ATOM/USDT": {
-   "now": "volatile",
-   "now_tr": "Volatil",
-   "since": "2026-10-09 00:00:00",
+   "now": "range",
+   "now_tr": "Yatay",
+   "since": "2026-10-18 12:00:00",
    "share": {
     "range": 0.683,
     "trend_up": 0.068,
@@ -320,7 +320,7 @@
     "range": 0.691,
     "trend_up": 0.062,
     "trend_down": 0.073,
-    "volatile": 0.174
+    "volatile": 0.173
    }
   },
   "ETC/USDT": {
@@ -452,7 +452,7 @@
     "range": 0.689,
     "trend_up": 0.073,
     "trend_down": 0.086,
-    "volatile": 0.152
+    "volatile": 0.153
    }
   },
   "ARB/USDT": {
