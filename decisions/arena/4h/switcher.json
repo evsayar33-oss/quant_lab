@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-18T18:39:34+00:00",
- "data_end": "2026-10-18 12:00:00",
+ "updated_at": "2026-10-19T01:03:01+00:00",
+ "data_end": "2026-10-18 20:00:00",
  "universe": "crypto_alts",
  "timeframe": "4h",
  "usable": false,
@@ -39,7 +39,7 @@
    "side": "both",
    "timeframe": "4h",
    "weight": 0.2,
-   "position": "flat",
+   "position": "short",
    "regime": "range"
   },
   {
@@ -117,12 +117,12 @@
  ],
  "forward": {
   "since": "2026-10-16",
-  "days": 1,
-  "ret": 0.0019,
+  "days": 2,
+  "ret": -0.0165,
   "sharpe": null,
-  "ew_ret": -0.0022,
+  "ew_ret": -0.0066,
   "ew_sharpe": null,
-  "max_dd": -0.0045
+  "max_dd": -0.0241
  },
  "regimes": {
   "BTC/USDT": {
@@ -273,7 +273,7 @@
    "now_tr": "Yatay",
    "since": "2026-10-18 12:00:00",
    "share": {
-    "range": 0.683,
+    "range": 0.684,
     "trend_up": 0.068,
     "trend_down": 0.081,
     "volatile": 0.167
@@ -295,7 +295,7 @@
    "now_tr": "Volatil",
    "since": "2026-10-08 20:00:00",
    "share": {
-    "range": 0.674,
+    "range": 0.673,
     "trend_up": 0.041,
     "trend_down": 0.075,
     "volatile": 0.21
@@ -361,10 +361,10 @@
    "now_tr": "Volatil",
    "since": "2026-10-17 12:00:00",
    "share": {
-    "range": 0.691,
+    "range": 0.69,
     "trend_up": 0.049,
     "trend_down": 0.099,
-    "volatile": 0.161
+    "volatile": 0.162
    }
   },
   "MANA/USDT": {
@@ -450,7 +450,7 @@
    "since": "2026-10-09 08:00:00",
    "share": {
     "range": 0.689,
-    "trend_up": 0.073,
+    "trend_up": 0.072,
     "trend_down": 0.086,
     "volatile": 0.153
    }
@@ -461,9 +461,9 @@
    "since": "2026-10-15 20:00:00",
    "share": {
     "range": 0.644,
-    "trend_up": 0.05,
+    "trend_up": 0.049,
     "trend_down": 0.093,
-    "volatile": 0.213
+    "volatile": 0.214
    }
   },
   "APT/USDT": {
@@ -473,7 +473,7 @@
    "share": {
     "range": 0.701,
     "trend_up": 0.041,
-    "trend_down": 0.084,
+    "trend_down": 0.083,
     "volatile": 0.174
    }
   },
@@ -482,7 +482,7 @@
    "now_tr": "Yatay",
    "since": "2026-10-10 16:00:00",
    "share": {
-    "range": 0.698,
+    "range": 0.699,
     "trend_up": 0.051,
     "trend_down": 0.071,
     "volatile": 0.179
