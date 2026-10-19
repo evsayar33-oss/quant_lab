@@ -150,11 +150,11 @@
     },
     "sharpe": 1.231,
     "max_dd": -0.3204,
-    "dsr": 0.038,
+    "dsr": 0.046,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    },
    "retired_at": "2024-05-31T00:00:00+00:00",
    "why": "227 gün sonra ileri Sharpe -0.01"
@@ -304,11 +304,11 @@
     },
     "sharpe": 1.027,
     "max_dd": -0.3284,
-    "dsr": 0.012,
+    "dsr": 0.015,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
@@ -456,11 +456,11 @@
     },
     "sharpe": 0.96,
     "max_dd": -0.2621,
-    "dsr": 0.012,
+    "dsr": 0.015,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    },
    "retired_at": "2025-08-31T00:00:00+00:00",
    "why": "684 gün sonra ileri Sharpe -0.17"
@@ -610,11 +610,11 @@
     },
     "sharpe": 0.941,
     "max_dd": -0.1335,
-    "dsr": 0.009,
+    "dsr": 0.012,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    },
    "retired_at": "2024-02-29T00:00:00+00:00",
    "why": "135 gün sonra ileri Sharpe -1.57"
@@ -764,11 +764,11 @@
     },
     "sharpe": 0.892,
     "max_dd": -0.2653,
-    "dsr": 0.007,
+    "dsr": 0.009,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
@@ -915,17 +915,140 @@
     },
     "sharpe": 0.798,
     "max_dd": -0.3285,
-    "dsr": 0.004,
+    "dsr": 0.006,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    },
    "retired_at": "2024-02-29T00:00:00+00:00",
    "why": "135 gün sonra ileri Sharpe -1.72"
   },
   {
    "id": "A0007",
+   "key": "TRX/USDT|down_days|n=3,hold_exit=1|x=28|both|1d|c=smc_fvg:max_age=20,min_gap_atr=0.5:3",
+   "coin": "TRX/USDT",
+   "rule": "down_days",
+   "params": {
+    "n": 3,
+    "hold_exit": 1
+   },
+   "exit_id": 28,
+   "filter": "none",
+   "confirm": {
+    "rule": "smc_fvg",
+    "params": {
+     "max_age": 20,
+     "min_gap_atr": 0.5
+    },
+    "within": 3
+   },
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "retired",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 0.3386,
+      "cagr": 0.1021,
+      "sharpe": 0.646,
+      "max_dd": -0.137,
+      "trades": 25,
+      "win_rate": 0.76,
+      "profit_factor": 2.434,
+      "perp": {
+       "1x": {
+        "final": 1032.37,
+        "ret": 0.0324,
+        "liquidations": 0,
+        "max_dd": -0.0093,
+        "trades": 25
+       },
+       "3x": {
+        "final": 1098.45,
+        "ret": 0.0985,
+        "liquidations": 0,
+        "max_dd": -0.028,
+        "trades": 25
+       },
+       "5x": {
+        "final": 1166.2,
+        "ret": 0.1662,
+        "liquidations": 0,
+        "max_dd": -0.0467,
+        "trades": 25
+       },
+       "10x": {
+        "final": 1089.07,
+        "ret": 0.0891,
+        "liquidations": 2,
+        "max_dd": -0.211,
+        "trades": 25
+       }
+      }
+     },
+     "5y": {
+      "no_data": true
+     },
+     "full": {
+      "start": "2019-02-21",
+      "years": 4.65,
+      "ret": 0.7766,
+      "cagr": 0.1315,
+      "sharpe": 0.813,
+      "max_dd": -0.1447,
+      "trades": 42,
+      "win_rate": 0.81,
+      "profit_factor": 2.591,
+      "perp": {
+       "1x": {
+        "final": 1064.99,
+        "ret": 0.065,
+        "liquidations": 0,
+        "max_dd": -0.0144,
+        "trades": 42
+       },
+       "3x": {
+        "final": 1204.3,
+        "ret": 0.2043,
+        "liquidations": 0,
+        "max_dd": -0.0432,
+        "trades": 42
+       },
+       "5x": {
+        "final": 1356.4,
+        "ret": 0.3564,
+        "liquidations": 0,
+        "max_dd": -0.072,
+        "trades": 42
+       },
+       "10x": {
+        "final": 1338.35,
+        "ret": 0.3384,
+        "liquidations": 4,
+        "max_dd": -0.211,
+        "trades": 42
+       }
+      }
+     }
+    },
+    "sharpe": 0.813,
+    "max_dd": -0.1447,
+    "dsr": 0.004,
+    "stage": "OK",
+    "why": "tüm adımlar geçti",
+    "tier": "B",
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   },
+   "retired_at": "2024-02-29T00:00:00+00:00",
+   "why": "135 gün sonra ileri Sharpe -1.40"
+  },
+  {
+   "id": "A0008",
    "key": "BTC/USDT|triple_ma|set=(5, 20, 50),kind=ema|x=37|both|1d|f=trend_sma200",
    "coin": "BTC/USDT",
    "rule": "triple_ma",
@@ -1073,17 +1196,17 @@
     },
     "sharpe": 0.726,
     "max_dd": -0.3957,
-    "dsr": 0.001,
+    "dsr": 0.002,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    },
    "retired_at": "2024-08-31T00:00:00+00:00",
    "why": "319 gün sonra ileri Sharpe -0.11"
   },
   {
-   "id": "A0008",
+   "id": "A0009",
    "key": "BTC/USDT|ichimoku_cloud|cfg=(9, 26, 52)|x=13|both|1d|f=low_vol",
    "coin": "BTC/USDT",
    "rule": "ichimoku_cloud",
@@ -1230,15 +1353,15 @@
     },
     "sharpe": 0.716,
     "max_dd": -0.2888,
-    "dsr": 0.001,
+    "dsr": 0.002,
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0009",
+   "id": "A0010",
    "key": "BTC/USDT|bb_squeeze|n=20,q=0.2,look=252|x=28|both|1d",
    "coin": "BTC/USDT",
    "rule": "bb_squeeze",
@@ -1387,13 +1510,13 @@
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    },
    "retired_at": "2025-04-30T00:00:00+00:00",
    "why": "561 gün sonra ileri Sharpe -0.01"
   },
   {
-   "id": "A0010",
+   "id": "A0011",
    "key": "BCH/USDT|ichimoku_cloud|cfg=(9, 26, 52)|x=37|both|1d|f=low_vol",
    "coin": "BCH/USDT",
    "rule": "ichimoku_cloud",
@@ -1544,13 +1667,13 @@
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    },
    "retired_at": "2024-02-29T00:00:00+00:00",
    "why": "135 gün sonra ileri Sharpe -3.04"
   },
   {
-   "id": "A0011",
+   "id": "A0012",
    "key": "BTC/USDT|atr_breakout|n=10,k=2.0|x=28|both|1d",
    "coin": "BTC/USDT",
    "rule": "atr_breakout",
@@ -1698,11 +1821,169 @@
     "stage": "OK",
     "why": "tüm adımlar geçti",
     "tier": "B",
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0012",
+   "id": "A0013",
+   "key": "ETH/USDT|smc_fvg|max_age=20,min_gap_atr=0.5|x=28|both|1d|c=force_index:n=13:5",
+   "coin": "ETH/USDT",
+   "rule": "smc_fvg",
+   "params": {
+    "max_age": 20,
+    "min_gap_atr": 0.5
+   },
+   "exit_id": 28,
+   "filter": "none",
+   "confirm": {
+    "rule": "force_index",
+    "params": {
+     "n": 13
+    },
+    "within": 5
+   },
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 1.3495,
+      "cagr": 0.3295,
+      "sharpe": 0.906,
+      "max_dd": -0.2854,
+      "trades": 17,
+      "win_rate": 0.294,
+      "profit_factor": 4.31,
+      "perp": {
+       "1x": {
+        "final": 1117.8,
+        "ret": 0.1178,
+        "liquidations": 0,
+        "max_dd": -0.0169,
+        "trades": 17
+       },
+       "3x": {
+        "final": 1368.63,
+        "ret": 0.3686,
+        "liquidations": 0,
+        "max_dd": -0.05,
+        "trades": 17
+       },
+       "5x": {
+        "final": 1637.34,
+        "ret": 0.6373,
+        "liquidations": 0,
+        "max_dd": -0.0823,
+        "trades": 17
+       },
+       "10x": {
+        "final": 2017.62,
+        "ret": 1.0176,
+        "liquidations": 2,
+        "max_dd": -0.2008,
+        "trades": 17
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 3.5227,
+      "cagr": 0.3524,
+      "sharpe": 0.987,
+      "max_dd": -0.2854,
+      "trades": 30,
+      "win_rate": 0.333,
+      "profit_factor": 3.962,
+      "perp": {
+       "1x": {
+        "final": 1212.19,
+        "ret": 0.2122,
+        "liquidations": 0,
+        "max_dd": -0.0169,
+        "trades": 30
+       },
+       "3x": {
+        "final": 1725.38,
+        "ret": 0.7254,
+        "liquidations": 0,
+        "max_dd": -0.05,
+        "trades": 30
+       },
+       "5x": {
+        "final": 2366.81,
+        "ret": 1.3668,
+        "liquidations": 0,
+        "max_dd": -0.0823,
+        "trades": 30
+       },
+       "10x": {
+        "final": 3888.54,
+        "ret": 2.8885,
+        "liquidations": 3,
+        "max_dd": -0.2008,
+        "trades": 30
+       }
+      }
+     },
+     "full": {
+      "start": "2018-07-24",
+      "years": 5.23,
+      "ret": 3.5227,
+      "cagr": 0.3343,
+      "sharpe": 0.965,
+      "max_dd": -0.2854,
+      "trades": 30,
+      "win_rate": 0.333,
+      "profit_factor": 3.962,
+      "perp": {
+       "1x": {
+        "final": 1212.19,
+        "ret": 0.2122,
+        "liquidations": 0,
+        "max_dd": -0.0169,
+        "trades": 30
+       },
+       "3x": {
+        "final": 1725.38,
+        "ret": 0.7254,
+        "liquidations": 0,
+        "max_dd": -0.05,
+        "trades": 30
+       },
+       "5x": {
+        "final": 2366.81,
+        "ret": 1.3668,
+        "liquidations": 0,
+        "max_dd": -0.0823,
+        "trades": 30
+       },
+       "10x": {
+        "final": 3888.54,
+        "ret": 2.8885,
+        "liquidations": 3,
+        "max_dd": -0.2008,
+        "trades": 30
+       }
+      }
+     }
+    },
+    "sharpe": 0.965,
+    "max_dd": -0.2854,
+    "dsr": 0.017,
+    "stage": "S6",
+    "why": "yılların %50'i kârlı",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0014",
    "key": "BTC/USDT|ma_cross|kind=ema,pair=(10, 50)|x=28|both|1d",
    "coin": "BTC/USDT",
    "rule": "ma_cross",
@@ -1849,15 +2130,15 @@
     },
     "sharpe": 0.503,
     "max_dd": -0.3442,
-    "dsr": 0.0,
+    "dsr": 0.001,
     "stage": "S6",
     "why": "yılların %50'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0013",
+   "id": "A0015",
    "key": "ETH/USDT|force_index|n=2|x=28|both|1d",
    "coin": "ETH/USDT",
    "rule": "force_index",
@@ -2000,26 +2281,27 @@
     },
     "sharpe": 0.781,
     "max_dd": -0.3573,
-    "dsr": 0.005,
+    "dsr": 0.006,
     "stage": "S5",
     "why": "1 bar geç girişte Sharpe'ın %32'i kalıyor",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0014",
-   "key": "TRX/USDT|down_days|n=3,hold_exit=1|x=13|both|1d|f=htf_week_sma10",
+   "id": "A0016",
+   "key": "TRX/USDT|rsi_divergence|n=14,k=3,exit_level=50|x=28|both|1d",
    "coin": "TRX/USDT",
-   "rule": "down_days",
+   "rule": "rsi_divergence",
    "params": {
-    "n": 3,
-    "hold_exit": 1
+    "n": 14,
+    "k": 3,
+    "exit_level": 50
    },
-   "exit_id": 13,
-   "filter": "htf_week_sma10",
+   "exit_id": 28,
+   "filter": "none",
    "confirm": null,
-   "stage_no": 2,
+   "stage_no": 1,
    "side": "both",
    "timeframe": "1d",
    "status": "control",
@@ -2029,41 +2311,41 @@
      "3y": {
       "start": "2020-10-16",
       "years": 3.0,
-      "ret": 0.55,
-      "cagr": 0.1573,
-      "sharpe": 0.687,
-      "max_dd": -0.1466,
-      "trades": 62,
-      "win_rate": 0.71,
-      "profit_factor": 1.724,
+      "ret": 0.1,
+      "cagr": 0.0323,
+      "sharpe": 0.256,
+      "max_dd": -0.2733,
+      "trades": 25,
+      "win_rate": 0.64,
+      "profit_factor": 1.308,
       "perp": {
        "1x": {
-        "final": 1051.88,
-        "ret": 0.0519,
+        "final": 1020.5,
+        "ret": 0.0205,
         "liquidations": 0,
-        "max_dd": -0.0152,
-        "trades": 62
+        "max_dd": -0.0236,
+        "trades": 25
        },
        "3x": {
-        "final": 1158.55,
-        "ret": 0.1586,
+        "final": 1055.19,
+        "ret": 0.0552,
         "liquidations": 0,
-        "max_dd": -0.0455,
-        "trades": 62
+        "max_dd": -0.0707,
+        "trades": 25
        },
        "5x": {
-        "final": 1268.31,
-        "ret": 0.2683,
-        "liquidations": 0,
-        "max_dd": -0.0758,
-        "trades": 62
+        "final": 1101.67,
+        "ret": 0.1017,
+        "liquidations": 1,
+        "max_dd": -0.1023,
+        "trades": 25
        },
        "10x": {
-        "final": 1284.87,
-        "ret": 0.2849,
+        "final": 1218.03,
+        "ret": 0.218,
         "liquidations": 5,
-        "max_dd": -0.3012,
-        "trades": 62
+        "max_dd": -0.2501,
+        "trades": 25
        }
       }
      },
@@ -2073,56 +2355,56 @@
      "full": {
       "start": "2019-02-21",
       "years": 4.65,
-      "ret": 1.0005,
-      "cagr": 0.1607,
-      "sharpe": 0.712,
-      "max_dd": -0.1737,
-      "trades": 92,
-      "win_rate": 0.707,
-      "profit_factor": 1.665,
+      "ret": 0.2776,
+      "cagr": 0.0541,
+      "sharpe": 0.332,
+      "max_dd": -0.2733,
+      "trades": 38,
+      "win_rate": 0.632,
+      "profit_factor": 1.434,
       "perp": {
        "1x": {
-        "final": 1083.52,
-        "ret": 0.0835,
+        "final": 1042.73,
+        "ret": 0.0427,
         "liquidations": 0,
-        "max_dd": -0.0175,
-        "trades": 92
+        "max_dd": -0.0236,
+        "trades": 38
        },
        "3x": {
-        "final": 1262.4,
-        "ret": 0.2624,
+        "final": 1122.64,
+        "ret": 0.1226,
         "liquidations": 0,
-        "max_dd": -0.053,
-        "trades": 92
+        "max_dd": -0.0707,
+        "trades": 38
        },
        "5x": {
-        "final": 1455.86,
-        "ret": 0.4559,
-        "liquidations": 0,
-        "max_dd": -0.0893,
-        "trades": 92
+        "final": 1216.04,
+        "ret": 0.216,
+        "liquidations": 1,
+        "max_dd": -0.1023,
+        "trades": 38
        },
        "10x": {
-        "final": 1531.58,
-        "ret": 0.5316,
-        "liquidations": 10,
-        "max_dd": -0.3012,
-        "trades": 92
+        "final": 1395.11,
+        "ret": 0.3951,
+        "liquidations": 7,
+        "max_dd": -0.2501,
+        "trades": 38
        }
       }
      }
     },
-    "sharpe": 0.712,
-    "max_dd": -0.1737,
-    "dsr": 0.004,
+    "sharpe": 0.332,
+    "max_dd": -0.2733,
+    "dsr": 0.0,
     "stage": "S5",
-    "why": "1 bar geç girişte Sharpe'ın %18'i kalıyor",
+    "why": "1 bar geç girişte Sharpe'ın %0'i kalıyor",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0015",
+   "id": "A0017",
    "key": "THETA/USDT|force_index|n=2|x=23|both|1d|f=regime_bench200",
    "coin": "THETA/USDT",
    "rule": "force_index",
@@ -2231,130 +2513,11 @@
     "stage": "S4",
     "why": "komşu ayarların %0'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0016",
-   "key": "TRX/USDT|force_index|n=2|x=28|both|1d|c=engulfing:trend_n=50:5",
-   "coin": "TRX/USDT",
-   "rule": "force_index",
-   "params": {
-    "n": 2
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": {
-    "rule": "engulfing",
-    "params": {
-     "trend_n": 50
-    },
-    "within": 5
-   },
-   "stage_no": 2,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 1.5787,
-      "cagr": 0.3714,
-      "sharpe": 1.098,
-      "max_dd": -0.2358,
-      "trades": 74,
-      "win_rate": 0.797,
-      "profit_factor": 2.169,
-      "perp": {
-       "1x": {
-        "final": 1115.59,
-        "ret": 0.1156,
-        "liquidations": 0,
-        "max_dd": -0.0226,
-        "trades": 74
-       },
-       "3x": {
-        "final": 1375.15,
-        "ret": 0.3752,
-        "liquidations": 0,
-        "max_dd": -0.0678,
-        "trades": 74
-       },
-       "5x": {
-        "final": 1696.89,
-        "ret": 0.6969,
-        "liquidations": 1,
-        "max_dd": -0.1062,
-        "trades": 74
-       },
-       "10x": {
-        "final": 1911.31,
-        "ret": 0.9113,
-        "liquidations": 9,
-        "max_dd": -0.2774,
-        "trades": 74
-       }
-      }
-     },
-     "5y": {
-      "no_data": true
-     },
-     "full": {
-      "start": "2019-02-21",
-      "years": 4.65,
-      "ret": 1.5962,
-      "cagr": 0.2276,
-      "sharpe": 0.765,
-      "max_dd": -0.2918,
-      "trades": 103,
-      "win_rate": 0.748,
-      "profit_factor": 1.731,
-      "perp": {
-       "1x": {
-        "final": 1128.09,
-        "ret": 0.1281,
-        "liquidations": 0,
-        "max_dd": -0.0288,
-        "trades": 103
-       },
-       "3x": {
-        "final": 1411.87,
-        "ret": 0.4119,
-        "liquidations": 0,
-        "max_dd": -0.0854,
-        "trades": 103
-       },
-       "5x": {
-        "final": 1586.7,
-        "ret": 0.5867,
-        "liquidations": 3,
-        "max_dd": -0.1879,
-        "trades": 103
-       },
-       "10x": {
-        "final": 1834.03,
-        "ret": 0.834,
-        "liquidations": 17,
-        "max_dd": -0.2774,
-        "trades": 103
-       }
-      }
-     }
-    },
-    "sharpe": 0.765,
-    "max_dd": -0.2918,
-    "dsr": null,
-    "stage": "S4",
-    "why": "komşu ayarların %0'i kârlı",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0017",
+   "id": "A0018",
    "key": "BTC/USDT|stoch_reversal|k=5,d=5,smooth=3,lo=25|x=13|both|1d|f=htf_week_sma10",
    "coin": "BTC/USDT",
    "rule": "stoch_reversal",
@@ -2504,11 +2667,169 @@
     "stage": "S4",
     "why": "komşu ayarların %0'i kârlı",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0018",
+   "id": "A0019",
+   "key": "LTC/USDT|force_index|n=2|x=28|both|1d|c=smc_order_block:k=5,max_age=50:3",
+   "coin": "LTC/USDT",
+   "rule": "force_index",
+   "params": {
+    "n": 2
+   },
+   "exit_id": 28,
+   "filter": "none",
+   "confirm": {
+    "rule": "smc_order_block",
+    "params": {
+     "k": 5,
+     "max_age": 50
+    },
+    "within": 3
+   },
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 0.7169,
+      "cagr": 0.1975,
+      "sharpe": 0.758,
+      "max_dd": -0.2028,
+      "trades": 45,
+      "win_rate": 0.667,
+      "profit_factor": 1.86,
+      "perp": {
+       "1x": {
+        "final": 1066.02,
+        "ret": 0.066,
+        "liquidations": 0,
+        "max_dd": -0.0202,
+        "trades": 45
+       },
+       "3x": {
+        "final": 1203.67,
+        "ret": 0.2037,
+        "liquidations": 0,
+        "max_dd": -0.0607,
+        "trades": 45
+       },
+       "5x": {
+        "final": 1348.46,
+        "ret": 0.3485,
+        "liquidations": 1,
+        "max_dd": -0.1006,
+        "trades": 45
+       },
+       "10x": {
+        "final": 1868.0,
+        "ret": 0.868,
+        "liquidations": 4,
+        "max_dd": -0.1747,
+        "trades": 45
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 1.1635,
+      "cagr": 0.1669,
+      "sharpe": 0.662,
+      "max_dd": -0.2969,
+      "trades": 67,
+      "win_rate": 0.642,
+      "profit_factor": 1.76,
+      "perp": {
+       "1x": {
+        "final": 1099.87,
+        "ret": 0.0999,
+        "liquidations": 0,
+        "max_dd": -0.0326,
+        "trades": 67
+       },
+       "3x": {
+        "final": 1314.75,
+        "ret": 0.3148,
+        "liquidations": 0,
+        "max_dd": -0.0959,
+        "trades": 67
+       },
+       "5x": {
+        "final": 1548.15,
+        "ret": 0.5481,
+        "liquidations": 1,
+        "max_dd": -0.1564,
+        "trades": 67
+       },
+       "10x": {
+        "final": 2686.71,
+        "ret": 1.6867,
+        "liquidations": 7,
+        "max_dd": -0.2396,
+        "trades": 67
+       }
+      }
+     },
+     "full": {
+      "start": "2018-08-06",
+      "years": 5.2,
+      "ret": 1.0585,
+      "cagr": 0.149,
+      "sharpe": 0.616,
+      "max_dd": -0.2969,
+      "trades": 68,
+      "win_rate": 0.632,
+      "profit_factor": 1.698,
+      "perp": {
+       "1x": {
+        "final": 1094.52,
+        "ret": 0.0945,
+        "liquidations": 0,
+        "max_dd": -0.0326,
+        "trades": 68
+       },
+       "3x": {
+        "final": 1295.56,
+        "ret": 0.2956,
+        "liquidations": 0,
+        "max_dd": -0.0959,
+        "trades": 68
+       },
+       "5x": {
+        "final": 1510.49,
+        "ret": 0.5105,
+        "liquidations": 1,
+        "max_dd": -0.1564,
+        "trades": 68
+       },
+       "10x": {
+        "final": 2555.99,
+        "ret": 1.556,
+        "liquidations": 7,
+        "max_dd": -0.2396,
+        "trades": 68
+       }
+      }
+     }
+    },
+    "sharpe": 0.616,
+    "max_dd": -0.2969,
+    "dsr": null,
+    "stage": "S4",
+    "why": "komşu ayarların %0'i kârlı",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0020",
    "key": "THETA/USDT|cmf_flow|n=10,th=0.2|x=0|both|1d|f=adx20",
    "coin": "THETA/USDT",
    "rule": "cmf_flow",
@@ -2618,11 +2939,11 @@
     "stage": "S2",
     "why": "PF 5.462, 1x maks. düşüş -54%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0019",
+   "id": "A0021",
    "key": "ETH/USDT|cmf_flow|n=10,th=0.1|x=0|both|1d|f=low_vol",
    "coin": "ETH/USDT",
    "rule": "cmf_flow",
@@ -2770,11 +3091,11 @@
     "stage": "S2",
     "why": "PF 3.829, 1x maks. düşüş -48%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0020",
+   "id": "A0022",
    "key": "ETH/USDT|psar_flip|cfg=(0.01, 0.1)|x=0|both|1d|f=trend_sma200",
    "coin": "ETH/USDT",
    "rule": "psar_flip",
@@ -2924,11 +3245,11 @@
     "stage": "S2",
     "why": "PF 3.999, 1x maks. düşüş -45%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0021",
+   "id": "A0023",
    "key": "ETC/USDT|price_ma|kind=hma,n=20|x=18|both|1d|f=low_vol",
    "coin": "ETC/USDT",
    "rule": "price_ma",
@@ -3076,11 +3397,11 @@
     "stage": "S2",
     "why": "PF 1.845, 1x maks. düşüş -56%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0022",
+   "id": "A0024",
    "key": "ETC/USDT|tsi_cross|cfg=(25, 13, 7)|x=0|both|1d",
    "coin": "ETC/USDT",
    "rule": "tsi_cross",
@@ -3231,11 +3552,11 @@
     "stage": "S2",
     "why": "PF 2.431, 1x maks. düşüş -68%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0023",
+   "id": "A0025",
    "key": "ETC/USDT|ppo_cross|cfg=(12, 26, 9)|x=28|both|1d",
    "coin": "ETC/USDT",
    "rule": "ppo_cross",
@@ -3386,11 +3707,11 @@
     "stage": "S2",
     "why": "PF 2.648, 1x maks. düşüş -75%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0024",
+   "id": "A0026",
    "key": "ETH/USDT|aroon_cross|n=14|x=0|both|1d|f=low_vol",
    "coin": "ETH/USDT",
    "rule": "aroon_cross",
@@ -3537,11 +3858,11 @@
     "stage": "S2",
     "why": "PF 3.43, 1x maks. düşüş -47%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0025",
+   "id": "A0027",
    "key": "ETC/USDT|cmf_flow|n=10,th=0.1|x=37|both|1d|f=htf_week_sma10",
    "coin": "ETC/USDT",
    "rule": "cmf_flow",
@@ -3689,11 +4010,131 @@
     "stage": "S2",
     "why": "PF 2.893, 1x maks. düşüş -68%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0026",
+   "id": "A0028",
+   "key": "XRP/USDT|engulfing|trend_n=0|x=28|both|1d|c=smc_order_block:k=5,max_age=50:5",
+   "coin": "XRP/USDT",
+   "rule": "engulfing",
+   "params": {
+    "trend_n": 0
+   },
+   "exit_id": 28,
+   "filter": "none",
+   "confirm": {
+    "rule": "smc_order_block",
+    "params": {
+     "k": 5,
+     "max_age": 50
+    },
+    "within": 5
+   },
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 7.6715,
+      "cagr": 1.0549,
+      "sharpe": 1.24,
+      "max_dd": -0.4918,
+      "trades": 54,
+      "win_rate": 0.389,
+      "profit_factor": 3.581,
+      "perp": {
+       "1x": {
+        "final": 1472.05,
+        "ret": 0.4721,
+        "liquidations": 0,
+        "max_dd": -0.0523,
+        "trades": 54
+       },
+       "3x": {
+        "final": 2722.18,
+        "ret": 1.7222,
+        "liquidations": 0,
+        "max_dd": -0.1503,
+        "trades": 54
+       },
+       "5x": {
+        "final": 4395.81,
+        "ret": 3.3958,
+        "liquidations": 1,
+        "max_dd": -0.2437,
+        "trades": 54
+       },
+       "10x": {
+        "final": 10971.91,
+        "ret": 9.9719,
+        "liquidations": 5,
+        "max_dd": -0.4453,
+        "trades": 54
+       }
+      }
+     },
+     "5y": {
+      "no_data": true
+     },
+     "full": {
+      "start": "2019-05-06",
+      "years": 4.45,
+      "ret": 13.2213,
+      "cagr": 0.816,
+      "sharpe": 1.17,
+      "max_dd": -0.4918,
+      "trades": 74,
+      "win_rate": 0.365,
+      "profit_factor": 3.376,
+      "perp": {
+       "1x": {
+        "final": 1547.46,
+        "ret": 0.5475,
+        "liquidations": 0,
+        "max_dd": -0.0523,
+        "trades": 74
+       },
+       "3x": {
+        "final": 3144.38,
+        "ret": 2.1444,
+        "liquidations": 0,
+        "max_dd": -0.1503,
+        "trades": 74
+       },
+       "5x": {
+        "final": 5539.81,
+        "ret": 4.5398,
+        "liquidations": 1,
+        "max_dd": -0.2437,
+        "trades": 74
+       },
+       "10x": {
+        "final": 16717.8,
+        "ret": 15.7178,
+        "liquidations": 5,
+        "max_dd": -0.4453,
+        "trades": 74
+       }
+      }
+     }
+    },
+    "sharpe": 1.17,
+    "max_dd": -0.4918,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 3.376, 1x maks. düşüş -49%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0029",
    "key": "BCH/USDT|trix_cross|n=9,signal=7|x=18|both|1d|f=low_vol",
    "coin": "BCH/USDT",
    "rule": "trix_cross",
@@ -3841,11 +4282,11 @@
     "stage": "S2",
     "why": "PF 2.46, 1x maks. düşüş -47%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0027",
+   "id": "A0030",
    "key": "BCH/USDT|tsi_cross|cfg=(25, 13, 7)|x=18|both|1d",
    "coin": "BCH/USDT",
    "rule": "tsi_cross",
@@ -3996,11 +4437,11 @@
     "stage": "S2",
     "why": "PF 1.96, 1x maks. düşüş -61%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0028",
+   "id": "A0031",
    "key": "ETC/USDT|rsi_midline|n=9,level=60|x=37|both|1d|f=htf_week_sma10",
    "coin": "ETC/USDT",
    "rule": "rsi_midline",
@@ -4148,11 +4589,11 @@
     "stage": "S2",
     "why": "PF 2.824, 1x maks. düşüş -62%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0029",
+   "id": "A0032",
    "key": "ETH/USDT|cci_breakout|n=40,level=100|x=0|both|1d|f=low_vol",
    "coin": "ETH/USDT",
    "rule": "cci_breakout",
@@ -4300,11 +4741,11 @@
     "stage": "S2",
     "why": "PF 5.239, 1x maks. düşüş -56%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0030",
+   "id": "A0033",
    "key": "XRP/USDT|vortex_cross|n=14|x=0|both|1d|f=low_vol",
    "coin": "XRP/USDT",
    "rule": "vortex_cross",
@@ -4413,11 +4854,11 @@
     "stage": "S2",
     "why": "PF 2.893, 1x maks. düşüş -44%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0031",
+   "id": "A0034",
    "key": "BCH/USDT|ma_cross|kind=hma,pair=(10, 30)|x=18|both|1d|f=adx20",
    "coin": "BCH/USDT",
    "rule": "ma_cross",
@@ -4568,11 +5009,11 @@
     "stage": "S2",
     "why": "PF 2.005, 1x maks. düşüş -62%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0032",
+   "id": "A0035",
    "key": "ETC/USDT|chaikin_osc|cfg=(3, 10)|x=28|both|1d|f=htf_week_sma10",
    "coin": "ETC/USDT",
    "rule": "chaikin_osc",
@@ -4722,11 +5163,11 @@
     "stage": "S2",
     "why": "PF 3.03, 1x maks. düşüş -71%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0033",
+   "id": "A0036",
    "key": "ETC/USDT|inside_bar|trend_n=50|x=37|both|1d",
    "coin": "ETC/USDT",
    "rule": "inside_bar",
@@ -4873,11 +5314,11 @@
     "stage": "S2",
     "why": "PF 2.294, 1x maks. düşüş -63%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0034",
+   "id": "A0037",
    "key": "ETC/USDT|ma_cross|kind=dema,pair=(5, 20)|x=23|both|1d",
    "coin": "ETC/USDT",
    "rule": "ma_cross",
@@ -5028,11 +5469,11 @@
     "stage": "S2",
     "why": "PF 2.255, 1x maks. düşüş -66%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0035",
+   "id": "A0038",
    "key": "XRP/USDT|macd_cross|cfg=(5, 35, 5),zero_filter=True|x=0|both|1d|f=low_vol",
    "coin": "XRP/USDT",
    "rule": "macd_cross",
@@ -5146,11 +5587,11 @@
     "stage": "S2",
     "why": "PF 3.237, 1x maks. düşüş -47%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0036",
+   "id": "A0039",
    "key": "ETH/USDT|ma_cross|kind=tema,pair=(20, 50)|x=0|both|1d|f=low_vol",
    "coin": "ETH/USDT",
    "rule": "ma_cross",
@@ -5301,11 +5742,11 @@
     "stage": "S2",
     "why": "PF 3.232, 1x maks. düşüş -49%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0037",
+   "id": "A0040",
    "key": "ETH/USDT|vwap_cross|n=50|x=0|both|1d|f=low_vol",
    "coin": "ETH/USDT",
    "rule": "vwap_cross",
@@ -5452,11 +5893,11 @@
     "stage": "S2",
     "why": "PF 3.764, 1x maks. düşüş -59%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0038",
+   "id": "A0041",
    "key": "LTC/USDT|stochrsi_reversal|n=21,lo=20|x=37|both|1d|f=htf_week_sma10",
    "coin": "LTC/USDT",
    "rule": "stochrsi_reversal",
@@ -5604,11 +6045,11 @@
     "stage": "S2",
     "why": "PF 2.169, 1x maks. düşüş -55%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0039",
+   "id": "A0042",
    "key": "ETC/USDT|roc_breakout|n=10,th=10|x=18|both|1d",
    "coin": "ETC/USDT",
    "rule": "roc_breakout",
@@ -5756,11 +6197,11 @@
     "stage": "S2",
     "why": "PF 1.967, 1x maks. düşüş -55%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0040",
+   "id": "A0043",
    "key": "BTC/USDT|rsi_midline|n=14,level=55|x=0|both|1d|f=low_vol",
    "coin": "BTC/USDT",
    "rule": "rsi_midline",
@@ -5908,11 +6349,11 @@
     "stage": "S2",
     "why": "PF 3.925, 1x maks. düşüş -46%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0041",
+   "id": "A0044",
    "key": "ETH/USDT|rsi_midline|n=9,level=55|x=13|both|1d|f=htf_week_sma10",
    "coin": "ETH/USDT",
    "rule": "rsi_midline",
@@ -6060,11 +6501,11 @@
     "stage": "S2",
     "why": "PF 1.818, 1x maks. düşüş -61%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0042",
+   "id": "A0045",
    "key": "BCH/USDT|macd_cross|cfg=(12, 26, 9),zero_filter=False|x=28|both|1d",
    "coin": "BCH/USDT",
    "rule": "macd_cross",
@@ -6216,11 +6657,11 @@
     "stage": "S2",
     "why": "PF 2.084, 1x maks. düşüş -80%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0043",
+   "id": "A0046",
    "key": "XRP/USDT|ma_cross|kind=dema,pair=(10, 50)|x=23|both|1d|f=low_vol",
    "coin": "XRP/USDT",
    "rule": "ma_cross",
@@ -6333,11 +6774,11 @@
     "stage": "S2",
     "why": "PF 3.306, 1x maks. düşüş -49%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0044",
+   "id": "A0047",
    "key": "XRP/USDT|tsi_cross|cfg=(40, 20, 10)|x=0|both|1d",
    "coin": "XRP/USDT",
    "rule": "tsi_cross",
@@ -6450,11 +6891,11 @@
     "stage": "S2",
     "why": "PF 2.751, 1x maks. düşüş -87%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0045",
+   "id": "A0048",
    "key": "BCH/USDT|wavetrend_reversal|n1=9,n2=26,lo=-40|x=18|both|1d",
    "coin": "BCH/USDT",
    "rule": "wavetrend_reversal",
@@ -6603,11 +7044,11 @@
     "stage": "S2",
     "why": "PF 2.727, 1x maks. düşüş -48%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0046",
+   "id": "A0049",
    "key": "BCH/USDT|psar_flip|cfg=(0.03, 0.3)|x=28|both|1d",
    "coin": "BCH/USDT",
    "rule": "psar_flip",
@@ -6757,11 +7198,11 @@
     "stage": "S2",
     "why": "PF 1.913, 1x maks. düşüş -83%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0047",
+   "id": "A0050",
    "key": "BCH/USDT|roc_breakout|n=10,th=5|x=37|both|1d|f=adx20",
    "coin": "BCH/USDT",
    "rule": "roc_breakout",
@@ -6909,11 +7350,11 @@
     "stage": "S2",
     "why": "PF 2.02, 1x maks. düşüş -76%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0048",
+   "id": "A0051",
    "key": "LTC/USDT|awesome_zero|fast=5,slow=34|x=13|both|1d|f=low_vol",
    "coin": "LTC/USDT",
    "rule": "awesome_zero",
@@ -7061,11 +7502,169 @@
     "stage": "S2",
     "why": "PF 2.555, 1x maks. düşüş -51%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0049",
+   "id": "A0052",
+   "key": "ETC/USDT|vwap_cross|n=10|x=28|both|1d|c=smc_fvg:max_age=20,min_gap_atr=0.5:5",
+   "coin": "ETC/USDT",
+   "rule": "vwap_cross",
+   "params": {
+    "n": 10
+   },
+   "exit_id": 28,
+   "filter": "none",
+   "confirm": {
+    "rule": "smc_fvg",
+    "params": {
+     "max_age": 20,
+     "min_gap_atr": 0.5
+    },
+    "within": 5
+   },
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 1.4159,
+      "cagr": 0.3419,
+      "sharpe": 0.768,
+      "max_dd": -0.6476,
+      "trades": 42,
+      "win_rate": 0.167,
+      "profit_factor": 3.059,
+      "perp": {
+       "1x": {
+        "final": 1273.07,
+        "ret": 0.2731,
+        "liquidations": 0,
+        "max_dd": -0.0862,
+        "trades": 42
+       },
+       "3x": {
+        "final": 1749.03,
+        "ret": 0.749,
+        "liquidations": 0,
+        "max_dd": -0.2387,
+        "trades": 42
+       },
+       "5x": {
+        "final": 2112.96,
+        "ret": 1.113,
+        "liquidations": 0,
+        "max_dd": -0.3679,
+        "trades": 42
+       },
+       "10x": {
+        "final": 2783.39,
+        "ret": 1.7834,
+        "liquidations": 3,
+        "max_dd": -0.567,
+        "trades": 42
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 6.2053,
+      "cagr": 0.4844,
+      "sharpe": 0.94,
+      "max_dd": -0.6476,
+      "trades": 74,
+      "win_rate": 0.257,
+      "profit_factor": 3.483,
+      "perp": {
+       "1x": {
+        "final": 1520.02,
+        "ret": 0.52,
+        "liquidations": 0,
+        "max_dd": -0.0862,
+        "trades": 74
+       },
+       "3x": {
+        "final": 2875.25,
+        "ret": 1.8753,
+        "liquidations": 0,
+        "max_dd": -0.2387,
+        "trades": 74
+       },
+       "5x": {
+        "final": 4609.87,
+        "ret": 3.6099,
+        "liquidations": 0,
+        "max_dd": -0.3679,
+        "trades": 74
+       },
+       "10x": {
+        "final": 10767.22,
+        "ret": 9.7672,
+        "liquidations": 4,
+        "max_dd": -0.567,
+        "trades": 74
+       }
+      }
+     },
+     "full": {
+      "start": "2018-09-28",
+      "years": 5.05,
+      "ret": 6.2053,
+      "cagr": 0.4784,
+      "sharpe": 0.935,
+      "max_dd": -0.6476,
+      "trades": 74,
+      "win_rate": 0.257,
+      "profit_factor": 3.483,
+      "perp": {
+       "1x": {
+        "final": 1520.02,
+        "ret": 0.52,
+        "liquidations": 0,
+        "max_dd": -0.0862,
+        "trades": 74
+       },
+       "3x": {
+        "final": 2875.25,
+        "ret": 1.8753,
+        "liquidations": 0,
+        "max_dd": -0.2387,
+        "trades": 74
+       },
+       "5x": {
+        "final": 4609.87,
+        "ret": 3.6099,
+        "liquidations": 0,
+        "max_dd": -0.3679,
+        "trades": 74
+       },
+       "10x": {
+        "final": 10767.22,
+        "ret": 9.7672,
+        "liquidations": 4,
+        "max_dd": -0.567,
+        "trades": 74
+       }
+      }
+     }
+    },
+    "sharpe": 0.935,
+    "max_dd": -0.6476,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 3.483, 1x maks. düşüş -65%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0053",
    "key": "BTC/USDT|ppo_cross|cfg=(12, 26, 9)|x=37|both|1d|f=htf_week_sma10",
    "coin": "BTC/USDT",
    "rule": "ppo_cross",
@@ -7216,11 +7815,321 @@
     "stage": "S2",
     "why": "PF 2.349, 1x maks. düşüş -42%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0050",
+   "id": "A0054",
+   "key": "ETH/USDT|smc_order_block|k=3,max_age=20|x=13|both|1d|f=trend_sma200",
+   "coin": "ETH/USDT",
+   "rule": "smc_order_block",
+   "params": {
+    "k": 3,
+    "max_age": 20
+   },
+   "exit_id": 13,
+   "filter": "trend_sma200",
+   "confirm": null,
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 2.6991,
+      "cagr": 0.5468,
+      "sharpe": 1.124,
+      "max_dd": -0.4844,
+      "trades": 48,
+      "win_rate": 0.333,
+      "profit_factor": 2.052,
+      "perp": {
+       "1x": {
+        "final": 1191.38,
+        "ret": 0.1914,
+        "liquidations": 0,
+        "max_dd": -0.0521,
+        "trades": 48
+       },
+       "3x": {
+        "final": 1609.41,
+        "ret": 0.6094,
+        "liquidations": 0,
+        "max_dd": -0.1491,
+        "trades": 48
+       },
+       "5x": {
+        "final": 2050.69,
+        "ret": 1.0507,
+        "liquidations": 1,
+        "max_dd": -0.2372,
+        "trades": 48
+       },
+       "10x": {
+        "final": 4206.28,
+        "ret": 3.2063,
+        "liquidations": 7,
+        "max_dd": -0.4232,
+        "trades": 48
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 4.3044,
+      "cagr": 0.3962,
+      "sharpe": 0.954,
+      "max_dd": -0.4844,
+      "trades": 69,
+      "win_rate": 0.319,
+      "profit_factor": 2.053,
+      "perp": {
+       "1x": {
+        "final": 1255.1,
+        "ret": 0.2551,
+        "liquidations": 0,
+        "max_dd": -0.0521,
+        "trades": 69
+       },
+       "3x": {
+        "final": 1863.68,
+        "ret": 0.8637,
+        "liquidations": 0,
+        "max_dd": -0.1491,
+        "trades": 69
+       },
+       "5x": {
+        "final": 2579.23,
+        "ret": 1.5792,
+        "liquidations": 1,
+        "max_dd": -0.2372,
+        "trades": 69
+       },
+       "10x": {
+        "final": 6422.86,
+        "ret": 5.4229,
+        "liquidations": 9,
+        "max_dd": -0.4232,
+        "trades": 69
+       }
+      }
+     },
+     "full": {
+      "start": "2018-07-24",
+      "years": 5.23,
+      "ret": 4.3044,
+      "cagr": 0.3756,
+      "sharpe": 0.933,
+      "max_dd": -0.4844,
+      "trades": 69,
+      "win_rate": 0.319,
+      "profit_factor": 2.053,
+      "perp": {
+       "1x": {
+        "final": 1255.1,
+        "ret": 0.2551,
+        "liquidations": 0,
+        "max_dd": -0.0521,
+        "trades": 69
+       },
+       "3x": {
+        "final": 1863.68,
+        "ret": 0.8637,
+        "liquidations": 0,
+        "max_dd": -0.1491,
+        "trades": 69
+       },
+       "5x": {
+        "final": 2579.23,
+        "ret": 1.5792,
+        "liquidations": 1,
+        "max_dd": -0.2372,
+        "trades": 69
+       },
+       "10x": {
+        "final": 6422.86,
+        "ret": 5.4229,
+        "liquidations": 9,
+        "max_dd": -0.4232,
+        "trades": 69
+       }
+      }
+     }
+    },
+    "sharpe": 0.933,
+    "max_dd": -0.4844,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 2.053, 1x maks. düşüş -48%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0055",
+   "key": "ETC/USDT|bollinger_breakout|n=20,k=2.5|x=28|both|1d|c=smc_bos:k=5:3",
+   "coin": "ETC/USDT",
+   "rule": "bollinger_breakout",
+   "params": {
+    "n": 20,
+    "k": 2.5
+   },
+   "exit_id": 28,
+   "filter": "none",
+   "confirm": {
+    "rule": "smc_bos",
+    "params": {
+     "k": 5
+    },
+    "within": 3
+   },
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 3.1339,
+      "cagr": 0.6051,
+      "sharpe": 0.981,
+      "max_dd": -0.6307,
+      "trades": 22,
+      "win_rate": 0.5,
+      "profit_factor": 3.062,
+      "perp": {
+       "1x": {
+        "final": 1325.82,
+        "ret": 0.3258,
+        "liquidations": 0,
+        "max_dd": -0.0756,
+        "trades": 22
+       },
+       "3x": {
+        "final": 2074.45,
+        "ret": 1.0744,
+        "liquidations": 1,
+        "max_dd": -0.21,
+        "trades": 22
+       },
+       "5x": {
+        "final": 3174.82,
+        "ret": 2.1748,
+        "liquidations": 3,
+        "max_dd": -0.2786,
+        "trades": 22
+       },
+       "10x": {
+        "final": 2912.28,
+        "ret": 1.9123,
+        "liquidations": 8,
+        "max_dd": -0.3214,
+        "trades": 22
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 7.5403,
+      "cagr": 0.5357,
+      "sharpe": 0.932,
+      "max_dd": -0.6307,
+      "trades": 38,
+      "win_rate": 0.474,
+      "profit_factor": 2.947,
+      "perp": {
+       "1x": {
+        "final": 1516.99,
+        "ret": 0.517,
+        "liquidations": 0,
+        "max_dd": -0.0756,
+        "trades": 38
+       },
+       "3x": {
+        "final": 2973.73,
+        "ret": 1.9737,
+        "liquidations": 1,
+        "max_dd": -0.21,
+        "trades": 38
+       },
+       "5x": {
+        "final": 5440.49,
+        "ret": 4.4405,
+        "liquidations": 3,
+        "max_dd": -0.2786,
+        "trades": 38
+       },
+       "10x": {
+        "final": 6861.03,
+        "ret": 5.861,
+        "liquidations": 15,
+        "max_dd": -0.4043,
+        "trades": 38
+       }
+      }
+     },
+     "full": {
+      "start": "2018-09-28",
+      "years": 5.05,
+      "ret": 7.5403,
+      "cagr": 0.529,
+      "sharpe": 0.927,
+      "max_dd": -0.6307,
+      "trades": 38,
+      "win_rate": 0.474,
+      "profit_factor": 2.947,
+      "perp": {
+       "1x": {
+        "final": 1516.99,
+        "ret": 0.517,
+        "liquidations": 0,
+        "max_dd": -0.0756,
+        "trades": 38
+       },
+       "3x": {
+        "final": 2973.73,
+        "ret": 1.9737,
+        "liquidations": 1,
+        "max_dd": -0.21,
+        "trades": 38
+       },
+       "5x": {
+        "final": 5440.49,
+        "ret": 4.4405,
+        "liquidations": 3,
+        "max_dd": -0.2786,
+        "trades": 38
+       },
+       "10x": {
+        "final": 6861.03,
+        "ret": 5.861,
+        "liquidations": 15,
+        "max_dd": -0.4043,
+        "trades": 38
+       }
+      }
+     }
+    },
+    "sharpe": 0.927,
+    "max_dd": -0.6307,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 2.947, 1x maks. düşüş -63%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0056",
    "key": "BTC/USDT|keltner_breakout|n=50,k=2.0|x=20|both|1d",
    "coin": "BTC/USDT",
    "rule": "keltner_breakout",
@@ -7368,11 +8277,11 @@
     "stage": "S2",
     "why": "PF 6.146, 1x maks. düşüş -53%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0051",
+   "id": "A0057",
    "key": "BCH/USDT|vwap_cross|n=50|x=23|both|1d|f=trend_sma200",
    "coin": "BCH/USDT",
    "rule": "vwap_cross",
@@ -7519,11 +8428,11 @@
     "stage": "S2",
     "why": "PF 2.77, 1x maks. düşüş -54%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0052",
+   "id": "A0058",
    "key": "ETC/USDT|cci_breakout|n=14,level=150|x=37|both|1d",
    "coin": "ETC/USDT",
    "rule": "cci_breakout",
@@ -7671,11 +8580,479 @@
     "stage": "S2",
     "why": "PF 2.119, 1x maks. düşüş -73%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0053",
+   "id": "A0059",
+   "key": "BCH/USDT|pivot_bounce|window=1|x=28|both|1d|f=low_vol",
+   "coin": "BCH/USDT",
+   "rule": "pivot_bounce",
+   "params": {
+    "window": 1
+   },
+   "exit_id": 28,
+   "filter": "low_vol",
+   "confirm": null,
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 1.7074,
+      "cagr": 0.3939,
+      "sharpe": 1.111,
+      "max_dd": -0.2468,
+      "trades": 198,
+      "win_rate": 0.616,
+      "profit_factor": 1.532,
+      "perp": {
+       "1x": {
+        "final": 1122.77,
+        "ret": 0.1228,
+        "liquidations": 0,
+        "max_dd": -0.0257,
+        "trades": 198
+       },
+       "3x": {
+        "final": 1399.88,
+        "ret": 0.3999,
+        "liquidations": 0,
+        "max_dd": -0.0767,
+        "trades": 198
+       },
+       "5x": {
+        "final": 1720.25,
+        "ret": 0.7203,
+        "liquidations": 0,
+        "max_dd": -0.1268,
+        "trades": 198
+       },
+       "10x": {
+        "final": 2813.13,
+        "ret": 1.8131,
+        "liquidations": 3,
+        "max_dd": -0.2475,
+        "trades": 198
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 4.0662,
+      "cagr": 0.3834,
+      "sharpe": 0.924,
+      "max_dd": -0.5376,
+      "trades": 330,
+      "win_rate": 0.585,
+      "profit_factor": 1.491,
+      "perp": {
+       "1x": {
+        "final": 1226.81,
+        "ret": 0.2268,
+        "liquidations": 0,
+        "max_dd": -0.0674,
+        "trades": 330
+       },
+       "3x": {
+        "final": 1794.52,
+        "ret": 0.7945,
+        "liquidations": 0,
+        "max_dd": -0.1923,
+        "trades": 330
+       },
+       "5x": {
+        "final": 2530.09,
+        "ret": 1.5301,
+        "liquidations": 0,
+        "max_dd": -0.3044,
+        "trades": 330
+       },
+       "10x": {
+        "final": 4994.49,
+        "ret": 3.9945,
+        "liquidations": 12,
+        "max_dd": -0.5528,
+        "trades": 330
+       }
+      }
+     },
+     "full": {
+      "start": "2018-08-22",
+      "years": 5.15,
+      "ret": 4.0662,
+      "cagr": 0.3701,
+      "sharpe": 0.91,
+      "max_dd": -0.5376,
+      "trades": 330,
+      "win_rate": 0.585,
+      "profit_factor": 1.491,
+      "perp": {
+       "1x": {
+        "final": 1226.81,
+        "ret": 0.2268,
+        "liquidations": 0,
+        "max_dd": -0.0674,
+        "trades": 330
+       },
+       "3x": {
+        "final": 1794.52,
+        "ret": 0.7945,
+        "liquidations": 0,
+        "max_dd": -0.1923,
+        "trades": 330
+       },
+       "5x": {
+        "final": 2530.09,
+        "ret": 1.5301,
+        "liquidations": 0,
+        "max_dd": -0.3044,
+        "trades": 330
+       },
+       "10x": {
+        "final": 4994.49,
+        "ret": 3.9945,
+        "liquidations": 12,
+        "max_dd": -0.5528,
+        "trades": 330
+       }
+      }
+     }
+    },
+    "sharpe": 0.91,
+    "max_dd": -0.5376,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 1.491, 1x maks. düşüş -54%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0060",
+   "key": "BCH/USDT|zscore_reversion|n=50,z=1.5|x=28|both|1d|c=pivot_bounce:window=5:5",
+   "coin": "BCH/USDT",
+   "rule": "zscore_reversion",
+   "params": {
+    "n": 50,
+    "z": 1.5
+   },
+   "exit_id": 28,
+   "filter": "none",
+   "confirm": {
+    "rule": "pivot_bounce",
+    "params": {
+     "window": 5
+    },
+    "within": 5
+   },
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 1.6684,
+      "cagr": 0.3872,
+      "sharpe": 1.003,
+      "max_dd": -0.3497,
+      "trades": 22,
+      "win_rate": 0.636,
+      "profit_factor": 2.781,
+      "perp": {
+       "1x": {
+        "final": 1124.59,
+        "ret": 0.1246,
+        "liquidations": 0,
+        "max_dd": -0.0275,
+        "trades": 22
+       },
+       "3x": {
+        "final": 1402.36,
+        "ret": 0.4024,
+        "liquidations": 0,
+        "max_dd": -0.0815,
+        "trades": 22
+       },
+       "5x": {
+        "final": 1718.1,
+        "ret": 0.7181,
+        "liquidations": 0,
+        "max_dd": -0.1343,
+        "trades": 22
+       },
+       "10x": {
+        "final": 987.93,
+        "ret": -0.0121,
+        "liquidations": 7,
+        "max_dd": -0.3663,
+        "trades": 22
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 4.1987,
+      "cagr": 0.3906,
+      "sharpe": 0.918,
+      "max_dd": -0.482,
+      "trades": 35,
+      "win_rate": 0.629,
+      "profit_factor": 2.969,
+      "perp": {
+       "1x": {
+        "final": 1233.33,
+        "ret": 0.2333,
+        "liquidations": 0,
+        "max_dd": -0.0282,
+        "trades": 35
+       },
+       "3x": {
+        "final": 1819.29,
+        "ret": 0.8193,
+        "liquidations": 0,
+        "max_dd": -0.0835,
+        "trades": 35
+       },
+       "5x": {
+        "final": 2606.37,
+        "ret": 1.6064,
+        "liquidations": 1,
+        "max_dd": -0.1343,
+        "trades": 35
+       },
+       "10x": {
+        "final": 1811.39,
+        "ret": 0.8114,
+        "liquidations": 11,
+        "max_dd": -0.3663,
+        "trades": 35
+       }
+      }
+     },
+     "full": {
+      "start": "2018-08-22",
+      "years": 5.15,
+      "ret": 4.1987,
+      "cagr": 0.377,
+      "sharpe": 0.904,
+      "max_dd": -0.482,
+      "trades": 35,
+      "win_rate": 0.629,
+      "profit_factor": 2.969,
+      "perp": {
+       "1x": {
+        "final": 1233.33,
+        "ret": 0.2333,
+        "liquidations": 0,
+        "max_dd": -0.0282,
+        "trades": 35
+       },
+       "3x": {
+        "final": 1819.29,
+        "ret": 0.8193,
+        "liquidations": 0,
+        "max_dd": -0.0835,
+        "trades": 35
+       },
+       "5x": {
+        "final": 2606.37,
+        "ret": 1.6064,
+        "liquidations": 1,
+        "max_dd": -0.1343,
+        "trades": 35
+       },
+       "10x": {
+        "final": 1811.39,
+        "ret": 0.8114,
+        "liquidations": 11,
+        "max_dd": -0.3663,
+        "trades": 35
+       }
+      }
+     }
+    },
+    "sharpe": 0.904,
+    "max_dd": -0.482,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 2.969, 1x maks. düşüş -48%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0061",
+   "key": "ETC/USDT|smc_fvg|max_age=20,min_gap_atr=0.0|x=28|both|1d|c=smc_ote:k=5,fib_lo=0.618:3",
+   "coin": "ETC/USDT",
+   "rule": "smc_fvg",
+   "params": {
+    "max_age": 20,
+    "min_gap_atr": 0.0
+   },
+   "exit_id": 28,
+   "filter": "none",
+   "confirm": {
+    "rule": "smc_ote",
+    "params": {
+     "k": 5,
+     "fib_lo": 0.618
+    },
+    "within": 3
+   },
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 3.4102,
+      "cagr": 0.6402,
+      "sharpe": 1.199,
+      "max_dd": -0.4029,
+      "trades": 23,
+      "win_rate": 0.348,
+      "profit_factor": 5.016,
+      "perp": {
+       "1x": {
+        "final": 1290.45,
+        "ret": 0.2904,
+        "liquidations": 0,
+        "max_dd": -0.0329,
+        "trades": 23
+       },
+       "3x": {
+        "final": 1950.35,
+        "ret": 0.9503,
+        "liquidations": 0,
+        "max_dd": -0.0962,
+        "trades": 23
+       },
+       "5x": {
+        "final": 2701.01,
+        "ret": 1.701,
+        "liquidations": 0,
+        "max_dd": -0.1563,
+        "trades": 23
+       },
+       "10x": {
+        "final": 4849.34,
+        "ret": 3.8493,
+        "liquidations": 2,
+        "max_dd": -0.2937,
+        "trades": 23
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 3.4316,
+      "cagr": 0.3469,
+      "sharpe": 0.905,
+      "max_dd": -0.4029,
+      "trades": 33,
+      "win_rate": 0.364,
+      "profit_factor": 4.188,
+      "perp": {
+       "1x": {
+        "final": 1295.92,
+        "ret": 0.2959,
+        "liquidations": 0,
+        "max_dd": -0.0329,
+        "trades": 33
+       },
+       "3x": {
+        "final": 1973.35,
+        "ret": 0.9733,
+        "liquidations": 0,
+        "max_dd": -0.0962,
+        "trades": 33
+       },
+       "5x": {
+        "final": 2750.01,
+        "ret": 1.75,
+        "liquidations": 0,
+        "max_dd": -0.1563,
+        "trades": 33
+       },
+       "10x": {
+        "final": 4988.97,
+        "ret": 3.989,
+        "liquidations": 2,
+        "max_dd": -0.2937,
+        "trades": 33
+       }
+      }
+     },
+     "full": {
+      "start": "2018-09-28",
+      "years": 5.05,
+      "ret": 3.4316,
+      "cagr": 0.3428,
+      "sharpe": 0.9,
+      "max_dd": -0.4029,
+      "trades": 33,
+      "win_rate": 0.364,
+      "profit_factor": 4.188,
+      "perp": {
+       "1x": {
+        "final": 1295.92,
+        "ret": 0.2959,
+        "liquidations": 0,
+        "max_dd": -0.0329,
+        "trades": 33
+       },
+       "3x": {
+        "final": 1973.35,
+        "ret": 0.9733,
+        "liquidations": 0,
+        "max_dd": -0.0962,
+        "trades": 33
+       },
+       "5x": {
+        "final": 2750.01,
+        "ret": 1.75,
+        "liquidations": 0,
+        "max_dd": -0.1563,
+        "trades": 33
+       },
+       "10x": {
+        "final": 4988.97,
+        "ret": 3.989,
+        "liquidations": 2,
+        "max_dd": -0.2937,
+        "trades": 33
+       }
+      }
+     }
+    },
+    "sharpe": 0.9,
+    "max_dd": -0.4029,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 4.188, 1x maks. düşüş -40%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0062",
    "key": "ETH/USDT|supertrend_flip|cfg=(7, 2.0)|x=0|both|1d|f=low_vol",
    "coin": "ETH/USDT",
    "rule": "supertrend_flip",
@@ -7825,11 +9202,163 @@
     "stage": "S2",
     "why": "PF 3.073, 1x maks. düşüş -55%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0054",
+   "id": "A0063",
+   "key": "ETC/USDT|smc_order_block|k=5,max_age=50|x=0|both|1d|f=htf_week_sma10",
+   "coin": "ETC/USDT",
+   "rule": "smc_order_block",
+   "params": {
+    "k": 5,
+    "max_age": 50
+   },
+   "exit_id": 0,
+   "filter": "htf_week_sma10",
+   "confirm": null,
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 2.169,
+      "cagr": 0.469,
+      "sharpe": 0.863,
+      "max_dd": -0.7964,
+      "trades": 26,
+      "win_rate": 0.346,
+      "profit_factor": 7.293,
+      "perp": {
+       "1x": {
+        "final": 1597.71,
+        "ret": 0.5977,
+        "liquidations": 0,
+        "max_dd": -0.0333,
+        "trades": 26
+       },
+       "3x": {
+        "final": 2728.26,
+        "ret": 1.7283,
+        "liquidations": 0,
+        "max_dd": -0.0977,
+        "trades": 26
+       },
+       "5x": {
+        "final": 3744.19,
+        "ret": 2.7442,
+        "liquidations": 0,
+        "max_dd": -0.1593,
+        "trades": 26
+       },
+       "10x": {
+        "final": 5309.86,
+        "ret": 4.3099,
+        "liquidations": 8,
+        "max_dd": -0.2806,
+        "trades": 26
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 6.5108,
+      "cagr": 0.4968,
+      "sharpe": 0.893,
+      "max_dd": -0.7964,
+      "trades": 43,
+      "win_rate": 0.395,
+      "profit_factor": 5.609,
+      "perp": {
+       "1x": {
+        "final": 1825.16,
+        "ret": 0.8252,
+        "liquidations": 0,
+        "max_dd": -0.0375,
+        "trades": 43
+       },
+       "3x": {
+        "final": 3926.56,
+        "ret": 2.9266,
+        "liquidations": 0,
+        "max_dd": -0.1099,
+        "trades": 43
+       },
+       "5x": {
+        "final": 6534.56,
+        "ret": 5.5346,
+        "liquidations": 0,
+        "max_dd": -0.179,
+        "trades": 43
+       },
+       "10x": {
+        "final": 14204.45,
+        "ret": 13.2045,
+        "liquidations": 12,
+        "max_dd": -0.2908,
+        "trades": 43
+       }
+      }
+     },
+     "full": {
+      "start": "2018-09-28",
+      "years": 5.05,
+      "ret": 6.5108,
+      "cagr": 0.4906,
+      "sharpe": 0.888,
+      "max_dd": -0.7964,
+      "trades": 43,
+      "win_rate": 0.395,
+      "profit_factor": 5.609,
+      "perp": {
+       "1x": {
+        "final": 1825.16,
+        "ret": 0.8252,
+        "liquidations": 0,
+        "max_dd": -0.0375,
+        "trades": 43
+       },
+       "3x": {
+        "final": 3926.56,
+        "ret": 2.9266,
+        "liquidations": 0,
+        "max_dd": -0.1099,
+        "trades": 43
+       },
+       "5x": {
+        "final": 6534.56,
+        "ret": 5.5346,
+        "liquidations": 0,
+        "max_dd": -0.179,
+        "trades": 43
+       },
+       "10x": {
+        "final": 14204.45,
+        "ret": 13.2045,
+        "liquidations": 12,
+        "max_dd": -0.2908,
+        "trades": 43
+       }
+      }
+     }
+    },
+    "sharpe": 0.888,
+    "max_dd": -0.7964,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 5.609, 1x maks. düşüş -80%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0064",
    "key": "XRP/USDT|triple_ma|set=(5, 20, 50),kind=sma|x=23|both|1d|f=regime_bench200",
    "coin": "XRP/USDT",
    "rule": "triple_ma",
@@ -7943,18 +9472,18 @@
     "stage": "S2",
     "why": "PF 3.214, 1x maks. düşüş -59%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0055",
-   "key": "ETC/USDT|vwap_cross|n=10|x=23|both|1d",
+   "id": "A0065",
+   "key": "ETC/USDT|smc_bos|k=2|x=37|both|1d",
    "coin": "ETC/USDT",
-   "rule": "vwap_cross",
+   "rule": "smc_bos",
    "params": {
-    "n": 10
+    "k": 2
    },
-   "exit_id": 23,
+   "exit_id": 37,
    "filter": "none",
    "confirm": null,
    "stage_no": 2,
@@ -7967,138 +9496,138 @@
      "3y": {
       "start": "2020-10-16",
       "years": 3.0,
-      "ret": 11.2907,
-      "cagr": 1.3083,
-      "sharpe": 1.284,
-      "max_dd": -0.8591,
-      "trades": 181,
-      "win_rate": 0.282,
-      "profit_factor": 2.349,
+      "ret": 1.9484,
+      "cagr": 0.4341,
+      "sharpe": 0.846,
+      "max_dd": -0.6042,
+      "trades": 81,
+      "win_rate": 0.469,
+      "profit_factor": 1.867,
       "perp": {
        "1x": {
-        "final": 1892.22,
-        "ret": 0.8922,
+        "final": 1366.12,
+        "ret": 0.3661,
         "liquidations": 0,
-        "max_dd": -0.1377,
-        "trades": 181
+        "max_dd": -0.0577,
+        "trades": 81
        },
        "3x": {
-        "final": 4437.51,
-        "ret": 3.4375,
-        "liquidations": 1,
-        "max_dd": -0.3658,
-        "trades": 181
+        "final": 2086.63,
+        "ret": 1.0866,
+        "liquidations": 2,
+        "max_dd": -0.1692,
+        "trades": 81
        },
        "5x": {
-        "final": 8646.77,
-        "ret": 7.6468,
-        "liquidations": 2,
-        "max_dd": -0.5581,
-        "trades": 181
+        "final": 3345.82,
+        "ret": 2.3458,
+        "liquidations": 3,
+        "max_dd": -0.2746,
+        "trades": 81
        },
        "10x": {
-        "final": 23688.31,
-        "ret": 22.6883,
-        "liquidations": 20,
-        "max_dd": -0.8006,
-        "trades": 181
+        "final": 7183.42,
+        "ret": 6.1834,
+        "liquidations": 29,
+        "max_dd": -0.533,
+        "trades": 81
        }
       }
      },
      "5y": {
       "start": "2018-10-16",
       "years": 5.0,
-      "ret": 6.3073,
-      "cagr": 0.4886,
-      "sharpe": 0.889,
-      "max_dd": -0.8591,
-      "trades": 302,
-      "win_rate": 0.275,
-      "profit_factor": 1.898,
+      "ret": 6.5585,
+      "cagr": 0.4987,
+      "sharpe": 0.886,
+      "max_dd": -0.6386,
+      "trades": 128,
+      "win_rate": 0.477,
+      "profit_factor": 1.903,
       "perp": {
        "1x": {
-        "final": 1996.09,
-        "ret": 0.9961,
+        "final": 1602.87,
+        "ret": 0.6029,
         "liquidations": 0,
-        "max_dd": -0.1377,
-        "trades": 302
+        "max_dd": -0.0787,
+        "trades": 128
        },
        "3x": {
-        "final": 4957.12,
-        "ret": 3.9571,
-        "liquidations": 1,
-        "max_dd": -0.3658,
-        "trades": 302
+        "final": 3258.12,
+        "ret": 2.2581,
+        "liquidations": 2,
+        "max_dd": -0.2218,
+        "trades": 128
        },
        "5x": {
-        "final": 9671.77,
-        "ret": 8.6718,
-        "liquidations": 2,
-        "max_dd": -0.5581,
-        "trades": 302
+        "final": 6913.09,
+        "ret": 5.9131,
+        "liquidations": 4,
+        "max_dd": -0.3428,
+        "trades": 128
        },
        "10x": {
-        "final": 18688.12,
-        "ret": 17.6881,
-        "liquidations": 32,
-        "max_dd": -0.8006,
-        "trades": 302
+        "final": 21985.05,
+        "ret": 20.9851,
+        "liquidations": 43,
+        "max_dd": -0.6014,
+        "trades": 128
        }
       }
      },
      "full": {
       "start": "2018-09-28",
       "years": 5.05,
-      "ret": 6.3073,
-      "cagr": 0.4825,
-      "sharpe": 0.884,
-      "max_dd": -0.8591,
-      "trades": 302,
-      "win_rate": 0.275,
-      "profit_factor": 1.898,
+      "ret": 6.5585,
+      "cagr": 0.4924,
+      "sharpe": 0.881,
+      "max_dd": -0.6386,
+      "trades": 128,
+      "win_rate": 0.477,
+      "profit_factor": 1.903,
       "perp": {
        "1x": {
-        "final": 1996.09,
-        "ret": 0.9961,
+        "final": 1602.87,
+        "ret": 0.6029,
         "liquidations": 0,
-        "max_dd": -0.1377,
-        "trades": 302
+        "max_dd": -0.0787,
+        "trades": 128
        },
        "3x": {
-        "final": 4957.12,
-        "ret": 3.9571,
-        "liquidations": 1,
-        "max_dd": -0.3658,
-        "trades": 302
+        "final": 3258.12,
+        "ret": 2.2581,
+        "liquidations": 2,
+        "max_dd": -0.2218,
+        "trades": 128
        },
        "5x": {
-        "final": 9671.77,
-        "ret": 8.6718,
-        "liquidations": 2,
-        "max_dd": -0.5581,
-        "trades": 302
+        "final": 6913.09,
+        "ret": 5.9131,
+        "liquidations": 4,
+        "max_dd": -0.3428,
+        "trades": 128
        },
        "10x": {
-        "final": 18688.12,
-        "ret": 17.6881,
-        "liquidations": 32,
-        "max_dd": -0.8006,
-        "trades": 302
+        "final": 21985.05,
+        "ret": 20.9851,
+        "liquidations": 43,
+        "max_dd": -0.6014,
+        "trades": 128
        }
       }
      }
     },
-    "sharpe": 0.884,
-    "max_dd": -0.8591,
+    "sharpe": 0.881,
+    "max_dd": -0.6386,
     "dsr": null,
     "stage": "S2",
-    "why": "PF 1.898, 1x maks. düşüş -86%",
+    "why": "PF 1.903, 1x maks. düşüş -64%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0056",
+   "id": "A0066",
    "key": "BCH/USDT|adx_trend|n=14,th=20|x=23|both|1d|f=low_vol",
    "coin": "BCH/USDT",
    "rule": "adx_trend",
@@ -8246,11 +9775,11 @@
     "stage": "S2",
     "why": "PF 3.12, 1x maks. düşüş -44%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0057",
+   "id": "A0067",
    "key": "XRP/USDT|ppo_cross|cfg=(12, 26, 9)|x=0|both|1d|f=low_vol",
    "coin": "XRP/USDT",
    "rule": "ppo_cross",
@@ -8363,11 +9892,162 @@
     "stage": "S2",
     "why": "PF 2.408, 1x maks. düşüş -78%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0058",
+   "id": "A0068",
+   "key": "ETH/USDT|smc_choch|k=3|x=13|both|1d|f=low_vol",
+   "coin": "ETH/USDT",
+   "rule": "smc_choch",
+   "params": {
+    "k": 3
+   },
+   "exit_id": 13,
+   "filter": "low_vol",
+   "confirm": null,
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 1.2129,
+      "cagr": 0.3032,
+      "sharpe": 0.816,
+      "max_dd": -0.5037,
+      "trades": 23,
+      "win_rate": 0.391,
+      "profit_factor": 1.778,
+      "perp": {
+       "1x": {
+        "final": 1073.42,
+        "ret": 0.0734,
+        "liquidations": 0,
+        "max_dd": -0.0489,
+        "trades": 23
+       },
+       "3x": {
+        "final": 1216.2,
+        "ret": 0.2162,
+        "liquidations": 0,
+        "max_dd": -0.143,
+        "trades": 23
+       },
+       "5x": {
+        "final": 1349.52,
+        "ret": 0.3495,
+        "liquidations": 0,
+        "max_dd": -0.2319,
+        "trades": 23
+       },
+       "10x": {
+        "final": 1689.73,
+        "ret": 0.6897,
+        "liquidations": 3,
+        "max_dd": -0.4113,
+        "trades": 23
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 3.094,
+      "cagr": 0.3257,
+      "sharpe": 0.885,
+      "max_dd": -0.5037,
+      "trades": 36,
+      "win_rate": 0.417,
+      "profit_factor": 2.309,
+      "perp": {
+       "1x": {
+        "final": 1198.38,
+        "ret": 0.1984,
+        "liquidations": 0,
+        "max_dd": -0.0489,
+        "trades": 36
+       },
+       "3x": {
+        "final": 1666.77,
+        "ret": 0.6668,
+        "liquidations": 0,
+        "max_dd": -0.143,
+        "trades": 36
+       },
+       "5x": {
+        "final": 2228.49,
+        "ret": 1.2285,
+        "liquidations": 0,
+        "max_dd": -0.2319,
+        "trades": 36
+       },
+       "10x": {
+        "final": 4395.99,
+        "ret": 3.396,
+        "liquidations": 6,
+        "max_dd": -0.4113,
+        "trades": 36
+       }
+      }
+     },
+     "full": {
+      "start": "2018-07-24",
+      "years": 5.23,
+      "ret": 3.094,
+      "cagr": 0.3092,
+      "sharpe": 0.865,
+      "max_dd": -0.5037,
+      "trades": 36,
+      "win_rate": 0.417,
+      "profit_factor": 2.309,
+      "perp": {
+       "1x": {
+        "final": 1198.38,
+        "ret": 0.1984,
+        "liquidations": 0,
+        "max_dd": -0.0489,
+        "trades": 36
+       },
+       "3x": {
+        "final": 1666.77,
+        "ret": 0.6668,
+        "liquidations": 0,
+        "max_dd": -0.143,
+        "trades": 36
+       },
+       "5x": {
+        "final": 2228.49,
+        "ret": 1.2285,
+        "liquidations": 0,
+        "max_dd": -0.2319,
+        "trades": 36
+       },
+       "10x": {
+        "final": 4395.99,
+        "ret": 3.396,
+        "liquidations": 6,
+        "max_dd": -0.4113,
+        "trades": 36
+       }
+      }
+     }
+    },
+    "sharpe": 0.865,
+    "max_dd": -0.5037,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 2.309, 1x maks. düşüş -50%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0069",
    "key": "ETH/USDT|obv_trend|n=50,price_n=20|x=37|both|1d|f=htf_week_sma10",
    "coin": "ETH/USDT",
    "rule": "obv_trend",
@@ -8515,11 +10195,11 @@
     "stage": "S2",
     "why": "PF 1.733, 1x maks. düşüş -49%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0059",
+   "id": "A0070",
    "key": "ETC/USDT|ichimoku_cloud|cfg=(9, 26, 52)|x=28|both|1d|c=rsi_midline:n=21,level=55:5",
    "coin": "ETC/USDT",
    "rule": "ichimoku_cloud",
@@ -8677,11 +10357,11 @@
     "stage": "S2",
     "why": "PF 2.838, 1x maks. düşüş -63%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0060",
+   "id": "A0071",
    "key": "BCH/USDT|chaikin_osc|cfg=(3, 10)|x=28|both|1d",
    "coin": "BCH/USDT",
    "rule": "chaikin_osc",
@@ -8831,11 +10511,11 @@
     "stage": "S2",
     "why": "PF 1.698, 1x maks. düşüş -93%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0061",
+   "id": "A0072",
    "key": "BCH/USDT|ppo_cross|cfg=(12, 26, 9)|x=0|both|1d|f=low_vol",
    "coin": "BCH/USDT",
    "rule": "ppo_cross",
@@ -8986,11 +10666,11 @@
     "stage": "S2",
     "why": "PF 2.277, 1x maks. düşüş -58%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0062",
+   "id": "A0073",
    "key": "ETC/USDT|elder_impulse|ema_n=13,macd_cfg=(12, 26, 9)|x=0|both|1d",
    "coin": "ETC/USDT",
    "rule": "elder_impulse",
@@ -9142,11 +10822,320 @@
     "stage": "S2",
     "why": "PF 1.936, 1x maks. düşüş -82%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0063",
+   "id": "A0074",
+   "key": "ETH/USDT|smc_bos|k=5|x=23|both|1d|f=low_vol",
+   "coin": "ETH/USDT",
+   "rule": "smc_bos",
+   "params": {
+    "k": 5
+   },
+   "exit_id": 23,
+   "filter": "low_vol",
+   "confirm": null,
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 2.5187,
+      "cagr": 0.5212,
+      "sharpe": 1.064,
+      "max_dd": -0.6117,
+      "trades": 24,
+      "win_rate": 0.458,
+      "profit_factor": 2.184,
+      "perp": {
+       "1x": {
+        "final": 1110.06,
+        "ret": 0.1101,
+        "liquidations": 0,
+        "max_dd": -0.0567,
+        "trades": 24
+       },
+       "3x": {
+        "final": 1338.92,
+        "ret": 0.3389,
+        "liquidations": 0,
+        "max_dd": -0.1647,
+        "trades": 24
+       },
+       "5x": {
+        "final": 1573.69,
+        "ret": 0.5737,
+        "liquidations": 0,
+        "max_dd": -0.2651,
+        "trades": 24
+       },
+       "10x": {
+        "final": 2325.99,
+        "ret": 1.326,
+        "liquidations": 4,
+        "max_dd": -0.4359,
+        "trades": 24
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 3.2989,
+      "cagr": 0.3387,
+      "sharpe": 0.84,
+      "max_dd": -0.6117,
+      "trades": 37,
+      "win_rate": 0.486,
+      "profit_factor": 2.253,
+      "perp": {
+       "1x": {
+        "final": 1211.42,
+        "ret": 0.2114,
+        "liquidations": 0,
+        "max_dd": -0.0567,
+        "trades": 37
+       },
+       "3x": {
+        "final": 1703.32,
+        "ret": 0.7033,
+        "liquidations": 0,
+        "max_dd": -0.1647,
+        "trades": 37
+       },
+       "5x": {
+        "final": 2275.68,
+        "ret": 1.2757,
+        "liquidations": 0,
+        "max_dd": -0.2651,
+        "trades": 37
+       },
+       "10x": {
+        "final": 5321.5,
+        "ret": 4.3215,
+        "liquidations": 9,
+        "max_dd": -0.4359,
+        "trades": 37
+       }
+      }
+     },
+     "full": {
+      "start": "2018-07-24",
+      "years": 5.23,
+      "ret": 3.2989,
+      "cagr": 0.3215,
+      "sharpe": 0.822,
+      "max_dd": -0.6117,
+      "trades": 37,
+      "win_rate": 0.486,
+      "profit_factor": 2.253,
+      "perp": {
+       "1x": {
+        "final": 1211.42,
+        "ret": 0.2114,
+        "liquidations": 0,
+        "max_dd": -0.0567,
+        "trades": 37
+       },
+       "3x": {
+        "final": 1703.32,
+        "ret": 0.7033,
+        "liquidations": 0,
+        "max_dd": -0.1647,
+        "trades": 37
+       },
+       "5x": {
+        "final": 2275.68,
+        "ret": 1.2757,
+        "liquidations": 0,
+        "max_dd": -0.2651,
+        "trades": 37
+       },
+       "10x": {
+        "final": 5321.5,
+        "ret": 4.3215,
+        "liquidations": 9,
+        "max_dd": -0.4359,
+        "trades": 37
+       }
+      }
+     }
+    },
+    "sharpe": 0.822,
+    "max_dd": -0.6117,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 2.253, 1x maks. düşüş -61%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0075",
+   "key": "ETC/USDT|heikin_ashi|confirm=3|x=28|both|1d|c=smc_fvg:max_age=20,min_gap_atr=0.5:3",
+   "coin": "ETC/USDT",
+   "rule": "heikin_ashi",
+   "params": {
+    "confirm": 3
+   },
+   "exit_id": 28,
+   "filter": "none",
+   "confirm": {
+    "rule": "smc_fvg",
+    "params": {
+     "max_age": 20,
+     "min_gap_atr": 0.5
+    },
+    "within": 3
+   },
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 0.2777,
+      "cagr": 0.0851,
+      "sharpe": 0.379,
+      "max_dd": -0.5778,
+      "trades": 32,
+      "win_rate": 0.219,
+      "profit_factor": 2.638,
+      "perp": {
+       "1x": {
+        "final": 1156.76,
+        "ret": 0.1568,
+        "liquidations": 0,
+        "max_dd": -0.0746,
+        "trades": 32
+       },
+       "3x": {
+        "final": 1351.82,
+        "ret": 0.3518,
+        "liquidations": 0,
+        "max_dd": -0.2089,
+        "trades": 32
+       },
+       "5x": {
+        "final": 1425.93,
+        "ret": 0.4259,
+        "liquidations": 0,
+        "max_dd": -0.3254,
+        "trades": 32
+       },
+       "10x": {
+        "final": 1429.82,
+        "ret": 0.4298,
+        "liquidations": 4,
+        "max_dd": -0.5566,
+        "trades": 32
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 3.5029,
+      "cagr": 0.3512,
+      "sharpe": 0.824,
+      "max_dd": -0.5778,
+      "trades": 55,
+      "win_rate": 0.4,
+      "profit_factor": 4.033,
+      "perp": {
+       "1x": {
+        "final": 1387.6,
+        "ret": 0.3876,
+        "liquidations": 0,
+        "max_dd": -0.0746,
+        "trades": 55
+       },
+       "3x": {
+        "final": 2277.95,
+        "ret": 1.2779,
+        "liquidations": 0,
+        "max_dd": -0.2089,
+        "trades": 55
+       },
+       "5x": {
+        "final": 3288.36,
+        "ret": 2.2884,
+        "liquidations": 0,
+        "max_dd": -0.3254,
+        "trades": 55
+       },
+       "10x": {
+        "final": 6636.93,
+        "ret": 5.6369,
+        "liquidations": 4,
+        "max_dd": -0.5566,
+        "trades": 55
+       }
+      }
+     },
+     "full": {
+      "start": "2018-09-28",
+      "years": 5.05,
+      "ret": 3.5029,
+      "cagr": 0.347,
+      "sharpe": 0.82,
+      "max_dd": -0.5778,
+      "trades": 55,
+      "win_rate": 0.4,
+      "profit_factor": 4.033,
+      "perp": {
+       "1x": {
+        "final": 1387.6,
+        "ret": 0.3876,
+        "liquidations": 0,
+        "max_dd": -0.0746,
+        "trades": 55
+       },
+       "3x": {
+        "final": 2277.95,
+        "ret": 1.2779,
+        "liquidations": 0,
+        "max_dd": -0.2089,
+        "trades": 55
+       },
+       "5x": {
+        "final": 3288.36,
+        "ret": 2.2884,
+        "liquidations": 0,
+        "max_dd": -0.3254,
+        "trades": 55
+       },
+       "10x": {
+        "final": 6636.93,
+        "ret": 5.6369,
+        "liquidations": 4,
+        "max_dd": -0.5566,
+        "trades": 55
+       }
+      }
+     }
+    },
+    "sharpe": 0.82,
+    "max_dd": -0.5778,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 4.033, 1x maks. düşüş -58%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0076",
    "key": "BCH/USDT|williams_reversal|n=21,lo=-95|x=28|both|1d",
    "coin": "BCH/USDT",
    "rule": "williams_reversal",
@@ -9294,11 +11283,11 @@
     "stage": "S2",
     "why": "PF 1.845, 1x maks. düşüş -67%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0064",
+   "id": "A0077",
    "key": "BTC/USDT|inside_bar|trend_n=50|x=0|both|1d",
    "coin": "BTC/USDT",
    "rule": "inside_bar",
@@ -9445,11 +11434,162 @@
     "stage": "S2",
     "why": "PF 4.044, 1x maks. düşüş -60%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0065",
+   "id": "A0078",
+   "key": "ETC/USDT|smc_choch|k=3|x=28|both|1d",
+   "coin": "ETC/USDT",
+   "rule": "smc_choch",
+   "params": {
+    "k": 3
+   },
+   "exit_id": 28,
+   "filter": "none",
+   "confirm": null,
+   "stage_no": 1,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 2.6885,
+      "cagr": 0.5453,
+      "sharpe": 0.923,
+      "max_dd": -0.6969,
+      "trades": 41,
+      "win_rate": 0.463,
+      "profit_factor": 2.974,
+      "perp": {
+       "1x": {
+        "final": 1488.92,
+        "ret": 0.4889,
+        "liquidations": 0,
+        "max_dd": -0.0535,
+        "trades": 41
+       },
+       "3x": {
+        "final": 2402.54,
+        "ret": 1.4025,
+        "liquidations": 1,
+        "max_dd": -0.2394,
+        "trades": 41
+       },
+       "5x": {
+        "final": 3679.93,
+        "ret": 2.6799,
+        "liquidations": 2,
+        "max_dd": -0.3239,
+        "trades": 41
+       },
+       "10x": {
+        "final": 7727.74,
+        "ret": 6.7277,
+        "liquidations": 17,
+        "max_dd": -0.3975,
+        "trades": 41
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 4.1222,
+      "cagr": 0.3865,
+      "sharpe": 0.801,
+      "max_dd": -0.6969,
+      "trades": 64,
+      "win_rate": 0.438,
+      "profit_factor": 2.684,
+      "perp": {
+       "1x": {
+        "final": 1676.53,
+        "ret": 0.6765,
+        "liquidations": 0,
+        "max_dd": -0.056,
+        "trades": 64
+       },
+       "3x": {
+        "final": 3250.03,
+        "ret": 2.25,
+        "liquidations": 1,
+        "max_dd": -0.2394,
+        "trades": 64
+       },
+       "5x": {
+        "final": 5709.81,
+        "ret": 4.7098,
+        "liquidations": 3,
+        "max_dd": -0.3239,
+        "trades": 64
+       },
+       "10x": {
+        "final": 14044.67,
+        "ret": 13.0447,
+        "liquidations": 25,
+        "max_dd": -0.5016,
+        "trades": 64
+       }
+      }
+     },
+     "full": {
+      "start": "2018-09-28",
+      "years": 5.05,
+      "ret": 4.1222,
+      "cagr": 0.3818,
+      "sharpe": 0.797,
+      "max_dd": -0.6969,
+      "trades": 64,
+      "win_rate": 0.438,
+      "profit_factor": 2.684,
+      "perp": {
+       "1x": {
+        "final": 1676.53,
+        "ret": 0.6765,
+        "liquidations": 0,
+        "max_dd": -0.056,
+        "trades": 64
+       },
+       "3x": {
+        "final": 3250.03,
+        "ret": 2.25,
+        "liquidations": 1,
+        "max_dd": -0.2394,
+        "trades": 64
+       },
+       "5x": {
+        "final": 5709.81,
+        "ret": 4.7098,
+        "liquidations": 3,
+        "max_dd": -0.3239,
+        "trades": 64
+       },
+       "10x": {
+        "final": 14044.67,
+        "ret": 13.0447,
+        "liquidations": 25,
+        "max_dd": -0.5016,
+        "trades": 64
+       }
+      }
+     }
+    },
+    "sharpe": 0.797,
+    "max_dd": -0.6969,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 2.684, 1x maks. düşüş -70%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0079",
    "key": "BCH/USDT|elder_impulse|ema_n=13,macd_cfg=(12, 26, 9)|x=28|both|1d",
    "coin": "BCH/USDT",
    "rule": "elder_impulse",
@@ -9601,20 +11741,27 @@
     "stage": "S2",
     "why": "PF 1.746, 1x maks. düşüş -84%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0066",
-   "key": "LTC/USDT|force_index|n=2|x=0|both|1d|f=low_vol",
-   "coin": "LTC/USDT",
-   "rule": "force_index",
+   "id": "A0080",
+   "key": "BTC/USDT|donchian_breakout|entry=20,exit=20|x=28|both|1d|c=smc_bos:k=5:0",
+   "coin": "BTC/USDT",
+   "rule": "donchian_breakout",
    "params": {
-    "n": 2
+    "entry": 20,
+    "exit": 20
    },
-   "exit_id": 0,
-   "filter": "low_vol",
-   "confirm": null,
+   "exit_id": 28,
+   "filter": "none",
+   "confirm": {
+    "rule": "smc_bos",
+    "params": {
+     "k": 5
+    },
+    "within": 0
+   },
    "stage_no": 2,
    "side": "both",
    "timeframe": "1d",
@@ -9625,251 +11772,138 @@
      "3y": {
       "start": "2020-10-16",
       "years": 3.0,
-      "ret": 0.3863,
-      "cagr": 0.1151,
-      "sharpe": 0.486,
-      "max_dd": -0.5071,
-      "trades": 74,
-      "win_rate": 0.676,
-      "profit_factor": 1.388,
+      "ret": 2.5583,
+      "cagr": 0.5269,
+      "sharpe": 1.175,
+      "max_dd": -0.3336,
+      "trades": 24,
+      "win_rate": 0.542,
+      "profit_factor": 3.73,
       "perp": {
        "1x": {
-        "final": 1049.01,
-        "ret": 0.049,
+        "final": 1183.47,
+        "ret": 0.1835,
         "liquidations": 0,
-        "max_dd": -0.052,
-        "trades": 74
+        "max_dd": -0.0191,
+        "trades": 24
        },
        "3x": {
-        "final": 1143.25,
-        "ret": 0.1433,
+        "final": 1626.93,
+        "ret": 0.6269,
         "liquidations": 0,
-        "max_dd": -0.1513,
-        "trades": 74
+        "max_dd": -0.0568,
+        "trades": 24
        },
        "5x": {
-        "final": 1163.35,
-        "ret": 0.1633,
-        "liquidations": 4,
-        "max_dd": -0.2868,
-        "trades": 74
+        "final": 2185.84,
+        "ret": 1.1858,
+        "liquidations": 0,
+        "max_dd": -0.0936,
+        "trades": 24
        },
        "10x": {
-        "final": 1709.25,
-        "ret": 0.7093,
-        "liquidations": 10,
-        "max_dd": -0.3819,
-        "trades": 74
+        "final": 4256.42,
+        "ret": 3.2564,
+        "liquidations": 1,
+        "max_dd": -0.1692,
+        "trades": 24
        }
       }
      },
      "5y": {
       "start": "2018-10-16",
       "years": 5.0,
-      "ret": 2.0468,
-      "cagr": 0.2496,
-      "sharpe": 0.803,
-      "max_dd": -0.5071,
-      "trades": 114,
-      "win_rate": 0.684,
-      "profit_factor": 1.793,
+      "ret": 3.1823,
+      "cagr": 0.3314,
+      "sharpe": 0.83,
+      "max_dd": -0.5092,
+      "trades": 39,
+      "win_rate": 0.487,
+      "profit_factor": 2.59,
       "perp": {
        "1x": {
-        "final": 1143.53,
-        "ret": 0.1435,
+        "final": 1237.95,
+        "ret": 0.2379,
         "liquidations": 0,
-        "max_dd": -0.052,
-        "trades": 114
+        "max_dd": -0.051,
+        "trades": 39
        },
        "3x": {
-        "final": 1472.93,
-        "ret": 0.4729,
+        "final": 1841.19,
+        "ret": 0.8412,
         "liquidations": 0,
-        "max_dd": -0.1513,
-        "trades": 114
+        "max_dd": -0.147,
+        "trades": 39
        },
        "5x": {
-        "final": 1759.16,
-        "ret": 0.7592,
-        "liquidations": 4,
-        "max_dd": -0.2868,
-        "trades": 114
+        "final": 2638.21,
+        "ret": 1.6382,
+        "liquidations": 0,
+        "max_dd": -0.2354,
+        "trades": 39
        },
        "10x": {
-        "final": 3104.53,
-        "ret": 2.1045,
-        "liquidations": 14,
-        "max_dd": -0.3819,
-        "trades": 114
+        "final": 4790.83,
+        "ret": 3.7908,
+        "liquidations": 6,
+        "max_dd": -0.3686,
+        "trades": 39
        }
       }
      },
      "full": {
-      "start": "2018-08-06",
-      "years": 5.2,
-      "ret": 2.0468,
-      "cagr": 0.2391,
-      "sharpe": 0.788,
-      "max_dd": -0.5071,
-      "trades": 114,
-      "win_rate": 0.684,
-      "profit_factor": 1.793,
+      "start": "2018-07-24",
+      "years": 5.23,
+      "ret": 2.9298,
+      "cagr": 0.299,
+      "sharpe": 0.786,
+      "max_dd": -0.5092,
+      "trades": 40,
+      "win_rate": 0.475,
+      "profit_factor": 2.487,
       "perp": {
        "1x": {
-        "final": 1143.53,
-        "ret": 0.1435,
+        "final": 1230.3,
+        "ret": 0.2303,
         "liquidations": 0,
-        "max_dd": -0.052,
-        "trades": 114
+        "max_dd": -0.051,
+        "trades": 40
        },
        "3x": {
-        "final": 1472.93,
-        "ret": 0.4729,
+        "final": 1807.06,
+        "ret": 0.8071,
         "liquidations": 0,
-        "max_dd": -0.1513,
-        "trades": 114
+        "max_dd": -0.147,
+        "trades": 40
        },
        "5x": {
-        "final": 1759.16,
-        "ret": 0.7592,
-        "liquidations": 4,
-        "max_dd": -0.2868,
-        "trades": 114
+        "final": 2556.7,
+        "ret": 1.5567,
+        "liquidations": 0,
+        "max_dd": -0.2354,
+        "trades": 40
        },
        "10x": {
-        "final": 3104.53,
-        "ret": 2.1045,
-        "liquidations": 14,
-        "max_dd": -0.3819,
-        "trades": 114
+        "final": 4494.8,
+        "ret": 3.4948,
+        "liquidations": 6,
+        "max_dd": -0.3686,
+        "trades": 40
        }
       }
      }
     },
-    "sharpe": 0.788,
-    "max_dd": -0.5071,
+    "sharpe": 0.786,
+    "max_dd": -0.5092,
     "dsr": null,
     "stage": "S2",
-    "why": "PF 1.793, 1x maks. düşüş -51%",
+    "why": "PF 2.487, 1x maks. düşüş -51%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0067",
-   "key": "XRP/USDT|engulfing|trend_n=0|x=20|both|1d|f=low_vol",
-   "coin": "XRP/USDT",
-   "rule": "engulfing",
-   "params": {
-    "trend_n": 0
-   },
-   "exit_id": 20,
-   "filter": "low_vol",
-   "confirm": null,
-   "stage_no": 2,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 2.2717,
-      "cagr": 0.4847,
-      "sharpe": 0.844,
-      "max_dd": -0.7931,
-      "trades": 106,
-      "win_rate": 0.396,
-      "profit_factor": 1.902,
-      "perp": {
-       "1x": {
-        "final": 1325.91,
-        "ret": 0.3259,
-        "liquidations": 0,
-        "max_dd": -0.1253,
-        "trades": 106
-       },
-       "3x": {
-        "final": 2062.65,
-        "ret": 1.0626,
-        "liquidations": 0,
-        "max_dd": -0.3363,
-        "trades": 106
-       },
-       "5x": {
-        "final": 2835.16,
-        "ret": 1.8352,
-        "liquidations": 0,
-        "max_dd": -0.5018,
-        "trades": 106
-       },
-       "10x": {
-        "final": 3759.58,
-        "ret": 2.7596,
-        "liquidations": 17,
-        "max_dd": -0.7695,
-        "trades": 106
-       }
-      }
-     },
-     "5y": {
-      "no_data": true
-     },
-     "full": {
-      "start": "2019-05-06",
-      "years": 4.45,
-      "ret": 3.3233,
-      "cagr": 0.3896,
-      "sharpe": 0.774,
-      "max_dd": -0.7931,
-      "trades": 143,
-      "win_rate": 0.364,
-      "profit_factor": 1.798,
-      "perp": {
-       "1x": {
-        "final": 1376.79,
-        "ret": 0.3768,
-        "liquidations": 0,
-        "max_dd": -0.1253,
-        "trades": 143
-       },
-       "3x": {
-        "final": 2281.21,
-        "ret": 1.2812,
-        "liquidations": 0,
-        "max_dd": -0.3363,
-        "trades": 143
-       },
-       "5x": {
-        "final": 3289.78,
-        "ret": 2.2898,
-        "liquidations": 0,
-        "max_dd": -0.5018,
-        "trades": 143
-       },
-       "10x": {
-        "final": 4563.72,
-        "ret": 3.5637,
-        "liquidations": 20,
-        "max_dd": -0.7695,
-        "trades": 143
-       }
-      }
-     }
-    },
-    "sharpe": 0.774,
-    "max_dd": -0.7931,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 1.798, 1x maks. düşüş -79%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0068",
+   "id": "A0081",
    "key": "ETH/USDT|vortex_cross|n=14|x=0|both|1d|f=low_vol",
    "coin": "ETH/USDT",
    "rule": "vortex_cross",
@@ -10016,11 +12050,11 @@
     "stage": "S2",
     "why": "PF 2.06, 1x maks. düşüş -64%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0069",
+   "id": "A0082",
    "key": "BTC/USDT|vortex_cross|n=14|x=0|both|1d|f=low_vol",
    "coin": "BTC/USDT",
    "rule": "vortex_cross",
@@ -10167,134 +12201,11 @@
     "stage": "S2",
     "why": "PF 2.44, 1x maks. düşüş -46%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0070",
-   "key": "XRP/USDT|ichimoku_cloud|cfg=(9, 26, 52)|x=28|both|1d|c=engulfing:trend_n=50:3",
-   "coin": "XRP/USDT",
-   "rule": "ichimoku_cloud",
-   "params": {
-    "cfg": [
-     9,
-     26,
-     52
-    ]
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": {
-    "rule": "engulfing",
-    "params": {
-     "trend_n": 50
-    },
-    "within": 3
-   },
-   "stage_no": 2,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 2.1544,
-      "cagr": 0.4667,
-      "sharpe": 0.864,
-      "max_dd": -0.6354,
-      "trades": 25,
-      "win_rate": 0.28,
-      "profit_factor": 2.697,
-      "perp": {
-       "1x": {
-        "final": 1261.11,
-        "ret": 0.2611,
-        "liquidations": 0,
-        "max_dd": -0.0727,
-        "trades": 25
-       },
-       "3x": {
-        "final": 1779.05,
-        "ret": 0.779,
-        "liquidations": 0,
-        "max_dd": -0.2114,
-        "trades": 25
-       },
-       "5x": {
-        "final": 2241.92,
-        "ret": 1.2419,
-        "liquidations": 0,
-        "max_dd": -0.3387,
-        "trades": 25
-       },
-       "10x": {
-        "final": 2975.94,
-        "ret": 1.9759,
-        "liquidations": 9,
-        "max_dd": -0.6259,
-        "trades": 25
-       }
-      }
-     },
-     "5y": {
-      "no_data": true
-     },
-     "full": {
-      "start": "2019-05-06",
-      "years": 4.45,
-      "ret": 2.7167,
-      "cagr": 0.3432,
-      "sharpe": 0.755,
-      "max_dd": -0.6354,
-      "trades": 31,
-      "win_rate": 0.355,
-      "profit_factor": 2.822,
-      "perp": {
-       "1x": {
-        "final": 1312.76,
-        "ret": 0.3128,
-        "liquidations": 0,
-        "max_dd": -0.0727,
-        "trades": 31
-       },
-       "3x": {
-        "final": 1998.29,
-        "ret": 0.9983,
-        "liquidations": 0,
-        "max_dd": -0.2114,
-        "trades": 31
-       },
-       "5x": {
-        "final": 2703.05,
-        "ret": 1.7031,
-        "liquidations": 0,
-        "max_dd": -0.3387,
-        "trades": 31
-       },
-       "10x": {
-        "final": 4219.45,
-        "ret": 3.2194,
-        "liquidations": 10,
-        "max_dd": -0.6259,
-        "trades": 31
-       }
-      }
-     }
-    },
-    "sharpe": 0.755,
-    "max_dd": -0.6354,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 2.822, 1x maks. düşüş -64%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0071",
+   "id": "A0083",
    "key": "BCH/USDT|price_ma|kind=kama,n=50|x=23|both|1d|f=trend_sma200",
    "coin": "BCH/USDT",
    "rule": "price_ma",
@@ -10442,11 +12353,11 @@
     "stage": "S2",
     "why": "PF 2.236, 1x maks. düşüş -59%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0072",
+   "id": "A0084",
    "key": "BCH/USDT|triple_ma|set=(5, 20, 50),kind=sma|x=23|both|1d|f=low_vol",
    "coin": "BCH/USDT",
    "rule": "triple_ma",
@@ -10598,163 +12509,11 @@
     "stage": "S2",
     "why": "PF 2.365, 1x maks. düşüş -48%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0073",
-   "key": "ETC/USDT|bollinger_breakout|n=20,k=2.5|x=28|both|1d",
-   "coin": "ETC/USDT",
-   "rule": "bollinger_breakout",
-   "params": {
-    "n": 20,
-    "k": 2.5
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 1,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 0.9736,
-      "cagr": 0.2544,
-      "sharpe": 0.644,
-      "max_dd": -0.7878,
-      "trades": 26,
-      "win_rate": 0.423,
-      "profit_factor": 2.102,
-      "perp": {
-       "1x": {
-        "final": 1236.33,
-        "ret": 0.2363,
-        "liquidations": 0,
-        "max_dd": -0.1085,
-        "trades": 26
-       },
-       "3x": {
-        "final": 1675.57,
-        "ret": 0.6756,
-        "liquidations": 1,
-        "max_dd": -0.2971,
-        "trades": 26
-       },
-       "5x": {
-        "final": 2233.06,
-        "ret": 1.2331,
-        "liquidations": 4,
-        "max_dd": -0.3981,
-        "trades": 26
-       },
-       "10x": {
-        "final": 1901.42,
-        "ret": 0.9014,
-        "liquidations": 12,
-        "max_dd": -0.39,
-        "trades": 26
-       }
-      }
-     },
-     "5y": {
-      "start": "2018-10-16",
-      "years": 5.0,
-      "ret": 3.465,
-      "cagr": 0.3489,
-      "sharpe": 0.749,
-      "max_dd": -0.7878,
-      "trades": 43,
-      "win_rate": 0.442,
-      "profit_factor": 2.311,
-      "perp": {
-       "1x": {
-        "final": 1428.06,
-        "ret": 0.4281,
-        "liquidations": 0,
-        "max_dd": -0.1085,
-        "trades": 43
-       },
-       "3x": {
-        "final": 2470.54,
-        "ret": 1.4705,
-        "liquidations": 1,
-        "max_dd": -0.2971,
-        "trades": 43
-       },
-       "5x": {
-        "final": 4008.79,
-        "ret": 3.0088,
-        "liquidations": 4,
-        "max_dd": -0.3981,
-        "trades": 43
-       },
-       "10x": {
-        "final": 4906.0,
-        "ret": 3.906,
-        "liquidations": 19,
-        "max_dd": -0.4645,
-        "trades": 43
-       }
-      }
-     },
-     "full": {
-      "start": "2018-09-28",
-      "years": 5.05,
-      "ret": 3.465,
-      "cagr": 0.3447,
-      "sharpe": 0.745,
-      "max_dd": -0.7878,
-      "trades": 43,
-      "win_rate": 0.442,
-      "profit_factor": 2.311,
-      "perp": {
-       "1x": {
-        "final": 1428.06,
-        "ret": 0.4281,
-        "liquidations": 0,
-        "max_dd": -0.1085,
-        "trades": 43
-       },
-       "3x": {
-        "final": 2470.54,
-        "ret": 1.4705,
-        "liquidations": 1,
-        "max_dd": -0.2971,
-        "trades": 43
-       },
-       "5x": {
-        "final": 4008.79,
-        "ret": 3.0088,
-        "liquidations": 4,
-        "max_dd": -0.3981,
-        "trades": 43
-       },
-       "10x": {
-        "final": 4906.0,
-        "ret": 3.906,
-        "liquidations": 19,
-        "max_dd": -0.4645,
-        "trades": 43
-       }
-      }
-     }
-    },
-    "sharpe": 0.745,
-    "max_dd": -0.7878,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 2.311, 1x maks. düşüş -79%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0074",
+   "id": "A0085",
    "key": "BCH/USDT|heikin_ashi|confirm=1|x=28|both|1d",
    "coin": "BCH/USDT",
    "rule": "heikin_ashi",
@@ -10901,19 +12660,23 @@
     "stage": "S2",
     "why": "PF 1.406, 1x maks. düşüş -85%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0075",
-   "key": "ETC/USDT|heikin_ashi|confirm=3|x=23|both|1d|f=regime_bench200",
-   "coin": "ETC/USDT",
-   "rule": "heikin_ashi",
+   "id": "A0086",
+   "key": "XRP/USDT|ichimoku_cloud|cfg=(9, 26, 52)|x=23|both|1d",
+   "coin": "XRP/USDT",
+   "rule": "ichimoku_cloud",
    "params": {
-    "confirm": 3
+    "cfg": [
+     9,
+     26,
+     52
+    ]
    },
    "exit_id": 23,
-   "filter": "regime_bench200",
+   "filter": "none",
    "confirm": null,
    "stage_no": 2,
    "side": "both",
@@ -10925,138 +12688,100 @@
      "3y": {
       "start": "2020-10-16",
       "years": 3.0,
-      "ret": 5.4552,
-      "cagr": 0.8623,
-      "sharpe": 1.175,
-      "max_dd": -0.5958,
-      "trades": 81,
-      "win_rate": 0.346,
-      "profit_factor": 3.028,
+      "ret": 0.9585,
+      "cagr": 0.2512,
+      "sharpe": 0.701,
+      "max_dd": -0.7387,
+      "trades": 42,
+      "win_rate": 0.381,
+      "profit_factor": 2.474,
       "perp": {
        "1x": {
-        "final": 1439.65,
-        "ret": 0.4396,
+        "final": 1330.54,
+        "ret": 0.3305,
         "liquidations": 0,
-        "max_dd": -0.0759,
-        "trades": 81
+        "max_dd": -0.0626,
+        "trades": 42
        },
        "3x": {
-        "final": 2527.02,
-        "ret": 1.527,
+        "final": 2066.31,
+        "ret": 1.0663,
         "liquidations": 0,
-        "max_dd": -0.2125,
-        "trades": 81
+        "max_dd": -0.1861,
+        "trades": 42
        },
        "5x": {
-        "final": 3810.06,
-        "ret": 2.8101,
-        "liquidations": 1,
-        "max_dd": -0.3402,
-        "trades": 81
+        "final": 2202.96,
+        "ret": 1.203,
+        "liquidations": 3,
+        "max_dd": -0.4158,
+        "trades": 42
        },
        "10x": {
-        "final": 9187.47,
-        "ret": 8.1875,
-        "liquidations": 5,
-        "max_dd": -0.5336,
-        "trades": 81
+        "final": 2110.47,
+        "ret": 1.1105,
+        "liquidations": 14,
+        "max_dd": -0.7845,
+        "trades": 42
        }
       }
      },
      "5y": {
-      "start": "2018-10-16",
-      "years": 5.0,
-      "ret": 2.8636,
-      "cagr": 0.3104,
-      "sharpe": 0.712,
-      "max_dd": -0.6722,
-      "trades": 132,
-      "win_rate": 0.348,
-      "profit_factor": 2.179,
-      "perp": {
-       "1x": {
-        "final": 1424.72,
-        "ret": 0.4247,
-        "liquidations": 0,
-        "max_dd": -0.0759,
-        "trades": 132
-       },
-       "3x": {
-        "final": 2425.91,
-        "ret": 1.4259,
-        "liquidations": 0,
-        "max_dd": -0.2125,
-        "trades": 132
-       },
-       "5x": {
-        "final": 3504.42,
-        "ret": 2.5044,
-        "liquidations": 1,
-        "max_dd": -0.3402,
-        "trades": 132
-       },
-       "10x": {
-        "final": 7153.2,
-        "ret": 6.1532,
-        "liquidations": 13,
-        "max_dd": -0.5336,
-        "trades": 132
-       }
-      }
+      "no_data": true
      },
      "full": {
-      "start": "2018-09-28",
-      "years": 5.05,
-      "ret": 2.8636,
-      "cagr": 0.3068,
-      "sharpe": 0.708,
-      "max_dd": -0.6722,
-      "trades": 132,
-      "win_rate": 0.348,
-      "profit_factor": 2.179,
+      "start": "2019-05-06",
+      "years": 4.45,
+      "ret": 1.8767,
+      "cagr": 0.2681,
+      "sharpe": 0.692,
+      "max_dd": -0.7387,
+      "trades": 52,
+      "win_rate": 0.442,
+      "profit_factor": 2.527,
       "perp": {
        "1x": {
-        "final": 1424.72,
-        "ret": 0.4247,
+        "final": 1423.57,
+        "ret": 0.4236,
         "liquidations": 0,
-        "max_dd": -0.0759,
-        "trades": 132
+        "max_dd": -0.0626,
+        "trades": 52
        },
        "3x": {
-        "final": 2425.91,
-        "ret": 1.4259,
+        "final": 2507.57,
+        "ret": 1.5076,
         "liquidations": 0,
-        "max_dd": -0.2125,
-        "trades": 132
+        "max_dd": -0.1861,
+        "trades": 52
        },
        "5x": {
-        "final": 3504.42,
-        "ret": 2.5044,
-        "liquidations": 1,
-        "max_dd": -0.3402,
-        "trades": 132
+        "final": 2997.16,
+        "ret": 1.9972,
+        "liquidations": 3,
+        "max_dd": -0.4158,
+        "trades": 52
        },
        "10x": {
-        "final": 7153.2,
-        "ret": 6.1532,
-        "liquidations": 13,
-        "max_dd": -0.5336,
-        "trades": 132
+        "final": 4112.29,
+        "ret": 3.1123,
+        "liquidations": 17,
+        "max_dd": -0.7845,
+        "trades": 52
        }
       }
      }
     },
-    "sharpe": 0.708,
-    "max_dd": -0.6722,
+    "sharpe": 0.692,
+    "max_dd": -0.7387,
     "dsr": null,
     "stage": "S2",
-    "why": "PF 2.179, 1x maks. düşüş -67%",
+    "why": "PF 2.527, 1x maks. düşüş -74%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0076",
+   "id": "A0087",
    "key": "ETH/USDT|keltner_breakout|n=50,k=2.0|x=13|both|1d|f=low_vol",
    "coin": "ETH/USDT",
    "rule": "keltner_breakout",
@@ -11204,11 +12929,11 @@
     "stage": "S2",
     "why": "PF 1.881, 1x maks. düşüş -58%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0077",
+   "id": "A0088",
    "key": "XRP/USDT|vwap_cross|n=50|x=23|both|1d",
    "coin": "XRP/USDT",
    "rule": "vwap_cross",
@@ -11317,11 +13042,11 @@
     "stage": "S2",
     "why": "PF 2.175, 1x maks. düşüş -69%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0078",
+   "id": "A0089",
    "key": "BCH/USDT|rsi_reversal|n=7,lo=35,exit=70|x=28|both|1d",
    "coin": "BCH/USDT",
    "rule": "rsi_reversal",
@@ -11470,11 +13195,11 @@
     "stage": "S2",
     "why": "PF 1.402, 1x maks. düşüş -77%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0079",
+   "id": "A0090",
    "key": "ETC/USDT|force_index|n=2|x=0|both|1d",
    "coin": "ETC/USDT",
    "rule": "force_index",
@@ -11621,11 +13346,11 @@
     "stage": "S2",
     "why": "PF 1.501, 1x maks. düşüş -45%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0080",
+   "id": "A0091",
    "key": "BTC/USDT|elder_impulse|ema_n=13,macd_cfg=(12, 26, 9)|x=28|both|1d|c=rsi_midline:n=21,level=55:5",
    "coin": "BTC/USDT",
    "rule": "elder_impulse",
@@ -11784,11 +13509,162 @@
     "stage": "S2",
     "why": "PF 2.121, 1x maks. düşüş -50%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0081",
+   "id": "A0092",
+   "key": "BTC/USDT|smc_liquidity_sweep|k=3|x=18|both|1d",
+   "coin": "BTC/USDT",
+   "rule": "smc_liquidity_sweep",
+   "params": {
+    "k": 3
+   },
+   "exit_id": 18,
+   "filter": "none",
+   "confirm": null,
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 0.1557,
+      "cagr": 0.0494,
+      "sharpe": 0.319,
+      "max_dd": -0.6117,
+      "trades": 78,
+      "win_rate": 0.449,
+      "profit_factor": 1.223,
+      "perp": {
+       "1x": {
+        "final": 1036.58,
+        "ret": 0.0366,
+        "liquidations": 0,
+        "max_dd": -0.0768,
+        "trades": 78
+       },
+       "3x": {
+        "final": 1099.96,
+        "ret": 0.1,
+        "liquidations": 0,
+        "max_dd": -0.2157,
+        "trades": 78
+       },
+       "5x": {
+        "final": 1148.21,
+        "ret": 0.1482,
+        "liquidations": 0,
+        "max_dd": -0.3365,
+        "trades": 78
+       },
+       "10x": {
+        "final": 965.51,
+        "ret": -0.0345,
+        "liquidations": 6,
+        "max_dd": -0.5675,
+        "trades": 78
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 1.1405,
+      "cagr": 0.1644,
+      "sharpe": 0.586,
+      "max_dd": -0.6117,
+      "trades": 125,
+      "win_rate": 0.496,
+      "profit_factor": 1.446,
+      "perp": {
+       "1x": {
+        "final": 1118.04,
+        "ret": 0.118,
+        "liquidations": 0,
+        "max_dd": -0.0768,
+        "trades": 125
+       },
+       "3x": {
+        "final": 1372.12,
+        "ret": 0.3721,
+        "liquidations": 0,
+        "max_dd": -0.2157,
+        "trades": 125
+       },
+       "5x": {
+        "final": 1643.93,
+        "ret": 0.6439,
+        "liquidations": 0,
+        "max_dd": -0.3365,
+        "trades": 125
+       },
+       "10x": {
+        "final": 1538.6,
+        "ret": 0.5386,
+        "liquidations": 8,
+        "max_dd": -0.5675,
+        "trades": 125
+       }
+      }
+     },
+     "full": {
+      "start": "2018-07-24",
+      "years": 5.23,
+      "ret": 1.3911,
+      "cagr": 0.1813,
+      "sharpe": 0.626,
+      "max_dd": -0.6117,
+      "trades": 130,
+      "win_rate": 0.508,
+      "profit_factor": 1.473,
+      "perp": {
+       "1x": {
+        "final": 1130.81,
+        "ret": 0.1308,
+        "liquidations": 0,
+        "max_dd": -0.0768,
+        "trades": 130
+       },
+       "3x": {
+        "final": 1418.77,
+        "ret": 0.4188,
+        "liquidations": 0,
+        "max_dd": -0.2157,
+        "trades": 130
+       },
+       "5x": {
+        "final": 1736.27,
+        "ret": 0.7363,
+        "liquidations": 0,
+        "max_dd": -0.3365,
+        "trades": 130
+       },
+       "10x": {
+        "final": 1707.15,
+        "ret": 0.7071,
+        "liquidations": 8,
+        "max_dd": -0.5675,
+        "trades": 130
+       }
+      }
+     }
+    },
+    "sharpe": 0.626,
+    "max_dd": -0.6117,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 1.473, 1x maks. düşüş -61%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0093",
    "key": "XRP/USDT|supertrend_flip|cfg=(7, 2.0)|x=28|both|1d",
    "coin": "XRP/USDT",
    "rule": "supertrend_flip",
@@ -11900,11 +13776,11 @@
     "stage": "S2",
     "why": "PF 2.046, 1x maks. düşüş -81%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0082",
+   "id": "A0094",
    "key": "XRP/USDT|trix_cross|n=21,signal=7|x=28|both|1d",
    "coin": "XRP/USDT",
    "rule": "trix_cross",
@@ -12014,11 +13890,283 @@
     "stage": "S2",
     "why": "PF 2.005, 1x maks. düşüş -74%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0083",
+   "id": "A0095",
+   "key": "XRP/USDT|smc_order_block|k=5,max_age=20|x=28|both|1d|f=regime_bench200",
+   "coin": "XRP/USDT",
+   "rule": "smc_order_block",
+   "params": {
+    "k": 5,
+    "max_age": 20
+   },
+   "exit_id": 28,
+   "filter": "regime_bench200",
+   "confirm": null,
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 1.0957,
+      "cagr": 0.2798,
+      "sharpe": 0.704,
+      "max_dd": -0.5229,
+      "trades": 22,
+      "win_rate": 0.227,
+      "profit_factor": 3.057,
+      "perp": {
+       "1x": {
+        "final": 1165.52,
+        "ret": 0.1655,
+        "liquidations": 0,
+        "max_dd": -0.0478,
+        "trades": 22
+       },
+       "3x": {
+        "final": 1453.28,
+        "ret": 0.4533,
+        "liquidations": 0,
+        "max_dd": -0.1374,
+        "trades": 22
+       },
+       "5x": {
+        "final": 1680.8,
+        "ret": 0.6808,
+        "liquidations": 0,
+        "max_dd": -0.2194,
+        "trades": 22
+       },
+       "10x": {
+        "final": 2097.63,
+        "ret": 1.0976,
+        "liquidations": 3,
+        "max_dd": -0.4013,
+        "trades": 22
+       }
+      }
+     },
+     "5y": {
+      "no_data": true
+     },
+     "full": {
+      "start": "2019-05-06",
+      "years": 4.45,
+      "ret": 1.2648,
+      "cagr": 0.2017,
+      "sharpe": 0.612,
+      "max_dd": -0.5229,
+      "trades": 32,
+      "win_rate": 0.312,
+      "profit_factor": 2.674,
+      "perp": {
+       "1x": {
+        "final": 1180.26,
+        "ret": 0.1803,
+        "liquidations": 0,
+        "max_dd": -0.0478,
+        "trades": 32
+       },
+       "3x": {
+        "final": 1503.85,
+        "ret": 0.5039,
+        "liquidations": 0,
+        "max_dd": -0.1374,
+        "trades": 32
+       },
+       "5x": {
+        "final": 1769.56,
+        "ret": 0.7696,
+        "liquidations": 0,
+        "max_dd": -0.2194,
+        "trades": 32
+       },
+       "10x": {
+        "final": 2320.2,
+        "ret": 1.3202,
+        "liquidations": 4,
+        "max_dd": -0.4013,
+        "trades": 32
+       }
+      }
+     }
+    },
+    "sharpe": 0.612,
+    "max_dd": -0.5229,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 2.674, 1x maks. düşüş -52%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0096",
+   "key": "BCH/USDT|rsi_midline|n=9,level=50|x=28|both|1d|c=smc_liquidity_sweep:k=5:3",
+   "coin": "BCH/USDT",
+   "rule": "rsi_midline",
+   "params": {
+    "n": 9,
+    "level": 50
+   },
+   "exit_id": 28,
+   "filter": "none",
+   "confirm": {
+    "rule": "smc_liquidity_sweep",
+    "params": {
+     "k": 5
+    },
+    "within": 3
+   },
+   "stage_no": 2,
+   "side": "both",
+   "timeframe": "1d",
+   "status": "control",
+   "added_at": "2023-10-17T00:00:00+00:00",
+   "backtest": {
+    "card": {
+     "3y": {
+      "start": "2020-10-16",
+      "years": 3.0,
+      "ret": 0.6346,
+      "cagr": 0.178,
+      "sharpe": 0.573,
+      "max_dd": -0.4066,
+      "trades": 31,
+      "win_rate": 0.323,
+      "profit_factor": 2.306,
+      "perp": {
+       "1x": {
+        "final": 1120.0,
+        "ret": 0.12,
+        "liquidations": 0,
+        "max_dd": -0.0298,
+        "trades": 31
+       },
+       "3x": {
+        "final": 1361.39,
+        "ret": 0.3614,
+        "liquidations": 0,
+        "max_dd": -0.0877,
+        "trades": 31
+       },
+       "5x": {
+        "final": 1597.19,
+        "ret": 0.5972,
+        "liquidations": 0,
+        "max_dd": -0.1432,
+        "trades": 31
+       },
+       "10x": {
+        "final": 2324.29,
+        "ret": 1.3243,
+        "liquidations": 3,
+        "max_dd": -0.2301,
+        "trades": 31
+       }
+      }
+     },
+     "5y": {
+      "start": "2018-10-16",
+      "years": 5.0,
+      "ret": 1.7145,
+      "cagr": 0.2211,
+      "sharpe": 0.614,
+      "max_dd": -0.7252,
+      "trades": 51,
+      "win_rate": 0.314,
+      "profit_factor": 2.205,
+      "perp": {
+       "1x": {
+        "final": 1206.01,
+        "ret": 0.206,
+        "liquidations": 0,
+        "max_dd": -0.0622,
+        "trades": 51
+       },
+       "3x": {
+        "final": 1666.75,
+        "ret": 0.6667,
+        "liquidations": 0,
+        "max_dd": -0.1769,
+        "trades": 51
+       },
+       "5x": {
+        "final": 2174.09,
+        "ret": 1.1741,
+        "liquidations": 0,
+        "max_dd": -0.2799,
+        "trades": 51
+       },
+       "10x": {
+        "final": 3926.01,
+        "ret": 2.926,
+        "liquidations": 5,
+        "max_dd": -0.4384,
+        "trades": 51
+       }
+      }
+     },
+     "full": {
+      "start": "2018-08-22",
+      "years": 5.15,
+      "ret": 1.7145,
+      "cagr": 0.2139,
+      "sharpe": 0.605,
+      "max_dd": -0.7252,
+      "trades": 51,
+      "win_rate": 0.314,
+      "profit_factor": 2.205,
+      "perp": {
+       "1x": {
+        "final": 1206.01,
+        "ret": 0.206,
+        "liquidations": 0,
+        "max_dd": -0.0622,
+        "trades": 51
+       },
+       "3x": {
+        "final": 1666.75,
+        "ret": 0.6667,
+        "liquidations": 0,
+        "max_dd": -0.1769,
+        "trades": 51
+       },
+       "5x": {
+        "final": 2174.09,
+        "ret": 1.1741,
+        "liquidations": 0,
+        "max_dd": -0.2799,
+        "trades": 51
+       },
+       "10x": {
+        "final": 3926.01,
+        "ret": 2.926,
+        "liquidations": 5,
+        "max_dd": -0.4384,
+        "trades": 51
+       }
+      }
+     }
+    },
+    "sharpe": 0.605,
+    "max_dd": -0.7252,
+    "dsr": null,
+    "stage": "S2",
+    "why": "PF 2.205, 1x maks. düşüş -73%",
+    "tier": null,
+    "screened_at": "2026-10-19T06:29:20+00:00"
+   }
+  },
+  {
+   "id": "A0097",
    "key": "ETC/USDT|keltner_breakout|n=20,k=1.5|x=28|both|1d",
    "coin": "ETC/USDT",
    "rule": "keltner_breakout",
@@ -12166,27 +14314,27 @@
     "stage": "S2",
     "why": "PF 2.031, 1x maks. düşüş -85%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0084",
-   "key": "ETC/USDT|donchian_breakout|entry=20,exit=10|x=28|both|1d|c=rsi_midline:n=21,level=55:3",
-   "coin": "ETC/USDT",
-   "rule": "donchian_breakout",
+   "id": "A0098",
+   "key": "LTC/USDT|smc_ote|k=3,fib_lo=0.618|x=28|both|1d|c=smc_order_block:k=5,max_age=50:5",
+   "coin": "LTC/USDT",
+   "rule": "smc_ote",
    "params": {
-    "entry": 20,
-    "exit": 10
+    "k": 3,
+    "fib_lo": 0.618
    },
    "exit_id": 28,
    "filter": "none",
    "confirm": {
-    "rule": "rsi_midline",
+    "rule": "smc_order_block",
     "params": {
-     "n": 21,
-     "level": 55
+     "k": 5,
+     "max_age": 50
     },
-    "within": 3
+    "within": 5
    },
    "stage_no": 2,
    "side": "both",
@@ -12198,138 +14346,138 @@
      "3y": {
       "start": "2020-10-16",
       "years": 3.0,
-      "ret": 0.3232,
-      "cagr": 0.0979,
-      "sharpe": 0.457,
-      "max_dd": -0.691,
-      "trades": 26,
-      "win_rate": 0.462,
-      "profit_factor": 1.665,
+      "ret": 1.392,
+      "cagr": 0.3375,
+      "sharpe": 1.139,
+      "max_dd": -0.2247,
+      "trades": 20,
+      "win_rate": 0.55,
+      "profit_factor": 2.814,
       "perp": {
        "1x": {
-        "final": 1117.63,
-        "ret": 0.1176,
+        "final": 1100.34,
+        "ret": 0.1003,
         "liquidations": 0,
-        "max_dd": -0.0982,
-        "trades": 26
+        "max_dd": -0.0174,
+        "trades": 20
        },
        "3x": {
-        "final": 1305.59,
-        "ret": 0.3056,
-        "liquidations": 1,
-        "max_dd": -0.2681,
-        "trades": 26
+        "final": 1318.91,
+        "ret": 0.3189,
+        "liquidations": 0,
+        "max_dd": -0.0523,
+        "trades": 20
        },
        "5x": {
-        "final": 1534.85,
-        "ret": 0.5349,
-        "liquidations": 5,
-        "max_dd": -0.3766,
-        "trades": 26
+        "final": 1538.09,
+        "ret": 0.5381,
+        "liquidations": 1,
+        "max_dd": -0.1006,
+        "trades": 20
        },
        "10x": {
-        "final": 983.66,
-        "ret": -0.0163,
-        "liquidations": 11,
-        "max_dd": -0.466,
-        "trades": 26
+        "final": 1677.66,
+        "ret": 0.6777,
+        "liquidations": 4,
+        "max_dd": -0.2606,
+        "trades": 20
        }
       }
      },
      "5y": {
       "start": "2018-10-16",
       "years": 5.0,
-      "ret": 1.4941,
-      "cagr": 0.2006,
-      "sharpe": 0.595,
-      "max_dd": -0.691,
-      "trades": 43,
-      "win_rate": 0.488,
-      "profit_factor": 2.054,
+      "ret": 1.0719,
+      "cagr": 0.1569,
+      "sharpe": 0.608,
+      "max_dd": -0.4787,
+      "trades": 39,
+      "win_rate": 0.462,
+      "profit_factor": 1.773,
       "perp": {
        "1x": {
-        "final": 1291.61,
-        "ret": 0.2916,
+        "final": 1099.42,
+        "ret": 0.0994,
         "liquidations": 0,
-        "max_dd": -0.0982,
-        "trades": 43
+        "max_dd": -0.0506,
+        "trades": 39
        },
        "3x": {
-        "final": 1935.79,
-        "ret": 0.9358,
-        "liquidations": 1,
-        "max_dd": -0.2681,
-        "trades": 43
+        "final": 1306.91,
+        "ret": 0.3069,
+        "liquidations": 0,
+        "max_dd": -0.147,
+        "trades": 39
        },
        "5x": {
-        "final": 2797.41,
-        "ret": 1.7974,
-        "liquidations": 5,
-        "max_dd": -0.3766,
-        "trades": 43
+        "final": 1496.79,
+        "ret": 0.4968,
+        "liquidations": 2,
+        "max_dd": -0.2479,
+        "trades": 39
        },
        "10x": {
-        "final": 1840.15,
-        "ret": 0.8402,
-        "liquidations": 17,
-        "max_dd": -0.5544,
-        "trades": 43
+        "final": 1805.88,
+        "ret": 0.8059,
+        "liquidations": 7,
+        "max_dd": -0.3418,
+        "trades": 39
        }
       }
      },
      "full": {
-      "start": "2018-09-28",
-      "years": 5.05,
-      "ret": 1.4941,
-      "cagr": 0.1983,
-      "sharpe": 0.592,
-      "max_dd": -0.691,
-      "trades": 43,
-      "win_rate": 0.488,
-      "profit_factor": 2.054,
+      "start": "2018-08-06",
+      "years": 5.2,
+      "ret": 1.0491,
+      "cagr": 0.148,
+      "sharpe": 0.589,
+      "max_dd": -0.4787,
+      "trades": 40,
+      "win_rate": 0.45,
+      "profit_factor": 1.759,
       "perp": {
        "1x": {
-        "final": 1291.61,
-        "ret": 0.2916,
+        "final": 1098.2,
+        "ret": 0.0982,
         "liquidations": 0,
-        "max_dd": -0.0982,
-        "trades": 43
+        "max_dd": -0.0506,
+        "trades": 40
        },
        "3x": {
-        "final": 1935.79,
-        "ret": 0.9358,
-        "liquidations": 1,
-        "max_dd": -0.2681,
-        "trades": 43
+        "final": 1302.59,
+        "ret": 0.3026,
+        "liquidations": 0,
+        "max_dd": -0.147,
+        "trades": 40
        },
        "5x": {
-        "final": 2797.41,
-        "ret": 1.7974,
-        "liquidations": 5,
-        "max_dd": -0.3766,
-        "trades": 43
+        "final": 1488.53,
+        "ret": 0.4885,
+        "liquidations": 2,
+        "max_dd": -0.2479,
+        "trades": 40
        },
        "10x": {
-        "final": 1840.15,
-        "ret": 0.8402,
-        "liquidations": 17,
-        "max_dd": -0.5544,
-        "trades": 43
+        "final": 1785.97,
+        "ret": 0.786,
+        "liquidations": 7,
+        "max_dd": -0.3418,
+        "trades": 40
        }
       }
      }
     },
-    "sharpe": 0.592,
-    "max_dd": -0.691,
+    "sharpe": 0.589,
+    "max_dd": -0.4787,
     "dsr": null,
     "stage": "S2",
-    "why": "PF 2.054, 1x maks. düşüş -69%",
+    "why": "PF 1.759, 1x maks. düşüş -48%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
-   "id": "A0085",
+   "id": "A0099",
    "key": "ETC/USDT|psar_flip|cfg=(0.01, 0.1)|x=28|both|1d",
    "coin": "ETC/USDT",
    "rule": "psar_flip",
@@ -12479,2036 +14627,16 @@
     "stage": "S2",
     "why": "PF 1.986, 1x maks. düşüş -83%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0086",
-   "key": "BTC/USDT|donchian_breakout|entry=20,exit=20|x=28|both|1d",
-   "coin": "BTC/USDT",
-   "rule": "donchian_breakout",
-   "params": {
-    "entry": 20,
-    "exit": 20
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 1,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 0.841,
-      "cagr": 0.2257,
-      "sharpe": 0.649,
-      "max_dd": -0.4325,
-      "trades": 34,
-      "win_rate": 0.412,
-      "profit_factor": 1.599,
-      "perp": {
-       "1x": {
-        "final": 1077.03,
-        "ret": 0.077,
-        "liquidations": 0,
-        "max_dd": -0.0266,
-        "trades": 34
-       },
-       "3x": {
-        "final": 1226.48,
-        "ret": 0.2265,
-        "liquidations": 0,
-        "max_dd": -0.0783,
-        "trades": 34
-       },
-       "5x": {
-        "final": 1364.38,
-        "ret": 0.3644,
-        "liquidations": 0,
-        "max_dd": -0.129,
-        "trades": 34
-       },
-       "10x": {
-        "final": 1812.85,
-        "ret": 0.8129,
-        "liquidations": 5,
-        "max_dd": -0.2325,
-        "trades": 34
-       }
-      }
-     },
-     "5y": {
-      "start": "2018-10-16",
-      "years": 5.0,
-      "ret": 1.9776,
-      "cagr": 0.2439,
-      "sharpe": 0.667,
-      "max_dd": -0.4325,
-      "trades": 54,
-      "win_rate": 0.463,
-      "profit_factor": 1.981,
-      "perp": {
-       "1x": {
-        "final": 1225.9,
-        "ret": 0.2259,
-        "liquidations": 0,
-        "max_dd": -0.0355,
-        "trades": 54
-       },
-       "3x": {
-        "final": 1771.65,
-        "ret": 0.7717,
-        "liquidations": 0,
-        "max_dd": -0.1046,
-        "trades": 54
-       },
-       "5x": {
-        "final": 2438.56,
-        "ret": 1.4386,
-        "liquidations": 0,
-        "max_dd": -0.171,
-        "trades": 54
-       },
-       "10x": {
-        "final": 4292.86,
-        "ret": 3.2929,
-        "liquidations": 10,
-        "max_dd": -0.2533,
-        "trades": 54
-       }
-      }
-     },
-     "full": {
-      "start": "2018-07-24",
-      "years": 5.23,
-      "ret": 1.3805,
-      "cagr": 0.1803,
-      "sharpe": 0.572,
-      "max_dd": -0.4325,
-      "trades": 57,
-      "win_rate": 0.439,
-      "profit_factor": 1.814,
-      "perp": {
-       "1x": {
-        "final": 1198.99,
-        "ret": 0.199,
-        "liquidations": 0,
-        "max_dd": -0.0355,
-        "trades": 57
-       },
-       "3x": {
-        "final": 1656.65,
-        "ret": 0.6567,
-        "liquidations": 0,
-        "max_dd": -0.1046,
-        "trades": 57
-       },
-       "5x": {
-        "final": 2178.53,
-        "ret": 1.1785,
-        "liquidations": 0,
-        "max_dd": -0.171,
-        "trades": 57
-       },
-       "10x": {
-        "final": 3410.15,
-        "ret": 2.4101,
-        "liquidations": 10,
-        "max_dd": -0.2533,
-        "trades": 57
-       }
-      }
-     }
-    },
-    "sharpe": 0.572,
-    "max_dd": -0.4325,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 1.814, 1x maks. düşüş -43%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0087",
-   "key": "ETH/USDT|bollinger_breakout|n=50,k=1.5|x=28|both|1d",
-   "coin": "ETH/USDT",
-   "rule": "bollinger_breakout",
-   "params": {
-    "n": 50,
-    "k": 1.5
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 1,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 3.3088,
-      "cagr": 0.6275,
-      "sharpe": 1.068,
-      "max_dd": -0.4679,
-      "trades": 28,
-      "win_rate": 0.5,
-      "profit_factor": 2.367,
-      "perp": {
-       "1x": {
-        "final": 1200.75,
-        "ret": 0.2007,
-        "liquidations": 0,
-        "max_dd": -0.042,
-        "trades": 28
-       },
-       "3x": {
-        "final": 1660.08,
-        "ret": 0.6601,
-        "liquidations": 0,
-        "max_dd": -0.1233,
-        "trades": 28
-       },
-       "5x": {
-        "final": 2239.86,
-        "ret": 1.2399,
-        "liquidations": 1,
-        "max_dd": -0.1972,
-        "trades": 28
-       },
-       "10x": {
-        "final": 5757.67,
-        "ret": 4.7577,
-        "liquidations": 6,
-        "max_dd": -0.2693,
-        "trades": 28
-       }
-      }
-     },
-     "5y": {
-      "start": "2018-10-16",
-      "years": 5.0,
-      "ret": 1.2631,
-      "cagr": 0.1775,
-      "sharpe": 0.579,
-      "max_dd": -0.7614,
-      "trades": 50,
-      "win_rate": 0.42,
-      "profit_factor": 1.587,
-      "perp": {
-       "1x": {
-        "final": 1171.04,
-        "ret": 0.171,
-        "liquidations": 0,
-        "max_dd": -0.0742,
-        "trades": 50
-       },
-       "3x": {
-        "final": 1467.45,
-        "ret": 0.4675,
-        "liquidations": 1,
-        "max_dd": -0.2352,
-        "trades": 50
-       },
-       "5x": {
-        "final": 1899.33,
-        "ret": 0.8993,
-        "liquidations": 2,
-        "max_dd": -0.3295,
-        "trades": 50
-       },
-       "10x": {
-        "final": 5441.07,
-        "ret": 4.4411,
-        "liquidations": 15,
-        "max_dd": -0.4469,
-        "trades": 50
-       }
-      }
-     },
-     "full": {
-      "start": "2018-07-24",
-      "years": 5.23,
-      "ret": 1.2631,
-      "cagr": 0.1689,
-      "sharpe": 0.566,
-      "max_dd": -0.7614,
-      "trades": 50,
-      "win_rate": 0.42,
-      "profit_factor": 1.587,
-      "perp": {
-       "1x": {
-        "final": 1171.04,
-        "ret": 0.171,
-        "liquidations": 0,
-        "max_dd": -0.0742,
-        "trades": 50
-       },
-       "3x": {
-        "final": 1467.45,
-        "ret": 0.4675,
-        "liquidations": 1,
-        "max_dd": -0.2352,
-        "trades": 50
-       },
-       "5x": {
-        "final": 1899.33,
-        "ret": 0.8993,
-        "liquidations": 2,
-        "max_dd": -0.3295,
-        "trades": 50
-       },
-       "10x": {
-        "final": 5441.07,
-        "ret": 4.4411,
-        "liquidations": 15,
-        "max_dd": -0.4469,
-        "trades": 50
-       }
-      }
-     }
-    },
-    "sharpe": 0.566,
-    "max_dd": -0.7614,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 1.587, 1x maks. düşüş -76%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0088",
-   "key": "BTC/USDT|bollinger_breakout|n=50,k=2.0|x=28|both|1d",
-   "coin": "BTC/USDT",
-   "rule": "bollinger_breakout",
-   "params": {
-    "n": 50,
-    "k": 2.0
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 1,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 0.1921,
-      "cagr": 0.0603,
-      "sharpe": 0.354,
-      "max_dd": -0.5102,
-      "trades": 24,
-      "win_rate": 0.458,
-      "profit_factor": 1.678,
-      "perp": {
-       "1x": {
-        "final": 1057.39,
-        "ret": 0.0574,
-        "liquidations": 0,
-        "max_dd": -0.0417,
-        "trades": 24
-       },
-       "3x": {
-        "final": 1165.06,
-        "ret": 0.1651,
-        "liquidations": 0,
-        "max_dd": -0.1236,
-        "trades": 24
-       },
-       "5x": {
-        "final": 1260.55,
-        "ret": 0.2605,
-        "liquidations": 0,
-        "max_dd": -0.2028,
-        "trades": 24
-       },
-       "10x": {
-        "final": 1361.74,
-        "ret": 0.3617,
-        "liquidations": 4,
-        "max_dd": -0.4458,
-        "trades": 24
-       }
-      }
-     },
-     "5y": {
-      "start": "2018-10-16",
-      "years": 5.0,
-      "ret": 1.2251,
-      "cagr": 0.1735,
-      "sharpe": 0.571,
-      "max_dd": -0.5102,
-      "trades": 36,
-      "win_rate": 0.528,
-      "profit_factor": 2.37,
-      "perp": {
-       "1x": {
-        "final": 1156.33,
-        "ret": 0.1563,
-        "liquidations": 0,
-        "max_dd": -0.0417,
-        "trades": 36
-       },
-       "3x": {
-        "final": 1512.82,
-        "ret": 0.5128,
-        "liquidations": 0,
-        "max_dd": -0.1236,
-        "trades": 36
-       },
-       "5x": {
-        "final": 1926.42,
-        "ret": 0.9264,
-        "liquidations": 0,
-        "max_dd": -0.2028,
-        "trades": 36
-       },
-       "10x": {
-        "final": 3022.35,
-        "ret": 2.0224,
-        "liquidations": 4,
-        "max_dd": -0.4458,
-        "trades": 36
-       }
-      }
-     },
-     "full": {
-      "start": "2018-07-24",
-      "years": 5.23,
-      "ret": 1.2251,
-      "cagr": 0.1652,
-      "sharpe": 0.559,
-      "max_dd": -0.5102,
-      "trades": 36,
-      "win_rate": 0.528,
-      "profit_factor": 2.37,
-      "perp": {
-       "1x": {
-        "final": 1156.33,
-        "ret": 0.1563,
-        "liquidations": 0,
-        "max_dd": -0.0417,
-        "trades": 36
-       },
-       "3x": {
-        "final": 1512.82,
-        "ret": 0.5128,
-        "liquidations": 0,
-        "max_dd": -0.1236,
-        "trades": 36
-       },
-       "5x": {
-        "final": 1926.42,
-        "ret": 0.9264,
-        "liquidations": 0,
-        "max_dd": -0.2028,
-        "trades": 36
-       },
-       "10x": {
-        "final": 3022.35,
-        "ret": 2.0224,
-        "liquidations": 4,
-        "max_dd": -0.4458,
-        "trades": 36
-       }
-      }
-     }
-    },
-    "sharpe": 0.559,
-    "max_dd": -0.5102,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 2.37, 1x maks. düşüş -51%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0089",
-   "key": "BCH/USDT|rsi_midline|n=9,level=50|x=28|both|1d",
-   "coin": "BCH/USDT",
-   "rule": "rsi_midline",
-   "params": {
-    "n": 9,
-    "level": 50
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 1,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 0.611,
-      "cagr": 0.1723,
-      "sharpe": 0.648,
-      "max_dd": -0.8393,
-      "trades": 151,
-      "win_rate": 0.238,
-      "profit_factor": 1.567,
-      "perp": {
-       "1x": {
-        "final": 1246.79,
-        "ret": 0.2468,
-        "liquidations": 0,
-        "max_dd": -0.1332,
-        "trades": 151
-       },
-       "3x": {
-        "final": 1739.46,
-        "ret": 0.7395,
-        "liquidations": 0,
-        "max_dd": -0.3527,
-        "trades": 151
-       },
-       "5x": {
-        "final": 2156.32,
-        "ret": 1.1563,
-        "liquidations": 0,
-        "max_dd": -0.5204,
-        "trades": 151
-       },
-       "10x": {
-        "final": 2891.62,
-        "ret": 1.8916,
-        "liquidations": 12,
-        "max_dd": -0.7575,
-        "trades": 151
-       }
-      }
-     },
-     "5y": {
-      "start": "2018-10-16",
-      "years": 5.0,
-      "ret": 1.0908,
-      "cagr": 0.159,
-      "sharpe": 0.647,
-      "max_dd": -0.8393,
-      "trades": 236,
-      "win_rate": 0.258,
-      "profit_factor": 1.585,
-      "perp": {
-       "1x": {
-        "final": 1459.64,
-        "ret": 0.4596,
-        "liquidations": 0,
-        "max_dd": -0.1332,
-        "trades": 236
-       },
-       "3x": {
-        "final": 2605.73,
-        "ret": 1.6057,
-        "liquidations": 0,
-        "max_dd": -0.3527,
-        "trades": 236
-       },
-       "5x": {
-        "final": 3876.61,
-        "ret": 2.8766,
-        "liquidations": 1,
-        "max_dd": -0.5204,
-        "trades": 236
-       },
-       "10x": {
-        "final": 8040.0,
-        "ret": 7.04,
-        "liquidations": 22,
-        "max_dd": -0.7575,
-        "trades": 236
-       }
-      }
-     },
-     "full": {
-      "start": "2018-08-22",
-      "years": 5.15,
-      "ret": 0.3037,
-      "cagr": 0.0528,
-      "sharpe": 0.556,
-      "max_dd": -0.8393,
-      "trades": 241,
-      "win_rate": 0.257,
-      "profit_factor": 1.505,
-      "perp": {
-       "1x": {
-        "final": 1401.81,
-        "ret": 0.4018,
-        "liquidations": 0,
-        "max_dd": -0.1332,
-        "trades": 241
-       },
-       "3x": {
-        "final": 2303.86,
-        "ret": 1.3039,
-        "liquidations": 0,
-        "max_dd": -0.3527,
-        "trades": 241
-       },
-       "5x": {
-        "final": 2994.4,
-        "ret": 1.9944,
-        "liquidations": 2,
-        "max_dd": -0.5204,
-        "trades": 241
-       },
-       "10x": {
-        "final": 5662.41,
-        "ret": 4.6624,
-        "liquidations": 25,
-        "max_dd": -0.7575,
-        "trades": 241
-       }
-      }
-     }
-    },
-    "sharpe": 0.556,
-    "max_dd": -0.8393,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 1.505, 1x maks. düşüş -84%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0090",
-   "key": "THETA/USDT|bollinger_breakout|n=50,k=1.5|x=28|both|1d",
-   "coin": "THETA/USDT",
-   "rule": "bollinger_breakout",
-   "params": {
-    "n": 50,
-    "k": 1.5
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 1,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 0.5956,
-      "cagr": 0.1686,
-      "sharpe": 0.609,
-      "max_dd": -0.8398,
-      "trades": 26,
-      "win_rate": 0.462,
-      "profit_factor": 3.142,
-      "perp": {
-       "1x": {
-        "final": 1294.69,
-        "ret": 0.2947,
-        "liquidations": 0,
-        "max_dd": -0.0659,
-        "trades": 26
-       },
-       "3x": {
-        "final": 1934.54,
-        "ret": 0.9345,
-        "liquidations": 0,
-        "max_dd": -0.1931,
-        "trades": 26
-       },
-       "5x": {
-        "final": 1998.94,
-        "ret": 0.9989,
-        "liquidations": 3,
-        "max_dd": -0.2955,
-        "trades": 26
-       },
-       "10x": {
-        "final": 1205.07,
-        "ret": 0.2051,
-        "liquidations": 12,
-        "max_dd": -0.552,
-        "trades": 26
-       }
-      }
-     },
-     "5y": {
-      "no_data": true
-     },
-     "full": {
-      "start": "2020-01-01",
-      "years": 3.79,
-      "ret": 0.4236,
-      "cagr": 0.0976,
-      "sharpe": 0.546,
-      "max_dd": -0.8398,
-      "trades": 34,
-      "win_rate": 0.471,
-      "profit_factor": 2.512,
-      "perp": {
-       "1x": {
-        "final": 1342.88,
-        "ret": 0.3429,
-        "liquidations": 0,
-        "max_dd": -0.0659,
-        "trades": 34
-       },
-       "3x": {
-        "final": 2181.08,
-        "ret": 1.1811,
-        "liquidations": 1,
-        "max_dd": -0.1931,
-        "trades": 34
-       },
-       "5x": {
-        "final": 2555.82,
-        "ret": 1.5558,
-        "liquidations": 5,
-        "max_dd": -0.2955,
-        "trades": 34
-       },
-       "10x": {
-        "final": 1953.9,
-        "ret": 0.9539,
-        "liquidations": 16,
-        "max_dd": -0.552,
-        "trades": 34
-       }
-      }
-     }
-    },
-    "sharpe": 0.546,
-    "max_dd": -0.8398,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 2.512, 1x maks. düşüş -84%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0091",
-   "key": "XRP/USDT|awesome_zero|fast=5,slow=34|x=28|both|1d",
-   "coin": "XRP/USDT",
-   "rule": "awesome_zero",
-   "params": {
-    "fast": 5,
-    "slow": 34
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 1,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 0.2852,
-      "cagr": 0.0873,
-      "sharpe": 0.558,
-      "max_dd": -0.7021,
-      "trades": 46,
-      "win_rate": 0.348,
-      "profit_factor": 2.076,
-      "perp": {
-       "1x": {
-        "final": 1278.94,
-        "ret": 0.2789,
-        "liquidations": 0,
-        "max_dd": -0.0752,
-        "trades": 46
-       },
-       "3x": {
-        "final": 1816.79,
-        "ret": 0.8168,
-        "liquidations": 0,
-        "max_dd": -0.2127,
-        "trades": 46
-       },
-       "5x": {
-        "final": 2363.37,
-        "ret": 1.3634,
-        "liquidations": 3,
-        "max_dd": -0.334,
-        "trades": 46
-       },
-       "10x": {
-        "final": 1343.4,
-        "ret": 0.3434,
-        "liquidations": 16,
-        "max_dd": -0.6556,
-        "trades": 46
-       }
-      }
-     },
-     "5y": {
-      "no_data": true
-     },
-     "full": {
-      "start": "2019-05-06",
-      "years": 4.45,
-      "ret": 0.5599,
-      "cagr": 0.1051,
-      "sharpe": 0.54,
-      "max_dd": -0.7021,
-      "trades": 62,
-      "win_rate": 0.387,
-      "profit_factor": 2.053,
-      "perp": {
-       "1x": {
-        "final": 1345.1,
-        "ret": 0.3451,
-        "liquidations": 0,
-        "max_dd": -0.0752,
-        "trades": 62
-       },
-       "3x": {
-        "final": 2091.83,
-        "ret": 1.0918,
-        "liquidations": 0,
-        "max_dd": -0.2127,
-        "trades": 62
-       },
-       "5x": {
-        "final": 2940.31,
-        "ret": 1.9403,
-        "liquidations": 3,
-        "max_dd": -0.334,
-        "trades": 62
-       },
-       "10x": {
-        "final": 1605.68,
-        "ret": 0.6057,
-        "liquidations": 21,
-        "max_dd": -0.6556,
-        "trades": 62
-       }
-      }
-     }
-    },
-    "sharpe": 0.54,
-    "max_dd": -0.7021,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 2.053, 1x maks. düşüş -70%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0092",
-   "key": "LTC/USDT|rsi_reversal|n=7,lo=20,exit=50|x=13|both|1d",
-   "coin": "LTC/USDT",
-   "rule": "rsi_reversal",
-   "params": {
-    "n": 7,
-    "lo": 20,
-    "exit": 50
-   },
-   "exit_id": 13,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 2,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 1.0416,
-      "cagr": 0.2687,
-      "sharpe": 0.761,
-      "max_dd": -0.3874,
-      "trades": 30,
-      "win_rate": 0.767,
-      "profit_factor": 2.053,
-      "perp": {
-       "1x": {
-        "final": 1102.62,
-        "ret": 0.1026,
-        "liquidations": 0,
-        "max_dd": -0.0363,
-        "trades": 30
-       },
-       "3x": {
-        "final": 1324.88,
-        "ret": 0.3249,
-        "liquidations": 0,
-        "max_dd": -0.107,
-        "trades": 30
-       },
-       "5x": {
-        "final": 1567.15,
-        "ret": 0.5672,
-        "liquidations": 0,
-        "max_dd": -0.1749,
-        "trades": 30
-       },
-       "10x": {
-        "final": 677.74,
-        "ret": -0.3223,
-        "liquidations": 14,
-        "max_dd": -0.5506,
-        "trades": 30
-       }
-      }
-     },
-     "5y": {
-      "start": "2018-10-16",
-      "years": 5.0,
-      "ret": 1.0656,
-      "cagr": 0.1562,
-      "sharpe": 0.55,
-      "max_dd": -0.424,
-      "trades": 53,
-      "win_rate": 0.755,
-      "profit_factor": 1.641,
-      "perp": {
-       "1x": {
-        "final": 1118.77,
-        "ret": 0.1188,
-        "liquidations": 0,
-        "max_dd": -0.0363,
-        "trades": 53
-       },
-       "3x": {
-        "final": 1373.64,
-        "ret": 0.3736,
-        "liquidations": 0,
-        "max_dd": -0.107,
-        "trades": 53
-       },
-       "5x": {
-        "final": 1443.15,
-        "ret": 0.4431,
-        "liquidations": 2,
-        "max_dd": -0.2772,
-        "trades": 53
-       },
-       "10x": {
-        "final": 419.3,
-        "ret": -0.5807,
-        "liquidations": 25,
-        "max_dd": -0.7332,
-        "trades": 53
-       }
-      }
-     },
-     "full": {
-      "start": "2018-08-06",
-      "years": 5.2,
-      "ret": 1.0656,
-      "cagr": 0.1498,
-      "sharpe": 0.54,
-      "max_dd": -0.424,
-      "trades": 53,
-      "win_rate": 0.755,
-      "profit_factor": 1.641,
-      "perp": {
-       "1x": {
-        "final": 1118.77,
-        "ret": 0.1188,
-        "liquidations": 0,
-        "max_dd": -0.0363,
-        "trades": 53
-       },
-       "3x": {
-        "final": 1373.64,
-        "ret": 0.3736,
-        "liquidations": 0,
-        "max_dd": -0.107,
-        "trades": 53
-       },
-       "5x": {
-        "final": 1443.15,
-        "ret": 0.4431,
-        "liquidations": 2,
-        "max_dd": -0.2772,
-        "trades": 53
-       },
-       "10x": {
-        "final": 419.3,
-        "ret": -0.5807,
-        "liquidations": 25,
-        "max_dd": -0.7332,
-        "trades": 53
-       }
-      }
-     }
-    },
-    "sharpe": 0.54,
-    "max_dd": -0.424,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 1.641, 1x maks. düşüş -42%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0093",
-   "key": "BCH/USDT|nr7_breakout|n=4|x=0|both|1d",
-   "coin": "BCH/USDT",
-   "rule": "nr7_breakout",
-   "params": {
-    "n": 4
-   },
-   "exit_id": 0,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 2,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 0.1204,
-      "cagr": 0.0386,
-      "sharpe": 0.456,
-      "max_dd": -0.6968,
-      "trades": 120,
-      "win_rate": 0.35,
-      "profit_factor": 1.464,
-      "perp": {
-       "1x": {
-        "final": 1165.74,
-        "ret": 0.1657,
-        "liquidations": 0,
-        "max_dd": -0.0622,
-        "trades": 120
-       },
-       "3x": {
-        "final": 1459.8,
-        "ret": 0.4598,
-        "liquidations": 0,
-        "max_dd": -0.1839,
-        "trades": 120
-       },
-       "5x": {
-        "final": 1689.47,
-        "ret": 0.6895,
-        "liquidations": 1,
-        "max_dd": -0.2994,
-        "trades": 120
-       },
-       "10x": {
-        "final": 1352.53,
-        "ret": 0.3525,
-        "liquidations": 17,
-        "max_dd": -0.628,
-        "trades": 120
-       }
-      }
-     },
-     "5y": {
-      "start": "2018-10-16",
-      "years": 5.0,
-      "ret": 1.0222,
-      "cagr": 0.1513,
-      "sharpe": 0.577,
-      "max_dd": -0.92,
-      "trades": 197,
-      "win_rate": 0.32,
-      "profit_factor": 1.415,
-      "perp": {
-       "1x": {
-        "final": 1265.61,
-        "ret": 0.2656,
-        "liquidations": 0,
-        "max_dd": -0.1671,
-        "trades": 197
-       },
-       "3x": {
-        "final": 1757.37,
-        "ret": 0.7574,
-        "liquidations": 0,
-        "max_dd": -0.4334,
-        "trades": 197
-       },
-       "5x": {
-        "final": 2060.0,
-        "ret": 1.06,
-        "liquidations": 2,
-        "max_dd": -0.6297,
-        "trades": 197
-       },
-       "10x": {
-        "final": 1532.27,
-        "ret": 0.5323,
-        "liquidations": 32,
-        "max_dd": -0.864,
-        "trades": 197
-       }
-      }
-     },
-     "full": {
-      "start": "2018-08-22",
-      "years": 5.15,
-      "ret": 0.6212,
-      "cagr": 0.0983,
-      "sharpe": 0.526,
-      "max_dd": -0.92,
-      "trades": 204,
-      "win_rate": 0.324,
-      "profit_factor": 1.374,
-      "perp": {
-       "1x": {
-        "final": 1245.75,
-        "ret": 0.2457,
-        "liquidations": 0,
-        "max_dd": -0.1671,
-        "trades": 204
-       },
-       "3x": {
-        "final": 1672.9,
-        "ret": 0.6729,
-        "liquidations": 0,
-        "max_dd": -0.4334,
-        "trades": 204
-       },
-       "5x": {
-        "final": 1799.9,
-        "ret": 0.7999,
-        "liquidations": 3,
-        "max_dd": -0.6297,
-        "trades": 204
-       },
-       "10x": {
-        "final": 1358.76,
-        "ret": 0.3588,
-        "liquidations": 34,
-        "max_dd": -0.864,
-        "trades": 204
-       }
-      }
-     }
-    },
-    "sharpe": 0.526,
-    "max_dd": -0.92,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 1.374, 1x maks. düşüş -92%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0094",
-   "key": "ETH/USDT|donchian_breakout|entry=55,exit=10|x=28|both|1d",
-   "coin": "ETH/USDT",
-   "rule": "donchian_breakout",
-   "params": {
-    "entry": 55,
-    "exit": 10
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 1,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 1.3775,
-      "cagr": 0.3348,
-      "sharpe": 0.8,
-      "max_dd": -0.4671,
-      "trades": 20,
-      "win_rate": 0.55,
-      "profit_factor": 2.511,
-      "perp": {
-       "1x": {
-        "final": 1121.7,
-        "ret": 0.1217,
-        "liquidations": 0,
-        "max_dd": -0.0328,
-        "trades": 20
-       },
-       "3x": {
-        "final": 1381.34,
-        "ret": 0.3813,
-        "liquidations": 0,
-        "max_dd": -0.0973,
-        "trades": 20
-       },
-       "5x": {
-        "final": 1653.78,
-        "ret": 0.6538,
-        "liquidations": 1,
-        "max_dd": -0.1599,
-        "trades": 20
-       },
-       "10x": {
-        "final": 1683.85,
-        "ret": 0.6838,
-        "liquidations": 5,
-        "max_dd": -0.3419,
-        "trades": 20
-       }
-      }
-     },
-     "5y": {
-      "start": "2018-10-16",
-      "years": 5.0,
-      "ret": 0.9935,
-      "cagr": 0.148,
-      "sharpe": 0.529,
-      "max_dd": -0.604,
-      "trades": 35,
-      "win_rate": 0.486,
-      "profit_factor": 1.685,
-      "perp": {
-       "1x": {
-        "final": 1124.87,
-        "ret": 0.1249,
-        "liquidations": 0,
-        "max_dd": -0.0548,
-        "trades": 35
-       },
-       "3x": {
-        "final": 1334.09,
-        "ret": 0.3341,
-        "liquidations": 1,
-        "max_dd": -0.1856,
-        "trades": 35
-       },
-       "5x": {
-        "final": 1619.54,
-        "ret": 0.6195,
-        "liquidations": 3,
-        "max_dd": -0.255,
-        "trades": 35
-       },
-       "10x": {
-        "final": 2040.07,
-        "ret": 1.0401,
-        "liquidations": 12,
-        "max_dd": -0.3419,
-        "trades": 35
-       }
-      }
-     },
-     "full": {
-      "start": "2018-07-24",
-      "years": 5.23,
-      "ret": 0.9935,
-      "cagr": 0.1409,
-      "sharpe": 0.517,
-      "max_dd": -0.604,
-      "trades": 35,
-      "win_rate": 0.486,
-      "profit_factor": 1.685,
-      "perp": {
-       "1x": {
-        "final": 1124.87,
-        "ret": 0.1249,
-        "liquidations": 0,
-        "max_dd": -0.0548,
-        "trades": 35
-       },
-       "3x": {
-        "final": 1334.09,
-        "ret": 0.3341,
-        "liquidations": 1,
-        "max_dd": -0.1856,
-        "trades": 35
-       },
-       "5x": {
-        "final": 1619.54,
-        "ret": 0.6195,
-        "liquidations": 3,
-        "max_dd": -0.255,
-        "trades": 35
-       },
-       "10x": {
-        "final": 2040.07,
-        "ret": 1.0401,
-        "liquidations": 12,
-        "max_dd": -0.3419,
-        "trades": 35
-       }
-      }
-     }
-    },
-    "sharpe": 0.517,
-    "max_dd": -0.604,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 1.685, 1x maks. düşüş -60%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0095",
-   "key": "XRP/USDT|bollinger_breakout|n=50,k=2.0|x=28|both|1d",
-   "coin": "XRP/USDT",
-   "rule": "bollinger_breakout",
-   "params": {
-    "n": 50,
-    "k": 2.0
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 1,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 1.5465,
-      "cagr": 0.3657,
-      "sharpe": 0.765,
-      "max_dd": -0.6019,
-      "trades": 21,
-      "win_rate": 0.381,
-      "profit_factor": 2.975,
-      "perp": {
-       "1x": {
-        "final": 1253.88,
-        "ret": 0.2539,
-        "liquidations": 0,
-        "max_dd": -0.0502,
-        "trades": 21
-       },
-       "3x": {
-        "final": 1548.65,
-        "ret": 0.5487,
-        "liquidations": 1,
-        "max_dd": -0.1662,
-        "trades": 21
-       },
-       "5x": {
-        "final": 2010.37,
-        "ret": 1.0104,
-        "liquidations": 2,
-        "max_dd": -0.2393,
-        "trades": 21
-       },
-       "10x": {
-        "final": 3096.09,
-        "ret": 2.0961,
-        "liquidations": 9,
-        "max_dd": -0.4475,
-        "trades": 21
-       }
-      }
-     },
-     "5y": {
-      "no_data": true
-     },
-     "full": {
-      "start": "2019-05-06",
-      "years": 4.45,
-      "ret": 0.7545,
-      "cagr": 0.1347,
-      "sharpe": 0.514,
-      "max_dd": -0.6019,
-      "trades": 31,
-      "win_rate": 0.387,
-      "profit_factor": 2.142,
-      "perp": {
-       "1x": {
-        "final": 1225.27,
-        "ret": 0.2253,
-        "liquidations": 0,
-        "max_dd": -0.0519,
-        "trades": 31
-       },
-       "3x": {
-        "final": 1435.73,
-        "ret": 0.4357,
-        "liquidations": 1,
-        "max_dd": -0.1662,
-        "trades": 31
-       },
-       "5x": {
-        "final": 1803.09,
-        "ret": 0.8031,
-        "liquidations": 3,
-        "max_dd": -0.2393,
-        "trades": 31
-       },
-       "10x": {
-        "final": 2940.8,
-        "ret": 1.9408,
-        "liquidations": 14,
-        "max_dd": -0.4475,
-        "trades": 31
-       }
-      }
-     }
-    },
-    "sharpe": 0.514,
-    "max_dd": -0.6019,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 2.142, 1x maks. düşüş -60%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0096",
-   "key": "BCH/USDT|zscore_reversion|n=50,z=1.5|x=28|both|1d",
-   "coin": "BCH/USDT",
-   "rule": "zscore_reversion",
-   "params": {
-    "n": 50,
-    "z": 1.5
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 1,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 0.2053,
-      "cagr": 0.0642,
-      "sharpe": 0.377,
-      "max_dd": -0.525,
-      "trades": 45,
-      "win_rate": 0.511,
-      "profit_factor": 1.293,
-      "perp": {
-       "1x": {
-        "final": 1057.95,
-        "ret": 0.058,
-        "liquidations": 0,
-        "max_dd": -0.0545,
-        "trades": 45
-       },
-       "3x": {
-        "final": 1153.47,
-        "ret": 0.1535,
-        "liquidations": 0,
-        "max_dd": -0.1608,
-        "trades": 45
-       },
-       "5x": {
-        "final": 1020.99,
-        "ret": 0.021,
-        "liquidations": 3,
-        "max_dd": -0.3804,
-        "trades": 45
-       },
-       "10x": {
-        "final": 475.97,
-        "ret": -0.524,
-        "liquidations": 19,
-        "max_dd": -0.6123,
-        "trades": 45
-       }
-      }
-     },
-     "5y": {
-      "start": "2018-10-16",
-      "years": 5.0,
-      "ret": 0.7091,
-      "cagr": 0.1132,
-      "sharpe": 0.46,
-      "max_dd": -0.6987,
-      "trades": 69,
-      "win_rate": 0.522,
-      "profit_factor": 1.418,
-      "perp": {
-       "1x": {
-        "final": 1133.14,
-        "ret": 0.1331,
-        "liquidations": 0,
-        "max_dd": -0.0644,
-        "trades": 69
-       },
-       "3x": {
-        "final": 1386.01,
-        "ret": 0.386,
-        "liquidations": 0,
-        "max_dd": -0.1869,
-        "trades": 69
-       },
-       "5x": {
-        "final": 1355.67,
-        "ret": 0.3557,
-        "liquidations": 5,
-        "max_dd": -0.3852,
-        "trades": 69
-       },
-       "10x": {
-        "final": 515.33,
-        "ret": -0.4847,
-        "liquidations": 29,
-        "max_dd": -0.7765,
-        "trades": 69
-       }
-      }
-     },
-     "full": {
-      "start": "2018-08-22",
-      "years": 5.15,
-      "ret": 0.7091,
-      "cagr": 0.1096,
-      "sharpe": 0.453,
-      "max_dd": -0.6987,
-      "trades": 69,
-      "win_rate": 0.522,
-      "profit_factor": 1.418,
-      "perp": {
-       "1x": {
-        "final": 1133.14,
-        "ret": 0.1331,
-        "liquidations": 0,
-        "max_dd": -0.0644,
-        "trades": 69
-       },
-       "3x": {
-        "final": 1386.01,
-        "ret": 0.386,
-        "liquidations": 0,
-        "max_dd": -0.1869,
-        "trades": 69
-       },
-       "5x": {
-        "final": 1355.67,
-        "ret": 0.3557,
-        "liquidations": 5,
-        "max_dd": -0.3852,
-        "trades": 69
-       },
-       "10x": {
-        "final": 515.33,
-        "ret": -0.4847,
-        "liquidations": 29,
-        "max_dd": -0.7765,
-        "trades": 69
-       }
-      }
-     }
-    },
-    "sharpe": 0.453,
-    "max_dd": -0.6987,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 1.418, 1x maks. düşüş -70%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0097",
-   "key": "ETC/USDT|wavetrend_reversal|n1=10,n2=18,lo=-53|x=28|both|1d",
-   "coin": "ETC/USDT",
-   "rule": "wavetrend_reversal",
-   "params": {
-    "n1": 10,
-    "n2": 18,
-    "lo": -53
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 1,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 0.8682,
-      "cagr": 0.2317,
-      "sharpe": 0.655,
-      "max_dd": -0.5388,
-      "trades": 24,
-      "win_rate": 0.625,
-      "profit_factor": 2.319,
-      "perp": {
-       "1x": {
-        "final": 1146.07,
-        "ret": 0.1461,
-        "liquidations": 0,
-        "max_dd": -0.0316,
-        "trades": 24
-       },
-       "3x": {
-        "final": 1468.3,
-        "ret": 0.4683,
-        "liquidations": 0,
-        "max_dd": -0.0945,
-        "trades": 24
-       },
-       "5x": {
-        "final": 1508.72,
-        "ret": 0.5087,
-        "liquidations": 2,
-        "max_dd": -0.2331,
-        "trades": 24
-       },
-       "10x": {
-        "final": 1062.45,
-        "ret": 0.0625,
-        "liquidations": 12,
-        "max_dd": -0.4131,
-        "trades": 24
-       }
-      }
-     },
-     "5y": {
-      "start": "2018-10-16",
-      "years": 5.0,
-      "ret": 0.4871,
-      "cagr": 0.0826,
-      "sharpe": 0.445,
-      "max_dd": -0.594,
-      "trades": 42,
-      "win_rate": 0.595,
-      "profit_factor": 1.749,
-      "perp": {
-       "1x": {
-        "final": 1144.5,
-        "ret": 0.1445,
-        "liquidations": 0,
-        "max_dd": -0.0429,
-        "trades": 42
-       },
-       "3x": {
-        "final": 1447.97,
-        "ret": 0.448,
-        "liquidations": 0,
-        "max_dd": -0.1266,
-        "trades": 42
-       },
-       "5x": {
-        "final": 1322.4,
-        "ret": 0.3224,
-        "liquidations": 5,
-        "max_dd": -0.3744,
-        "trades": 42
-       },
-       "10x": {
-        "final": 552.37,
-        "ret": -0.4476,
-        "liquidations": 19,
-        "max_dd": -0.6949,
-        "trades": 42
-       }
-      }
-     },
-     "full": {
-      "start": "2018-09-28",
-      "years": 5.05,
-      "ret": 0.4871,
-      "cagr": 0.0817,
-      "sharpe": 0.443,
-      "max_dd": -0.594,
-      "trades": 42,
-      "win_rate": 0.595,
-      "profit_factor": 1.749,
-      "perp": {
-       "1x": {
-        "final": 1144.5,
-        "ret": 0.1445,
-        "liquidations": 0,
-        "max_dd": -0.0429,
-        "trades": 42
-       },
-       "3x": {
-        "final": 1447.97,
-        "ret": 0.448,
-        "liquidations": 0,
-        "max_dd": -0.1266,
-        "trades": 42
-       },
-       "5x": {
-        "final": 1322.4,
-        "ret": 0.3224,
-        "liquidations": 5,
-        "max_dd": -0.3744,
-        "trades": 42
-       },
-       "10x": {
-        "final": 552.37,
-        "ret": -0.4476,
-        "liquidations": 19,
-        "max_dd": -0.6949,
-        "trades": 42
-       }
-      }
-     }
-    },
-    "sharpe": 0.443,
-    "max_dd": -0.594,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 1.749, 1x maks. düşüş -59%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0098",
-   "key": "ETH/USDT|adx_trend|n=10,th=25|x=28|both|1d",
-   "coin": "ETH/USDT",
-   "rule": "adx_trend",
-   "params": {
-    "n": 10,
-    "th": 25
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 1,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 0.0636,
-      "cagr": 0.0208,
-      "sharpe": 0.335,
-      "max_dd": -0.5022,
-      "trades": 36,
-      "win_rate": 0.278,
-      "profit_factor": 1.549,
-      "perp": {
-       "1x": {
-        "final": 1058.12,
-        "ret": 0.0581,
-        "liquidations": 0,
-        "max_dd": -0.0485,
-        "trades": 36
-       },
-       "3x": {
-        "final": 1156.55,
-        "ret": 0.1566,
-        "liquidations": 0,
-        "max_dd": -0.1397,
-        "trades": 36
-       },
-       "5x": {
-        "final": 1204.47,
-        "ret": 0.2045,
-        "liquidations": 1,
-        "max_dd": -0.2236,
-        "trades": 36
-       },
-       "10x": {
-        "final": 713.89,
-        "ret": -0.2861,
-        "liquidations": 7,
-        "max_dd": -0.6217,
-        "trades": 36
-       }
-      }
-     },
-     "5y": {
-      "start": "2018-10-16",
-      "years": 5.0,
-      "ret": 0.4683,
-      "cagr": 0.0799,
-      "sharpe": 0.438,
-      "max_dd": -0.7351,
-      "trades": 61,
-      "win_rate": 0.279,
-      "profit_factor": 1.724,
-      "perp": {
-       "1x": {
-        "final": 1167.98,
-        "ret": 0.168,
-        "liquidations": 0,
-        "max_dd": -0.0812,
-        "trades": 61
-       },
-       "3x": {
-        "final": 1504.8,
-        "ret": 0.5048,
-        "liquidations": 0,
-        "max_dd": -0.2261,
-        "trades": 61
-       },
-       "5x": {
-        "final": 1777.97,
-        "ret": 0.778,
-        "liquidations": 1,
-        "max_dd": -0.3502,
-        "trades": 61
-       },
-       "10x": {
-        "final": 1401.92,
-        "ret": 0.4019,
-        "liquidations": 13,
-        "max_dd": -0.7328,
-        "trades": 61
-       }
-      }
-     },
-     "full": {
-      "start": "2018-07-24",
-      "years": 5.23,
-      "ret": 0.2096,
-      "cagr": 0.037,
-      "sharpe": 0.377,
-      "max_dd": -0.7351,
-      "trades": 65,
-      "win_rate": 0.277,
-      "profit_factor": 1.623,
-      "perp": {
-       "1x": {
-        "final": 1157.3,
-        "ret": 0.1573,
-        "liquidations": 0,
-        "max_dd": -0.0812,
-        "trades": 65
-       },
-       "3x": {
-        "final": 1460.67,
-        "ret": 0.4607,
-        "liquidations": 0,
-        "max_dd": -0.2261,
-        "trades": 65
-       },
-       "5x": {
-        "final": 1685.7,
-        "ret": 0.6857,
-        "liquidations": 1,
-        "max_dd": -0.3502,
-        "trades": 65
-       },
-       "10x": {
-        "final": 1350.4,
-        "ret": 0.3504,
-        "liquidations": 14,
-        "max_dd": -0.7328,
-        "trades": 65
-       }
-      }
-     }
-    },
-    "sharpe": 0.377,
-    "max_dd": -0.7351,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 1.623, 1x maks. düşüş -74%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
-   }
-  },
-  {
-   "id": "A0099",
-   "key": "BCH/USDT|bb_squeeze|n=20,q=0.2,look=126|x=28|both|1d",
-   "coin": "BCH/USDT",
-   "rule": "bb_squeeze",
-   "params": {
-    "n": 20,
-    "q": 0.2,
-    "look": 126
-   },
-   "exit_id": 28,
-   "filter": "none",
-   "confirm": null,
-   "stage_no": 1,
-   "side": "both",
-   "timeframe": "1d",
-   "status": "control",
-   "added_at": "2023-10-17T00:00:00+00:00",
-   "backtest": {
-    "card": {
-     "3y": {
-      "start": "2020-10-16",
-      "years": 3.0,
-      "ret": 0.3227,
-      "cagr": 0.0977,
-      "sharpe": 0.425,
-      "max_dd": -0.4342,
-      "trades": 21,
-      "win_rate": 0.333,
-      "profit_factor": 1.612,
-      "perp": {
-       "1x": {
-        "final": 1059.25,
-        "ret": 0.0592,
-        "liquidations": 0,
-        "max_dd": -0.0395,
-        "trades": 21
-       },
-       "3x": {
-        "final": 1164.32,
-        "ret": 0.1643,
-        "liquidations": 0,
-        "max_dd": -0.1152,
-        "trades": 21
-       },
-       "5x": {
-        "final": 1248.89,
-        "ret": 0.2489,
-        "liquidations": 0,
-        "max_dd": -0.1863,
-        "trades": 21
-       },
-       "10x": {
-        "final": 784.5,
-        "ret": -0.2155,
-        "liquidations": 5,
-        "max_dd": -0.5018,
-        "trades": 21
-       }
-      }
-     },
-     "5y": {
-      "start": "2018-10-16",
-      "years": 5.0,
-      "ret": 0.1427,
-      "cagr": 0.027,
-      "sharpe": 0.309,
-      "max_dd": -0.6858,
-      "trades": 40,
-      "win_rate": 0.325,
-      "profit_factor": 1.493,
-      "perp": {
-       "1x": {
-        "final": 1097.83,
-        "ret": 0.0978,
-        "liquidations": 0,
-        "max_dd": -0.0643,
-        "trades": 40
-       },
-       "3x": {
-        "final": 1259.47,
-        "ret": 0.2595,
-        "liquidations": 0,
-        "max_dd": -0.1845,
-        "trades": 40
-       },
-       "5x": {
-        "final": 1373.67,
-        "ret": 0.3737,
-        "liquidations": 1,
-        "max_dd": -0.2938,
-        "trades": 40
-       },
-       "10x": {
-        "final": 893.85,
-        "ret": -0.1062,
-        "liquidations": 12,
-        "max_dd": -0.7117,
-        "trades": 40
-       }
-      }
-     },
-     "full": {
-      "start": "2018-08-22",
-      "years": 5.15,
-      "ret": 0.1427,
-      "cagr": 0.0262,
-      "sharpe": 0.305,
-      "max_dd": -0.6858,
-      "trades": 40,
-      "win_rate": 0.325,
-      "profit_factor": 1.493,
-      "perp": {
-       "1x": {
-        "final": 1097.83,
-        "ret": 0.0978,
-        "liquidations": 0,
-        "max_dd": -0.0643,
-        "trades": 40
-       },
-       "3x": {
-        "final": 1259.47,
-        "ret": 0.2595,
-        "liquidations": 0,
-        "max_dd": -0.1845,
-        "trades": 40
-       },
-       "5x": {
-        "final": 1373.67,
-        "ret": 0.3737,
-        "liquidations": 1,
-        "max_dd": -0.2938,
-        "trades": 40
-       },
-       "10x": {
-        "final": 893.85,
-        "ret": -0.1062,
-        "liquidations": 12,
-        "max_dd": -0.7117,
-        "trades": 40
-       }
-      }
-     }
-    },
-    "sharpe": 0.305,
-    "max_dd": -0.6858,
-    "dsr": null,
-    "stage": "S2",
-    "why": "PF 1.493, 1x maks. düşüş -69%",
-    "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   },
   {
    "id": "A0100",
-   "key": "BTC/USDT|macd_zero|cfg=(12, 26, 9)|x=28|both|1d",
+   "key": "BTC/USDT|smc_choch|k=8|x=28|both|1d",
    "coin": "BTC/USDT",
-   "rule": "macd_zero",
+   "rule": "smc_choch",
    "params": {
-    "cfg": [
-     12,
-     26,
-     9
-    ]
+    "k": 8
    },
    "exit_id": 28,
    "filter": "none",
@@ -14523,136 +14651,136 @@
      "3y": {
       "start": "2020-10-16",
       "years": 3.0,
-      "ret": 0.2081,
-      "cagr": 0.0651,
-      "sharpe": 0.367,
-      "max_dd": -0.5207,
-      "trades": 30,
-      "win_rate": 0.367,
-      "profit_factor": 1.229,
+      "ret": 0.47,
+      "cagr": 0.1371,
+      "sharpe": 0.527,
+      "max_dd": -0.4147,
+      "trades": 20,
+      "win_rate": 0.4,
+      "profit_factor": 1.402,
       "perp": {
        "1x": {
-        "final": 1016.25,
-        "ret": 0.0162,
+        "final": 1024.4,
+        "ret": 0.0244,
         "liquidations": 0,
-        "max_dd": -0.0479,
-        "trades": 30
+        "max_dd": -0.0319,
+        "trades": 20
        },
        "3x": {
-        "final": 1037.12,
-        "ret": 0.0371,
+        "final": 1067.19,
+        "ret": 0.0672,
         "liquidations": 0,
-        "max_dd": -0.1394,
-        "trades": 30
+        "max_dd": -0.0946,
+        "trades": 20
        },
        "5x": {
-        "final": 1042.34,
-        "ret": 0.0423,
+        "final": 1101.3,
+        "ret": 0.1013,
         "liquidations": 0,
-        "max_dd": -0.2252,
-        "trades": 30
+        "max_dd": -0.1559,
+        "trades": 20
        },
        "10x": {
-        "final": 1004.5,
-        "ret": 0.0045,
-        "liquidations": 7,
-        "max_dd": -0.4288,
-        "trades": 30
+        "final": 1213.57,
+        "ret": 0.2136,
+        "liquidations": 2,
+        "max_dd": -0.2811,
+        "trades": 20
        }
       }
      },
      "5y": {
       "start": "2018-10-16",
       "years": 5.0,
-      "ret": 0.5401,
-      "cagr": 0.0902,
-      "sharpe": 0.415,
-      "max_dd": -0.5207,
-      "trades": 49,
-      "win_rate": 0.388,
-      "profit_factor": 1.656,
+      "ret": 1.2501,
+      "cagr": 0.1761,
+      "sharpe": 0.581,
+      "max_dd": -0.4147,
+      "trades": 34,
+      "win_rate": 0.471,
+      "profit_factor": 2.219,
       "perp": {
        "1x": {
-        "final": 1121.53,
-        "ret": 0.1215,
+        "final": 1155.55,
+        "ret": 0.1556,
         "liquidations": 0,
-        "max_dd": -0.0479,
-        "trades": 49
+        "max_dd": -0.0319,
+        "trades": 34
        },
        "3x": {
-        "final": 1367.25,
-        "ret": 0.3672,
+        "final": 1506.97,
+        "ret": 0.507,
         "liquidations": 0,
-        "max_dd": -0.1394,
-        "trades": 49
+        "max_dd": -0.0946,
+        "trades": 34
        },
        "5x": {
-        "final": 1603.46,
-        "ret": 0.6035,
+        "final": 1908.32,
+        "ret": 0.9083,
         "liquidations": 0,
-        "max_dd": -0.2252,
-        "trades": 49
+        "max_dd": -0.1559,
+        "trades": 34
        },
        "10x": {
-        "final": 2130.06,
-        "ret": 1.1301,
-        "liquidations": 10,
-        "max_dd": -0.4288,
-        "trades": 49
+        "final": 3406.39,
+        "ret": 2.4064,
+        "liquidations": 5,
+        "max_dd": -0.2811,
+        "trades": 34
        }
       }
      },
      "full": {
       "start": "2018-07-24",
       "years": 5.23,
-      "ret": 0.1907,
-      "cagr": 0.0339,
-      "sharpe": 0.303,
-      "max_dd": -0.5207,
-      "trades": 53,
-      "win_rate": 0.358,
-      "profit_factor": 1.489,
+      "ret": 1.2501,
+      "cagr": 0.1677,
+      "sharpe": 0.568,
+      "max_dd": -0.4147,
+      "trades": 34,
+      "win_rate": 0.471,
+      "profit_factor": 2.219,
       "perp": {
        "1x": {
-        "final": 1094.28,
-        "ret": 0.0943,
+        "final": 1155.55,
+        "ret": 0.1556,
         "liquidations": 0,
-        "max_dd": -0.0479,
-        "trades": 53
+        "max_dd": -0.0319,
+        "trades": 34
        },
        "3x": {
-        "final": 1269.4,
-        "ret": 0.2694,
+        "final": 1506.97,
+        "ret": 0.507,
         "liquidations": 0,
-        "max_dd": -0.1394,
-        "trades": 53
+        "max_dd": -0.0946,
+        "trades": 34
        },
        "5x": {
-        "final": 1415.67,
-        "ret": 0.4157,
+        "final": 1908.32,
+        "ret": 0.9083,
         "liquidations": 0,
-        "max_dd": -0.2252,
-        "trades": 53
+        "max_dd": -0.1559,
+        "trades": 34
        },
        "10x": {
-        "final": 1653.56,
-        "ret": 0.6536,
-        "liquidations": 10,
-        "max_dd": -0.4288,
-        "trades": 53
+        "final": 3406.39,
+        "ret": 2.4064,
+        "liquidations": 5,
+        "max_dd": -0.2811,
+        "trades": 34
        }
       }
      }
     },
-    "sharpe": 0.303,
-    "max_dd": -0.5207,
+    "sharpe": 0.568,
+    "max_dd": -0.4147,
     "dsr": null,
     "stage": "S2",
-    "why": "PF 1.489, 1x maks. düşüş -52%",
+    "why": "PF 2.219, 1x maks. düşüş -41%",
     "tier": null,
-    "screened_at": "2026-10-17T16:07:19+00:00"
+    "screened_at": "2026-10-19T06:29:20+00:00"
    }
   }
  ],
- "updated_at": "2026-10-17T16:07:19+00:00"
+ "updated_at": "2026-10-19T06:29:20+00:00"
 }
