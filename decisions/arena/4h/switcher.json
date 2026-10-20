@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-20T13:36:46+00:00",
- "data_end": "2026-10-20 08:00:00",
+ "updated_at": "2026-10-20T21:16:55+00:00",
+ "data_end": "2026-10-20 16:00:00",
  "universe": "crypto_alts",
  "timeframe": "4h",
  "usable": false,
@@ -106,9 +106,9 @@
   "since": "2026-10-16",
   "days": 3,
   "ret": -0.0273,
-  "sharpe": -9.961,
-  "ew_ret": -0.0084,
-  "ew_sharpe": -10.794,
+  "sharpe": -9.537,
+  "ew_ret": -0.0094,
+  "ew_sharpe": -11.474,
   "max_dd": -0.0348
  },
  "regimes": {
@@ -139,7 +139,7 @@
    "now_tr": "Yatay",
    "since": "2026-10-12 08:00:00",
    "share": {
-    "range": 0.692,
+    "range": 0.693,
     "trend_up": 0.081,
     "trend_down": 0.082,
     "volatile": 0.144
@@ -274,7 +274,7 @@
     "range": 0.688,
     "trend_up": 0.066,
     "trend_down": 0.081,
-    "volatile": 0.165
+    "volatile": 0.166
    }
   },
   "FIL/USDT": {
@@ -285,7 +285,7 @@
     "range": 0.673,
     "trend_up": 0.041,
     "trend_down": 0.075,
-    "volatile": 0.211
+    "volatile": 0.21
    }
   },
   "UNI/USDT": {
@@ -293,7 +293,7 @@
    "now_tr": "Volatil",
    "since": "2026-10-15 20:00:00",
    "share": {
-    "range": 0.69,
+    "range": 0.689,
     "trend_up": 0.043,
     "trend_down": 0.081,
     "volatile": 0.187
@@ -326,7 +326,7 @@
    "now_tr": "Yatay",
    "since": "2026-10-18 00:00:00",
    "share": {
-    "range": 0.693,
+    "range": 0.694,
     "trend_up": 0.032,
     "trend_down": 0.063,
     "volatile": 0.212
@@ -377,9 +377,9 @@
    }
   },
   "CRV/USDT": {
-   "now": "volatile",
-   "now_tr": "Volatil",
-   "since": "2026-10-19 04:00:00",
+   "now": "range",
+   "now_tr": "Yatay",
+   "since": "2026-10-20 12:00:00",
    "share": {
     "range": 0.738,
     "trend_up": 0.046,
@@ -414,7 +414,7 @@
    "now_tr": "Yatay",
    "since": "2026-10-19 20:00:00",
    "share": {
-    "range": 0.724,
+    "range": 0.725,
     "trend_up": 0.052,
     "trend_down": 0.082,
     "volatile": 0.141
@@ -461,7 +461,7 @@
     "range": 0.7,
     "trend_up": 0.041,
     "trend_down": 0.083,
-    "volatile": 0.175
+    "volatile": 0.176
    }
   },
   "SUI/USDT": {
@@ -491,7 +491,7 @@
    "now_tr": "Yatay",
    "since": "2026-10-17 04:00:00",
    "share": {
-    "range": 0.726,
+    "range": 0.727,
     "trend_up": 0.036,
     "trend_down": 0.076,
     "volatile": 0.162
