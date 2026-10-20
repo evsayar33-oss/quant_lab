@@ -6,7 +6,9 @@ universe: crypto_alts
 timeframes: [4h, 1d]       # one separate arena per timeframe (decisions/arena/<tf>/). No scalping:
                            # fees and slippage eat short-horizon edges.
 start: "2018-01-01"
-side: both                 # perps: long and short
+side: both                 # perps: long and short (default when `sides` is missing)
+sides: [both, long, short] # 2026-10-20: every screen / arena / time machine runs all three: one book that
+                           # trades both ways, a long-only book and a short-only book (own folders <tf>_long ...)
 exit_id: 28                # trade_engine.EXIT_GRID[28] = 2 ATR stop + 3 ATR chandelier + rule exit
                            # (one pre-chosen exit = fewer trials; perps always need a hard stop)
 

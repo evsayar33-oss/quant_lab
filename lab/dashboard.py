@@ -37,7 +37,7 @@ def build(out: dict, cfg: dict, site: str | Path = "site") -> Path:
         "spark_switch_fwd": out.get("spark_switch_fwd", []), "spark_ew_fwd": out.get("spark_ew_fwd", []),
         "members": out["members"], "books": out.get("books", []),
     }
-    tf = cfg.get("timeframe", "4h")
+    tf = cfg.get("key", cfg.get("timeframe", "4h"))
     (site / f"data_{tf}.json").write_text(json.dumps(_clean(data), ensure_ascii=False, default=str, separators=(",", ":")))
     return site / f"data_{tf}.json"
 

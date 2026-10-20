@@ -16,6 +16,10 @@ on:
         description: 'JSON list: ["4h"] or ["4h","1d"]'
         required: false
         default: ''
+      sides:
+        description: 'JSON list: ["both","long","short"] (empty = config/arena.yaml sides)'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -26,6 +30,7 @@ jobs:
     outputs:
       cutoffs: ${{ steps.p.outputs.cutoffs }}
       timeframes: ${{ steps.p.outputs.timeframes }}
+      sides: ${{ steps.p.outputs.sides }}
       go: ${{ steps.p.outputs.go }}
     steps:
       - uses: actions/checkout@v4
@@ -33,6 +38,7 @@ jobs:
         env:
           IN_CUT: ${{ github.event.inputs.cutoffs }}
           IN_TF: ${{ github.event.inputs.timeframes }}
+          IN_SD: ${{ github.event.inputs.sides }}
           EVENT: ${{ github.event_name }}
         run: |
           python3 - <<'PY' >> "$GITHUB_OUTPUT"
@@ -41,6 +47,9 @@ jobs:
           today = datetime.date.today()
           cut = os.environ.get("IN_CUT") or json.dumps([str(today - datetime.timedelta(days=round(365.25 * y))) for y in c.get("years_ago", [2, 3, 4])])
           tf = os.environ.get("IN_TF") or json.dumps(c.get("timeframes", ["4h"]))
+          full = yaml.safe_load(open("config/arena.yaml"))
+          sd = os.environ.get("IN_SD") or json.dumps(full.get("sides") or [full.get("side", "both")])
+          print(f"sides={sd}")
           go = "true" if (os.environ["EVENT"] == "workflow_dispatch" or c.get("enabled", False)) else "false"
           print(f"cutoffs={cut}"); print(f"timeframes={tf}"); print(f"go={go}")
           PY
@@ -55,6 +64,7 @@ jobs:
       matrix:
         timeframe: ${{ fromJSON(needs.plan.outputs.timeframes) }}
         cutoff: ${{ fromJSON(needs.plan.outputs.cutoffs) }}
+        side: ${{ fromJSON(needs.plan.outputs.sides) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -73,12 +83,14 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
           LAB_CACHE_HOURS: "0"
-        run: python run.py --timemachine "${{ matrix.cutoff }}" --timeframe ${{ matrix.timeframe }} --telegram
+        run: python run.py --timemachine "${{ matrix.cutoff }}" --timeframe ${{ matrix.timeframe }} --side ${{ matrix.side }} --telegram
       - name: Commit summary to main
-        run: bash scripts/commit_arena.sh "Time machine ${{ matrix.timeframe }} ${{ matrix.cutoff }}" "timemachine/${{ matrix.cutoff }}/${{ matrix.timeframe }}"
+        run: |
+          KEY="${{ matrix.timeframe }}"; if [ "${{ matrix.side }}" != "both" ]; then KEY="${KEY}_${{ matrix.side }}"; fi
+          bash scripts/commit_arena.sh "Time machine $KEY ${{ matrix.cutoff }}" "timemachine/${{ matrix.cutoff }}/$KEY"
       - uses: actions/upload-artifact@v4
         with:
-          name: timemachine-${{ matrix.cutoff }}-${{ matrix.timeframe }}
+          name: timemachine-${{ matrix.cutoff }}-${{ matrix.timeframe }}-${{ matrix.side }}
           retention-days: 14
           path: results/timemachine_*
 

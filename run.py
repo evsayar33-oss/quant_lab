@@ -232,13 +232,19 @@ def arena_cfgs(a) -> list[dict]:
         tfs = [a.timeframe]
     if a.stage2 in ("on", "off"):
         base.setdefault("stage2", {})["enabled"] = a.stage2 == "on"
+    # sides: "both" (one book trades long AND short), "long" only, "short" only. Each side has its own
+    # arena folder: decisions/arena/<tf> for both, decisions/arena/<tf>_long, <tf>_short for the others.
+    sides = [a.side] if "--side" in sys.argv else (base.get("sides") or [base.get("side", "both")])
     out = []
     for tf in tfs:
-        c = {k: (dict(v) if isinstance(v, dict) else v) for k, v in base.items()}
-        for k, v in (base.get("by_timeframe", {}).get(tf) or {}).items():
-            c[k] = {**(c.get(k) or {}), **v} if isinstance(v, dict) else v
-        c["timeframe"] = tf
-        out.append(c)
+        for side in sides:
+            c = {k: (dict(v) if isinstance(v, dict) else v) for k, v in base.items()}
+            for k, v in (base.get("by_timeframe", {}).get(tf) or {}).items():
+                c[k] = {**(c.get(k) or {}), **v} if isinstance(v, dict) else v
+            c["timeframe"] = tf
+            c["side"] = side
+            c["key"] = tf if side == "both" else f"{tf}_{side}"
+            out.append(c)
     return out
 
 
@@ -267,8 +273,11 @@ def do_arena(a, hyps) -> None:
     from lab import arena
     built = []
     for cfg in arena_cfgs(a):
-        arena.use(cfg["timeframe"])
-        print(f"===== arena {cfg['universe']} {cfg['timeframe']} =====")
+        arena.use(cfg["key"])
+        if a.arena and not a.screen and cfg["side"] != "both" and not arena.ROSTER.exists():
+            print(f"[arena] {cfg['key']}: no roster yet (run the screen with --side {cfg['side']} first)")
+            continue
+        print(f"===== arena {cfg['universe']} {cfg['key']} =====")
         try:
             out = _arena_one(a, hyps, cfg)
         except Exception as e:  # noqa: BLE001 - one timeframe must not stop the other
@@ -278,7 +287,7 @@ def do_arena(a, hyps) -> None:
                 telegram(f"⚠️ arena {cfg['timeframe']} hata: {e}")
             continue
         if out:
-            built.append(cfg["timeframe"])
+            built.append(cfg["key"])
     if a.site and built:
         from lab import dashboard
         dashboard.write_index(a.site, built)
@@ -287,7 +296,7 @@ def do_arena(a, hyps) -> None:
 def _arena_one(a, hyps, cfg) -> dict | None:
     from lab import arena, dashboard, screen
     p, costs = arena_panel(cfg, a.synthetic)
-    tag = f"{cfg['universe']}_{cfg['timeframe']}"
+    tag = f"{cfg['universe']}_{cfg['key']}"
     if a.timemachine:
         from lab import timemachine
         o = timemachine.run(p, costs, cfg, a.timemachine)
@@ -477,7 +486,7 @@ def main() -> None:
     ap.add_argument("--filters", default="none")
     ap.add_argument("--exits", default="")
     ap.add_argument("--overlays", default="", help="opt-in portfolio overlays: all | vt15,dd20")
-    ap.add_argument("--side", default="long")
+    ap.add_argument("--side", default="long", help="scan: long|short|both; arena/screen/time machine: both|long|short (default there: config/arena.yaml sides)")
     ap.add_argument("--scan", action="store_true")
     ap.add_argument("--families", default="all")
     ap.add_argument("--rules", default="")

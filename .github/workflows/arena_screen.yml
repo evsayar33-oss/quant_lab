@@ -21,6 +21,10 @@ on:
         description: 'stage 2 (filters x exits x combos): config | on | off'
         required: false
         default: config
+      sides:
+        description: 'JSON list: ["both","long","short"] (one book both ways, long only, short only)'
+        required: false
+        default: '["both","long","short"]'
 
 permissions:
   contents: write
@@ -37,6 +41,7 @@ jobs:
       fail-fast: false
       matrix:
         timeframe: ${{ fromJSON(github.event.inputs.timeframes || '["4h","1d"]') }}
+        side: ${{ fromJSON(github.event.inputs.sides || '["both","long","short"]') }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -55,16 +60,18 @@ jobs:
           CHAT_ID: ${{ secrets.CHAT_ID }}
           LAB_CACHE_HOURS: "0"
         run: |
-          ARGS="--screen --timeframe ${{ matrix.timeframe }} --telegram"
+          ARGS="--screen --timeframe ${{ matrix.timeframe }} --side ${{ matrix.side }} --telegram"
           S2="${{ github.event.inputs.stage2 }}"
           if [ "$S2" = "on" ] || [ "$S2" = "off" ]; then ARGS="$ARGS --stage2 $S2"; fi
           if [ -n "${{ github.event.inputs.universe }}" ]; then ARGS="$ARGS --universe ${{ github.event.inputs.universe }}"; fi
           python run.py $ARGS
       - name: Commit roster to main
-        run: bash scripts/commit_arena.sh "Arena screen ${{ matrix.timeframe }} $(date -u +%F)" "${{ matrix.timeframe }}"
+        run: |
+          KEY="${{ matrix.timeframe }}"; if [ "${{ matrix.side }}" != "both" ]; then KEY="${KEY}_${{ matrix.side }}"; fi
+          bash scripts/commit_arena.sh "Arena screen $KEY $(date -u +%F)" "$KEY"
       - uses: actions/upload-artifact@v4
         with:
-          name: arena-screen-${{ matrix.timeframe }}
+          name: arena-screen-${{ matrix.timeframe }}-${{ matrix.side }}
           retention-days: 14
           path: results/arena_screen_*
 

@@ -134,7 +134,7 @@ def timemachine_record(tf: str, cfg: dict) -> dict:
 
 
 def report(data: dict, R, X, ro, p, cps, cfg) -> list[dict]:
-    tmr = timemachine_record(cfg.get("timeframe", "4h"), cfg)
+    tmr = timemachine_record(cfg.get("key", cfg.get("timeframe", "4h")), cfg)
     mmr = cfg.get("books", {}).get("maint_margin", 0.005)
     metrics.set_periods(p.ppy)
     end = R.index[-1]
