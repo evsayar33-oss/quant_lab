@@ -1,20 +1,20 @@
 {
   "H052": {
-    "live_bars": 12,
-    "live_return": -0.0028,
+    "live_bars": 18,
+    "live_return": 0.0091,
     "live_sharpe": null,
     "live_max_dd": -0.0226,
     "degraded": false,
     "why": "not enough live bars",
-    "checked_at": "2026-10-19T22:40:01+00:00"
+    "checked_at": "2026-10-20T21:56:41+00:00"
   },
   "H054": {
-    "live_bars": 12,
-    "live_return": -0.0034,
+    "live_bars": 18,
+    "live_return": 0.0093,
     "live_sharpe": null,
     "live_max_dd": -0.024,
     "degraded": false,
     "why": "not enough live bars",
-    "checked_at": "2026-10-19T22:40:01+00:00"
+    "checked_at": "2026-10-20T21:56:41+00:00"
   }
 }
