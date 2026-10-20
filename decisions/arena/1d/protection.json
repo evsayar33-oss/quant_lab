@@ -1,13 +1,13 @@
 {
- "date": "2026-10-19",
+ "date": "2026-10-20",
  "members": 32,
  "base": {
   "full": {
-   "cagr": 0.3249,
-   "sharpe": 2.887,
+   "cagr": 0.3251,
+   "sharpe": 2.888,
    "max_dd": -0.0693,
    "cvar95_day": -0.0097,
-   "ret": 9.1431
+   "ret": 9.1619
   },
   "crises": {
    "covid_2020": {
@@ -37,8 +37,8 @@
   },
   "mc": {
    "p_ruin": 0.0,
-   "median_1y": 0.3216,
-   "p5_1y": 0.1264
+   "median_1y": 0.3201,
+   "p5_1y": 0.1288
   }
  },
  "leverage": {
@@ -81,16 +81,16 @@
    "name": "Hepsi eşit ağırlık (32 strateji), 1x",
    "note": "şu anki test portföyü",
    "start": "2018-09-06",
-   "end": "2026-10-18",
-   "final_1000": 10143.0,
-   "total": 9.1431,
-   "cagr": 0.3304,
+   "end": "2026-10-19",
+   "final_1000": 10162.0,
+   "total": 9.1619,
+   "cagr": 0.3306,
    "sharpe": 2.91,
    "max_dd": -0.0693,
    "worst_year": 0.0112,
    "worst_year_name": "2018",
-   "ret_3y": 1.7938,
-   "ret_5y": 3.2413,
+   "ret_3y": 1.793,
+   "ret_5y": 3.262,
    "worst_crisis_dd": -0.0321,
    "yearly": {
     "2018": 0.0112,
@@ -101,23 +101,23 @@
     "2023": 0.3169,
     "2024": 0.2881,
     "2025": 0.3909,
-    "2026": 0.3572
+    "2026": 0.3597
    }
   },
   {
    "name": "En iyi 10 (farklı coin), 1x",
    "note": "",
    "start": "2019-02-23",
-   "end": "2026-10-18",
+   "end": "2026-10-19",
    "final_1000": 27902.0,
    "total": 26.9015,
-   "cagr": 0.5452,
+   "cagr": 0.5449,
    "sharpe": 2.14,
    "max_dd": -0.1955,
    "worst_year": -0.1168,
    "worst_year_name": "2019",
-   "ret_3y": 2.9302,
-   "ret_5y": 5.6977,
+   "ret_3y": 2.9381,
+   "ret_5y": 5.7575,
    "worst_crisis_dd": -0.0912,
    "yearly": {
     "2019": -0.1168,
@@ -134,15 +134,15 @@
    "name": "En iyi 5 (farklı coin), 1x",
    "note": "",
    "start": "2021-08-11",
-   "end": "2026-10-18",
+   "end": "2026-10-19",
    "final_1000": 18472.0,
    "total": 17.4717,
-   "cagr": 0.7547,
+   "cagr": 0.7541,
    "sharpe": 1.98,
    "max_dd": -0.3212,
    "worst_year": 0.3096,
    "worst_year_name": "2024",
-   "ret_3y": 4.3629,
+   "ret_3y": 4.3774,
    "ret_5y": 7.5744,
    "worst_crisis_dd": -0.1922,
    "yearly": {
@@ -158,15 +158,15 @@
    "name": "En iyi 5 (farklı coin), 2x",
    "note": "",
    "start": "2021-08-11",
-   "end": "2026-10-18",
+   "end": "2026-10-19",
    "final_1000": 215091.0,
    "total": 214.091,
-   "cagr": 1.8168,
+   "cagr": 1.8152,
    "sharpe": 1.98,
    "max_dd": -0.5613,
    "worst_year": 0.6808,
    "worst_year_name": "2024",
-   "ret_3y": 24.6007,
+   "ret_3y": 24.7401,
    "ret_5y": 48.9763,
    "worst_crisis_dd": -0.3619,
    "yearly": {
@@ -182,15 +182,15 @@
    "name": "En iyi 5 (farklı coin), 3x",
    "note": "",
    "start": "2021-08-11",
-   "end": "2026-10-18",
+   "end": "2026-10-19",
    "final_1000": 1606498.0,
-   "total": 1605.4985,
-   "cagr": 3.1507,
+   "total": 1605.4984,
+   "cagr": 3.1476,
    "sharpe": 1.98,
    "max_dd": -0.7318,
    "worst_year": 1.1145,
    "worst_year_name": "2024",
-   "ret_3y": 108.6466,
+   "ret_3y": 109.5448,
    "ret_5y": 198.6545,
    "worst_crisis_dd": -0.5085,
    "yearly": {
@@ -206,10 +206,10 @@
    "name": "En iyi 5, 3x + düşüş sigortası (−%10 yarım / −%20 nakit)",
    "note": "",
    "start": "2021-08-11",
-   "end": "2026-10-18",
+   "end": "2026-10-19",
    "final_1000": 150779.0,
    "total": 149.7789,
-   "cagr": 1.6303,
+   "cagr": 1.6289,
    "sharpe": 1.89,
    "max_dd": -0.5748,
    "worst_year": -0.2691,
@@ -230,16 +230,16 @@
    "name": "En iyi 5, 3x + volatilite hedefi %35",
    "note": "",
    "start": "2021-08-11",
-   "end": "2026-10-18",
-   "final_1000": 130925.0,
-   "total": 129.9252,
-   "cagr": 1.5596,
+   "end": "2026-10-19",
+   "final_1000": 130808.0,
+   "total": 129.8081,
+   "cagr": 1.5579,
    "sharpe": 2.21,
    "max_dd": -0.3595,
    "worst_year": 0.6181,
    "worst_year_name": "2021",
-   "ret_3y": 18.7739,
-   "ret_5y": 66.7494,
+   "ret_3y": 18.9181,
+   "ret_5y": 66.6888,
    "worst_crisis_dd": -0.1082,
    "yearly": {
     "2021": 0.6181,
@@ -247,23 +247,23 @@
     "2023": 1.1057,
     "2024": 0.6873,
     "2025": 1.6323,
-    "2026": 1.6622
+    "2026": 1.6598
    }
   },
   {
    "name": "En iyi 10, ters volatilite ağırlık, 1x",
    "note": "",
    "start": "2019-02-23",
-   "end": "2026-10-18",
+   "end": "2026-10-19",
    "final_1000": 22610.0,
    "total": 21.6103,
-   "cagr": 0.5033,
+   "cagr": 0.5031,
    "sharpe": 1.72,
    "max_dd": -0.1742,
    "worst_year": -0.0722,
    "worst_year_name": "2019",
-   "ret_3y": 2.1434,
-   "ret_5y": 5.1555,
+   "ret_3y": 2.1498,
+   "ret_5y": 5.2058,
    "worst_crisis_dd": -0.1004,
    "yearly": {
     "2019": -0.0722,
@@ -280,7 +280,7 @@
    "name": "En iyi 10, HRP ağırlık, 1x",
    "note": "",
    "start": "2019-02-23",
-   "end": "2026-10-18",
+   "end": "2026-10-19",
    "final_1000": 2869.0,
    "total": 1.8694,
    "cagr": 0.1477,
@@ -306,15 +306,15 @@
    "name": "En iyi 5, ters volatilite ağırlık, 1x",
    "note": "",
    "start": "2021-08-11",
-   "end": "2026-10-18",
+   "end": "2026-10-19",
    "final_1000": 14360.0,
    "total": 13.36,
-   "cagr": 0.6715,
+   "cagr": 0.6711,
    "sharpe": 1.66,
    "max_dd": -0.3212,
    "worst_year": 0.1887,
    "worst_year_name": "2021",
-   "ret_3y": 4.0207,
+   "ret_3y": 4.0381,
    "ret_5y": 9.527,
    "worst_crisis_dd": -0.1922,
    "yearly": {
@@ -330,10 +330,10 @@
    "name": "En iyi 5, HRP ağırlık, 1x",
    "note": "",
    "start": "2021-08-11",
-   "end": "2026-10-18",
+   "end": "2026-10-19",
    "final_1000": 3926.0,
    "total": 2.9258,
-   "cagr": 0.3017,
+   "cagr": 0.3015,
    "sharpe": 1.52,
    "max_dd": -0.2108,
    "worst_year": 0.0,
@@ -354,8 +354,8 @@
    "name": "Rastgele 5 strateji (300 deneme), 1x — medyan",
    "note": "",
    "start": "2021-08-11",
-   "end": "2026-10-18",
-   "final_1000": 8506.0,
+   "end": "2026-10-19",
+   "final_1000": 8489.0,
    "total": 0.0,
    "cagr": null,
    "sharpe": 1.54,
@@ -376,25 +376,25 @@
    "random": true,
    "sharpe_p10_p90": [
     1.09,
-    1.91
+    1.92
    ],
    "top_sharpe": 1.98,
-   "top_sharpe_percentile": 0.927
+   "top_sharpe_percentile": 0.93
   },
   {
    "name": "Karşılaştırma: BTC al-tut",
    "note": "",
    "start": "2018-07-26",
-   "end": "2026-10-18",
-   "final_1000": 9954.0,
-   "total": 8.9542,
-   "cagr": 0.3221,
+   "end": "2026-10-19",
+   "final_1000": 9934.0,
+   "total": 8.9336,
+   "cagr": 0.3216,
    "sharpe": 0.77,
    "max_dd": -0.7663,
    "worst_year": -0.6421,
    "worst_year_name": "2022",
-   "ret_3y": 1.8994,
-   "ret_5y": 0.3348,
+   "ret_3y": 1.8537,
+   "ret_5y": 0.3211,
    "worst_crisis_dd": -0.522,
    "yearly": {
     "2018": -0.5516,
@@ -405,7 +405,7 @@
     "2023": 1.5559,
     "2024": 1.2141,
     "2025": -0.0637,
-    "2026": -0.0631
+    "2026": -0.0651
    }
   }
  ],
@@ -420,11 +420,11 @@
       0.16
      ],
      "full": {
-      "cagr": 0.3249,
-      "sharpe": 2.887,
+      "cagr": 0.3251,
+      "sharpe": 2.888,
       "max_dd": -0.0693,
       "cvar95_day": -0.0097,
-      "ret": 9.1431
+      "ret": 9.1619
      },
      "crises": {
       "covid_2020": {
@@ -462,7 +462,7 @@
      "pass": false,
      "mc": {
       "p_ruin": 0.0,
-      "median_1y": 0.3215,
+      "median_1y": 0.3198,
       "p5_1y": 0.1262
      }
     },
@@ -472,11 +472,11 @@
       0.2
      ],
      "full": {
-      "cagr": 0.3249,
-      "sharpe": 2.887,
+      "cagr": 0.3251,
+      "sharpe": 2.888,
       "max_dd": -0.0693,
       "cvar95_day": -0.0097,
-      "ret": 9.1431
+      "ret": 9.1619
      },
      "crises": {
       "covid_2020": {
@@ -514,8 +514,8 @@
      "pass": false,
      "mc": {
       "p_ruin": 0.0,
-      "median_1y": 0.3216,
-      "p5_1y": 0.1264
+      "median_1y": 0.32,
+      "p5_1y": 0.1277
      }
     },
     {
@@ -524,11 +524,11 @@
       0.25
      ],
      "full": {
-      "cagr": 0.3249,
-      "sharpe": 2.887,
+      "cagr": 0.3251,
+      "sharpe": 2.888,
       "max_dd": -0.0693,
       "cvar95_day": -0.0097,
-      "ret": 9.1431
+      "ret": 9.1619
      },
      "crises": {
       "covid_2020": {
@@ -566,8 +566,8 @@
      "pass": false,
      "mc": {
       "p_ruin": 0.0,
-      "median_1y": 0.3216,
-      "p5_1y": 0.1264
+      "median_1y": 0.3201,
+      "p5_1y": 0.1287
      }
     }
    ]
@@ -578,11 +578,11 @@
     {
      "threshold": 0.25,
      "full": {
-      "cagr": 0.3249,
-      "sharpe": 2.887,
+      "cagr": 0.3251,
+      "sharpe": 2.888,
       "max_dd": -0.0693,
       "cvar95_day": -0.0097,
-      "ret": 9.1431
+      "ret": 9.1619
      },
      "crises": {
       "covid_2020": {
@@ -622,11 +622,11 @@
     {
      "threshold": 0.35,
      "full": {
-      "cagr": 0.3249,
-      "sharpe": 2.887,
+      "cagr": 0.3251,
+      "sharpe": 2.888,
       "max_dd": -0.0693,
       "cvar95_day": -0.0097,
-      "ret": 9.1431
+      "ret": 9.1619
      },
      "crises": {
       "covid_2020": {
@@ -666,11 +666,11 @@
     {
      "threshold": 0.5,
      "full": {
-      "cagr": 0.3249,
-      "sharpe": 2.887,
+      "cagr": 0.3251,
+      "sharpe": 2.888,
       "max_dd": -0.0693,
       "cvar95_day": -0.0097,
-      "ret": 9.1431
+      "ret": 9.1619
      },
      "crises": {
       "covid_2020": {
@@ -715,7 +715,7 @@
     {
      "threshold": 30,
      "full": {
-      "cagr": 0.2573,
+      "cagr": 0.2572,
       "sharpe": 2.527,
       "max_dd": -0.0571,
       "cvar95_day": -0.0092,
@@ -759,11 +759,11 @@
     {
      "threshold": 60,
      "full": {
-      "cagr": 0.2769,
-      "sharpe": 2.604,
+      "cagr": 0.2771,
+      "sharpe": 2.606,
       "max_dd": -0.0753,
       "cvar95_day": -0.0094,
-      "ret": 6.4865
+      "ret": 6.5003
      },
      "crises": {
       "covid_2020": {
@@ -803,11 +803,11 @@
     {
      "threshold": 90,
      "full": {
-      "cagr": 0.2903,
-      "sharpe": 2.711,
+      "cagr": 0.2905,
+      "sharpe": 2.713,
       "max_dd": -0.0643,
       "cvar95_day": -0.0095,
-      "ret": 7.1586
+      "ret": 7.1737
      },
      "crises": {
       "covid_2020": {
@@ -852,11 +852,11 @@
     {
      "threshold": 0.04,
      "full": {
-      "cagr": 0.325,
-      "sharpe": 2.888,
+      "cagr": 0.3252,
+      "sharpe": 2.89,
       "max_dd": -0.0693,
       "cvar95_day": -0.0097,
-      "ret": 9.1535
+      "ret": 9.1723
      },
      "crises": {
       "covid_2020": {
@@ -896,11 +896,11 @@
     {
      "threshold": 0.05,
      "full": {
-      "cagr": 0.3249,
-      "sharpe": 2.887,
+      "cagr": 0.3251,
+      "sharpe": 2.888,
       "max_dd": -0.0693,
       "cvar95_day": -0.0097,
-      "ret": 9.1431
+      "ret": 9.1619
      },
      "crises": {
       "covid_2020": {
@@ -940,11 +940,11 @@
     {
      "threshold": 0.07,
      "full": {
-      "cagr": 0.3249,
-      "sharpe": 2.887,
+      "cagr": 0.3251,
+      "sharpe": 2.888,
       "max_dd": -0.0693,
       "cvar95_day": -0.0097,
-      "ret": 9.1431
+      "ret": 9.1619
      },
      "crises": {
       "covid_2020": {
@@ -989,11 +989,11 @@
     {
      "threshold": 0.08,
      "full": {
-      "cagr": 0.3169,
-      "sharpe": 2.826,
+      "cagr": 0.317,
+      "sharpe": 2.828,
       "max_dd": -0.0696,
       "cvar95_day": -0.0098,
-      "ret": 8.649
+      "ret": 8.6668
      },
      "crises": {
       "covid_2020": {
@@ -1033,11 +1033,11 @@
     {
      "threshold": 0.1,
      "full": {
-      "cagr": 0.3212,
-      "sharpe": 2.856,
+      "cagr": 0.3214,
+      "sharpe": 2.857,
       "max_dd": -0.0696,
       "cvar95_day": -0.0098,
-      "ret": 8.9133
+      "ret": 8.9316
      },
      "crises": {
       "covid_2020": {
@@ -1077,11 +1077,11 @@
     {
      "threshold": 0.15,
      "full": {
-      "cagr": 0.3249,
-      "sharpe": 2.887,
+      "cagr": 0.3251,
+      "sharpe": 2.888,
       "max_dd": -0.0693,
       "cvar95_day": -0.0097,
-      "ret": 9.1431
+      "ret": 9.1619
      },
      "crises": {
       "covid_2020": {
@@ -1126,11 +1126,11 @@
     {
      "threshold": 0.1,
      "full": {
-      "cagr": 0.308,
-      "sharpe": 2.752,
+      "cagr": 0.3082,
+      "sharpe": 2.754,
       "max_dd": -0.0572,
       "cvar95_day": -0.0099,
-      "ret": 8.1277
+      "ret": 8.1446
      },
      "crises": {
       "covid_2020": {
@@ -1170,11 +1170,11 @@
     {
      "threshold": 0.12,
      "full": {
-      "cagr": 0.3075,
-      "sharpe": 2.738,
+      "cagr": 0.3077,
+      "sharpe": 2.74,
       "max_dd": -0.0637,
       "cvar95_day": -0.01,
-      "ret": 8.0997
+      "ret": 8.1165
      },
      "crises": {
       "covid_2020": {
@@ -1214,11 +1214,11 @@
     {
      "threshold": 0.15,
      "full": {
-      "cagr": 0.3078,
-      "sharpe": 2.734,
+      "cagr": 0.308,
+      "sharpe": 2.736,
       "max_dd": -0.0571,
       "cvar95_day": -0.01,
-      "ret": 8.1147
+      "ret": 8.1315
      },
      "crises": {
       "covid_2020": {
