@@ -486,12 +486,15 @@ def rank_key(row: dict):
 
 
 def markdown(res: dict, cfg: dict, roster_note: str = "") -> str:
-    tf, uni = cfg.get("timeframe"), cfg.get("universe")
-    L = [f"# Eleme motoru — {uni} {tf}", "",
+    tf, uni = cfg.get("key", cfg.get("timeframe")), cfg.get("universe")
+    L = [f"# Eleme motoru — {uni} {tf} (yön: {cfg.get('side', 'both')})", "",
          f"Veri: {res['data_start'][:10]} → {res['data_end'][:10]}. Coin: {len(res['coins'])} uygun "
          f"(toplam {len(res['years'])}). Denenen varyant: {res['n_variant_runs']} × coin = **{res['n_trials']} deneme**.",
          "Her (coin, kural) için tek en iyi nokta değil, **en sağlam bölgenin merkezi** seçildi. "
          "Bu bir aday listesidir, karar değildir. Karar sadece doğrulama kapısında verilir.", "",
+         "> ⚠️ **Zaman makinesi kontrolü önerilir.** Bu liste binlerce deneme arasından seçildi; seçim süreçleri "
+         "backtest'te iyi görünüp ileride çökebilir (2026-10-17 ve 10-19 testleri). Gerçek paraya aday olmadan önce "
+         "`Time machine test` workflow'unu aynı yön (side) ve zaman dilimiyle çalıştırın. Kural: CLAUDE.md / AGENTS.md.", "",
          "## Huni", "", "| Adım | Ne kontrol edilir | Elenen | Kalan |", "|---|---|---|---|"]
     for f in res["funnel"]:
         L.append(f"| {f['stage']} | {f['label']} | {f['eliminated']} | {f['remaining']} |")

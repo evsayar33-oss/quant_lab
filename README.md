@@ -1,3 +1,5 @@
+> **Başka bir yapay zekâ veya kişi test çalıştıracaksa önce [`AGENTS.md`](AGENTS.md) okunmalı.** Her seçim testinden sonra zaman makinesi kontrolü önerilir.
+
 # quant_lab — Strateji Laboratuvarı ve Karar Merkezi
 
 Bu repo tüm al-sat botlarının **nihai karar merkezidir**. Bir bot bir stratejiyi ancak burada doğrulanmış ve

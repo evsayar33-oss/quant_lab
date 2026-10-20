@@ -209,7 +209,10 @@ def do_scan(a) -> None:
     res = scanner.scan(p, costs, a.families, filters, a.side, names)
     RESULTS.mkdir(exist_ok=True)
     stem = f"scan_{spec['universe']}_{a.timeframe}_{a.families}"
-    (RESULTS / f"{stem}.md").write_text(scanner.to_markdown(res) + "\n\n```yaml\n" +
+    warn = ("\n\n> ⚠️ **Zaman makinesi kontrolü önerilir.** Bir tarama sonucu karar değil, adaydır; birçok varyant "
+            "arasından seçilen sonuçlar ileride çökebilir. Önce `run.py --hypothesis` kapısı, seçim süreci için "
+            "`Time machine test`. Kural: CLAUDE.md / AGENTS.md.\n")
+    (RESULTS / f"{stem}.md").write_text(scanner.to_markdown(res) + warn + "\n\n```yaml\n" +
                                         scanner.suggest_yaml(res, spec["universe"]) + "\n```\n")
     res["board"].to_csv(RESULTS / f"{stem}.csv", index=False)
     res["variants"].to_csv(RESULTS / f"{stem}_variants.csv", index=False)
@@ -219,6 +222,7 @@ def do_scan(a) -> None:
         msg = [f"🔎 Scan {spec['universe']} — {res['n_trials']} variants, PBO {res['global_pbo']}, "
                f"bench SR {res['benchmark_sharpe']}"]
         msg += [f"{i}. {r.family} OOS SR {r.wf_oos_sharpe} DD {r.wf_oos_maxdd}" for i, r in enumerate(top.itertuples(), 1)]
+        msg.append("⚠️ Tarama sonucu adaydır, karar değil. Kapı (--hypothesis) ve zaman makinesi kontrolü önerilir.")
         telegram("\n".join(msg))
 
 
@@ -377,7 +381,9 @@ def _arena_one(a, hyps, cfg) -> dict | None:
                      (f"\n2. aşama: {res['stage2']['candidates']} aday, {res['stage2']['trials']} ek deneme → "
                       f"{sum(1 for r in res['rows'].values() if r['stage_no'] == 2 and r['stage'] == 'OK')} geçti"
                       if res.get('stage2', {}).get('enabled') else "") +
-                     f"\n{note}\nSwitcher backtest kapısı: {'✅' if gate.get('backtest_pass') else '❌'} {gate.get('checks', {})}")
+                     f"\n{note}\nSwitcher backtest kapısı: {'✅' if gate.get('backtest_pass') else '❌'} {gate.get('checks', {})}"
+                     "\n⚠️ Zaman makinesi kontrolü önerilir: bu adaylar binlerce deneme arasından seçildi. "
+                     "Gerçek paradan önce 'Time machine test' workflow'unu aynı yön ve zaman dilimiyle çalıştırın.")
         return None
     out = arena.run(p, costs, cfg)
     if out.get("error"):
