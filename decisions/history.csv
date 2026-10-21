@@ -82,3 +82,9 @@ validated_at,id,strategy,universe,timeframe,verdict,gate_sharpe,dsr,pbo,oos_cagr
 2026-10-21T15:17:55+00:00,H063,vortex_cross,metals,1d,WATCH,0.184,0.994,0.515,0.0231,-0.0764
 2026-10-21T15:17:30+00:00,H064,high_52w_break,metals,1d,REJECT,-0.147,0.964,0.036,0.0131,-0.0622
 2026-10-21T15:18:04+00:00,H065,ibs_reversion,index_futures,1d,WATCH,0.202,0.985,0.731,0.0271,-0.1051
+2026-10-21T17:53:03+00:00,H066,turn_of_month,index_futures,1d,REJECT,-0.074,0.489,0.582,0.0086,-0.1921
+2026-10-21T17:53:11+00:00,H067,weekday_long,index_futures,1d,REJECT,-0.471,0.01,0.786,-0.0163,-0.4946
+2026-10-21T17:52:31+00:00,H068,halloween,index_futures,1d,WATCH,0.228,0.892,0.339,0.037,-0.3843
+2026-10-21T17:55:10+00:00,H069,funding_extreme,crypto_alts,1d,REJECT,-0.088,0.336,0.461,-0.0932,-0.5325
+2026-10-21T17:52:26+00:00,H070,ibs_reversion,index_futures,1d,WATCH,0.484,0.987,0.288,0.053,-0.1667
+2026-10-21T17:52:59+00:00,H071,ibs_reversion,index_futures,1d,WATCH,0.139,0.904,0.784,0.0233,-0.1454
