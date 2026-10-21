@@ -35,10 +35,9 @@
    "data_end": "2026-10-20",
    "eligible": [
     "BTC/USDT",
-    "ETH/USDT",
-    "TRX/USDT"
+    "ETH/USDT"
    ],
-   "skipped": "only 3 assets with >= 5 years",
+   "skipped": "only 2 assets with >= 5 years",
    "n_trials": 0,
    "funnel": {}
   },

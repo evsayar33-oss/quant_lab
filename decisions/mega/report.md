@@ -10,7 +10,7 @@ Kurallar sonuçlardan ÖNCE yazıldı: `config/mega.yaml`. Son 2 yıl kilitli; s
 |---|---|---|---|---|---|---|---|---|
 | crypto | both | 2024-10-20 | 2 | 0 | — | — | — | — | atlandı: only 2 assets with >= 5 years
 | crypto | long | 2024-10-20 | 2 | 0 | — | — | — | — | atlandı: only 2 assets with >= 5 years
-| crypto | short | 2024-10-20 | 3 | 0 | — | — | — | — | atlandı: only 3 assets with >= 5 years
+| crypto | short | 2024-10-20 | 2 | 0 | — | — | — | — | atlandı: only 2 assets with >= 5 years
 | energy | both | 2024-10-21 | 5 | 5,720 | 261 | 3 | 0 | 0 |
 | energy | long | 2024-10-21 | 5 | 6,530 | 1590 | 94 | 54 | 34 |
 | energy | short | 2024-10-21 | 4 | 5,630 | 28 | 0 | 0 | 0 |
