@@ -45,9 +45,9 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: data/cache
-          key: mega-data-${{ matrix.cls }}-${{ github.run_id }}
+          key: mega2-data-${{ matrix.cls }}-${{ github.run_id }}
           restore-keys: |
-            mega-data-${{ matrix.cls }}-
+            mega2-data-${{ matrix.cls }}-
             arena-data-1d-
       - name: Screen one class / side
         env:
