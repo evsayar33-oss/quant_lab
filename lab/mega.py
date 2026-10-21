@@ -57,8 +57,8 @@ def load_class(cls: str, cfg: dict, synthetic: bool = False):
     return p, Costs(**u.get("costs", {}))
 
 
-def cut_date(p, cfg) -> pd.Timestamp:
-    return p.index[-1] - pd.DateOffset(years=int(cfg["holdout_years"]))
+def cut_date(p, cfg, hy: int | None = None) -> pd.Timestamp:
+    return p.index[-1] - pd.DateOffset(years=int(hy or cfg["holdout_years"]))
 
 
 # ------------------------------------------------------------------ one strategy on one class
@@ -121,15 +121,15 @@ def _mid(grid: dict) -> dict:
 
 
 def job(cls: str, side: str, cfg: dict, synthetic: bool = False, rule_names: list | None = None,
-        workers: int | None = None) -> dict:
+        workers: int | None = None, hy: int | None = None) -> dict:
     p, costs = load_class(cls, cfg, synthetic)
     ppy = p.ppy
     metrics.set_periods(ppy)
-    cut = cut_date(p, cfg)
+    cut = cut_date(p, cfg, hy)
     d = cfg["discovery"]
     yrs = {a: float(p.c.loc[p.index < cut, a].notna().sum() / ppy) for a in p.columns}
     elig = [a for a, y in yrs.items() if y >= d["min_years"]]
-    base = {"cls": cls, "side": side, "date": date.today().isoformat(), "data_end": str(p.index[-1].date()),
+    base = {"cls": cls, "side": side, "holdout_years": int(hy or cfg["holdout_years"]), "date": date.today().isoformat(), "data_end": str(p.index[-1].date()),
             "cut": str(cut.date()), "assets_years": {a: round(y, 1) for a, y in yrs.items()}, "eligible": elig}
     if len(elig) < d["min_assets"]:
         return {**base, "skipped": f"only {len(elig)} assets with >= {d['min_years']} years", "n_trials": 0,
@@ -337,21 +337,138 @@ def telegram_text(o: dict) -> str:
     return t + "\n⚠️ Zaman makinesi kontrolü gerekli."
 
 
+# ------------------------------------------------------------------ time machine (H062)
+def _spearman(a, b) -> float | None:
+    if len(a) < 5:
+        return None
+    return round(float(pd.Series(a).rank().corr(pd.Series(b).rank())), 3)
+
+
+def timemachine(parts: list[dict], cfg: dict) -> dict:
+    tm = cfg["timemachine"]
+    ins = tm["inside"]
+    cuts = {}
+    for p_ in parts:
+        cuts.setdefault(int(p_.get("holdout_years", cfg["holdout_years"])), []).append(p_)
+    out_cuts, seen = [], {}
+    for hy in sorted(cuts, reverse=True):
+        ps = cuts[hy]
+        book, all_d, all_f = [], [], []
+        for p_ in ps:
+            cs = p_["candidates"]
+            for c in cs:
+                k = f"{p_['cls']}|{p_['side']}|{c['key']}"
+                f2 = c["sealed_holdout"]["pool_ret_2x"]
+                seen.setdefault(k, {})[hy] = {"disc_sharpe": c["disc"]["pool_sharpe"], "fwd_ret_2x": f2,
+                                              "fwd_sharpe": c["sealed_holdout"]["pool_sharpe"]}
+                all_d.append(c["disc"]["pool_sharpe"]); all_f.append(c["sealed_holdout"]["pool_sharpe"])
+            for c in cs[: tm["top_per_job"]]:      # candidates are already sorted by discovery pooled Sharpe
+                book.append({"cls": p_["cls"], "side": p_["side"], "key": c["key"], "disc_sharpe": c["disc"]["pool_sharpe"],
+                             "disc_series": c["disc_series"], "fwd": c["sealed_holdout"]})
+        if book:
+            d_sr = float(np.mean([b["disc_sharpe"] for b in book]))
+            f_ret = float(np.mean([b["fwd"]["pool_ret_2x"] for b in book]))
+            f_sr = float(np.mean([b["fwd"]["pool_sharpe"] for b in book]))
+            yrs = hy
+            inside = f_ret > ins["min_return_2x"] and f_sr >= ins["min_sharpe_ratio"] * d_sr
+        else:
+            d_sr = f_ret = f_sr = None
+            inside = None
+        cut = next((p_["cut"] for p_ in ps if p_.get("cut")), None)
+        out_cuts.append({"holdout_years": hy, "cut": cut, "jobs": len(ps),
+                         "skipped": [f"{p_['cls']}/{p_['side']}: {p_['skipped']}" for p_ in ps if p_.get("skipped")],
+                         "n_candidates": sum(len(p_["candidates"]) for p_ in ps), "book_size": len(book),
+                         "book_disc_sharpe": None if d_sr is None else round(d_sr, 3),
+                         "book_fwd_ret_2x": None if f_ret is None else round(f_ret, 4),
+                         "book_fwd_ret_2x_per_year": None if f_ret is None else round((1 + f_ret) ** (1 / yrs) - 1, 4),
+                         "book_fwd_sharpe": None if f_sr is None else round(f_sr, 3), "inside": inside,
+                         "rank_corr": _spearman(all_d, all_f),
+                         "book": [{k: b[k] for k in ("cls", "side", "key", "disc_sharpe")} |
+                                  {"fwd_ret_2x": b["fwd"]["pool_ret_2x"], "fwd_sharpe": b["fwd"]["pool_sharpe"],
+                                   "fwd_asset_share": b["fwd"]["asset_share"]} for b in book]})
+    n_in = sum(1 for c in out_cuts if c["inside"])
+    surv = []
+    for k, v in seen.items():
+        if len(v) >= 2 and all(x["fwd_ret_2x"] > 0 for x in v.values()):
+            cls, side, key = k.split("|", 2)
+            surv.append({"cls": cls, "side": side, "key": key, "cuts": sorted(v), "min_fwd": min(x["fwd_ret_2x"] for x in v.values()),
+                         **{f"fwd_{h}y": v[h] for h in v}})
+    surv.sort(key=lambda r: -r["min_fwd"])
+    return {"date": date.today().isoformat(), "cuts": out_cuts, "inside": n_in, "min_inside": tm["min_inside"],
+            "passed": n_in >= tm["min_inside"] and len(out_cuts) >= 3, "survivors": surv[:40], "n_survivors": len(surv)}
+
+
+def tm_markdown(o: dict, cfg: dict) -> str:
+    f = lambda v: "—" if v is None else f"{v:+.0%}"   # noqa: E731
+    L = ["# H062 zaman makinesi — dev tarama geçmişe gönderildi", "",
+         "Seçim, her kesim tarihinde sadece o tarihten önceki veriyle yeniden yapıldı. İleri = kesimden bugüne, 2x maliyet. "
+         "Kural sonuçlardan önce yazıldı (`config/mega.yaml` → timemachine).", "",
+         "| Kesim | D1–D4 aday | Kitap | Keşif Sharpe | İleri 2x getiri (toplam) | Yıllık | İleri Sharpe | Sıra ilişkisi | Aralıkta |",
+         "|---|---|---|---|---|---|---|---|---|"]
+    for c in o["cuts"]:
+        L.append(f"| {c['cut']} ({c['holdout_years']}y) | {c['n_candidates']} | {c['book_size']} | {c['book_disc_sharpe']} | "
+                 f"{f(c['book_fwd_ret_2x'])} | {f(c['book_fwd_ret_2x_per_year'])} | {c['book_fwd_sharpe']} | {c['rank_corr']} | "
+                 f"{'evet' if c['inside'] else 'hayır'} |")
+    L += ["", f"Sonuç: **{o['inside']}/{len(o['cuts'])}** kesim aralıkta (gerekli {o['min_inside']}). "
+          f"**{'GEÇTİ' if o['passed'] else 'KALDI'}**.", "",
+          "Sıra ilişkisi = keşif Sharpe sırası ile ileri Sharpe sırası arasındaki Spearman ilişkisi (0 = backtest sırası ileriyi hiç tahmin etmiyor).", ""]
+    for c in o["cuts"]:
+        if c["skipped"]:
+            L.append(f"- {c['cut']}: atlanan işler: {'; '.join(c['skipped'])}")
+    L += ["", f"## Hayatta kalanlar ({o['n_survivors']})", "",
+          "En az 2 kesimde D1–D4 listesinde olup her kesimde ileride 2x maliyetle kârlı kalan stratejiler. Bunlar paper izlemeye adaydır, karar değildir.", "",
+          "| Sınıf | Yön | Strateji | Kesimler | İleri 2x getiriler |", "|---|---|---|---|---|"]
+    for r in o["survivors"][:25]:
+        fw = ", ".join(f"{h}y: {f(r[f'fwd_{h}y']['fwd_ret_2x'])}" for h in r["cuts"])
+        L.append(f"| {r['cls']} | {r['side']} | `{r['key']}` | {len(r['cuts'])} | {fw} |")
+    L += ["", "## Her kesimin kitabı", ""]
+    for c in o["cuts"]:
+        L += [f"### {c['cut']}", "", "| Sınıf | Yön | Strateji | Keşif Sharpe | İleri 2x | İleri Sharpe | Varlık payı |", "|---|---|---|---|---|---|---|"]
+        for b in c["book"]:
+            L.append(f"| {b['cls']} | {b['side']} | `{b['key']}` | {b['disc_sharpe']} | {f(b['fwd_ret_2x'])} | {b['fwd_sharpe']} | {b['fwd_asset_share']:.0%} |")
+        L.append("")
+    L += ["## Zayıf yönler", "", "- 2 yıllık kesimin ileri dönemi, ana taramanın kilitli dönemiyle aynı. Bu test o dönemi tüm adaylar için harcadı.",
+          "- 3 kesim birbirine bağımlı: ileri dönemler üst üste biniyor (2024-10 → bugün hepsinde var).",
+          "- Hayatta kalan listesi binlerce aday içinden seçildi; liste de şans içerir. Paper izleme ve karar kapısı yine gerekli."]
+    return "\n".join(L) + "\n"
+
+
+def tm_telegram(o: dict) -> str:
+    t = f"⏳ H062 zaman makinesi: {o['inside']}/{len(o['cuts'])} kesim aralıkta → {'GEÇTİ' if o['passed'] else 'KALDI'}."
+    for c in o["cuts"]:
+        r = c["book_fwd_ret_2x"]
+        t += f"\n{c['cut']}: kitap ileri 2x {'–' if r is None else f'{r:+.0%}'}, SR {c['book_fwd_sharpe']}, sıra ilişkisi {c['rank_corr']}"
+    return t + f"\nHayatta kalan strateji: {o['n_survivors']}"
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
     j = sub.add_parser("job"); j.add_argument("--cls", required=True); j.add_argument("--side", required=True)
     j.add_argument("--out", required=True); j.add_argument("--synthetic", action="store_true")
-    j.add_argument("--rules", default="")
+    j.add_argument("--rules", default=""); j.add_argument("--holdout-years", type=int, default=None)
+    t = sub.add_parser("tm"); t.add_argument("--parts", required=True); t.add_argument("--out", required=True)
+    t.add_argument("--md", required=True); t.add_argument("--telegram", action="store_true")
     a = sub.add_parser("aggregate"); a.add_argument("--parts", required=True); a.add_argument("--out", required=True)
     a.add_argument("--md", required=True); a.add_argument("--telegram", action="store_true")
     x = ap.parse_args(argv)
     cfg = cfg_load()
     if x.cmd == "job":
-        o = job(x.cls, x.side, cfg, x.synthetic, [r for r in x.rules.split(",") if r] or None)
+        o = job(x.cls, x.side, cfg, x.synthetic, [r for r in x.rules.split(",") if r] or None, hy=x.holdout_years)
         Path(x.out).parent.mkdir(parents=True, exist_ok=True)
         Path(x.out).write_text(json.dumps(o))
         print(f"[mega] {x.cls}/{x.side}: {o['n_trials']} trials, funnel {o['funnel']}")
+    elif x.cmd == "tm":
+        parts = [json.loads(p_.read_text()) for p_ in sorted(Path(x.parts).rglob("*.json"))]
+        o = timemachine(parts, cfg)
+        Path(x.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(x.out).write_text(json.dumps(o, indent=1, default=str))
+        Path(x.md).parent.mkdir(parents=True, exist_ok=True)
+        Path(x.md).write_text(tm_markdown(o, cfg))
+        print(tm_markdown(o, cfg))
+        if x.telegram:
+            from run import telegram
+            telegram(tm_telegram(o))
     else:
         parts = [json.loads(p_.read_text()) for p_ in sorted(Path(x.parts).rglob("*.json"))]
         o = aggregate(parts, cfg)

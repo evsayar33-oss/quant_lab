@@ -56,3 +56,17 @@ holdout:               # H: read once for finalists. All must hold.
 # A finalist that passes H is still a LEAD, not a decision. Next steps (manual, owner approval):
 # register it as a hypothesis -> decision gate (walk-forward, PBO, 2x cost) -> time machine.
 # "strong" label: the same spec passes D1-D4 in >= 2 classes.
+
+# Time machine for H062 (pre-registered 2026-10-21 14:45, before any replay result).
+# The whole selection is re-run as if today were 4, 3 and 2 years ago: only data before the cut is used.
+# The "book" at each cut = the top `top_per_job` D1-D4 candidates of every class/side job (by discovery
+# pooled Sharpe, NO DSR filter), equal weight. Forward = everything after the cut, at 2x cost.
+timemachine:
+  holdout_years: [4, 3, 2]   # cuts ~2022-10, 2023-10, 2024-10
+  top_per_job: 5
+  inside: {min_return_2x: 0.0, min_sharpe_ratio: 0.5}   # a cut counts as "inside" when the book's forward
+                             # 2x return > 0 AND forward Sharpe >= 0.5 x its discovery Sharpe
+  min_inside: 2              # pass when >= 2 of 3 cuts are inside (same rule as lab/timemachine.py)
+  # Strategy level: "survivor" = a spec in the D1-D4 list at >= 2 cuts with forward 2x return > 0 at each.
+  # The 2-year cut reads the sealed holdout of ALL D1-D4 candidates: this spends the locked holdout
+  # (owner decision 2026-10-21: run the future test now). Survivors then go to paper forward watch.
