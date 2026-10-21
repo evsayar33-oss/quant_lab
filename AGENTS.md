@@ -28,3 +28,5 @@ The short version, which every tool (Claude, ChatGPT, Gemini, Copilot, ...) must
     "no better result found" when the rule says so.
 
 - Win rate alone means nothing. Every screen report shows win rate, payoff (avg win / avg loss), breakeven win rate = 1/(1+payoff), the margin (win rate - breakeven) and net expectancy per trade (`lab/perp.trade_stats`). Read the margin, not the win rate.
+
+- H054 bot parity: `h054_spot_bot/bot/signal.py` is a copy of the H054 rule in `lab/core.py`. `tests/test_core.py::test_h054_bot_parity_fixture` fails when `lab/core.py` changes. Then run `python tests/make_parity_fixture.py`, copy `tests/fixtures/h054_parity.json` to `h054_spot_bot/tests/fixtures/`, and update `bot/signal.py`. Never trade live while the two tests disagree.

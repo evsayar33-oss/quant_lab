@@ -381,6 +381,23 @@ def test_mega_holdout_is_sealed():
     assert set(mega.d_checks(d, cfg["discovery"])) == {"D1", "D2", "D4"}
 
 
+
+def test_h054_bot_parity_fixture():
+    """tests/fixtures/h054_parity.json is copied to h054_spot_bot/tests/fixtures/. The bot test checks its own
+    bot/signal.py against it. If lab/core.py changes, this test fails: regenerate the fixture
+    (python tests/make_parity_fixture.py), copy it to the bot repo, and update bot/signal.py."""
+    import json
+    import numpy as np
+    import pandas as pd
+    from lab import core
+    fx = json.loads((Path(__file__).resolve().parent / "fixtures" / "h054_parity.json").read_text())
+    close = pd.Series(fx["close"], pd.date_range(fx["index_start"], periods=len(fx["close"]), freq="4h"))
+    e = core.exposure(close, fx["rule"], fx["params"], fx["ppy"])
+    b = core.apply_band(e, fx["band"])
+    assert np.allclose(e.values, fx["exposure_raw"], atol=1e-9), "lab core exposure changed: bot signal.py is now out of sync"
+    assert np.allclose(b.values, fx["exposure_band"], atol=1e-9), "lab apply_band changed: bot signal.py is now out of sync"
+
+
 if __name__ == "__main__":
     for k, fn in list(globals().items()):
         if k.startswith("test_"):
