@@ -138,6 +138,43 @@ def daily(cfg: dict, synthetic: bool = False) -> tuple[dict, list[str]]:
     return st, msgs
 
 
+def append_history(st: dict) -> Path:
+    """One row per idea per run, kept forever (decisions/watch/history.csv). The owner can send this file by hand."""
+    f = OUT / "history.csv"
+    rows = []
+    for hid, r in st["ideas"].items():
+        pk = r["leverage_pick"]
+        rows.append({"run_date": st["date"], "idea": hid, "bar": r["bar"],
+                     "held": ";".join(f"{a}:{v:+.2f}" for a, v in r["held"].items()) or "cash",
+                     "paper_1x_1000": r["paper_1x"].get("final_1000", 1000), "leverage": pk,
+                     "paper_lev_1000": r.get(f"paper_{pk}x", {}).get("final_1000", 1000),
+                     "max_dd_1x": r["paper_1x"].get("max_dd"), "max_dd_lev": r.get(f"paper_{pk}x", {}).get("max_dd")})
+    new = pd.DataFrame(rows)
+    if f.exists():
+        old = pd.read_csv(f)
+        old = old[~((old["run_date"] == st["date"]) & old["idea"].isin(new["idea"]))]   # one row per idea per day
+        new = pd.concat([old, new], ignore_index=True)
+    new.to_csv(f, index=False)
+    return f
+
+
+def reminders(cfg: dict, today: date | None = None) -> list[str]:
+    """Telegram reminders around each review date. Before: 7 days and 1 day ahead. After: every Monday until
+    the review file decisions/watch/review_YYYY-MM.md exists (the scheduled review may fail or be forgotten)."""
+    today = today or date.today()
+    out = []
+    for d in cfg.get("review", {}).get("dates", []):
+        rd = date.fromisoformat(d)
+        done = (OUT / f"review_{rd:%Y-%m}.md").exists()
+        left = (rd - today).days
+        if left in (7, 1):
+            out.append(f"⏰ Hatırlatma: H063–H065 paper kontrolü {left} gün sonra ({d}). Zamanlanmış görev raporu yazacak.")
+        elif left <= 0 and not done and (left == 0 or today.weekday() == 0):
+            out.append(f"⚠️ {d} paper kontrolü YAPILMADI (decisions/watch/review_{rd:%Y-%m}.md yok). "
+                       "Lütfen bana yaz: 'H063–H065 kontrolünü yap'. Sistem okuyamazsa decisions/watch/OZET.md ve history.csv dosyalarını bana gönder.")
+    return out
+
+
 def daily_markdown(st: dict) -> str:
     L = ["# Paper izleme: H063–H065", "", f"Başlangıç: {st['start']}. Son çalışma: {st['date']}. Sadece sanal para; emir gönderilmez.", "",
          "| Hipotez | Fikir | Son bar | Pozisyon (+1 = varlığın 1/N payı tam long, −1 = tam short) | Paper 1x $1000 → | Seçilen kaldıraç | Paper kaldıraçlı $1000 → |",
@@ -147,7 +184,8 @@ def daily_markdown(st: dict) -> str:
         pk = r["leverage_pick"]
         L.append(f"| {hid} | {r['name']} | {r['bar']} | {pos} | {r['paper_1x'].get('final_1000', 1000):,.0f} | {pk}x | "
                  f"{r.get(f'paper_{pk}x', {}).get('final_1000', 1000):,.0f} |")
-    L += ["", "Kontrol: 2027-01-22 ve 2027-04-22 (zamanlanmış görev). Kural: `config/mega.yaml` baseline (rastgele giriş + al-tut)."]
+    L += ["", "Kontrol: 2027-01-22 (ara) ve 2027-04-22 (karar). Kural: `config/mega.yaml` baseline (rastgele giriş + al-tut).",
+          "Tüm geçmiş kayıt: `decisions/watch/history.csv` (her gün bir satır). Kontrol yapılmazsa bu iki dosyayı (OZET.md, history.csv) Claude'a gönder."]
     return "\n".join(L) + "\n"
 
 
@@ -174,7 +212,13 @@ def main(argv=None):
         st, msgs = daily(cfg, x.synthetic)
         md = daily_markdown(st)
         (OUT / "report.md").write_text(md)
+        (OUT / "OZET.md").write_text(md)
+        append_history(st)
         print(md)
+        rem = reminders(cfg)
+        if x.telegram and rem:
+            from run import telegram
+            telegram("\n".join(rem))
         if x.telegram and (msgs or date.today().weekday() == 4):
             from run import telegram
             body = "\n".join(msgs) if msgs else "Pozisyon değişikliği yok."
