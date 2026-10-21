@@ -250,6 +250,18 @@ def aggregate(parts: list[dict], cfg: dict) -> dict:
                 row["H"] = (ho["pool_ret_2x"] > h["min_return_2x"] and ho["pool_sharpe"] >= h["min_sharpe"]
                             and ho["asset_share"] >= h["min_asset_share"])
                 finals.append(row)
+    # luck bar: the best annual Sharpe expected from pure chance after n_total trials
+    metrics.set_periods(252)
+    var = float(np.var(srs, ddof=1)) if len(srs) > 1 else 0.0
+    luck = round(metrics.expected_max_sharpe(n_total, var) * np.sqrt(252), 2) if n_total > 1 else None
+    best = []
+    for p_ in parts:
+        for c in p_["candidates"]:
+            s = pd.Series(c["disc_series"]["r"], index=pd.to_datetime(c["disc_series"]["d"]))
+            best.append({"cls": p_["cls"], "side": p_["side"], "key": c["key"], "dsr": round(float(metrics.dsr(s, n_total, srs)), 3),
+                         "pool_sharpe": c["disc"]["pool_sharpe"], "pool_ret": c["disc"]["pool_ret"], "max_dd": c["disc"]["max_dd"],
+                         "win_rate": c["disc"].get("win_rate"), "breakeven_wr": c["disc"].get("breakeven_wr")})
+    best = sorted(best, key=lambda r: -r["dsr"])[:15]
     near = []
     for p_ in parts:
         for c in p_["candidates"][:3]:
@@ -260,7 +272,7 @@ def aggregate(parts: list[dict], cfg: dict) -> dict:
             "jobs": [{k: p_.get(k) for k in ("cls", "side", "cut", "data_end", "eligible", "skipped", "n_trials", "funnel")}
                      for p_ in parts],
             "d4_candidates": sum(len(p_["candidates"]) for p_ in parts),
-            "finalists": finals, "winners": winners, "near_misses": near,
+            "finalists": finals, "winners": winners, "near_misses": near, "luck_sharpe": luck, "best_dsr": best,
             "verdict": ("PASSED_HOLDOUT" if winners else "NO_BETTER_FOUND")}
 
 
@@ -294,6 +306,13 @@ def markdown(o: dict, cfg: dict) -> str:
     else:
         L += ["", "**Kilitli dönemi geçenler hâlâ ipucudur, karar değildir.** Sonraki adım (sahibin onayıyla): "
               "hipotez olarak kaydet → karar kapısı (walk-forward, PBO, 2x maliyet) → zaman makinesi."]
+    if o.get("luck_sharpe") is not None:
+        L += ["", f"## Şans çizgisi", "", f"{o['n_trials_total']:,} denemede, hiçbir avantajı olmayan stratejilerden bile beklenen en iyi yıllık Sharpe "
+              f"yaklaşık **{o['luck_sharpe']}**. Bir aday bu çizginin belirgin üstünde olmalı (DSR ≥ {cfg['discovery']['min_dsr']}).", "",
+              "| Sınıf | Yön | Strateji | DSR | Keşif Sharpe | Keşif getiri | Düşüş | Kazanma / başabaş |", "|---|---|---|---|---|---|---|---|"]
+        for r in o.get("best_dsr") or []:
+            L.append(f"| {r['cls']} | {r['side']} | `{r['key']}` | {r['dsr']} | {r['pool_sharpe']} | {f(r['pool_ret'])} | {f(r['max_dd'])} | "
+                     f"{(r['win_rate'] or 0):.0%} / {(r['breakeven_wr'] or 0):.0%} |")
     L += ["", "## En iyi D1–D4 adayları (DSR'ı geçmeyenler dahil, iş başına 3)", "", "| Sınıf | Yön | Strateji | Keşif Sharpe | Varlık payı |",
           "|---|---|---|---|---|"]
     for r in o["near_misses"]:
