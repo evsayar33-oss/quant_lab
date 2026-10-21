@@ -273,6 +273,9 @@ def load_panel(universe: dict, start: str, name: str = "", with_fundamentals: bo
     if universe.get("cot"):
         from lab import cot
         p.extra.update(cot.load(universe["cot"], p.index if timeframe == "1d" else p.index))
+    if universe.get("funding"):
+        from lab import funding as _fu
+        p.extra["funding_daily"] = _fu.panel_frame(list(p.columns), p.index, str(universe["funding"]) if universe["funding"] is not True else "2019-09")
     if universe.get("membership"):
         p.member = membership.mask(universe["membership"], p.index, list(p.columns))
     if with_fundamentals and universe.get("market") in ("bist", "us"):

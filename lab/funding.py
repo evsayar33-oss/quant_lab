@@ -97,3 +97,22 @@ def stats(r: pd.Series) -> dict:
 
 def to_daily(r: pd.Series) -> pd.Series:
     return (1 + r).groupby(r.index.normalize()).prod() - 1
+
+
+def panel_frame(columns, index, start: str = "2019-09") -> pd.DataFrame:
+    """Daily funding (sum of the day's settlements) per panel column, e.g. 'BTC/USDT' -> BTCUSDT. Missing = NaN.
+    Point-in-time: a day's funding is known only after that day, so it is shifted by one bar (used from the next bar)."""
+    out = {}
+    for c in columns:
+        sym = str(c).replace("/", "").replace("-", "").upper()
+        if not sym.endswith("USDT"):
+            continue
+        try:
+            out[c] = daily_funding(load(sym, start))
+        except Exception as e:  # noqa: BLE001 - a coin without funding history is skipped
+            print(f"[funding] {sym}: {e}")
+    if not out:
+        return pd.DataFrame(index=index, columns=columns, dtype=float)
+    df = pd.DataFrame(out).reindex(pd.DatetimeIndex(index).normalize()).shift(1)
+    df.index = index
+    return df.reindex(columns=columns)

@@ -497,6 +497,78 @@ def cot_commercial(p: Panel, n, th):
     return Signals(_b(I.cross_up(z, th)), _b(z < 0), _b(I.cross_up(-z, th)), _b(z > 0))
 
 
+# ------------------------------------------------------------------ seasonality / calendar rules (free, no extra data)
+# The trading calendar is known in advance, so "is the NEXT bar inside the window?" is not look-ahead:
+# the signal at close t asks about bar t+1, the trade fills at open t+1 (same timing as every other rule).
+def _cal(p: Panel):
+    """(month, weekday, bars_from_month_start, bars_to_month_end) of the NEXT bar, per bar. Daily data only."""
+    idx = pd.DatetimeIndex(p.index)
+    if len(idx) < 30 or (idx[1:] - idx[:-1]).median() > pd.Timedelta(days=4) or (idx[1:] - idx[:-1]).median() < pd.Timedelta(hours=20):
+        return None
+    ser = pd.Series(idx, index=idx)
+    ym = ser.dt.to_period("M")
+    start_rank = ym.groupby(ym).cumcount() + 1                     # 1 = first bar of the month
+    end_rank = ym.groupby(ym).cumcount(ascending=False) + 1       # 1 = last bar of the month
+    nxt = lambda x: pd.Series(x.shift(-1).values, index=idx)        # value of bar t+1 seen at t
+    month = nxt(ser.dt.month.astype(float))
+    wd = nxt(ser.dt.weekday.astype(float))
+    return month, wd, nxt(start_rank.astype(float)), nxt(end_rank.astype(float))
+
+
+def _win_signals(p: Panel, inside_next: pd.Series) -> Signals:
+    """Long while the next bar is inside the window. entry = window starts, exit = window ends."""
+    ins = inside_next.fillna(False).astype(bool)
+    prev = ins.shift(1, fill_value=False)
+    el = ins & ~prev
+    xl = ~ins & prev
+    cols = p.columns
+    f = lambda sr: pd.DataFrame(np.repeat(sr.values[:, None], len(cols), 1), index=p.index, columns=cols)
+    return Signals(_b(f(el)), _b(f(xl)))
+
+
+@rule("turn_of_month", "seasonality", {"pre": [1, 2, 3], "post": [1, 2, 3, 4]},
+      "Ariel (1987) 'A monthly effect in stock returns'; Lakonishok & Smidt (1988): gains cluster around the turn of the month")
+def turn_of_month(p: Panel, pre, post):
+    c = _cal(p)
+    if c is None:
+        return _none(p)
+    _, _, srank, erank = c
+    return _win_signals(p, (erank <= pre) | (srank <= post))
+
+
+@rule("weekday_long", "seasonality", {"day": [0, 1, 2, 3, 4]},
+      "French (1980) 'Stock returns and the weekend effect'; Gibbons & Hess (1981): returns differ by weekday")
+def weekday_long(p: Panel, day):
+    c = _cal(p)
+    if c is None:
+        return _none(p)
+    return _win_signals(p, c[1] == day)
+
+
+@rule("halloween", "seasonality", {"start": [10, 11], "end": [3, 4, 5]},
+      "Bouman & Jacobsen (2002) 'The Halloween indicator, Sell in May and go away': winter months beat summer")
+def halloween(p: Panel, start, end):
+    c = _cal(p)
+    if c is None:
+        return _none(p)
+    m = c[0]
+    inside = (m >= start) | (m <= end)
+    return _win_signals(p, inside)
+
+
+@rule("funding_extreme", "positioning", {"n": [90, 180, 365], "th": [1.5, 2.0]},
+      "Contrarian crowding logic (Briese 2008) applied to perp funding: extreme positive funding = crowded longs. "
+      "Funding history: Binance public files (free)")
+def funding_extreme(p: Panel, n, th):
+    fr = p.extra.get("funding_daily") if p.extra else None
+    if fr is None:
+        return _none(p)
+    m7 = fr.rolling(7, min_periods=4).mean()
+    z = (m7 - m7.rolling(n, min_periods=n // 2).mean()) / m7.rolling(n, min_periods=n // 2).std()
+    z = z.reindex(index=p.index, columns=p.columns)
+    return Signals(_b(I.cross_up(-z, th)), _b(z > 0), _b(I.cross_up(z, th)), _b(z < 0))
+
+
 def filt(name):
     def deco(fn):
         FILTERS[name] = fn
@@ -662,6 +734,29 @@ def f_member(p):
     if p.member is None:
         return _all(p), _all(p)
     return _b(p.member), _b(p.member)
+
+
+@filt("vix_term_contango")
+def f_vix_term(p):
+    """Longs only while the VIX curve is in contango (VIX < 3-month VIX): calm market, no stress inversion."""
+    a, b = (p.macro or {}).get("^VIX"), (p.macro or {}).get("^VIX3M")
+    if a is None or b is None:
+        return _all(p), _all(p)
+    ok = (a / b) < 1.0
+    m = pd.DataFrame(np.repeat(ok.values[:, None], p.c.shape[1], 1), index=p.index, columns=p.columns)
+    return _b(m), _b(~m)
+
+
+@filt("credit_calm")
+def f_credit(p):
+    """Longs only while high-yield credit outperforms Treasuries (HYG/IEF above its 100-bar average)."""
+    a, b = (p.macro or {}).get("HYG"), (p.macro or {}).get("IEF")
+    if a is None or b is None:
+        return _all(p), _all(p)
+    r = a / b
+    ok = r > r.rolling(100, min_periods=50).mean()
+    m = pd.DataFrame(np.repeat(ok.values[:, None], p.c.shape[1], 1), index=p.index, columns=p.columns)
+    return _b(m), _b(~m)
 
 
 # ------------------------------------------------------------------ two-signal confirmation (combinations)

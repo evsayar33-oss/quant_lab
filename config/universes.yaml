@@ -128,7 +128,7 @@ index_futures:       # equity index futures (Yahoo continuous front month); H062
   benchmark: ES=F
   costs: {commission: 0.0001, slippage: 0.0003}
   risk_free: ^IRX
-  macro: [^VIX, ^TNX, ^IRX]
+  macro: [^VIX, ^VIX3M, ^TNX, ^IRX, HYG, IEF]
   cot: {ES=F: "13874A", NQ=F: "209742", YM=F: "124603", RTY=F: "239742"}
   # NOTE: rolled front-month series; roll days can show small jumps. NKD = Nikkei 225 (USD).
   tickers: [ES=F, NQ=F, YM=F, RTY=F, NKD=F]
@@ -154,6 +154,7 @@ metals_etf:          # same exposure via ETFs (no roll jumps, dividend/fee adjus
 crypto_alts:         # strategy arena universe (Bitget USDT pairs). Coins with < 3 years of data are
                      # dropped by the screening funnel (stage S0) and the report says so.
   market: crypto
+  funding: true          # daily perp funding (Binance public files) -> p.extra['funding_daily'] for funding_extreme
   benchmark: BTC/USDT
   costs: {commission: 0.0006, slippage: 0.0005, funding_annual: 0.08}
   risk_free: ^IRX

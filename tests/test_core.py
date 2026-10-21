@@ -398,6 +398,44 @@ def test_h054_bot_parity_fixture():
     assert np.allclose(b.values, fx["exposure_band"], atol=1e-9), "lab apply_band changed: bot signal.py is now out of sync"
 
 
+def _cal_panel(prices_seed=0, n=520, extra=None):
+    idx = pd.bdate_range("2021-01-04", periods=n)
+    rng = np.random.default_rng(prices_seed)
+    c = pd.DataFrame(100 * np.exp(np.cumsum(rng.normal(0, 0.01, (n, 2)), 0)), index=idx, columns=["A", "B"])
+    return Panel(o=c, h=c * 1.01, l=c * 0.99, c=c, v=c * 0 + 1e6, extra=extra or {})
+
+
+def test_seasonality_rules_are_calendar_only_and_causal():
+    """Seasonality signals use the trading calendar only: other prices give the same signals, and the entry at
+    close t happens exactly one bar before the window starts (fill at open t+1 = first bar of the window)."""
+    for name, prm in (("turn_of_month", {"pre": 2, "post": 2}), ("weekday_long", {"day": 4}), ("halloween", {"start": 11, "end": 4})):
+        s1 = rules.RULES[name].fn(_cal_panel(0), **prm)
+        s2 = rules.RULES[name].fn(_cal_panel(7), **prm)
+        assert s1.entry_long.equals(s2.entry_long) and s1.exit_long.equals(s2.exit_long), name
+        assert s1.entry_long.any().all(), name
+    p = _cal_panel(0)
+    s = rules.RULES["weekday_long"].fn(p, day=4)           # Friday window: entry on Thursday's close
+    ent = p.index[s.entry_long["A"].values]
+    assert all(d.weekday() == 3 for d in ent), "weekday entry must be the bar BEFORE the window"
+    tom = rules.RULES["turn_of_month"].fn(p, pre=1, post=1)
+    last_bars = set(pd.Series(p.index, p.index).groupby(p.index.to_period("M")).last())
+    firsts = [p.index[i + 1] for i in np.where(tom.entry_long["A"].values)[0] if i + 1 < len(p.index)]
+    assert all(d in last_bars for d in firsts), "turn-of-month window must start on the last bar of a month"
+
+
+def test_funding_rule_is_causal():
+    """funding_extreme at bar t must not change when funding after t changes."""
+    idx = pd.bdate_range("2021-01-04", periods=600)
+    rng = np.random.default_rng(3)
+    fr = pd.DataFrame(rng.normal(0.0003, 0.0004, (600, 2)), index=idx, columns=["A", "B"])
+    fr2 = fr.copy()
+    fr2.iloc[400:] = 0.05                                    # wild future funding
+    s1 = rules.RULES["funding_extreme"].fn(_cal_panel(1, 600, {"funding_daily": fr}), n=90, th=1.5)
+    s2 = rules.RULES["funding_extreme"].fn(_cal_panel(1, 600, {"funding_daily": fr2}), n=90, th=1.5)
+    assert s1.entry_long.iloc[:400].equals(s2.entry_long.iloc[:400]) and s1.entry_short.iloc[:400].equals(s2.entry_short.iloc[:400])
+    assert not rules.RULES["funding_extreme"].fn(_cal_panel(1), n=90, th=1.5).entry_long.any().any(), "no funding data -> no signal"
+
+
 if __name__ == "__main__":
     for k, fn in list(globals().items()):
         if k.startswith("test_"):

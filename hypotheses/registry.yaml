@@ -624,3 +624,78 @@
   side: long
   status: paper
   note: "H062 survivor (paper watch from 2026-10-22): ibs_reversion + trend_sma200 filter, rule exit, long. Passed checks at 2/2 cuts."
+
+# ---- 2026-10-21: free "different information" rules (seasonality, funding, macro filters). Pre-registered
+# before any result. Acceptance = decision gate ACCEPT (validation.GATE unchanged). Output of every run is read
+# once; no rerun with changed settings. See hypotheses/CHANGELOG.md for the trial count.
+- id: H066
+  rule: turn_of_month
+  universe: index_futures
+  timeframe: 1d
+  for_system: research_only
+  start: "2000-01-01"
+  filters: [none]
+  exits: [0]
+  side: long
+  status: active
+  note: "Turn-of-month effect (Ariel 1987; Lakonishok & Smidt 1988). Long from pre days before month end to post days into the next month. Calendar only, no extra data."
+
+- id: H067
+  rule: weekday_long
+  universe: index_futures
+  timeframe: 1d
+  for_system: research_only
+  start: "2000-01-01"
+  filters: [none]
+  exits: [0]
+  side: long
+  status: active
+  note: "Weekday effect (French 1980). Long one weekday only; walk-forward picks the day on past data. Expected weak: the effect is documented as faded."
+
+- id: H068
+  rule: halloween
+  universe: index_futures
+  timeframe: 1d
+  for_system: research_only
+  start: "2000-01-01"
+  filters: [none]
+  exits: [0]
+  side: long
+  status: active
+  note: "Halloween / sell in May (Bouman & Jacobsen 2002). Long in the winter half-year only."
+
+- id: H069
+  rule: funding_extreme
+  universe: crypto_alts
+  timeframe: 1d
+  for_system: research_only
+  start: "2019-10-01"
+  filters: [none]
+  exits: [0]
+  side: both
+  status: active
+  note: "Perp funding extremes as a contrarian crowding signal (Briese 2008 logic). Funding: Binance public files, shifted one bar. Coins without funding history give no signal."
+
+- id: H070
+  rule: ibs_reversion
+  universe: index_futures
+  timeframe: 1d
+  for_system: research_only
+  start: "2008-01-01"
+  filters: [vix_term_contango]
+  exits: [0]
+  side: long
+  status: active
+  note: "Question: does the VIX term-structure filter (VIX < 3-month VIX) make IBS reversion on index futures robust? Compare with H065 (SMA200 filter). Start 2008: ^VIX3M history."
+
+- id: H071
+  rule: ibs_reversion
+  universe: index_futures
+  timeframe: 1d
+  for_system: research_only
+  start: "2008-01-01"
+  filters: [credit_calm]
+  exits: [0]
+  side: long
+  status: active
+  note: "Question: does a credit filter (HYG/IEF above its 100-bar average) make IBS reversion on index futures robust? Start 2008: HYG history."
