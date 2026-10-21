@@ -29,11 +29,28 @@ def cfg_load() -> dict:
     return yaml.safe_load((ROOT / "config" / "watch.yaml").read_text())
 
 
-def idea_returns(idea: dict, panels: dict, synthetic: bool = False):
+def start_leverage(pick) -> int:
+    return max(1, int((pick or 1) // 2))
+
+
+def tradable_assets() -> set | None:
+    f = OUT / "venues.json"
+    if not f.exists():
+        return None
+    v = json.loads(f.read_text())
+    return {t for t, x in v.get("assets", {}).items() if x.get("markets")}
+
+
+def idea_returns(idea: dict, panels: dict, synthetic: bool = False, only: set | None = None):
     cls = idea["cls"]
     if cls not in panels:
         panels[cls] = mega.load_class(cls, mega.cfg_load(), synthetic)
     p, costs = panels[cls]
+    if only is not None:
+        keep = [a for a in p.columns if a in only]
+        if not keep:
+            return p, pd.Series(dtype=float), None, None
+        p = screen.subpanel(p, keep)
     R, X, tr = screen.run_spec(p, idea["spec"], idea["side"], costs)
     pool = R.mean(axis=1, skipna=True).dropna()
     return p, pool, X, tr
@@ -125,10 +142,20 @@ def daily(cfg: dict, synthetic: bool = False) -> tuple[dict, list[str]]:
         last = X.index[-1]
         held = {a: round(float(X.loc[last, a]), 3) for a in X.columns if abs(X.loc[last, a]) > 1e-9}
         pick = (levj["ideas"].get(hid) or {}).get("pick") or 1
+        sl = start_leverage(pick)
         fw = pool[pool.index >= start]
+        tr_ok = tradable_assets() if cfg.get("tradable_only") else None
+        tfw = None
+        if tr_ok is not None:
+            _, tpool, _, _ = idea_returns(idea, {}, synthetic, tr_ok)
+            tfw = tpool[tpool.index >= start] if len(tpool) else pd.Series(dtype=float)
         rec = {"name": idea["name"], "bar": str(last.date()), "held": held, "leverage_pick": pick,
                "paper_1x": _st(fw) or {"final_1000": round(float(1000 * (1 + fw).prod()), 0) if len(fw) else 1000.0, "days": int(len(fw))},
-               f"paper_{pick}x": _st(lever(fw, pick)) or {"final_1000": round(float(1000 * (1 + lever(fw, pick)).prod()), 0) if len(fw) else 1000.0}}
+               f"paper_{pick}x": _st(lever(fw, pick)) or {"final_1000": round(float(1000 * (1 + lever(fw, pick)).prod()), 0) if len(fw) else 1000.0},
+               "start_leverage": sl,
+               "paper_start": _st(lever(fw, sl)) or {"final_1000": round(float(1000 * (1 + lever(fw, sl)).prod()), 0) if len(fw) else 1000.0},
+               "tradable_assets": None if tr_ok is None else sorted(a for a in X.columns if a in tr_ok),
+               "paper_tradable_1x": None if tfw is None else (_st(tfw) or {"final_1000": round(float(1000 * (1 + tfw).prod()), 0) if len(tfw) else 1000.0})}
         old = ((prev.get("ideas") or {}).get(hid) or {}).get("held", {})
         if held != old:
             ch = [f"{a}: {old.get(a, 0):+.2f} → {held.get(a, 0):+.2f}" for a in sorted(set(held) | set(old)) if held.get(a, 0) != old.get(a, 0)]
@@ -148,6 +175,8 @@ def append_history(st: dict) -> Path:
                      "held": ";".join(f"{a}:{v:+.2f}" for a, v in r["held"].items()) or "cash",
                      "paper_1x_1000": r["paper_1x"].get("final_1000", 1000), "leverage": pk,
                      "paper_lev_1000": r.get(f"paper_{pk}x", {}).get("final_1000", 1000),
+                     "start_leverage": r.get("start_leverage"), "paper_start_1000": (r.get("paper_start") or {}).get("final_1000", 1000),
+                     "paper_tradable_1x_1000": (r.get("paper_tradable_1x") or {}).get("final_1000"),
                      "max_dd_1x": r["paper_1x"].get("max_dd"), "max_dd_lev": r.get(f"paper_{pk}x", {}).get("max_dd")})
     new = pd.DataFrame(rows)
     if f.exists():
@@ -177,13 +206,15 @@ def reminders(cfg: dict, today: date | None = None) -> list[str]:
 
 def daily_markdown(st: dict) -> str:
     L = ["# Paper izleme: H063–H065", "", f"Başlangıç: {st['start']}. Son çalışma: {st['date']}. Sadece sanal para; emir gönderilmez.", "",
-         "| Hipotez | Fikir | Son bar | Pozisyon (+1 = varlığın 1/N payı tam long, −1 = tam short) | Paper 1x $1000 → | Seçilen kaldıraç | Paper kaldıraçlı $1000 → |",
-         "|---|---|---|---|---|---|---|"]
+         "| Hipotez | Fikir | Son bar | Pozisyon (+1 = varlığın 1/N payı tam long, −1 = tam short) | Paper 1x $1000 → | Başlangıç kaldıraç | Paper başlangıç $1000 → | Seçilen (tavan) kaldıraç | Paper tavan $1000 → | Sadece işlenebilir varlıklar 1x |",
+         "|---|---|---|---|---|---|---|---|---|---|"]
     for hid, r in st["ideas"].items():
         pos = ", ".join(f"{a} {v:+.2f}" for a, v in r["held"].items()) or "nakit"
         pk = r["leverage_pick"]
-        L.append(f"| {hid} | {r['name']} | {r['bar']} | {pos} | {r['paper_1x'].get('final_1000', 1000):,.0f} | {pk}x | "
-                 f"{r.get(f'paper_{pk}x', {}).get('final_1000', 1000):,.0f} |")
+        tp = r.get("paper_tradable_1x")
+        tps = "venues.json yok" if tp is None else f"{tp.get('final_1000', 1000):,.0f} ({', '.join(r.get('tradable_assets') or []) or 'hiçbiri'})"
+        L.append(f"| {hid} | {r['name']} | {r['bar']} | {pos} | {r['paper_1x'].get('final_1000', 1000):,.0f} | {r.get('start_leverage')}x | "
+                 f"{(r.get('paper_start') or {}).get('final_1000', 1000):,.0f} | {pk}x | {r.get(f'paper_{pk}x', {}).get('final_1000', 1000):,.0f} | {tps} |")
     L += ["", "Kontrol: 2027-01-22 (ara) ve 2027-04-22 (karar). Kural: `config/mega.yaml` baseline (rastgele giriş + al-tut).",
           "Tüm geçmiş kayıt: `decisions/watch/history.csv` (her gün bir satır). Kontrol yapılmazsa bu iki dosyayı (OZET.md, history.csv) Claude'a gönder."]
     return "\n".join(L) + "\n"

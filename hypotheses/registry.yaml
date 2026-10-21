@@ -584,28 +584,43 @@
   note: "Mega multi-asset screen: every rule (technical, SMC, divergence, pivots, COT) x grid x R:R exit x side x filter + combos; same settings on every asset of a class; last 2 years locked; DSR over all trials. Pre-registered in config/mega.yaml. Output is a lead only."
 
 - id: H063
-  strategy: mega_vortex_ob_metals
+  rule: vortex_cross
   universe: metals
   timeframe: 1d
   for_system: paper_watch
-  start: "2026-10-22"
+  start: "2000-01-01"
+  filters: [none]
+  exits: [13]
+  confirm: smc_order_block
+  confirm_params: {k: 5, max_age: 50}
+  confirm_within: [3]
+  side: long
   status: paper
-  note: "H062 survivor: vortex_cross n=28 + smc_order_block confirm (3 bars), 2 ATR stop + 3R target, long. Passed random-entry and buy-and-hold checks at 3/3 cuts. Paper watch + leverage test: config/watch.yaml."
+  note: "H062 survivor (paper watch from 2026-10-22, config/watch.yaml): vortex_cross + smc_order_block confirm (3 bars), 2 ATR stop + 3R target, long. Passed random-entry and buy-and-hold checks at 3/3 cuts. Gate run: walk-forward picks the vortex n on past data only."
 
 - id: H064
-  strategy: mega_52w_bos_metals
+  rule: high_52w_break
   universe: metals
   timeframe: 1d
   for_system: paper_watch
-  start: "2026-10-22"
+  start: "2000-01-01"
+  filters: [none]
+  exits: [28]
+  confirm: smc_bos
+  confirm_params: {k: 5}
+  confirm_within: [3]
+  side: both
   status: paper
-  note: "H062 survivor: high_52w_break n=252 exit_ma=100 + smc_bos confirm (3 bars), 2 ATR stop + 3 ATR chandelier, both sides. Passed checks at 2/2 cuts. config/watch.yaml."
+  note: "H062 survivor (paper watch from 2026-10-22): high_52w_break + smc_bos confirm (3 bars), 2 ATR stop + 3 ATR chandelier, both sides. Passed checks at 2/2 cuts."
 
 - id: H065
-  strategy: mega_ibs_indices
+  rule: ibs_reversion
   universe: index_futures
   timeframe: 1d
   for_system: paper_watch
-  start: "2026-10-22"
+  start: "2000-01-01"
+  filters: [trend_sma200]
+  exits: [0]
+  side: long
   status: paper
-  note: "H062 survivor: ibs_reversion lo=0.2 hi=0.7 + trend_sma200 filter, rule exit, long. Passed checks at 2/2 cuts. config/watch.yaml."
+  note: "H062 survivor (paper watch from 2026-10-22): ibs_reversion + trend_sma200 filter, rule exit, long. Passed checks at 2/2 cuts."

@@ -35,5 +35,15 @@ leverage:
   worst_day_floor: -0.25     # no single day worse than -25%
   # If even L=1 fails, the idea is not traded with leverage. The vol-target variant is reported for comparison only.
 
+# Start leverage for a later live start (decided NOW, 2026-10-21, not after the review):
+# start = floor(picked / 2), at least 1. The picked figure is a ceiling, not a target. The paper record tracks
+# 1x, start and picked leverage side by side, so the review sees all three.
+start_leverage_rule: half_of_pick_floor
+
+# Tradable-only paper book: the same idea computed ONLY on the assets that a crypto venue with an API lists
+# (decisions/watch/venues.json, refreshed weekly). If an asset (e.g. copper) has no market, the live book cannot
+# hold it; this second record shows what a live book would really have earned.
+tradable_only: true
+
 review:                       # paper check dates (scheduled tasks); same B1 / B2 rule as config/mega.yaml baseline
   dates: ["2027-01-22", "2027-04-22"]
