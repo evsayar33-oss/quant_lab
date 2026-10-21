@@ -15,6 +15,20 @@
    },
    "paper_5x": {
     "final_1000": 1000.0
+   },
+   "start_leverage": 2,
+   "paper_start": {
+    "final_1000": 1000.0
+   },
+   "tradable_assets": [
+    "GC=F",
+    "HG=F",
+    "PA=F",
+    "PL=F",
+    "SI=F"
+   ],
+   "paper_tradable_1x": {
+    "final_1000": 1000.0
    }
   },
   "H064": {
@@ -27,6 +41,20 @@
     "days": 0
    },
    "paper_4x": {
+    "final_1000": 1000.0
+   },
+   "start_leverage": 2,
+   "paper_start": {
+    "final_1000": 1000.0
+   },
+   "tradable_assets": [
+    "GC=F",
+    "HG=F",
+    "PA=F",
+    "PL=F",
+    "SI=F"
+   ],
+   "paper_tradable_1x": {
     "final_1000": 1000.0
    }
   },
@@ -42,6 +70,20 @@
     "days": 0
    },
    "paper_4x": {
+    "final_1000": 1000.0
+   },
+   "start_leverage": 2,
+   "paper_start": {
+    "final_1000": 1000.0
+   },
+   "tradable_assets": [
+    "ES=F",
+    "NKD=F",
+    "NQ=F",
+    "RTY=F",
+    "YM=F"
+   ],
+   "paper_tradable_1x": {
     "final_1000": 1000.0
    }
   }
