@@ -1,6 +1,6 @@
 # H062 dev tarama — tüm varlık sınıfları
 
-Tarih: 2026-10-21. Toplam deneme: **54,315** (DSR bu sayıyla hesaplandı).
+Tarih: 2026-10-21. Toplam deneme: **73,005** (DSR bu sayıyla hesaplandı).
 
 Kurallar sonuçlardan ÖNCE yazıldı: `config/mega.yaml`. Son 2 yıl kilitli; seçim bu dönemi hiç görmedi. Kilitli dönem sadece finalistler için bir kez okundu.
 
@@ -8,9 +8,9 @@ Kurallar sonuçlardan ÖNCE yazıldı: `config/mega.yaml`. Son 2 yıl kilitli; s
 
 | Sınıf | Yön | Kesim | Varlık | Deneme | D1 çok varlık | D2 kalite | D3 plato | D4 yıllar |
 |---|---|---|---|---|---|---|---|---|
-| crypto | both | 2024-10-20 | 2 | 0 | — | — | — | — | atlandı: only 2 assets with >= 5 years
-| crypto | long | 2024-10-20 | 2 | 0 | — | — | — | — | atlandı: only 2 assets with >= 5 years
-| crypto | short | 2024-10-20 | 2 | 0 | — | — | — | — | atlandı: only 2 assets with >= 5 years
+| crypto | both | 2024-10-20 | 7 | 6,530 | 94 | 43 | 29 | 16 |
+| crypto | long | 2024-10-20 | 7 | 6,530 | 1106 | 341 | 286 | 89 |
+| crypto | short | 2024-10-20 | 7 | 5,630 | 2 | 0 | 0 | 0 |
 | energy | both | 2024-10-21 | 5 | 5,720 | 261 | 3 | 0 | 0 |
 | energy | long | 2024-10-21 | 5 | 6,530 | 1590 | 94 | 54 | 34 |
 | energy | short | 2024-10-21 | 4 | 5,630 | 28 | 0 | 0 | 0 |
@@ -21,7 +21,7 @@ Kurallar sonuçlardan ÖNCE yazıldı: `config/mega.yaml`. Son 2 yıl kilitli; s
 | metals | long | 2024-10-21 | 5 | 6,527 | 2485 | 112 | 89 | 69 |
 | metals | short | 2024-10-21 | 5 | 5,630 | 60 | 0 | 0 | 0 |
 
-D1–D4'ü geçen: **310**. D5 (DSR ≥ 0.9) geçen finalist: **0**. Kilitli dönemi de geçen: **0**.
+D1–D4'ü geçen: **415**. D5 (DSR ≥ 0.9) geçen finalist: **0**. Kilitli dönemi de geçen: **0**.
 
 
 **Daha iyisi bulunamadı:** önceden yazılan kurala göre hiçbir strateji kilitli dönemi geçmedi. Bot kuralı (H054) değişmez.
@@ -30,6 +30,12 @@ D1–D4'ü geçen: **310**. D5 (DSR ≥ 0.9) geçen finalist: **0**. Kilitli dö
 
 | Sınıf | Yön | Strateji | Keşif Sharpe | Varlık payı |
 |---|---|---|---|---|
+| crypto | both | `cmf_flow|{"n": 40, "th": 0.05}|x13|none|smc_order_block:{"k": 5, "max_age": 50}:w5` | 0.865 | 86% |
+| crypto | both | `hurst_switch|{"fast": 20, "n": 200, "rsi_n": 2}|x20|none|pivot_bounce:{"window": 5}:w3` | 0.796 | 86% |
+| crypto | both | `hurst_switch|{"fast": 20, "n": 200, "rsi_n": 2}|x13|none|pivot_bounce:{"window": 5}:w3` | 0.796 | 86% |
+| crypto | long | `cci_breakout|{"level": 100, "n": 14}|x0|none` | 1.131 | 100% |
+| crypto | long | `ma_cross|{"kind": "dema", "pair": [10, 50]}|x28|trend_sma200` | 1.101 | 100% |
+| crypto | long | `cci_breakout|{"level": 100, "n": 14}|x0|trend_sma200` | 1.077 | 100% |
 | energy | long | `trix_cross|{"n": 21, "signal": 7}|x13|trend_sma200|smc_bos:{"k": 5}:w5` | 0.724 | 100% |
 | energy | long | `trix_cross|{"n": 21, "signal": 9}|x13|trend_sma200|smc_bos:{"k": 5}:w5` | 0.687 | 100% |
 | energy | long | `tsi_cross|{"cfg": [40, 20, 10]}|x13|trend_sma200|smc_order_block:{"k": 5, "max_age": 50}:w3` | 0.677 | 80% |

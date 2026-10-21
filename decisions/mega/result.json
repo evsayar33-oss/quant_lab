@@ -1,6 +1,6 @@
 {
  "date": "2026-10-21",
- "n_trials_total": 54315,
+ "n_trials_total": 73005,
  "jobs": [
   {
    "cls": "crypto",
@@ -9,11 +9,22 @@
    "data_end": "2026-10-20",
    "eligible": [
     "BTC/USDT",
-    "ETH/USDT"
+    "ETH/USDT",
+    "XRP/USDT",
+    "LTC/USDT",
+    "BCH/USDT",
+    "TRX/USDT",
+    "ETC/USDT"
    ],
-   "skipped": "only 2 assets with >= 5 years",
-   "n_trials": 0,
-   "funnel": {}
+   "skipped": null,
+   "n_trials": 6530,
+   "funnel": {
+    "trials": 6530,
+    "D1": 94,
+    "D2": 43,
+    "D3": 29,
+    "D4": 16
+   }
   },
   {
    "cls": "crypto",
@@ -22,11 +33,22 @@
    "data_end": "2026-10-20",
    "eligible": [
     "BTC/USDT",
-    "ETH/USDT"
+    "ETH/USDT",
+    "XRP/USDT",
+    "LTC/USDT",
+    "BCH/USDT",
+    "TRX/USDT",
+    "ETC/USDT"
    ],
-   "skipped": "only 2 assets with >= 5 years",
-   "n_trials": 0,
-   "funnel": {}
+   "skipped": null,
+   "n_trials": 6530,
+   "funnel": {
+    "trials": 6530,
+    "D1": 1106,
+    "D2": 341,
+    "D3": 286,
+    "D4": 89
+   }
   },
   {
    "cls": "crypto",
@@ -35,11 +57,22 @@
    "data_end": "2026-10-20",
    "eligible": [
     "BTC/USDT",
-    "ETH/USDT"
+    "ETH/USDT",
+    "XRP/USDT",
+    "LTC/USDT",
+    "BCH/USDT",
+    "TRX/USDT",
+    "ETC/USDT"
    ],
-   "skipped": "only 2 assets with >= 5 years",
-   "n_trials": 0,
-   "funnel": {}
+   "skipped": null,
+   "n_trials": 5630,
+   "funnel": {
+    "trials": 5630,
+    "D1": 2,
+    "D2": 0,
+    "D3": 0,
+    "D4": 0
+   }
   },
   {
    "cls": "energy",
@@ -239,10 +272,52 @@
    }
   }
  ],
- "d4_candidates": 310,
+ "d4_candidates": 415,
  "finalists": [],
  "winners": [],
  "near_misses": [
+  {
+   "cls": "crypto",
+   "side": "both",
+   "key": "cmf_flow|{\"n\": 40, \"th\": 0.05}|x13|none|smc_order_block:{\"k\": 5, \"max_age\": 50}:w5",
+   "pool_sharpe": 0.865,
+   "asset_share": 0.8571428571428571
+  },
+  {
+   "cls": "crypto",
+   "side": "both",
+   "key": "hurst_switch|{\"fast\": 20, \"n\": 200, \"rsi_n\": 2}|x20|none|pivot_bounce:{\"window\": 5}:w3",
+   "pool_sharpe": 0.796,
+   "asset_share": 0.8571428571428571
+  },
+  {
+   "cls": "crypto",
+   "side": "both",
+   "key": "hurst_switch|{\"fast\": 20, \"n\": 200, \"rsi_n\": 2}|x13|none|pivot_bounce:{\"window\": 5}:w3",
+   "pool_sharpe": 0.796,
+   "asset_share": 0.8571428571428571
+  },
+  {
+   "cls": "crypto",
+   "side": "long",
+   "key": "cci_breakout|{\"level\": 100, \"n\": 14}|x0|none",
+   "pool_sharpe": 1.131,
+   "asset_share": 1.0
+  },
+  {
+   "cls": "crypto",
+   "side": "long",
+   "key": "ma_cross|{\"kind\": \"dema\", \"pair\": [10, 50]}|x28|trend_sma200",
+   "pool_sharpe": 1.101,
+   "asset_share": 1.0
+  },
+  {
+   "cls": "crypto",
+   "side": "long",
+   "key": "cci_breakout|{\"level\": 100, \"n\": 14}|x0|trend_sma200",
+   "pool_sharpe": 1.077,
+   "asset_share": 1.0
+  },
   {
    "cls": "energy",
    "side": "long",
