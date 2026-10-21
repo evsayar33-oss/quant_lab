@@ -365,6 +365,22 @@ def test_breakeven_win_rate():
     assert perp.trade_stats(pd.DataFrame(), 0.001)["breakeven_wr"] is None
 
 
+
+def test_mega_holdout_is_sealed():
+    import pandas as pd
+    from lab import mega, screen
+    cfg = mega.cfg_load()
+    p, c = mega.load_class("metals", cfg, synthetic=True)
+    cut = mega.cut_date(p, cfg)
+    R, _, tr = screen.run_variant(p, "ma_cross", {"fast": 20, "slow": 100} if "fast" in screen.rules.RULES["ma_cross"].grid
+                                  else screen.rules.grid_points(screen.rules.RULES["ma_cross"].grid)[0], 28, "long", c)
+    d = mega.stats(R, tr, cut, c.per_turnover, p.ppy, "disc")
+    # changing holdout returns must not change any discovery number
+    R2 = R.copy(); R2.loc[R2.index >= cut] = 0.05
+    assert mega.stats(R2, tr, cut, c.per_turnover, p.ppy, "disc")["pool_sharpe"] == d["pool_sharpe"]
+    assert set(mega.d_checks(d, cfg["discovery"])) == {"D1", "D2", "D4"}
+
+
 if __name__ == "__main__":
     for k, fn in list(globals().items()):
         if k.startswith("test_"):

@@ -123,6 +123,25 @@ metals:              # gold, silver, copper, platinum, palladium (continuous fro
   # NOTE: Yahoo "=F" series are rolled front-month futures; roll days can show small jumps.
   tickers: [GC=F, SI=F, HG=F, PL=F, PA=F]
 
+index_futures:       # equity index futures (Yahoo continuous front month); H062 mega screen
+  market: multi
+  benchmark: ES=F
+  costs: {commission: 0.0001, slippage: 0.0003}
+  risk_free: ^IRX
+  macro: [^VIX, ^TNX, ^IRX]
+  cot: {ES=F: "13874A", NQ=F: "209742", YM=F: "124603", RTY=F: "239742"}
+  # NOTE: rolled front-month series; roll days can show small jumps. NKD = Nikkei 225 (USD).
+  tickers: [ES=F, NQ=F, YM=F, RTY=F, NKD=F]
+
+energy_futures:      # energy futures (Yahoo continuous front month); H062 mega screen
+  market: multi
+  benchmark: CL=F
+  costs: {commission: 0.0002, slippage: 0.0006}
+  risk_free: ^IRX
+  macro: [^VIX, ^TNX, ^IRX, DX-Y.NYB]
+  cot: {CL=F: "067651", NG=F: "023651", HO=F: "022651", RB=F: "111659"}
+  tickers: [CL=F, BZ=F, NG=F, HO=F, RB=F]
+
 metals_etf:          # same exposure via ETFs (no roll jumps, dividend/fee adjusted)
   market: multi
   benchmark: GLD

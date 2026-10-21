@@ -573,3 +573,12 @@
   start: "2021-01-01"
   status: active
   note: "H056 at 25% vol alone (a) and 50/50 with the bot (b). Goal: more profit than the bot. config/h060.yaml."
+
+- id: H062
+  strategy: mega_screen
+  universe: crypto_alts, index_futures, metals, energy_futures
+  timeframe: 1d
+  for_system: h054_spot_bot
+  start: "2000-01-01"
+  status: active
+  note: "Mega multi-asset screen: every rule (technical, SMC, divergence, pivots, COT) x grid x R:R exit x side x filter + combos; same settings on every asset of a class; last 2 years locked; DSR over all trials. Pre-registered in config/mega.yaml. Output is a lead only."

@@ -1,0 +1,56 @@
+# H062 mega multi-asset screen (pre-registered 2026-10-21, BEFORE any result was seen).
+# Every rule (technical, indicator, SMC, divergence, pivots, COT positioning) x full parameter grid
+# x R:R exits x sides x filters, plus two-signal combos, on every futures-tradable asset class.
+# Thresholds below are fixed. Do not loosen them after seeing results (CLAUDE.md realism rule);
+# a change needs a line in hypotheses/CHANGELOG.md with the reason.
+#
+# Why the design is this strict: on 2026-10-17 arena picks looked very good in backtest and failed
+# 6 of 6 time-machine replays (backtest rank vs forward rank ~0). More trials = more lucky winners.
+# The defences are (1) a locked holdout, (2) ONE parameter set that must work on MANY assets,
+# (3) a plateau, not a peak, (4) Deflated Sharpe over ALL trials of ALL jobs.
+
+timeframe: 1d          # free Yahoo futures data has only ~2 years of hourly bars, so 1d for every class
+start: "2000-01-01"
+
+classes:               # each class = one universe in config/universes.yaml (own costs)
+  crypto: crypto_alts
+  indices: index_futures
+  metals: metals
+  energy: energy_futures
+
+sides: [long, short, both]
+exits: [28, 0, 13, 20, 18]   # R:R grid (lab/trade_engine.EXIT_GRID):
+                             # 28 2 ATR stop + 3 ATR chandelier | 0 rule signal only
+                             # 13 2 ATR stop + 3R target | 20 stop to breakeven at +1R
+                             # 18 partial 50% at 1R + stop to entry + trail
+filters: [none, trend_sma200]
+combos:
+  top_per_job: 30            # best discovery candidates of each job (by pooled Sharpe) get confirmations
+  confirm: [smc_bos, smc_choch, smc_fvg, smc_order_block, smc_liquidity_sweep, smc_ote,
+            rsi_divergence, macd_divergence, pivot_bounce, cot_extreme]
+  within: [0, 3, 5]          # neighbours of each other for the combo plateau
+
+holdout_years: 2       # the LAST 2 years are locked. Selection never reads them.
+                       # They are read ONCE, only for the finalists, in the aggregate step.
+
+discovery:             # every check uses data BEFORE the holdout cut only
+  min_years: 5         # an asset joins a strategy's test only with >= 5 years of discovery data
+  min_assets: 4        # a class needs >= 4 eligible assets
+  min_asset_share: 0.60      # D1: same parameters profitable at 2x cost on >= 60% of the class's assets
+  min_trades_per_asset: 20   # D1: average trades per asset
+  min_pooled_sharpe: 0.50    # D2: equal-weight pool of the assets (1x each)
+  min_profit_factor: 1.15    # D2: pooled trades, net of cost
+  max_dd_floor: -0.35        # D2: pooled 1x drawdown
+  min_wr_margin: 0.0         # D2: win rate above breakeven win rate 1/(1+payoff)
+  min_plateau: 0.50          # D3: >= 50% of neighbour parameter sets also pass D1 share >= 50%
+  min_pos_year_frac: 0.60    # D4: >= 60% of calendar years profitable (pooled)
+  min_dsr: 0.90              # D5: Deflated Sharpe, n = ALL trials of ALL jobs
+
+holdout:               # H: read once for finalists. All must hold.
+  min_return_2x: 0.0         # pooled holdout return at 2x cost > 0
+  min_sharpe: 0.0
+  min_asset_share: 0.50      # >= 50% of assets profitable in the holdout
+
+# A finalist that passes H is still a LEAD, not a decision. Next steps (manual, owner approval):
+# register it as a hypothesis -> decision gate (walk-forward, PBO, 2x cost) -> time machine.
+# "strong" label: the same spec passes D1-D4 in >= 2 classes.

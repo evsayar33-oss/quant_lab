@@ -461,6 +461,42 @@ def chop_switch(p: Panel, n, lo, hi):
 FILTERS: dict[str, Callable[[Panel], tuple[pd.DataFrame, pd.DataFrame]]] = {}
 
 
+# ------------------------------------------------------------------ COT positioning (futures "fundamentals")
+def _cot_z(p: Panel, key: str, n: int) -> pd.DataFrame | None:
+    """Rolling z-score of a CFTC COT series (lab/cot.py makes it public-dated: report + 6 days)."""
+    x = (p.extra or {}).get(key)
+    if x is None or not isinstance(x, pd.DataFrame):
+        return None
+    x = x.reindex(index=p.index, columns=p.columns)
+    if x.notna().sum().sum() == 0:
+        return None
+    m, sd = x.rolling(n, min_periods=n // 2).mean(), x.rolling(n, min_periods=n // 2).std()
+    return (x - m) / sd.where(sd > 0)
+
+
+def _none(p: Panel) -> Signals:
+    f = pd.DataFrame(False, index=p.index, columns=p.columns)
+    return Signals(f, f, f, f)
+
+
+@rule("cot_extreme", "positioning", {"n": [260, 520, 780], "th": [1.5, 2.0]},
+      "Briese (2008) The Commitments of Traders Bible: speculator extremes are contrarian; CFTC COT")
+def cot_extreme(p: Panel, n, th):
+    z = _cot_z(p, "cot_spec_net", n)
+    if z is None:
+        return _none(p)
+    return Signals(_b(I.cross_up(-z, th)), _b(z > 0), _b(I.cross_up(z, th)), _b(z < 0))
+
+
+@rule("cot_commercial", "positioning", {"n": [260, 780], "th": [1.0, 1.5]},
+      "Briese (2008): commercials (hedgers) net long extreme = bullish; CFTC COT")
+def cot_commercial(p: Panel, n, th):
+    z = _cot_z(p, "cot_comm_net", n)
+    if z is None:
+        return _none(p)
+    return Signals(_b(I.cross_up(z, th)), _b(z < 0), _b(I.cross_up(-z, th)), _b(z > 0))
+
+
 def filt(name):
     def deco(fn):
         FILTERS[name] = fn
