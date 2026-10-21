@@ -26,3 +26,5 @@ The short version, which every tool (Claude, ChatGPT, Gemini, Copilot, ...) must
    machine of the SAME direction.
 10. **Always write the weak points** (lost periods, untestable data, single-sector dependence) and say
     "no better result found" when the rule says so.
+
+- Win rate alone means nothing. Every screen report shows win rate, payoff (avg win / avg loss), breakeven win rate = 1/(1+payoff), the margin (win rate - breakeven) and net expectancy per trade (`lab/perp.trade_stats`). Read the margin, not the win rate.

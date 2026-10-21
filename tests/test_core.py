@@ -352,6 +352,19 @@ def test_exits_and_overlays_are_opt_in():
     assert len(cl.overlay_variants(cl.variants()[:1])) == 1
 
 
+
+def test_breakeven_win_rate():
+    import pandas as pd
+    from lab import perp
+    # 40% win rate with 1:3 payoff is profitable: breakeven = 1/(1+3) = 25%
+    s = perp.trade_stats(pd.DataFrame({"ret": [0.06, -0.02, -0.02, 0.06, -0.02]}), 0.0)
+    assert abs(s["breakeven_wr"] - 0.25) < 1e-9 and abs(s["wr_margin"] - 0.15) < 1e-9
+    # 60% win rate with 1:0.5 payoff loses: breakeven = 66.7%
+    s = perp.trade_stats(pd.DataFrame({"ret": [0.01, 0.01, 0.01, -0.02, -0.02]}), 0.0)
+    assert s["wr_margin"] < 0 and s["expectancy"] < 0
+    assert perp.trade_stats(pd.DataFrame(), 0.001)["breakeven_wr"] is None
+
+
 if __name__ == "__main__":
     for k, fn in list(globals().items()):
         if k.startswith("test_"):

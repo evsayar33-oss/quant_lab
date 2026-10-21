@@ -68,12 +68,27 @@ def simulate(trades: pd.DataFrame, ppy: float, cost_per_side: float, funding_ann
 
 
 def trade_stats(tr: pd.DataFrame, cost_per_side: float) -> dict:
+    """Net-of-cost trade statistics. Win rate alone says nothing: a system is profitable only when
+    win_rate > breakeven_wr = 1 / (1 + payoff), payoff = avg win / |avg loss|. wr_margin is that gap;
+    expectancy is the mean net return per trade, expectancy_r the mean R multiple (when stops exist)."""
     if tr is None or tr.empty:
-        return {"trades": 0, "win_rate": None, "profit_factor": None}
+        return {"trades": 0, "win_rate": None, "profit_factor": None, "payoff": None,
+                "breakeven_wr": None, "wr_margin": None, "expectancy": None, "expectancy_r": None}
     net = tr["ret"] - 2 * cost_per_side
-    gains, losses = net[net > 0].sum(), -net[net <= 0].sum()
-    return {"trades": int(len(tr)), "win_rate": round(float((net > 0).mean()), 3),
-            "profit_factor": round(float(gains / losses), 3) if losses > 0 else None}
+    w, l = net[net > 0], net[net <= 0]
+    gains, losses = w.sum(), -l.sum()
+    wr = float((net > 0).mean())
+    payoff = float(w.mean() / -l.mean()) if len(w) and len(l) and l.mean() < 0 else None
+    be = 1.0 / (1.0 + payoff) if payoff else None
+    er = None
+    if "r_mult" in tr and tr["r_mult"].notna().any():
+        er = round(float(tr["r_mult"].mean()), 3)
+    return {"trades": int(len(tr)), "win_rate": round(wr, 3),
+            "profit_factor": round(float(gains / losses), 3) if losses > 0 else None,
+            "payoff": round(payoff, 3) if payoff else None,
+            "breakeven_wr": round(be, 3) if be is not None else None,
+            "wr_margin": round(wr - be, 3) if be is not None else None,
+            "expectancy": round(float(net.mean()), 4), "expectancy_r": er}
 
 
 def card(r: pd.Series, trades: pd.DataFrame | None, ppy: float, windows: list, account: dict,

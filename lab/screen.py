@@ -513,15 +513,20 @@ def markdown(res: dict, cfg: dict, roster_note: str = "") -> str:
         L.append("**Daha iyisi bulunamadı:** kurala göre hiçbir strateji tüm adımları geçmedi. "
                  "Arena sadece kontrol üyeleriyle çalışır; switcher para ayırmaz.")
     else:
-        L += ["| Tier | Aşama | Coin | Kural | Ayar | Varyant | 3y | 5y | Tüm | Sharpe | 1x DD | PF | DSR |",
-              "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+        L += ["Kazanma oranı tek başına bir şey söylemez. Sistem sadece **kazanma oranı > başabaş oranı** olduğunda kârlıdır. "
+              "Başabaş = 1 / (1 + ödeme oranı); ödeme oranı = ortalama kazanç / ortalama kayıp (maliyet sonrası). "
+              "Pay = kazanma oranı − başabaş. Beklenen = işlem başına ortalama net getiri.", "",
+              "| Tier | Aşama | Coin | Kural | Ayar | Varyant | 3y | 5y | Tüm | Sharpe | 1x DD | PF | Kazanma | Ödeme | Başabaş | Pay | Beklenen | DSR |",
+              "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
         for r in ok:
             cd = r["card"]
             def w(k):
                 v = cd.get(k, {})
                 return "veri yok" if v.get("no_data") else f"{v.get('ret', 0):+.0%}"
             L.append(f"| {r['tier']} | {r['stage_no']} | {r['coin']} | {r['rule']} | `{r['params']}` | {r['variant']} | {w('3y')} | {w('5y')} | {w('full')} | "
-                     f"{r['sharpe']} | {r['max_dd']:.0%} | {cd.get('full', {}).get('profit_factor')} | {r.get('dsr')} |")
+                     f"{r['sharpe']} | {r['max_dd']:.0%} | {cd.get('full', {}).get('profit_factor')} | {_pc(cd, 'win_rate')} | "
+                     f"{cd.get('full', {}).get('payoff')} | {_pc(cd, 'breakeven_wr')} | {_pc(cd, 'wr_margin', True)} | "
+                     f"{_pc(cd, 'expectancy', True, 2)} | {r.get('dsr')} |")
     # agent-style narration per coin
     L += ["", "## Coin coin özet (ajan günlüğü)", ""]
     by = {}
@@ -579,6 +584,13 @@ def suggested_yaml(res: dict, cfg: dict, next_id: int) -> str:
     return "\n".join(out)
 
 
+def _pc(cd: dict, k: str, sign: bool = False, nd: int = 0) -> str:
+    v = cd.get("full", {}).get(k)
+    if v is None:
+        return "—"
+    return f"{v:+.{nd}%}" if sign else f"{v:.{nd}%}"
+
+
 def to_frame(res: dict) -> pd.DataFrame:
     rec = []
     for r in res["rows"].values():
@@ -589,6 +601,9 @@ def to_frame(res: dict) -> pd.DataFrame:
             if not v.get("no_data"):
                 d[f"ret_{w}"] = v["ret"]
                 d[f"sharpe_{w}"] = v["sharpe"]
+        full = cd.get("full", {})
+        for k in ("win_rate", "payoff", "breakeven_wr", "wr_margin", "expectancy", "expectancy_r", "profit_factor"):
+            d[k] = full.get(k)
         rec.append(d)
     return pd.DataFrame(rec)
 
