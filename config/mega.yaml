@@ -70,3 +70,15 @@ timemachine:
   # Strategy level: "survivor" = a spec in the D1-D4 list at >= 2 cuts with forward 2x return > 0 at each.
   # The 2-year cut reads the sealed holdout of ALL D1-D4 candidates: this spends the locked holdout
   # (owner decision 2026-10-21: run the future test now). Survivors then go to paper forward watch.
+
+# Buy-and-hold / random-entry check for H062 time-machine survivors (pre-registered 2026-10-21 17:30,
+# BEFORE any baseline result was computed). Question: real edge, or only "long in a rising market"?
+# For every survivor and EVERY cut where it was selected, on the forward period (cut -> today):
+baseline:
+  tm_run: 39595249003        # the H062 time-machine run whose parts define the survivors
+  random_draws: 300          # random-entry null: same assets, same number of trades, same holding bars,
+                             # same side, entry dates drawn at random inside the forward period, 2x cost
+  min_random_pct: 0.90       # B1: forward trade return beats >= 90% of the random-entry draws
+  beat_bh_sharpe: true       # B2: forward pooled Sharpe >= forward Sharpe of equal-weight buy-and-hold of the class
+  # Pass = B1 AND B2 at EVERY cut where the survivor was selected. Passers go to the paper watch list.
+  # Failing B1 = timing adds nothing over random entries; failing B2 = holding the class was better.
