@@ -11,6 +11,8 @@
 
 timeframe: 1d          # free Yahoo futures data has only ~2 years of hourly bars, so 1d for every class
 start: "2000-01-01"
+starts:                # per-class start (data source limits). Not a threshold.
+  crypto: "2018-01-01"  # Bitget via ccxt: a request from 2000 returns only recent bars (run 39586616372: 2 coins)
 
 classes:               # each class = one universe in config/universes.yaml (own costs)
   crypto: crypto_alts

@@ -52,7 +52,7 @@ def load_class(cls: str, cfg: dict, synthetic: bool = False):
         return p, Costs(0.0002, 0.0005)
     from lab import data
     u = yaml.safe_load((ROOT / "config" / "universes.yaml").read_text())[cfg["classes"][cls]]
-    p = data.load_panel(u, cfg.get("start", "2000-01-01"), cfg["classes"][cls], with_fundamentals=False,
+    p = data.load_panel(u, (cfg.get("starts") or {}).get(cls, cfg.get("start", "2000-01-01")), cfg["classes"][cls], with_fundamentals=False,
                         timeframe=cfg.get("timeframe", "1d"))
     return p, Costs(**u.get("costs", {}))
 

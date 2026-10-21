@@ -15,9 +15,14 @@ on:
         description: 'JSON list: ["long","short","both"]'
         required: false
         default: '["long","short","both"]'
+      reuse_run:
+        description: 'run id: reuse its parts for classes/sides not run now (DSR still counts all trials)'
+        required: false
+        default: ''
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: quant-lab-mega
@@ -67,6 +72,19 @@ jobs:
         with:
           pattern: mega-*
           path: parts
+      - name: Reuse parts of an earlier run
+        if: github.event.inputs.reuse_run != ''
+        uses: actions/download-artifact@v4
+        with:
+          pattern: mega-*
+          path: parts_prev
+          run-id: ${{ github.event.inputs.reuse_run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Merge parts
+        run: |
+          mkdir -p parts
+          if [ -d parts_prev ]; then for d in parts_prev/*; do n=$(basename "$d"); [ -d "parts/$n" ] || cp -r "$d" "parts/$n"; done; fi
+          find parts -name '*.json' | sort
       - name: Aggregate (DSR over all trials, holdout read once for finalists)
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
