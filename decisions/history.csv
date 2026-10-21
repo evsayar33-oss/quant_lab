@@ -79,3 +79,6 @@ validated_at,id,strategy,universe,timeframe,verdict,gate_sharpe,dsr,pbo,oos_cagr
 2026-10-17T17:53:48+00:00,H052,core_dual_trend_vt,crypto_core,4h,ACCEPT,0.635,0.956,None,0.1855,-0.2437
 2026-10-17T17:53:52+00:00,H053,core_tsmom_vt,crypto_core,4h,WATCH,0.458,0.912,None,0.127,-0.2663
 2026-10-17T18:34:11+00:00,H054,core_dual_trend_vt_band,crypto_core,4h,ACCEPT,0.684,0.965,None,0.2022,-0.232
+2026-10-21T15:17:55+00:00,H063,vortex_cross,metals,1d,WATCH,0.184,0.994,0.515,0.0231,-0.0764
+2026-10-21T15:17:30+00:00,H064,high_52w_break,metals,1d,REJECT,-0.147,0.964,0.036,0.0131,-0.0622
+2026-10-21T15:18:04+00:00,H065,ibs_reversion,index_futures,1d,WATCH,0.202,0.985,0.731,0.0271,-0.1051
