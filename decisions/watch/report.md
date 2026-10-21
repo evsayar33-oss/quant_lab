@@ -8,4 +8,5 @@ Başlangıç: 2026-10-22. Son çalışma: 2026-10-21. Sadece sanal para; emir g�
 | H064 | Metal 52 hafta zirvesi + SMC BOS (iki yön) | 2026-10-21 | nakit | 1,000 | 4x | 1,000 |
 | H065 | Endeks IBS ortalamaya dönüş + SMA200 (long) | 2026-10-21 | NQ=F +1.00 | 1,000 | 4x | 1,000 |
 
-Kontrol: 2027-01-22 ve 2027-04-22 (zamanlanmış görev). Kural: `config/mega.yaml` baseline (rastgele giriş + al-tut).
+Kontrol: 2027-01-22 (ara) ve 2027-04-22 (karar). Kural: `config/mega.yaml` baseline (rastgele giriş + al-tut).
+Tüm geçmiş kayıt: `decisions/watch/history.csv` (her gün bir satır). Kontrol yapılmazsa bu iki dosyayı (OZET.md, history.csv) Claude'a gönder.
