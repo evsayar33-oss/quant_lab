@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'daily | lev | venues'
+        description: 'daily | lev | lev070 | venues'
         required: false
         default: daily
 
@@ -42,6 +42,7 @@ jobs:
         run: |
           M="${{ github.event.inputs.mode }}"; [ -z "$M" ] && M=daily
           if [ "$M" = "lev" ]; then python -m lab.watch lev --telegram; fi
+          if [ "$M" = "lev070" ]; then python -m lab.watch lev --cfg config/watch_h070.yaml --telegram; exit 0; fi
           # venue list: on demand, every Monday, or when missing (a failure must never stop the paper record)
           if [ "$M" != "daily" ] || [ "$(date -u +%u)" = "1" ] || [ ! -f decisions/watch/venues.json ]; then python -m lab.venues || echo "venues check failed"; fi
           python -m lab.watch daily --telegram

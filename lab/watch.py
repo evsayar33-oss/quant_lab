@@ -25,8 +25,8 @@ from lab import mega, metrics, screen  # noqa: E402
 OUT = ROOT / "decisions" / "watch"
 
 
-def cfg_load() -> dict:
-    return yaml.safe_load((ROOT / "config" / "watch.yaml").read_text())
+def cfg_load(path: str | None = None) -> dict:
+    return yaml.safe_load((Path(path) if path else ROOT / "config" / "watch.yaml").read_text())
 
 
 def start_leverage(pick) -> int:
@@ -106,7 +106,7 @@ def leverage(cfg: dict, synthetic: bool = False) -> dict:
 def lev_markdown(o: dict, cfg: dict) -> str:
     f = lambda v: "—" if v is None else f"{v:+.0%}"   # noqa: E731
     lv = cfg["leverage"]
-    L = ["# H063–H065 kaldıraç testi", "",
+    L = [f"# {', '.join(o['ideas'])} kaldıraç testi", "",
          f"Kural sonuçlardan ÖNCE yazıldı (`config/watch.yaml`): en yüksek kaldıraç seçilir, şu şartla: tüm geçmişte VE her pencerede "
          f"maks. düşüş ≥ %{lv['max_dd_floor']*100:.0f}, hiçbir gün %{lv['worst_day_floor']*100:.0f}'ten kötü değil, kasa hiç sıfırlanmamış.", ""]
     for hid, x in o["ideas"].items():
@@ -133,7 +133,7 @@ def lev_markdown(o: dict, cfg: dict) -> str:
 def daily(cfg: dict, synthetic: bool = False) -> tuple[dict, list[str]]:
     OUT.mkdir(parents=True, exist_ok=True)
     prev = json.loads((OUT / "state.json").read_text()) if (OUT / "state.json").exists() else {}
-    levj = json.loads((OUT / "leverage.json").read_text()) if (OUT / "leverage.json").exists() else {"ideas": {}}
+    levj = json.loads((OUT / f"leverage{suffix}.json").read_text()) if (OUT / f"leverage{suffix}.json").exists() else {"ideas": {}}
     start = pd.Timestamp(cfg["start"])
     panels, st, msgs = {}, {"date": date.today().isoformat(), "start": cfg["start"], "ideas": {}}, []
     for hid, idea in cfg["ideas"].items():
@@ -224,18 +224,20 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["lev", "daily"])
     ap.add_argument("--synthetic", action="store_true"); ap.add_argument("--telegram", action="store_true")
+    ap.add_argument("--cfg", default=None, help="other idea file; leverage output then goes to leverage_<stem>.json/md")
     x = ap.parse_args(argv)
-    cfg = cfg_load()
+    cfg = cfg_load(x.cfg)
+    suffix = "" if not x.cfg else "_" + Path(x.cfg).stem.replace("watch_", "")
     OUT.mkdir(parents=True, exist_ok=True)
     if x.cmd == "lev":
         o = leverage(cfg, x.synthetic)
-        (OUT / "leverage.json").write_text(json.dumps(o, indent=1, default=str))
+        (OUT / f"leverage{suffix}.json").write_text(json.dumps(o, indent=1, default=str))
         md = lev_markdown(o, cfg)
-        (OUT / "leverage.md").write_text(md)
+        (OUT / f"leverage{suffix}.md").write_text(md)
         print(md)
         if x.telegram:
             from run import telegram
-            telegram("🏋️ H063–H065 kaldıraç testi\n" + "\n".join(
+            telegram(f"🏋️ {', '.join(o['ideas'])} kaldıraç testi\n" + "\n".join(
                 f"{h} {v['name']}: seçilen {v['pick'] or 'yok'}x" +
                 (f" → yıllık {v['rows'][str(v['pick']) + 'x']['full']['cagr']:+.0%}, DD {v['rows'][str(v['pick']) + 'x']['full']['max_dd']:+.0%}" if v["pick"] else "")
                 for h, v in o["ideas"].items()) + "\n⚠️ Kaldıraç kenar yaratmaz; paper kayıt gerçek testtir.")
