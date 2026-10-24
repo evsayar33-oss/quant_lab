@@ -498,6 +498,101 @@ def test_synthesis_evaluate_runs_offline():
         assert set(r["checks"]) == {"C1", "C2", "C3", "C4", "C5", "C6", "C7"} and "plateau_share" in r
     assert ev["naive"] in ev["rows"]
 
+
+def _ohlc_panel(close, seed=0, name="X"):
+    from lab.panel import Panel
+    c = pd.DataFrame({name: close}, index=pd.bdate_range("2001-01-01", periods=len(close)))
+    q = Panel.from_close(c, seed=seed)
+    q.freq = "1d"
+    return q
+
+
+def test_fib_pd_filter_and_swings_are_causal():
+    """H073: the Fibonacci premium/discount filter and the swing arrays at bar t ignore bars after t."""
+    from lab import assetbook as AB
+    rng = np.random.default_rng(11)
+    c = 100 * np.exp(np.cumsum(rng.normal(0, 0.012, 900)))
+    c2 = c.copy()
+    c2[600:] *= 1.5                                              # wild future
+    p1, p2 = _ohlc_panel(c, 1), _ohlc_panel(c2, 1)
+    p2.o.iloc[:600], p2.h.iloc[:600], p2.l.iloc[:600] = p1.o.iloc[:600], p1.h.iloc[:600], p1.l.iloc[:600]
+    fl1, fs1 = rules.FILTERS["fib_pd"](p1)
+    fl2, fs2 = rules.FILTERS["fib_pd"](p2)
+    assert fl1.iloc[:600].equals(fl2.iloc[:600]) and fs1.iloc[:600].equals(fs2.iloc[:600])
+    a1, a2 = AB.swing_arrays(p1, 5), AB.swing_arrays(p2, 5)
+    for k in ("sh", "sl", "bull", "bear"):
+        assert np.array_equal(np.nan_to_num(a1[k][:600]), np.nan_to_num(a2[k][:600])), k
+
+
+def test_fib_sim_handmade_path():
+    """A clean up-leg, a pullback into the 61.8-78.6% zone, then a rally: one long, filled at the zone edge,
+    closed at the swing high (target 0 level). A break below the leg low instead gives a stop at SL - 0.1 ATR."""
+    from lab import assetbook as AB
+    up = list(np.linspace(100, 120, 21))                         # low 100 -> high 120
+    flat = [119, 118, 117]
+    pull = [115, 113, 111.5, 110.5]                              # into the zone [104.3, 107.6]? no: 61.8% = 107.6
+    pull += [108, 106.5]                                         # touches 107.64 (61.8%) on the way down
+    rally = [109, 112, 116, 121, 124]
+    c = np.array([100.0] * 12 + up + flat + pull + rally)
+    o = np.r_[c[0], c[:-1]]
+    h, l = np.maximum(o, c) + 0.2, np.minimum(o, c) - 0.2
+    D = {"O": o, "H": h, "L": l, "C": c, "A": np.full(len(c), 1.0), "SMA": np.full(len(c), 50.0)}
+    i_hi = 12 + 20
+    sw = {"sh": np.where(np.arange(len(c)) >= i_hi + 3, h[i_hi], np.nan), "sl": np.full(len(c), l[11]),
+          "shp": np.full(len(c), np.nan), "slp": np.full(len(c), np.nan),
+          "bull": np.arange(len(c)) >= i_hi + 3, "bear": np.zeros(len(c), bool)}
+    prm = {"k": 3, "zone": [0.618, 0.786], "trigger": "limit", "stop": "swing", "target": "swing",
+           "filter": "none", "side": "long"}
+    dec = AB.fib_decisions(D, sw, prm)
+    R, tr = AB.sim_fib(D, dec, prm, 0.0, 0.0)
+    assert len(tr) == 1, tr
+    e, x, g, sd = tr[0]
+    lvl = sw["sh"][-1] - 0.618 * (sw["sh"][-1] - sw["sl"][-1])
+    assert sd == 1 and abs(g - (sw["sh"][-1] / lvl - 1)) < 1e-9, (g, lvl)
+    assert abs(np.prod(1 + R) - (1 + g)) < 1e-9, "bar returns must compound to the trade return"
+    c3 = c.copy()
+    c3[-5:] = [104, 99, 97, 96, 95]                              # breaks below the leg low instead
+    o3 = np.r_[c3[0], c3[:-1]]
+    D3 = {**D, "O": o3, "C": c3, "H": np.maximum(o3, c3) + 0.2, "L": np.minimum(o3, c3) - 0.2}
+    R3, tr3 = AB.sim_fib(D3, AB.fib_decisions(D3, sw, prm), prm, 0.0, 0.0)
+    stop = sw["sl"][-1] - 0.1
+    assert len(tr3) == 1 and abs(tr3[0][2] - (stop / lvl - 1)) < 1e-9, tr3
+
+
+def test_fib_sim_no_lookahead_and_no_edge_on_random_walks():
+    """Bars after t never change returns up to t; on random walks the F1 grid earns ~0 per trade before cost."""
+    from lab import assetbook as AB
+    cfg = AB.load_cfg()
+    rng = np.random.default_rng(7)
+    c = 100 * np.exp(np.cumsum(rng.normal(0, 0.015, 1500)))
+    p = _ohlc_panel(c, 3)
+    D = AB._arrays(p)
+    prm = {"k": 5, "zone": [0.618, 0.786], "trigger": "limit", "stop": "swing", "target": "ext1272",
+           "filter": "none", "side": "both"}
+    R1, _ = AB.sim_fib(D, AB.fib_decisions(D, AB.swing_arrays(p, 5), prm), prm, 0.001, 0.0)
+    c2 = c.copy()
+    c2[1000:] *= 0.5
+    p2 = _ohlc_panel(c2, 3)
+    for f in ("o", "h", "l"):
+        getattr(p2, f).iloc[:1000] = getattr(p, f).iloc[:1000]
+    D2 = AB._arrays(p2)
+    R2, _ = AB.sim_fib(D2, AB.fib_decisions(D2, AB.swing_arrays(p2, 5), prm), prm, 0.001, 0.0)
+    assert np.allclose(R1[:1000], R2[:1000]), "future bars leaked into past returns"
+    gross = []
+    for seed in range(6):
+        cc = 100 * np.exp(np.cumsum(np.random.default_rng(100 + seed).normal(0, 0.015, 2500)))
+        q = _ohlc_panel(cc, seed)
+        Dq = AB._arrays(q)
+        for k in (3, 5):
+            sw = AB.swing_arrays(q, k)
+            for g in AB.f1_points(cfg)[::37]:
+                g = {**g, "k": k}
+                _, tr = AB.sim_fib(Dq, AB.fib_decisions(Dq, sw, g), g, 0.0, 0.0)
+                gross += [t[2] for t in tr]
+    gross = np.array(gross)
+    t = gross.mean() / gross.std() * np.sqrt(len(gross))
+    assert len(gross) > 500 and abs(t) < 3.0, (len(gross), gross.mean(), t)
+
 if __name__ == "__main__":
     for k, fn in list(globals().items()):
         if k.startswith("test_"):
