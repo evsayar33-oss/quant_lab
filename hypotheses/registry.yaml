@@ -733,3 +733,14 @@
   start: "2000-01-01"
   status: study
   note: "Same fixed rule as H052/H054 (SMA200 + TSMOM 30/90/180 + 40% vol target, 10% band, long or cash), no per-asset tuning, 8 trials. Acceptance per asset = config/core.yaml thresholds vs own buy-and-hold in full history and the last 6/4/2 years, at 1x and 2x costs. Passing assets become per-asset gate hypotheses."
+
+# ---- 2026-10-24: H074 lead (pre-registered acceptance passed on SOL). BTC and ETH are already traded by H054.
+- id: H075
+  strategy: core_dual_trend_vt_band
+  universe: crypto_major
+  tickers: [SOL/USDT]
+  timeframe: 4h
+  for_system: research_only
+  start: "2018-01-01"
+  status: active
+  note: "H074 lead: the unchanged H054 core rule on SOL alone (SMA200 + TSMOM 30/90/180 + 40% vol target + 10% band, long or cash). Passed config/coreassets.yaml acceptance on 1d in full history and the last 6/4/2 years at 1x and 2x costs. Short history (2020-08). Gate decides; for_system stays research_only until the owner wires a bot."

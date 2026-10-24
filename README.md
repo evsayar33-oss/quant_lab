@@ -1,5 +1,7 @@
 > **Başka bir yapay zekâ veya kişi test çalıştıracaksa önce [`AGENTS.md`](AGENTS.md) okunmalı.** Her seçim testinden sonra zaman makinesi kontrolü önerilir.
 
+> **Varlık başına bot kuralları (Bitget/spot, Fibonacci testi dahil):** [`VARLIK_STRATEJI_KITABI.md`](VARLIK_STRATEJI_KITABI.md).
+
 > **İki labın birleşik sonucu (endeksin kendisine karşı, 1928–2026):** [`SENTEZ_RAPORU.md`](SENTEZ_RAPORU.md) — H072 sentez çalışması.
 
 # quant_lab — Strateji Laboratuvarı ve Karar Merkezi
