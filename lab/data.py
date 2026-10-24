@@ -187,7 +187,10 @@ def _crypto_cached(t: str, p: Path, start: str, timeframe: str) -> pd.DataFrame 
         except Exception:  # noqa: BLE001
             old, cached_start = None, start
     if old is not None and len(old) and _fresh(p):
-        return old[old.index >= pd.Timestamp(start)]
+        old2 = _binance_backfill(t, old, start, timeframe)
+        if old2 is not old:
+            old2.to_csv(p)
+        return old2[old2.index >= pd.Timestamp(start)]
     df = _ccxt_update(t, old, start, timeframe) if old is not None else _ccxt_download(t, start, timeframe)
     df = _binance_backfill(t, df, start, timeframe)
     if df is None:
