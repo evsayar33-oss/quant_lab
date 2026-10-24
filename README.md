@@ -1,5 +1,7 @@
 > **Başka bir yapay zekâ veya kişi test çalıştıracaksa önce [`AGENTS.md`](AGENTS.md) okunmalı.** Her seçim testinden sonra zaman makinesi kontrolü önerilir.
 
+> **İki labın birleşik sonucu (endeksin kendisine karşı, 1928–2026):** [`SENTEZ_RAPORU.md`](SENTEZ_RAPORU.md) — H072 sentez çalışması.
+
 # quant_lab — Strateji Laboratuvarı ve Karar Merkezi
 
 Bu repo tüm al-sat botlarının **nihai karar merkezidir**. Bir bot bir stratejiyi ancak burada doğrulanmış ve
@@ -92,6 +94,7 @@ Bunlar örneklem içi teşhislerdir. Daha iyi bir çıkış bulunursa hipoteze `
 | **Live tracking** | Hafta içi 21:47 | ACCEPT stratejileri dondurulmuş varyantla paper takip edilir. Bozulma olursa DEGRADED yapılır |
 | **Ad-hoc backtest** | Elle | `strategy`, `rule`, `scan`, `vbt`, `bt` modları; zaman dilimi seçilir. Karar yazmaz |
 | **Arena screen** | Her ayın 2'si + elle | Eleme motoru → arena kadrosu + switcher backtest kapısı. Karar yazmaz |
+| **Synthesis study** | Her ayın 9'u + elle | H072: yayınlanmış kurallar endeksin kendisine karşı (1928–2026), C1–C7 + zaman makinesi, izlenenlerin ileri kaydı. Karar yazmaz |
 | **Arena** | Her 4 saatte bir | ~100 strateji paper takip, emeklilik, rejim switcher, Telegram, panel (Pages) |
 
 Secrets: `TELEGRAM_TOKEN`, `CHAT_ID`. İsteğe bağlı: `SEC_USER_AGENT` ("ad eposta").

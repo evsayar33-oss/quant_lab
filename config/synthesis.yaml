@@ -149,3 +149,10 @@ forward:
   frozen_on: "2026-10-24"
   min_months: 6
   degrade_percentile: 5
+
+# Added 2026-10-24 AFTER the first run (report-only; no threshold or verdict changed, see CHANGELOG):
+# nothing in Block A/B passed C1-C7, so the forward record also follows the strongest candidates as WATCH.
+# B1_stack|k=0.75 = the time-machine pick at both cuts (failed only C7 on the full sample).
+# C2_crypto entries = the two Block C settings that passed their own pre-registered rule.
+# A watch entry never becomes a decision by itself.
+  watch: ["B1_stack|k=0.75", "C2_crypto|c=0.1", "C2_crypto|c=0.2"]

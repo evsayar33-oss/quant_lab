@@ -436,6 +436,68 @@ def test_funding_rule_is_causal():
     assert not rules.RULES["funding_extreme"].fn(_cal_panel(1), n=90, th=1.5).entry_long.any().any(), "no funding data -> no signal"
 
 
+
+def _syn_daily(n=1500, seed=5):
+    idx = pd.bdate_range("1990-01-01", periods=n)
+    rng = np.random.default_rng(seed)
+    return pd.DataFrame({"mkt": rng.normal(0.0004, 0.011, n), "rf": 0.0001,
+                         "mom_top": rng.normal(0.0005, 0.014, n)}, index=idx)
+
+
+def test_synthesis_financing_and_cash():
+    """H072 engine: cash earns the T-bill, borrowed notional pays T-bill + spread, exposure is lagged."""
+    from lab import synthesis as S
+    D = _syn_daily()
+    c = {"trade_per_side": 0.0, "cash_fee_annual": 0.0, "borrow_spread_annual": 0.0}
+    one = pd.Series(1.0, index=D.index)
+    r = S.simulate(D["mkt"], D["rf"], one, c, 1, 2, 0.0)
+    assert np.allclose(r.iloc[2:], D["mkt"].iloc[2:]) and np.allclose(r.iloc[:2], D["rf"].iloc[:2])
+    flat = pd.Series(0.0, index=D.index)
+    c2 = dict(c, borrow_spread_annual=0.0125)
+    r2 = S.simulate(flat, D["rf"], one * 2, c2, 1, 0, 0.0)          # asset return 0, 2x exposure
+    dt = S.year_frac(D.index)
+    assert np.allclose(r2, -(D["rf"] + 0.0125 * dt)), "1x borrowed must pay rf + spread"
+    assert np.allclose(S.simulate(flat, D["rf"], one * 2, c2, 2, 0, 0.0), -(D["rf"] + 0.025 * dt)), "2x cost doubles"
+    assert np.allclose(S.simulate(flat, D["rf"], flat, c, 1, 0, 0.0), D["rf"]), "cash earns the T-bill"
+
+
+def test_synthesis_band_and_causality():
+    """No-trade band keeps small moves; entries and exits always trade; targets use data up to t only."""
+    from lab import synthesis as S
+    b = S.apply_band(np.array([0.0, 1.0, 1.1, 1.25, 0.0, 0.05]), 0.2)
+    assert list(b) == [0.0, 1.0, 1.0, 1.25, 0.0, 0.05]
+    D = _syn_daily()
+    D2 = D.copy()
+    D2.iloc[1000:, 0] = 0.05                                      # wild future returns
+    for fam, p in [("A1_trend_lev", {"N": 200, "L": 2.0}), ("A2_volman_lev", {"target": 0.15, "Lmax": 2.0}),
+                   ("A3_trend_volman", {"N": 200, "target": 0.15, "Lmax": 2.0}), ("A4_mom_trend", {"L": 1.0, "filter": "sma200"})]:
+        t1, _, _ = S.target_a(fam, p, D, 21)
+        t2, _, _ = S.target_a(fam, p, D2, 21)
+        assert t1.iloc[:1000].equals(t2.iloc[:1000]), fam
+    y = pd.Series(4.0, index=pd.date_range("2000-01-31", periods=24, freq="ME"))
+    assert np.allclose(S.bond_tr_monthly(y), 0.04 / 12, atol=1e-6), "constant yield -> coupon carry only"
+    assert S.bond_tr_monthly(y.where(y.index != y.index[12], 5.0)).iloc[11] < -0.05, "yield +1% -> 10y bond loses"
+
+
+def test_synthesis_evaluate_runs_offline():
+    """C1-C7 machinery on synthetic data: every row has every check, plateau share and a verdict."""
+    from lab import synthesis as S
+    cfg = S.load_cfg()
+    D = _syn_daily(3000)
+    fams = {"A1_trend_lev": {"grid": {"N": [100, 200], "L": [1.0, 2.0]}}}
+    runs = {}
+    for p in S.grid_points(fams["A1_trend_lev"]["grid"]):
+        tgt, a, _ = S.target_a("A1_trend_lev", p, D, 21)
+        runs[S.key("A1_trend_lev", p)] = {"fam": "A1_trend_lev", "p": p,
+                                          **{k: S.simulate(a, D["rf"], tgt, cfg["costs"], m, lg, 0.0, 0.0003)
+                                             for k, m, lg in (("r1", 1, 2), ("r2", 2, 2), ("rd", 1, 3))}}
+    bh = S.bench(D["mkt"], cfg["costs"], 0.0003)
+    subs = S.windows("1991-01-01", ["1991-01-01", "1996-01-01"], D.index[-1] + pd.Timedelta(days=1))
+    ev = S.evaluate(runs, fams, bh, D["rf"], D["mkt"], subs, pd.Timestamp("1991-01-01"), D.index[-1], cfg, 0.0003)
+    for r in ev["rows"].values():
+        assert set(r["checks"]) == {"C1", "C2", "C3", "C4", "C5", "C6", "C7"} and "plateau_share" in r
+    assert ev["naive"] in ev["rows"]
+
 if __name__ == "__main__":
     for k, fn in list(globals().items()):
         if k.startswith("test_"):
