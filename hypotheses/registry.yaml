@@ -723,3 +723,13 @@
   start: "2000-01-01"
   status: study
   note: "Per asset: F1 Fibonacci premium/discount (OTE) entries with Fibonacci stops/targets (1296 settings), F2 every lab/rules.py rule alone and with the Fibonacci premium/discount filter (1170), F3 Fibonacci OTE + second signal combos (144). About 2,610 trials per asset+timeframe, 11 jobs. Last 2 years locked; DSR per job; time machine at 6/4/2 years ago."
+
+# ---- 2026-10-24: the H054 core rule on every Bitget asset, unchanged (config/coreassets.yaml, pre-registered).
+- id: H074
+  strategy: core_rule_per_asset
+  universe: BTC, ETH, SOL, SPX, NDX, XAU, XAG, COPPER (1d) — Bitget USDT-M perps
+  timeframe: 1d
+  for_system: research_only
+  start: "2000-01-01"
+  status: study
+  note: "Same fixed rule as H052/H054 (SMA200 + TSMOM 30/90/180 + 40% vol target, 10% band, long or cash), no per-asset tuning, 8 trials. Acceptance per asset = config/core.yaml thresholds vs own buy-and-hold in full history and the last 6/4/2 years, at 1x and 2x costs. Passing assets become per-asset gate hypotheses."
