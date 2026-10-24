@@ -1,0 +1,976 @@
+{
+  "name": "core_dual_trend_vt_band",
+  "kind": "strategy",
+  "source": "H052 + 10% no-trade band (pre-registered variant V_band, config/core.yaml)",
+  "timeframe": "4h",
+  "bars_per_year": 2191.7,
+  "n_assets": 1,
+  "data_start": "2020-08-11 04:00:00",
+  "data_end": "2026-10-24 16:00:00",
+  "costs": {
+    "commission": 0.0006,
+    "slippage": 0.0005,
+    "funding_annual": 0.08,
+    "borrow_annual": 0.0
+  },
+  "survivorship_mask": false,
+  "n_trials": 1,
+  "train_years": 3.0,
+  "test_months": 6,
+  "failed_variants": 0,
+  "full_sample_top": [
+    {
+      "variant": "core_dual_trend_vt_band|",
+      "sharpe": 1.053
+    }
+  ],
+  "oos": {
+    "start": "2024-08-22 16:00:00",
+    "end": "2026-10-24 16:00:00",
+    "years": 2.17,
+    "cagr": 0.1287,
+    "vol": 0.2788,
+    "sharpe": 0.573,
+    "sharpe_excess_rf": 0.433,
+    "sortino": 0.65,
+    "max_dd": -0.2484,
+    "max_dd_bars": 3511,
+    "calmar": 0.518,
+    "ulcer": 0.1786,
+    "var95": -0.0087,
+    "cvar95": -0.0147,
+    "omega": 1.057,
+    "tail_ratio": 1.028,
+    "skew": 1.013,
+    "kurtosis": 19.977,
+    "hit_rate": 0.195,
+    "psr": 0.802,
+    "time_in_market": null,
+    "turnover_ann": 9.63,
+    "bench_cagr": -0.212,
+    "bench_sharpe": 0.047,
+    "info_ratio": 0.207,
+    "beta": 0.238,
+    "up_capture": 0.246,
+    "down_capture": 0.233
+  },
+  "oos_usd": null,
+  "gate_sharpe": 0.433,
+  "gate_sharpe_basis": "excess of T-bill",
+  "dsr": 0.802,
+  "pbo": null,
+  "reality_check_p": null,
+  "benchmark": {
+    "start": "2024-08-22 16:00:00",
+    "end": "2026-10-24 16:00:00",
+    "years": 2.17,
+    "cagr": -0.212,
+    "vol": 0.7392,
+    "sharpe": 0.047,
+    "sharpe_excess_rf": null,
+    "sortino": 0.067,
+    "max_dd": -0.8071,
+    "max_dd_bars": 3860,
+    "calmar": -0.263,
+    "ulcer": 0.5319,
+    "var95": -0.0244,
+    "cvar95": -0.0367,
+    "omega": 1.003,
+    "tail_ratio": 1.009,
+    "skew": 0.097,
+    "kurtosis": 5.008,
+    "hit_rate": 0.498,
+    "psr": 0.528,
+    "time_in_market": null
+  },
+  "stress_2x_cost": {
+    "sharpe": 0.535
+  },
+  "bootstrap": {
+    "p_sharpe_pos": 0.855,
+    "cagr_p05": -0.1242,
+    "maxdd_p05": -0.4399
+  },
+  "yearly_sharpe": {
+    "2024": 1.03,
+    "2025": -0.03,
+    "2026": 1.31
+  },
+  "regimes": {
+    "bull": {
+      "sharpe": 0.55,
+      "ann_ret": 0.1935,
+      "bars": 2972
+    },
+    "bear": {
+      "sharpe": 1.95,
+      "ann_ret": 0.1037,
+      "bars": 1787
+    },
+    "calm": {
+      "sharpe": 0.49,
+      "ann_ret": 0.1587,
+      "bars": 2418
+    },
+    "stressed": {
+      "sharpe": 0.71,
+      "ann_ret": 0.1609,
+      "bars": 2341
+    },
+    "vix_lt_20": {
+      "sharpe": 0.45,
+      "ann_ret": 0.1309,
+      "bars": 3679
+    },
+    "vix_20_30": {
+      "sharpe": 1.23,
+      "ann_ret": 0.2904,
+      "bars": 960
+    },
+    "vix_ge_30": {
+      "sharpe": 0.0,
+      "ann_ret": 0.0,
+      "bars": 120
+    }
+  },
+  "calendar": {
+    "weekday": {
+      "0": -0.00024,
+      "1": -0.00017,
+      "2": 0.00041,
+      "3": -6e-05,
+      "4": 0.00018,
+      "5": 7e-05,
+      "6": 0.00033
+    },
+    "month": {
+      "1": 0.00033,
+      "2": -0.0003,
+      "3": 0.0,
+      "4": 0.0,
+      "5": -9e-05,
+      "6": 0.0,
+      "7": 1e-05,
+      "8": 0.00068,
+      "9": 0.00015,
+      "10": -0.00024,
+      "11": 0.00059,
+      "12": -0.00027
+    },
+    "hour": {
+      "0": 0.00039,
+      "4": 2e-05,
+      "8": 0.0001,
+      "12": -0.00012,
+      "16": -6e-05,
+      "20": 0.00011
+    }
+  },
+  "trade_stats": null,
+  "walk_forward": [
+    {
+      "test_start": "2024-08-22 16:00:00",
+      "test_end": "2025-02-21 00:00:00",
+      "variant": "core_dual_trend_vt_band|",
+      "is_sharpe": 0.937,
+      "oos_sharpe": 0.812
+    },
+    {
+      "test_start": "2025-02-21 04:00:00",
+      "test_end": "2025-08-22 12:00:00",
+      "variant": "core_dual_trend_vt_band|",
+      "is_sharpe": 0.835,
+      "oos_sharpe": 0.288
+    },
+    {
+      "test_start": "2025-08-22 16:00:00",
+      "test_end": "2026-02-21 00:00:00",
+      "variant": "core_dual_trend_vt_band|",
+      "is_sharpe": 0.833,
+      "oos_sharpe": -0.445
+    },
+    {
+      "test_start": "2026-02-21 04:00:00",
+      "test_end": "2026-08-22 12:00:00",
+      "variant": "core_dual_trend_vt_band|",
+      "is_sharpe": 0.755,
+      "oos_sharpe": 2.531
+    },
+    {
+      "test_start": "2026-08-22 16:00:00",
+      "test_end": "2026-10-24 16:00:00",
+      "variant": "core_dual_trend_vt_band|",
+      "is_sharpe": 1.171,
+      "oos_sharpe": 1.239
+    }
+  ],
+  "wf_efficiency": 0.632,
+  "final_variant": "core_dual_trend_vt_band|",
+  "final_params": {},
+  "robustness": {
+    "delay": {
+      "sharpe": 1.103,
+      "sharpe_delayed_1bar": 1.139,
+      "retained": 1.033
+    },
+    "neighbourhood": {
+      "neighbours": 0
+    },
+    "noise": {
+      "noise_bp": 0.002,
+      "sharpe_min": 1.03,
+      "sharpe_median": 1.068
+    }
+  },
+  "studies": {
+    "overlays": {
+      "none": {
+        "sharpe": 0.573,
+        "cagr": 0.1287,
+        "max_dd": -0.2484
+      },
+      "vol_target_0.1": {
+        "sharpe": 0.907,
+        "cagr": 0.1184,
+        "max_dd": -0.1577
+      },
+      "vol_target_0.15": {
+        "sharpe": 1.062,
+        "cagr": 0.193,
+        "max_dd": -0.1776
+      },
+      "vol_target_0.2": {
+        "sharpe": 1.114,
+        "cagr": 0.2568,
+        "max_dd": -0.1947
+      },
+      "dd_brake_0.1": {
+        "sharpe": 0.498,
+        "cagr": 0.0894,
+        "max_dd": -0.1978
+      },
+      "dd_brake_0.2": {
+        "sharpe": 0.367,
+        "cagr": 0.0646,
+        "max_dd": -0.2995
+      },
+      "equity_ma_365": {
+        "sharpe": 0.236,
+        "cagr": 0.0284,
+        "max_dd": -0.2889
+      },
+      "equity_ma_1095": {
+        "sharpe": -0.374,
+        "cagr": -0.1046,
+        "max_dd": -0.3961
+      },
+      "best_by_calmar": "vol_target_0.2"
+    }
+  },
+  "protection": {
+    "market": "crypto",
+    "crises_covered": [
+      "may_2021",
+      "luna_2022",
+      "ftx_2022",
+      "aug_2024",
+      "oct_2025"
+    ],
+    "base": {
+      "full": {
+        "cagr": 0.3314,
+        "sharpe": 1.103,
+        "max_dd": -0.4423,
+        "cvar95_day": -0.0337,
+        "ret": 4.0459
+      },
+      "crises": {
+        "may_2021": {
+          "ret": -0.0381,
+          "max_dd": -0.1385
+        },
+        "luna_2022": {
+          "ret": 0.0,
+          "max_dd": 0.0
+        },
+        "ftx_2022": {
+          "ret": 0.0,
+          "max_dd": 0.0
+        },
+        "aug_2024": {
+          "ret": -0.1754,
+          "max_dd": -0.1916
+        },
+        "oct_2025": {
+          "ret": -0.125,
+          "max_dd": -0.1729
+        }
+      },
+      "mc": {
+        "p_ruin": 0.005,
+        "median_1y": 0.3301,
+        "p5_1y": -0.2071
+      }
+    },
+    "tests": {
+      "dd_brake": {
+        "pass": false,
+        "rows": [
+          {
+            "threshold": [
+              0.08,
+              0.16
+            ],
+            "full": {
+              "cagr": 0.1718,
+              "sharpe": 0.889,
+              "max_dd": -0.3986,
+              "cvar95_day": -0.0222,
+              "ret": 1.4506
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.0763,
+                "max_dd": -0.1435
+              },
+              "luna_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "ftx_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "aug_2024": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "oct_2025": {
+                "ret": -0.0615,
+                "max_dd": -0.071
+              }
+            },
+            "checks": {
+              "crises_better": "2/5",
+              "crises_ok": false,
+              "full_dd_ok": true,
+              "sharpe_ok": false,
+              "cagr_ok": false
+            },
+            "pass": false,
+            "mc": {
+              "p_ruin": 0.0,
+              "median_1y": 0.1819,
+              "p5_1y": -0.1705
+            }
+          },
+          {
+            "threshold": [
+              0.1,
+              0.2
+            ],
+            "full": {
+              "cagr": 0.1469,
+              "sharpe": 0.751,
+              "max_dd": -0.4441,
+              "cvar95_day": -0.0242,
+              "ret": 1.1705
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.1169,
+                "max_dd": -0.1811
+              },
+              "luna_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "ftx_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "aug_2024": {
+                "ret": -0.0568,
+                "max_dd": -0.0662
+              },
+              "oct_2025": {
+                "ret": -0.0615,
+                "max_dd": -0.071
+              }
+            },
+            "checks": {
+              "crises_better": "2/5",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": false,
+              "cagr_ok": false
+            },
+            "pass": false,
+            "mc": {
+              "p_ruin": 0.0,
+              "median_1y": 0.2022,
+              "p5_1y": -0.178
+            }
+          },
+          {
+            "threshold": [
+              0.12,
+              0.25
+            ],
+            "full": {
+              "cagr": 0.2126,
+              "sharpe": 0.953,
+              "max_dd": -0.3521,
+              "cvar95_day": -0.0258,
+              "ret": 1.9746
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.1049,
+                "max_dd": -0.1725
+              },
+              "luna_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "ftx_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "aug_2024": {
+                "ret": -0.088,
+                "max_dd": -0.0971
+              },
+              "oct_2025": {
+                "ret": -0.0628,
+                "max_dd": -0.0898
+              }
+            },
+            "checks": {
+              "crises_better": "2/5",
+              "crises_ok": false,
+              "full_dd_ok": true,
+              "sharpe_ok": false,
+              "cagr_ok": false
+            },
+            "pass": false,
+            "mc": {
+              "p_ruin": 0.0,
+              "median_1y": 0.2299,
+              "p5_1y": -0.19
+            }
+          }
+        ]
+      },
+      "vol_target": {
+        "pass": false,
+        "rows": [
+          {
+            "threshold": 0.25,
+            "full": {
+              "cagr": 0.1926,
+              "sharpe": 0.961,
+              "max_dd": -0.3802,
+              "cvar95_day": -0.0239,
+              "ret": 1.707
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.0417,
+                "max_dd": -0.0762
+              },
+              "luna_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "ftx_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "aug_2024": {
+                "ret": -0.1332,
+                "max_dd": -0.1464
+              },
+              "oct_2025": {
+                "ret": -0.0812,
+                "max_dd": -0.1156
+              }
+            },
+            "checks": {
+              "crises_better": "3/5",
+              "crises_ok": false,
+              "full_dd_ok": true,
+              "sharpe_ok": false,
+              "cagr_ok": false
+            },
+            "pass": false
+          },
+          {
+            "threshold": 0.35,
+            "full": {
+              "cagr": 0.2431,
+              "sharpe": 0.966,
+              "max_dd": -0.4389,
+              "cvar95_day": -0.0303,
+              "ret": 2.4236
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.0507,
+                "max_dd": -0.1061
+              },
+              "luna_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "ftx_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "aug_2024": {
+                "ret": -0.1754,
+                "max_dd": -0.1916
+              },
+              "oct_2025": {
+                "ret": -0.1133,
+                "max_dd": -0.1588
+              }
+            },
+            "checks": {
+              "crises_better": "2/5",
+              "crises_ok": false,
+              "full_dd_ok": true,
+              "sharpe_ok": false,
+              "cagr_ok": false
+            },
+            "pass": false
+          },
+          {
+            "threshold": 0.5,
+            "full": {
+              "cagr": 0.317,
+              "sharpe": 1.081,
+              "max_dd": -0.4423,
+              "cvar95_day": -0.0333,
+              "ret": 3.7457
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.0429,
+                "max_dd": -0.1321
+              },
+              "luna_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "ftx_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "aug_2024": {
+                "ret": -0.1754,
+                "max_dd": -0.1916
+              },
+              "oct_2025": {
+                "ret": -0.125,
+                "max_dd": -0.1729
+              }
+            },
+            "checks": {
+              "crises_better": "1/5",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          }
+        ]
+      },
+      "equity_ma": {
+        "pass": false,
+        "rows": [
+          {
+            "threshold": 30,
+            "full": {
+              "cagr": 0.3286,
+              "sharpe": 1.279,
+              "max_dd": -0.3268,
+              "cvar95_day": -0.0265,
+              "ret": 3.9857
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.1223,
+                "max_dd": -0.1837
+              },
+              "luna_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "ftx_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "aug_2024": {
+                "ret": -0.09,
+                "max_dd": -0.1079
+              },
+              "oct_2025": {
+                "ret": -0.0314,
+                "max_dd": -0.0507
+              }
+            },
+            "checks": {
+              "crises_better": "2/5",
+              "crises_ok": false,
+              "full_dd_ok": true,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          },
+          {
+            "threshold": 60,
+            "full": {
+              "cagr": 0.2702,
+              "sharpe": 1.071,
+              "max_dd": -0.3678,
+              "cvar95_day": -0.0285,
+              "ret": 2.866
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.0502,
+                "max_dd": -0.1385
+              },
+              "luna_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "ftx_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "aug_2024": {
+                "ret": -0.0677,
+                "max_dd": -0.086
+              },
+              "oct_2025": {
+                "ret": -0.0538,
+                "max_dd": -0.0727
+              }
+            },
+            "checks": {
+              "crises_better": "2/5",
+              "crises_ok": false,
+              "full_dd_ok": true,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          },
+          {
+            "threshold": 90,
+            "full": {
+              "cagr": 0.2945,
+              "sharpe": 1.134,
+              "max_dd": -0.286,
+              "cvar95_day": -0.0287,
+              "ret": 3.3036
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.0422,
+                "max_dd": -0.1385
+              },
+              "luna_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "ftx_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "aug_2024": {
+                "ret": -0.0291,
+                "max_dd": -0.0482
+              },
+              "oct_2025": {
+                "ret": -0.0698,
+                "max_dd": -0.0884
+              }
+            },
+            "checks": {
+              "crises_better": "2/5",
+              "crises_ok": false,
+              "full_dd_ok": true,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          }
+        ]
+      },
+      "daily_limit": {
+        "pass": false,
+        "rows": [
+          {
+            "threshold": 0.04,
+            "full": {
+              "cagr": 0.2914,
+              "sharpe": 1.008,
+              "max_dd": -0.4545,
+              "cvar95_day": -0.0348,
+              "ret": 3.2456
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.0176,
+                "max_dd": -0.114
+              },
+              "luna_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "ftx_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "aug_2024": {
+                "ret": -0.1826,
+                "max_dd": -0.1986
+              },
+              "oct_2025": {
+                "ret": -0.0764,
+                "max_dd": -0.127
+              }
+            },
+            "checks": {
+              "crises_better": "2/5",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          },
+          {
+            "threshold": 0.05,
+            "full": {
+              "cagr": 0.3107,
+              "sharpe": 1.052,
+              "max_dd": -0.4453,
+              "cvar95_day": -0.0343,
+              "ret": 3.6186
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.0293,
+                "max_dd": -0.1184
+              },
+              "luna_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "ftx_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "aug_2024": {
+                "ret": -0.1754,
+                "max_dd": -0.1916
+              },
+              "oct_2025": {
+                "ret": -0.125,
+                "max_dd": -0.1729
+              }
+            },
+            "checks": {
+              "crises_better": "1/5",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          },
+          {
+            "threshold": 0.07,
+            "full": {
+              "cagr": 0.3314,
+              "sharpe": 1.103,
+              "max_dd": -0.4423,
+              "cvar95_day": -0.0337,
+              "ret": 4.0459
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.0381,
+                "max_dd": -0.1385
+              },
+              "luna_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "ftx_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "aug_2024": {
+                "ret": -0.1754,
+                "max_dd": -0.1916
+              },
+              "oct_2025": {
+                "ret": -0.125,
+                "max_dd": -0.1729
+              }
+            },
+            "checks": {
+              "crises_better": "0/5",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          }
+        ]
+      },
+      "market_guard": {
+        "pass": false,
+        "rows": [
+          {
+            "threshold": 0.08,
+            "full": {
+              "cagr": 0.2068,
+              "sharpe": 0.794,
+              "max_dd": -0.4648,
+              "cvar95_day": -0.0337,
+              "ret": 1.8946
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.1182,
+                "max_dd": -0.1555
+              },
+              "luna_2022": {
+                "ret": -0.0153,
+                "max_dd": -0.0153
+              },
+              "ftx_2022": {
+                "ret": -0.0022,
+                "max_dd": -0.0022
+              },
+              "aug_2024": {
+                "ret": -0.1772,
+                "max_dd": -0.1934
+              },
+              "oct_2025": {
+                "ret": -0.1261,
+                "max_dd": -0.1639
+              }
+            },
+            "checks": {
+              "crises_better": "1/5",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": false,
+              "cagr_ok": false
+            },
+            "pass": false
+          },
+          {
+            "threshold": 0.1,
+            "full": {
+              "cagr": 0.251,
+              "sharpe": 0.91,
+              "max_dd": -0.445,
+              "cvar95_day": -0.0338,
+              "ret": 2.5474
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.1493,
+                "max_dd": -0.1868
+              },
+              "luna_2022": {
+                "ret": -0.0066,
+                "max_dd": -0.0066
+              },
+              "ftx_2022": {
+                "ret": -0.0022,
+                "max_dd": -0.0022
+              },
+              "aug_2024": {
+                "ret": -0.1772,
+                "max_dd": -0.1933
+              },
+              "oct_2025": {
+                "ret": -0.125,
+                "max_dd": -0.1729
+              }
+            },
+            "checks": {
+              "crises_better": "0/5",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": false,
+              "cagr_ok": true
+            },
+            "pass": false
+          },
+          {
+            "threshold": 0.15,
+            "full": {
+              "cagr": 0.3283,
+              "sharpe": 1.096,
+              "max_dd": -0.4484,
+              "cvar95_day": -0.0338,
+              "ret": 3.9793
+            },
+            "crises": {
+              "may_2021": {
+                "ret": -0.0381,
+                "max_dd": -0.1385
+              },
+              "luna_2022": {
+                "ret": -0.0022,
+                "max_dd": -0.0022
+              },
+              "ftx_2022": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "aug_2024": {
+                "ret": -0.1772,
+                "max_dd": -0.1933
+              },
+              "oct_2025": {
+                "ret": -0.125,
+                "max_dd": -0.1729
+              }
+            },
+            "checks": {
+              "crises_better": "0/5",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          }
+        ]
+      }
+    }
+  },
+  "verdict": "WATCH",
+  "reasons": [
+    "OOS too short (2.17y < 3.0y)",
+    "DSR 0.802 < 0.9 (luck not excluded after 1 trials)",
+    "OOS Sharpe (excess of T-bill) 0.433 < 0.5"
+  ],
+  "targets": {
+    "SOL/USDT": 0.7865
+  }
+}
