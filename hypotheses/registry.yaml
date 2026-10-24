@@ -699,3 +699,16 @@
   side: long
   status: active
   note: "Question: does a credit filter (HYG/IEF above its 100-bar average) make IBS reversion on index futures robust? Start 2008: HYG history."
+
+# ---- 2026-10-24: synthesis study (both labs as one). Pre-registered in config/synthesis.yaml BEFORE any result.
+# Question: which published rules beat a plain US index investment (not cash) in EVERY sub-period of 1928-2026,
+# at 2x costs, with leverage paid at T-bill + spread? Umbrella id like H062: the output is a lead; survivors get
+# their own gate-ready ids.
+- id: H072
+  strategy: synthesis_study
+  universe: us_market_century, us_multi_asset_1988, spy_etf, crypto_core
+  timeframe: 1d
+  for_system: research_only
+  start: "1928-01-01"
+  status: study
+  note: "Families A0 (control: constant leverage), A1 trend+leverage (Faber 2007, Gayed-Bilello 2016), A2 vol-managed (Moreira-Muir 2017), A3 A1xA2, A4 top-decile momentum + trend filter, B1 index + TSMOM overlay (MOP 2012), B2 inverse-vol equity/bond/TSMOM with vol target, C replication on SPY + H054 crypto sleeve. 80 trials. Benchmark = the index, not cash. Time machine at 4 + 2 cuts."
