@@ -1,0 +1,4 @@
+# Core3 bot settings. The RULE is fixed in bot/signal.py (H054 core). Change only what is below.
+assets: [BTC, ETH, SOL]        # equal capital, one third each
+min_order_usdt: 5              # Bitget spot minimum is 1 USDT; 5 keeps tiny rounding trades out
+paper_capital_usdt: 1000       # dry-run capital
