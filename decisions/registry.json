@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-24T08:57:26+00:00",
+  "updated": "2026-10-24T19:36:00+00:00",
   "hypotheses": {
     "H001": {
       "verdict": "WATCH",
@@ -10443,6 +10443,133 @@
       "validated_at": "2026-10-21T17:52:59+00:00",
       "accepted_at": null,
       "data_end": "2026-10-21 00:00:00"
+    },
+    "H075": {
+      "verdict": "WATCH",
+      "previous_verdict": null,
+      "reasons": [
+        "OOS too short (2.03y < 3.0y)",
+        "DSR 0.825 < 0.9 (luck not excluded after 1 trials)",
+        "bootstrap P(SR>0) 0.827 < 0.85"
+      ],
+      "strategy": "core_dual_trend_vt_band",
+      "kind": "strategy",
+      "universe": "crypto_major",
+      "timeframe": "4h",
+      "for_system": "research_only",
+      "spec": {
+        "id": "H075",
+        "strategy": "core_dual_trend_vt_band",
+        "universe": "crypto_major",
+        "tickers": [
+          "SOL/USDT"
+        ],
+        "timeframe": "4h",
+        "for_system": "research_only",
+        "start": "2018-01-01",
+        "status": "active"
+      },
+      "variant": "core_dual_trend_vt_band|",
+      "params": {},
+      "targets": {},
+      "targets_observe_only": {
+        "SOL/USDT": 0.7858
+      },
+      "gate_sharpe": 0.516,
+      "pbo": null,
+      "reality_check_p": null,
+      "dsr": 0.825,
+      "n_trials": 1,
+      "oos": {
+        "start": "2024-10-11 20:00:00",
+        "end": "2026-10-24 12:00:00",
+        "years": 2.03,
+        "cagr": 0.1565,
+        "vol": 0.2859,
+        "sharpe": 0.651,
+        "sharpe_excess_rf": 0.516,
+        "sortino": 0.777,
+        "max_dd": -0.2558,
+        "max_dd_bars": 3643,
+        "calmar": 0.612,
+        "ulcer": 0.189,
+        "var95": -0.0092,
+        "cvar95": -0.015,
+        "omega": 1.063,
+        "tail_ratio": 1.017,
+        "skew": 1.016,
+        "kurtosis": 19.564,
+        "hit_rate": 0.201,
+        "psr": 0.825,
+        "time_in_market": null,
+        "turnover_ann": 9.4,
+        "bench_cagr": -0.2331,
+        "bench_sharpe": 0.016,
+        "info_ratio": 0.288,
+        "beta": 0.246,
+        "up_capture": 0.256,
+        "down_capture": 0.241
+      },
+      "trade_stats": null,
+      "regimes": {
+        "bull": {
+          "sharpe": 0.65,
+          "ann_ret": 0.2365,
+          "bars": 2719
+        },
+        "bear": {
+          "sharpe": 1.97,
+          "ann_ret": 0.1071,
+          "bars": 1738
+        },
+        "calm": {
+          "sharpe": 0.56,
+          "ann_ret": 0.1822,
+          "bars": 2340
+        },
+        "stressed": {
+          "sharpe": 0.81,
+          "ann_ret": 0.1904,
+          "bars": 2117
+        },
+        "vix_lt_20": {
+          "sharpe": 0.54,
+          "ann_ret": 0.163,
+          "bars": 3436
+        },
+        "vix_20_30": {
+          "sharpe": 1.23,
+          "ann_ret": 0.299,
+          "bars": 901
+        },
+        "vix_ge_30": {
+          "sharpe": 0.0,
+          "ann_ret": 0.0,
+          "bars": 120
+        }
+      },
+      "robustness": {
+        "delay": {
+          "sharpe": 0.965,
+          "sharpe_delayed_1bar": 1.006,
+          "retained": 1.043
+        },
+        "neighbourhood": {
+          "neighbours": 0
+        },
+        "noise": {
+          "noise_bp": 0.002,
+          "sharpe_min": 0.833,
+          "sharpe_median": 0.942
+        }
+      },
+      "protection_rules_passed": [],
+      "recommended_overlay": "vol_target_0.2",
+      "kelly_fraction": null,
+      "oos_csv": "results/H075_core_dual_trend_vt_band_crypto_major_4h_oos.csv",
+      "validated_at": "2026-10-24T19:35:18+00:00",
+      "accepted_at": null,
+      "data_end": "2026-10-24 12:00:00"
     }
   },
   "systems": {
