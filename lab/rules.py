@@ -886,6 +886,15 @@ def smc_ote(p: Panel, k, fib_lo):
     return Signals(_b(el), _b((p.c > sh) | (p.c < z_lo)), _b(es), _b((p.c < sl) | (p.c > s_hi)))
 
 
+@filt("fib_pd")
+def f_fib_pd(p):
+    """Fibonacci premium / discount (ICT) of the dealing range between the last CONFIRMED swing high and low
+    (k = 5): longs only in discount (close below the 50% level), shorts only in premium (above it). H073."""
+    sh, sl, _, _ = _swings(p, 5)
+    eq = (sh + sl) / 2
+    return _b(p.c < eq), _b(p.c > eq)
+
+
 # ================================================================ divergence + pivot levels (added 2026-10-18)
 def _divergence(p: Panel, osc: pd.DataFrame, k: int):
     """Regular divergence at a confirmed swing: price lower low + oscillator higher low (bull), and mirror."""
