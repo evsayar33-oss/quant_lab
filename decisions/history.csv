@@ -89,3 +89,4 @@ validated_at,id,strategy,universe,timeframe,verdict,gate_sharpe,dsr,pbo,oos_cagr
 2026-10-21T17:52:26+00:00,H070,ibs_reversion,index_futures,1d,WATCH,0.484,0.987,0.288,0.053,-0.1667
 2026-10-21T17:52:59+00:00,H071,ibs_reversion,index_futures,1d,WATCH,0.139,0.904,0.784,0.0233,-0.1454
 2026-10-24T19:35:18+00:00,H075,core_dual_trend_vt_band,crypto_major,4h,WATCH,0.516,0.825,None,0.1565,-0.2558
+2026-10-24T20:08:45+00:00,H075,core_dual_trend_vt_band,crypto_major,4h,WATCH,0.433,0.802,None,0.1287,-0.2484
