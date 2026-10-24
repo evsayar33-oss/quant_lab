@@ -9,6 +9,14 @@ Her varlık için, kapanmış 4 saatlik barda:
 3. Hedef mevcut pozisyondan 0,10'dan fazla farklıysa işlem yapılır. Aksi halde beklenir.
 4. Short yok, kaldıraç yok, sadece spot (funding yok).
 
+## Emir türü
+En iyi alış/satış fiyatına **limit emir** (spread ödenmez, kayma olmaz; fiyat orta fiyattan en çok %0,2 uzakta).
+60 sn'de dolmazsa iptal edilir ve bir kez yeni fiyatla tekrar verilir. Kalan kısım **piyasa emri** ile tamamlanır (yedek).
+
+## Bileşik getiri
+Bot her çalışmada pozisyonları **toplam kasaya** (USDT + coinlerin güncel değeri) göre hesaplar.
+Kâr ve zarar otomatik olarak sonraki pozisyonlara yansır (bileşik büyüme). Ayrı bir ayar gerekmez.
+
 ## Minimum kasa
 - Bitget spot en küçük emir: 1 USDT. Bot 5 USDT altındaki emirleri atlar.
 - En küçük düzeltme = 0,10 × kasa/3. Bu en az 5 USDT olmalı → **teknik minimum 150 USDT**.

@@ -54,6 +54,40 @@ def closes(sym: str, n_bars: int = 1600) -> pd.Series:
     return s
 
 
+def execute(ex, sym: str, side: str, qty: float) -> None:
+    """Limit order at the best bid (buy) / best ask (sell): no spread paid, no slippage. Price is capped at
+    max_slippage from the mid. Unfilled after wait_seconds -> cancel, retry once at the new best price,
+    then the rest goes as a market order so the position never lags the signal."""
+    import time
+    for attempt in range(2):
+        ob = ex.fetch_order_book(sym, limit=5)
+        bid, ask = ob["bids"][0][0], ob["asks"][0][0]
+        mid = (bid + ask) / 2
+        price = min(bid, mid * (1 + CFG["max_slippage"])) if side == "buy" else max(ask, mid * (1 - CFG["max_slippage"]))
+        amt = float(ex.amount_to_precision(sym, qty))
+        if amt * mid < CFG["min_order_usdt"]:
+            return
+        o = ex.create_order(sym, "limit", side, amt, float(ex.price_to_precision(sym, price)))
+        time.sleep(CFG["wait_seconds"])
+        o = ex.fetch_order(o["id"], sym)
+        filled = float(o.get("filled") or 0)
+        if o.get("status") != "closed":
+            try:
+                ex.cancel_order(o["id"], sym)
+            except Exception:
+                pass
+            o = ex.fetch_order(o["id"], sym)
+            filled = float(o.get("filled") or 0)
+        qty -= filled
+        if qty * mid < CFG["min_order_usdt"]:
+            return
+    amt = float(ex.amount_to_precision(sym, qty))
+    if side == "buy":                                   # Bitget spot market buy is sized in USDT
+        ex.create_order(sym, "market", side, amt, None, {"createMarketBuyOrderRequiresPrice": False, "cost": amt * mid})
+    else:
+        ex.create_order(sym, "market", side, amt)
+
+
 def main() -> None:
     live = os.environ.get("LIVE") == "1"
     if (ROOT / "state" / "STOP").exists():
@@ -83,8 +117,7 @@ def main() -> None:
                       "equity_usdt": round(equity, 2), "targets": tgt, "plan": plan}, indent=1))
     if live:
         for p in sorted(plan, key=lambda x: x["side"] == "buy"):        # sells first, then buys
-            qty = p["usdt"] / px[p["asset"]]
-            ex.create_order(f"{p['asset']}/USDT", "market", p["side"], float(ex.amount_to_precision(f"{p['asset']}/USDT", qty)))
+            execute(ex, f"{p['asset']}/USDT", p["side"], p["usdt"] / px[p["asset"]])
     state.update({"last_run": datetime.now(timezone.utc).isoformat(timespec="seconds"), "targets": tgt, "equity": equity})
     STATE.parent.mkdir(exist_ok=True)
     STATE.write_text(json.dumps(state, indent=1))
