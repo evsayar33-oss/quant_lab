@@ -712,3 +712,14 @@
   start: "1928-01-01"
   status: study
   note: "Families A0 (control: constant leverage), A1 trend+leverage (Faber 2007, Gayed-Bilello 2016), A2 vol-managed (Moreira-Muir 2017), A3 A1xA2, A4 top-decile momentum + trend filter, B1 index + TSMOM overlay (MOP 2012), B2 inverse-vol equity/bond/TSMOM with vol target, C replication on SPY + H054 crypto sleeve. 80 trials. Benchmark = the index, not cash. Time machine at 4 + 2 cuts."
+
+# ---- 2026-10-24: per-asset strategy book for one platform (owner's request after H072). Pre-registered in
+# config/assetbook.yaml BEFORE any result. Umbrella id like H062/H072: output is a lead only.
+- id: H073
+  strategy: asset_book
+  universe: BTC, ETH, SOL (1d + 4h), SPX, NDX, XAU, XAG, COPPER (1d) — Bitget USDT-M perps
+  timeframe: 1d
+  for_system: research_only
+  start: "2000-01-01"
+  status: study
+  note: "Per asset: F1 Fibonacci premium/discount (OTE) entries with Fibonacci stops/targets (1296 settings), F2 every lab/rules.py rule alone and with the Fibonacci premium/discount filter (1170), F3 Fibonacci OTE + second signal combos (144). About 2,610 trials per asset+timeframe, 11 jobs. Last 2 years locked; DSR per job; time machine at 6/4/2 years ago."

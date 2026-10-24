@@ -148,8 +148,8 @@ Bu seviyeyi vaat eden her backtest bu iki labda kilitli dönemde çöktü.
 
 ## 9. Sonraki adımlar (her biri önce ön kayıt)
 
-1. **H073:** işlenebilir trend kolu. Seçenek: Bitget/OKX'te işlem gören endeks, metal ve emtia perp'leri
+1. **Yeni hipotez (id sonra verilir):** işlenebilir trend kolu. Seçenek: Bitget/OKX'te işlem gören endeks, metal ve emtia perp'leri
    (`lab/venues.py`) ile çok varlıklı TSMOM. Sabit literatür ayarı (12 ay işaret, vol hedefi). Karar kapısı + zaman makinesi.
-2. **H074:** çekirdek + H054 + H073 birleşik portföyü. Ölçüt yine endeksin kendisi.
+2. **Yeni hipotez:** çekirdek + H054 + trend kolu birleşik portföyü. Ölçüt yine endeksin kendisi.
 3. Sahibin kâr hedefi yazılı değil. Hedef (yıllık % ve kabul edilebilir en kötü düşüş) yazılırsa
    `config/synthesis.yaml` → `ladder_max_dd` bu hedefe göre güncellenir (yeni çalışma, yeni ön kayıt).
