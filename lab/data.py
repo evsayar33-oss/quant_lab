@@ -145,6 +145,33 @@ def _ccxt_update(symbol: str, cached: pd.DataFrame, start: str, timeframe: str) 
     return _drop_open_bar(out[~out.index.duplicated(keep="last")], timeframe)
 
 
+def _binance_backfill(t: str, df: pd.DataFrame | None, start: str, timeframe: str) -> pd.DataFrame | None:
+    """Data-source fix (2026-10-24, CHANGELOG): the exchange API often returns a shorter history than the
+    coin has (e.g. SOL on Bitget). When the first bar is > 30 days after `start`, the older bars come from
+    Binance spot monthly files (data.binance.vision, free). Same coin, same quote currency; only bars BEFORE
+    the exchange's first bar are added, so live prices never change source."""
+    if timeframe not in ("1h", "4h", "1d"):
+        return df
+    first = df.index[0] if df is not None and len(df) else None
+    if first is not None and first <= pd.Timestamp(start) + pd.Timedelta(days=30):
+        return df
+    try:
+        from lab import assetdata
+        bv = assetdata.binance_vision(t.replace("/", ""), timeframe, start=str(pd.Timestamp(start).to_period("M")))
+    except Exception as e:  # noqa: BLE001 - backfill is optional
+        print(f"[data] binance backfill {t} {timeframe} failed: {e}")
+        return df
+    if bv is None or not len(bv):
+        return df
+    if timeframe == "1d":
+        bv.index = bv.index.normalize()
+    if first is not None:
+        bv = bv[bv.index < first]
+    out = bv if df is None else pd.concat([bv, df]).sort_index()
+    print(f"[data] {t} {timeframe}: {len(bv)} older bars from Binance (from {bv.index[0].date() if len(bv) else '-'})")
+    return _drop_open_bar(out[~out.index.duplicated(keep="last")], timeframe)
+
+
 def _crypto_cached(t: str, p: Path, start: str, timeframe: str) -> pd.DataFrame | None:
     """Crypto cache with incremental refresh. A sidecar file stores the requested start date, so a coin
     listed after `start` is not re-downloaded on every run, and a request for an EARLIER start does a full download."""
@@ -160,8 +187,12 @@ def _crypto_cached(t: str, p: Path, start: str, timeframe: str) -> pd.DataFrame 
         except Exception:  # noqa: BLE001
             old, cached_start = None, start
     if old is not None and len(old) and _fresh(p):
-        return old[old.index >= pd.Timestamp(start)]
+        old2 = _binance_backfill(t, old, start, timeframe)
+        if old2 is not old:
+            old2.to_csv(p)
+        return old2[old2.index >= pd.Timestamp(start)]
     df = _ccxt_update(t, old, start, timeframe) if old is not None else _ccxt_download(t, start, timeframe)
+    df = _binance_backfill(t, df, start, timeframe)
     if df is None:
         return None if old is None else old[old.index >= pd.Timestamp(start)]
     df.to_csv(p)

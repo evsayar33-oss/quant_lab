@@ -593,6 +593,24 @@ def test_fib_sim_no_lookahead_and_no_edge_on_random_walks():
     t = gross.mean() / gross.std() * np.sqrt(len(gross))
     assert len(gross) > 500 and abs(t) < 3.0, (len(gross), gross.mean(), t)
 
+
+def test_binance_backfill_only_adds_older_bars():
+    """Backfill adds only bars before the exchange's first bar; exchange bars are never replaced."""
+    from lab import assetdata
+    idx_old = pd.date_range("2020-01-01", periods=100, freq="D")
+    idx_new = pd.date_range("2020-03-01", periods=50, freq="D")
+    bv = pd.DataFrame({"Open": 1.0, "High": 1.0, "Low": 1.0, "Close": 1.0, "Volume": 1.0}, index=idx_old)
+    ex = pd.DataFrame({"Open": 2.0, "High": 2.0, "Low": 2.0, "Close": 2.0, "Volume": 2.0}, index=idx_new)
+    orig = assetdata.binance_vision
+    assetdata.binance_vision = lambda *a, **k: bv.copy()
+    try:
+        out = data._binance_backfill("SOL/USDT", ex, "2020-01-01", "1d")
+        same = data._binance_backfill("SOL/USDT", ex, "2020-02-15", "1d")
+    finally:
+        assetdata.binance_vision = orig
+    assert (out.loc[idx_new, "Close"] == 2.0).all() and (out.loc[out.index < idx_new[0], "Close"] == 1.0).all()
+    assert out.index[0] == idx_old[0] and same is ex
+
 if __name__ == "__main__":
     for k, fn in list(globals().items()):
         if k.startswith("test_"):
