@@ -611,6 +611,22 @@ def test_binance_backfill_only_adds_older_bars():
     assert (out.loc[idx_new, "Close"] == 2.0).all() and (out.loc[out.index < idx_new[0], "Close"] == 1.0).all()
     assert out.index[0] == idx_old[0] and same is ex
 
+
+def test_mlbook_features_causal_and_fill_lag():
+    """H076: features at bar t ignore later bars; a position decided at close t earns nothing before open t+1."""
+    from lab import mlbook as ML
+    rng = np.random.default_rng(21)
+    c = 100 * np.exp(np.cumsum(rng.normal(0, 0.012, 700)))
+    c2 = c.copy(); c2[500:] *= 1.4
+    p1, p2 = _ohlc_panel(c, 2), _ohlc_panel(c2, 2)
+    for f in ("o", "h", "l"):
+        getattr(p2, f).iloc[:500] = getattr(p1, f).iloc[:500]
+    F1, F2 = ML.features(p1), ML.features(p2)
+    assert F1.iloc[:500].fillna(-9).equals(F2.iloc[:500].fillna(-9))
+    pos = pd.Series(0.0, index=p1.index); pos.iloc[300] = 1.0
+    r = ML.book(p1, pos, 0.0, 0.0, 252)
+    assert (r.iloc[:301] == 0).all() and r.iloc[301] != 0
+
 if __name__ == "__main__":
     for k, fn in list(globals().items()):
         if k.startswith("test_"):
