@@ -1,20 +1,20 @@
 {
   "H052": {
-    "live_bars": 72,
-    "live_return": -0.0222,
-    "live_sharpe": -1.804,
-    "live_max_dd": -0.0674,
-    "degraded": false,
-    "why": "ok",
-    "checked_at": "2026-10-29T23:00:47+00:00"
+    "live_bars": 78,
+    "live_return": -0.0644,
+    "live_sharpe": -4.778,
+    "live_max_dd": -0.0955,
+    "degraded": true,
+    "why": "CUSUM: live returns persistently below backtest (stat -7.2 sd)",
+    "checked_at": "2026-10-30T22:41:26+00:00"
   },
   "H054": {
-    "live_bars": 72,
-    "live_return": -0.0235,
-    "live_sharpe": -1.812,
-    "live_max_dd": -0.0705,
-    "degraded": false,
-    "why": "ok",
-    "checked_at": "2026-10-29T23:00:47+00:00"
+    "live_bars": 78,
+    "live_return": -0.067,
+    "live_sharpe": -4.746,
+    "live_max_dd": -0.0994,
+    "degraded": true,
+    "why": "CUSUM: live returns persistently below backtest (stat -7.4 sd)",
+    "checked_at": "2026-10-30T22:41:26+00:00"
   }
 }
