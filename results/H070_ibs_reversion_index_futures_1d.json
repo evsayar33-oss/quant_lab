@@ -1,0 +1,1520 @@
+{
+  "name": "ibs_reversion",
+  "kind": "rule",
+  "source": "Internal Bar Strength",
+  "timeframe": "1d",
+  "bars_per_year": 251.7,
+  "n_assets": 5,
+  "data_start": "2008-01-02 00:00:00",
+  "data_end": "2026-10-21 00:00:00",
+  "costs": {
+    "commission": 0.0001,
+    "slippage": 0.0003,
+    "funding_annual": 0.0,
+    "borrow_annual": 0.0
+  },
+  "survivorship_mask": false,
+  "n_trials": 16,
+  "train_years": 3.0,
+  "test_months": 6,
+  "failed_variants": 0,
+  "full_sample_top": [
+    {
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.02",
+      "sharpe": 0.666
+    },
+    {
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.01",
+      "sharpe": 0.631
+    },
+    {
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only",
+      "sharpe": 0.624
+    },
+    {
+      "variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.02",
+      "sharpe": 0.617
+    },
+    {
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.005",
+      "sharpe": 0.579
+    },
+    {
+      "variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.01",
+      "sharpe": 0.573
+    },
+    {
+      "variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only",
+      "sharpe": 0.572
+    },
+    {
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=vol0.2",
+      "sharpe": 0.569
+    },
+    {
+      "variant": "ibs_reversion|lo=0.2,hi=0.7|f=vix_term_contango|x=signal_only",
+      "sharpe": 0.551
+    },
+    {
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=vol0.1",
+      "sharpe": 0.534
+    },
+    {
+      "variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.005",
+      "sharpe": 0.528
+    },
+    {
+      "variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only|size=vol0.2",
+      "sharpe": 0.524
+    },
+    {
+      "variant": "ibs_reversion|lo=0.1,hi=0.8|f=vix_term_contango|x=signal_only",
+      "sharpe": 0.496
+    },
+    {
+      "variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only|size=vol0.1",
+      "sharpe": 0.475
+    },
+    {
+      "variant": "ibs_reversion|lo=0.3,hi=0.7|f=vix_term_contango|x=signal_only",
+      "sharpe": 0.469
+    }
+  ],
+  "oos": {
+    "start": "2012-01-10 00:00:00",
+    "end": "2026-10-21 00:00:00",
+    "years": 14.77,
+    "cagr": 0.053,
+    "vol": 0.0792,
+    "sharpe": 0.692,
+    "sharpe_excess_rf": 0.484,
+    "sortino": 0.716,
+    "max_dd": -0.1667,
+    "max_dd_bars": 644,
+    "calmar": 0.318,
+    "ulcer": 0.0455,
+    "var95": -0.007,
+    "cvar95": -0.0124,
+    "omega": 1.198,
+    "tail_ratio": 1.11,
+    "skew": 0.298,
+    "kurtosis": 16.113,
+    "hit_rate": 0.338,
+    "psr": 0.996,
+    "time_in_market": null,
+    "turnover_ann": 45.95,
+    "bench_cagr": 0.1383,
+    "bench_sharpe": 0.83,
+    "info_ratio": -0.627,
+    "beta": 0.265,
+    "up_capture": 0.309,
+    "down_capture": 0.298
+  },
+  "oos_usd": null,
+  "gate_sharpe": 0.484,
+  "gate_sharpe_basis": "excess of T-bill",
+  "dsr": 0.987,
+  "pbo": 0.288,
+  "reality_check_p": 1.0,
+  "benchmark": {
+    "start": "2012-01-10 00:00:00",
+    "end": "2026-10-21 00:00:00",
+    "years": 14.77,
+    "cagr": 0.1383,
+    "vol": 0.1746,
+    "sharpe": 0.83,
+    "sharpe_excess_rf": null,
+    "sortino": 1.166,
+    "max_dd": -0.3329,
+    "max_dd_bars": 530,
+    "calmar": 0.415,
+    "ulcer": 0.0697,
+    "var95": -0.0164,
+    "cvar95": -0.026,
+    "omega": 1.165,
+    "tail_ratio": 0.986,
+    "skew": -0.485,
+    "kurtosis": 12.124,
+    "hit_rate": 0.544,
+    "psr": 0.999,
+    "time_in_market": null
+  },
+  "stress_2x_cost": {
+    "sharpe": 0.46
+  },
+  "bootstrap": {
+    "p_sharpe_pos": 0.997,
+    "cagr_p05": 0.0215,
+    "maxdd_p05": -0.26
+  },
+  "yearly_sharpe": {
+    "2012": 0.43,
+    "2013": 2.36,
+    "2014": 0.45,
+    "2015": 0.65,
+    "2016": -0.2,
+    "2017": 2.43,
+    "2018": -1.1,
+    "2019": 0.86,
+    "2020": 2.72,
+    "2021": 1.55,
+    "2022": 0.0,
+    "2023": 1.23,
+    "2024": 0.5,
+    "2025": 0.71,
+    "2026": 1.29
+  },
+  "regimes": {
+    "bull": {
+      "sharpe": 1.26,
+      "ann_ret": 0.085,
+      "bars": 3151
+    },
+    "bear": {
+      "sharpe": -0.9,
+      "ann_ret": -0.1129,
+      "bars": 567
+    },
+    "calm": {
+      "sharpe": 1.11,
+      "ann_ret": 0.0674,
+      "bars": 2023
+    },
+    "stressed": {
+      "sharpe": 0.41,
+      "ann_ret": 0.0398,
+      "bars": 1695
+    },
+    "vix_lt_20": {
+      "sharpe": 2.04,
+      "ann_ret": 0.1163,
+      "bars": 2800
+    },
+    "vix_20_30": {
+      "sharpe": -0.93,
+      "ann_ret": -0.1047,
+      "bars": 760
+    },
+    "vix_ge_30": {
+      "sharpe": -1.61,
+      "ann_ret": -0.2682,
+      "bars": 158
+    },
+    "curve_inverted": {
+      "sharpe": 0.92,
+      "ann_ret": 0.0854,
+      "bars": 615
+    },
+    "curve_normal": {
+      "sharpe": 0.64,
+      "ann_ret": 0.0487,
+      "bars": 3103
+    }
+  },
+  "calendar": {
+    "weekday": {
+      "0": 0.00035,
+      "1": 0.00039,
+      "2": 7e-05,
+      "3": 0.00021,
+      "4": 8e-05
+    },
+    "month": {
+      "1": 4e-05,
+      "2": 0.00012,
+      "3": 0.00022,
+      "4": 0.00016,
+      "5": 0.00031,
+      "6": 0.00034,
+      "7": 0.00051,
+      "8": 3e-05,
+      "9": 0.00022,
+      "10": 0.00014,
+      "11": 0.00056,
+      "12": -4e-05
+    }
+  },
+  "trade_stats": {
+    "n_trades": 2197,
+    "trades_per_year": 148.7,
+    "win_rate": 0.687,
+    "avg_trade": 0.0028,
+    "median_trade": 0.005,
+    "avg_win": 0.0116,
+    "avg_loss": -0.0165,
+    "profit_factor": 1.542,
+    "payoff": 0.703,
+    "expectancy_r": null,
+    "sqn": null,
+    "kelly_fraction": 0.241,
+    "max_consec_losses": 11,
+    "avg_bars": 3.3,
+    "avg_bars_win": 2.5,
+    "avg_bars_loss": 5.0,
+    "avg_mfe": 0.0115,
+    "avg_mae": -0.0174,
+    "edge_ratio": 0.66,
+    "exit_reasons": {
+      "signal": 2197
+    },
+    "long_short": {
+      "1": {
+        "count": 2197,
+        "mean": 0.0028
+      }
+    }
+  },
+  "walk_forward": [
+    {
+      "test_start": "2012-01-10 00:00:00",
+      "test_end": "2012-07-09 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only",
+      "is_sharpe": 0.631,
+      "oos_sharpe": 0.283
+    },
+    {
+      "test_start": "2012-07-10 00:00:00",
+      "test_end": "2013-01-08 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.7|f=vix_term_contango|x=signal_only",
+      "is_sharpe": 0.542,
+      "oos_sharpe": 0.861
+    },
+    {
+      "test_start": "2013-01-09 00:00:00",
+      "test_end": "2013-07-09 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.7|f=vix_term_contango|x=signal_only",
+      "is_sharpe": 0.547,
+      "oos_sharpe": 3.254
+    },
+    {
+      "test_start": "2013-07-10 00:00:00",
+      "test_end": "2014-01-06 00:00:00",
+      "variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.005",
+      "is_sharpe": 1.133,
+      "oos_sharpe": 1.168
+    },
+    {
+      "test_start": "2014-01-07 00:00:00",
+      "test_end": "2014-07-07 00:00:00",
+      "variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.005",
+      "is_sharpe": 0.778,
+      "oos_sharpe": 0.256
+    },
+    {
+      "test_start": "2014-07-08 00:00:00",
+      "test_end": "2015-01-02 00:00:00",
+      "variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.005",
+      "is_sharpe": 0.796,
+      "oos_sharpe": 0.829
+    },
+    {
+      "test_start": "2015-01-05 00:00:00",
+      "test_end": "2015-07-02 00:00:00",
+      "variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only",
+      "is_sharpe": 1.157,
+      "oos_sharpe": 1.0
+    },
+    {
+      "test_start": "2015-07-06 00:00:00",
+      "test_end": "2015-12-30 00:00:00",
+      "variant": "ibs_reversion|lo=0.1,hi=0.7|f=vix_term_contango|x=signal_only",
+      "is_sharpe": 1.262,
+      "oos_sharpe": 0.679
+    },
+    {
+      "test_start": "2015-12-31 00:00:00",
+      "test_end": "2016-06-29 00:00:00",
+      "variant": "ibs_reversion|lo=0.1,hi=0.8|f=vix_term_contango|x=signal_only",
+      "is_sharpe": 1.37,
+      "oos_sharpe": -0.817
+    },
+    {
+      "test_start": "2016-06-30 00:00:00",
+      "test_end": "2016-12-29 00:00:00",
+      "variant": "ibs_reversion|lo=0.1,hi=0.8|f=vix_term_contango|x=signal_only",
+      "is_sharpe": 0.654,
+      "oos_sharpe": 1.128
+    },
+    {
+      "test_start": "2016-12-30 00:00:00",
+      "test_end": "2017-06-29 00:00:00",
+      "variant": "ibs_reversion|lo=0.1,hi=0.8|f=vix_term_contango|x=signal_only",
+      "is_sharpe": 0.294,
+      "oos_sharpe": 2.475
+    },
+    {
+      "test_start": "2017-06-30 00:00:00",
+      "test_end": "2017-12-27 00:00:00",
+      "variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.02",
+      "is_sharpe": 0.291,
+      "oos_sharpe": 2.666
+    },
+    {
+      "test_start": "2017-12-28 00:00:00",
+      "test_end": "2018-06-27 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=vol0.1",
+      "is_sharpe": 0.511,
+      "oos_sharpe": -1.484
+    },
+    {
+      "test_start": "2018-06-28 00:00:00",
+      "test_end": "2018-12-26 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.02",
+      "is_sharpe": -0.049,
+      "oos_sharpe": -0.956
+    },
+    {
+      "test_start": "2018-12-27 00:00:00",
+      "test_end": "2019-06-26 00:00:00",
+      "variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only|size=vol0.1",
+      "is_sharpe": -0.091,
+      "oos_sharpe": 0.976
+    },
+    {
+      "test_start": "2019-06-27 00:00:00",
+      "test_end": "2019-12-23 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=vol0.1",
+      "is_sharpe": 0.152,
+      "oos_sharpe": 0.942
+    },
+    {
+      "test_start": "2019-12-24 00:00:00",
+      "test_end": "2020-06-23 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=vol0.1",
+      "is_sharpe": 0.273,
+      "oos_sharpe": 0.567
+    },
+    {
+      "test_start": "2020-06-24 00:00:00",
+      "test_end": "2020-12-18 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.02",
+      "is_sharpe": 0.177,
+      "oos_sharpe": 3.744
+    },
+    {
+      "test_start": "2020-12-21 00:00:00",
+      "test_end": "2021-06-21 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.02",
+      "is_sharpe": 0.517,
+      "oos_sharpe": 2.238
+    },
+    {
+      "test_start": "2021-06-22 00:00:00",
+      "test_end": "2021-12-16 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.02",
+      "is_sharpe": 1.082,
+      "oos_sharpe": 1.088
+    },
+    {
+      "test_start": "2021-12-17 00:00:00",
+      "test_end": "2022-06-16 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.02",
+      "is_sharpe": 1.405,
+      "oos_sharpe": -2.005
+    },
+    {
+      "test_start": "2022-06-17 00:00:00",
+      "test_end": "2022-12-14 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.02",
+      "is_sharpe": 0.706,
+      "oos_sharpe": 2.208
+    },
+    {
+      "test_start": "2022-12-15 00:00:00",
+      "test_end": "2023-06-15 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.02",
+      "is_sharpe": 0.966,
+      "oos_sharpe": 1.528
+    },
+    {
+      "test_start": "2023-06-16 00:00:00",
+      "test_end": "2023-12-12 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.02",
+      "is_sharpe": 1.094,
+      "oos_sharpe": 0.231
+    },
+    {
+      "test_start": "2023-12-13 00:00:00",
+      "test_end": "2024-06-12 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.01",
+      "is_sharpe": 0.723,
+      "oos_sharpe": 2.238
+    },
+    {
+      "test_start": "2024-06-13 00:00:00",
+      "test_end": "2024-12-10 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.8|f=vix_term_contango|x=signal_only|size=vol0.2",
+      "is_sharpe": 0.692,
+      "oos_sharpe": -0.399
+    },
+    {
+      "test_start": "2024-12-11 00:00:00",
+      "test_end": "2025-06-11 00:00:00",
+      "variant": "ibs_reversion|lo=0.1,hi=0.7|f=vix_term_contango|x=signal_only",
+      "is_sharpe": 0.632,
+      "oos_sharpe": -0.307
+    },
+    {
+      "test_start": "2025-06-12 00:00:00",
+      "test_end": "2025-12-08 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.7|f=vix_term_contango|x=signal_only",
+      "is_sharpe": 0.758,
+      "oos_sharpe": 1.111
+    },
+    {
+      "test_start": "2025-12-09 00:00:00",
+      "test_end": "2026-06-09 00:00:00",
+      "variant": "ibs_reversion|lo=0.2,hi=0.7|f=vix_term_contango|x=signal_only",
+      "is_sharpe": 0.868,
+      "oos_sharpe": 2.38
+    },
+    {
+      "test_start": "2026-06-10 00:00:00",
+      "test_end": "2026-10-21 00:00:00",
+      "variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.02",
+      "is_sharpe": 1.016,
+      "oos_sharpe": 0.525
+    }
+  ],
+  "wf_efficiency": 0.994,
+  "final_variant": "ibs_reversion|lo=0.3,hi=0.8|f=vix_term_contango|x=signal_only|size=atr_risk0.02",
+  "final_params": {
+    "lo": 0.3,
+    "hi": 0.8,
+    "_filter": "vix_term_contango",
+    "_exit": 0,
+    "_size": 3
+  },
+  "robustness": {
+    "delay": {
+      "sharpe": 0.619,
+      "sharpe_delayed_1bar": 0.266,
+      "retained": 0.43
+    },
+    "neighbourhood": {
+      "neighbours": 1,
+      "best_sharpe": 0.617,
+      "neighbour_median": 0.666,
+      "share_positive": 1.0,
+      "stability": 1.08
+    },
+    "noise": {
+      "noise_bp": 0.002,
+      "sharpe_min": 0.605,
+      "sharpe_median": 0.618
+    },
+    "random_entry": {
+      "actual_ret_per_exposure_ann": 0.1557,
+      "random_median_ann": 0.1256,
+      "random_p95_ann": 0.1596,
+      "trades_actual": 2607,
+      "p_value": 0.08
+    },
+    "mc_trade_shuffle": {
+      "maxdd_median": -0.0807,
+      "maxdd_p95": -0.1157,
+      "final_p05": 4.3313,
+      "final_median": 4.3313
+    }
+  },
+  "studies": {
+    "event_study_long": {
+      "1": {
+        "n": 4603,
+        "mean": 0.0007,
+        "hit": 0.538,
+        "t": 4.46,
+        "per_bar": 0.00074
+      },
+      "2": {
+        "n": 4603,
+        "mean": 0.0013,
+        "hit": 0.559,
+        "t": 5.29,
+        "per_bar": 0.00065
+      },
+      "3": {
+        "n": 4603,
+        "mean": 0.0017,
+        "hit": 0.56,
+        "t": 5.63,
+        "per_bar": 0.00057
+      },
+      "5": {
+        "n": 4598,
+        "mean": 0.0024,
+        "hit": 0.569,
+        "t": 6.33,
+        "per_bar": 0.00048
+      },
+      "10": {
+        "n": 4587,
+        "mean": 0.0044,
+        "hit": 0.581,
+        "t": 8.48,
+        "per_bar": 0.00044
+      },
+      "15": {
+        "n": 4585,
+        "mean": 0.0077,
+        "hit": 0.613,
+        "t": 12.21,
+        "per_bar": 0.00052
+      },
+      "20": {
+        "n": 4580,
+        "mean": 0.0095,
+        "hit": 0.629,
+        "t": 12.92,
+        "per_bar": 0.00047
+      },
+      "40": {
+        "n": 4546,
+        "mean": 0.0184,
+        "hit": 0.676,
+        "t": 17.52,
+        "per_bar": 0.00046
+      },
+      "60": {
+        "n": 4511,
+        "mean": 0.0278,
+        "hit": 0.675,
+        "t": 21.93,
+        "per_bar": 0.00046
+      },
+      "best_holding_bars": 60
+    },
+    "exit_grid_long": {
+      "top": [
+        {
+          "stop": NaN,
+          "target": 0.1,
+          "max_hold": 40,
+          "n": 4603,
+          "mean": 0.0174,
+          "hit": 0.6746,
+          "per_bar": 0.0005,
+          "t": 17.4547
+        },
+        {
+          "stop": NaN,
+          "target": 0.15,
+          "max_hold": 40,
+          "n": 4603,
+          "mean": 0.0179,
+          "hit": 0.6715,
+          "per_bar": 0.0005,
+          "t": 17.2364
+        },
+        {
+          "stop": NaN,
+          "target": 0.25,
+          "max_hold": 40,
+          "n": 4603,
+          "mean": 0.0175,
+          "hit": 0.6709,
+          "per_bar": 0.0004,
+          "t": 16.7865
+        },
+        {
+          "stop": NaN,
+          "target": NaN,
+          "max_hold": 40,
+          "n": 4603,
+          "mean": 0.0174,
+          "hit": 0.6709,
+          "per_bar": 0.0004,
+          "t": 16.767
+        },
+        {
+          "stop": 0.12,
+          "target": 0.1,
+          "max_hold": 40,
+          "n": 4603,
+          "mean": 0.0158,
+          "hit": 0.6661,
+          "per_bar": 0.0004,
+          "t": 16.3878
+        },
+        {
+          "stop": 0.12,
+          "target": 0.15,
+          "max_hold": 40,
+          "n": 4603,
+          "mean": 0.0163,
+          "hit": 0.663,
+          "per_bar": 0.0004,
+          "t": 16.1495
+        },
+        {
+          "stop": 0.12,
+          "target": 0.25,
+          "max_hold": 40,
+          "n": 4603,
+          "mean": 0.0159,
+          "hit": 0.6624,
+          "per_bar": 0.0004,
+          "t": 15.6904
+        },
+        {
+          "stop": 0.12,
+          "target": NaN,
+          "max_hold": 40,
+          "n": 4603,
+          "mean": 0.0158,
+          "hit": 0.6624,
+          "per_bar": 0.0004,
+          "t": 15.6691
+        },
+        {
+          "stop": 0.08,
+          "target": 0.1,
+          "max_hold": 40,
+          "n": 4603,
+          "mean": 0.0141,
+          "hit": 0.6394,
+          "per_bar": 0.0004,
+          "t": 15.2242
+        },
+        {
+          "stop": NaN,
+          "target": 0.05,
+          "max_hold": 40,
+          "n": 4603,
+          "mean": 0.0128,
+          "hit": 0.7232,
+          "per_bar": 0.0004,
+          "t": 15.1649
+        }
+      ],
+      "n_events": 4603
+    },
+    "overlays": {
+      "none": {
+        "sharpe": 0.692,
+        "cagr": 0.053,
+        "max_dd": -0.1667
+      },
+      "vol_target_0.1": {
+        "sharpe": 0.706,
+        "cagr": 0.0688,
+        "max_dd": -0.2283
+      },
+      "vol_target_0.15": {
+        "sharpe": 0.696,
+        "cagr": 0.0852,
+        "max_dd": -0.2855
+      },
+      "vol_target_0.2": {
+        "sharpe": 0.678,
+        "cagr": 0.0915,
+        "max_dd": -0.3103
+      },
+      "dd_brake_0.1": {
+        "sharpe": 0.69,
+        "cagr": 0.0488,
+        "max_dd": -0.157
+      },
+      "dd_brake_0.2": {
+        "sharpe": 0.692,
+        "cagr": 0.053,
+        "max_dd": -0.1667
+      },
+      "equity_ma_41": {
+        "sharpe": 0.4,
+        "cagr": 0.0199,
+        "max_dd": -0.1598
+      },
+      "equity_ma_125": {
+        "sharpe": 0.6,
+        "cagr": 0.0347,
+        "max_dd": -0.1132
+      },
+      "best_by_calmar": "none"
+    }
+  },
+  "protection": {
+    "market": "multi",
+    "crises_covered": [
+      "gfc_2008",
+      "euro_2011",
+      "gold_crash_2013",
+      "covid_2020",
+      "rates_2022",
+      "tariff_apr_2025"
+    ],
+    "base": {
+      "full": {
+        "cagr": 0.0632,
+        "sharpe": 0.619,
+        "max_dd": -0.2235,
+        "cvar95_day": -0.0171,
+        "ret": 2.1411
+      },
+      "crises": {
+        "gfc_2008": {
+          "ret": -0.0406,
+          "max_dd": -0.0863
+        },
+        "euro_2011": {
+          "ret": -0.0659,
+          "max_dd": -0.0662
+        },
+        "gold_crash_2013": {
+          "ret": 0.0244,
+          "max_dd": -0.043
+        },
+        "covid_2020": {
+          "ret": -0.066,
+          "max_dd": -0.1069
+        },
+        "rates_2022": {
+          "ret": -0.0159,
+          "max_dd": -0.1175
+        },
+        "tariff_apr_2025": {
+          "ret": -0.0135,
+          "max_dd": -0.0496
+        }
+      },
+      "mc": {
+        "p_ruin": 0.0,
+        "median_1y": 0.0973,
+        "p5_1y": -0.1115
+      }
+    },
+    "tests": {
+      "dd_brake": {
+        "pass": false,
+        "rows": [
+          {
+            "threshold": [
+              0.08,
+              0.16
+            ],
+            "full": {
+              "cagr": 0.0387,
+              "sharpe": 0.483,
+              "max_dd": -0.1818,
+              "cvar95_day": -0.0138,
+              "ret": 1.032
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.058,
+                "max_dd": -0.0774
+              },
+              "euro_2011": {
+                "ret": -0.0422,
+                "max_dd": -0.0411
+              },
+              "gold_crash_2013": {
+                "ret": 0.0244,
+                "max_dd": -0.043
+              },
+              "covid_2020": {
+                "ret": -0.0504,
+                "max_dd": -0.0535
+              },
+              "rates_2022": {
+                "ret": -0.0337,
+                "max_dd": -0.058
+              },
+              "tariff_apr_2025": {
+                "ret": -0.0135,
+                "max_dd": -0.0496
+              }
+            },
+            "checks": {
+              "crises_better": "4/6",
+              "crises_ok": false,
+              "full_dd_ok": true,
+              "sharpe_ok": false,
+              "cagr_ok": false
+            },
+            "pass": false,
+            "mc": {
+              "p_ruin": 0.0,
+              "median_1y": 0.0729,
+              "p5_1y": -0.1074
+            }
+          },
+          {
+            "threshold": [
+              0.1,
+              0.2
+            ],
+            "full": {
+              "cagr": 0.0452,
+              "sharpe": 0.532,
+              "max_dd": -0.2026,
+              "cvar95_day": -0.0145,
+              "ret": 1.284
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.058,
+                "max_dd": -0.0774
+              },
+              "euro_2011": {
+                "ret": -0.0529,
+                "max_dd": -0.0517
+              },
+              "gold_crash_2013": {
+                "ret": 0.0244,
+                "max_dd": -0.043
+              },
+              "covid_2020": {
+                "ret": -0.0329,
+                "max_dd": -0.0545
+              },
+              "rates_2022": {
+                "ret": -0.0058,
+                "max_dd": -0.0599
+              },
+              "tariff_apr_2025": {
+                "ret": -0.0135,
+                "max_dd": -0.0496
+              }
+            },
+            "checks": {
+              "crises_better": "4/6",
+              "crises_ok": false,
+              "full_dd_ok": true,
+              "sharpe_ok": false,
+              "cagr_ok": false
+            },
+            "pass": false,
+            "mc": {
+              "p_ruin": 0.0,
+              "median_1y": 0.0836,
+              "p5_1y": -0.1145
+            }
+          },
+          {
+            "threshold": [
+              0.12,
+              0.25
+            ],
+            "full": {
+              "cagr": 0.0497,
+              "sharpe": 0.556,
+              "max_dd": -0.1901,
+              "cvar95_day": -0.0153,
+              "ret": 1.4758
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.0672,
+                "max_dd": -0.0863
+              },
+              "euro_2011": {
+                "ret": -0.0619,
+                "max_dd": -0.0607
+              },
+              "gold_crash_2013": {
+                "ret": 0.0244,
+                "max_dd": -0.043
+              },
+              "covid_2020": {
+                "ret": -0.0329,
+                "max_dd": -0.0545
+              },
+              "rates_2022": {
+                "ret": -0.0197,
+                "max_dd": -0.0937
+              },
+              "tariff_apr_2025": {
+                "ret": -0.0135,
+                "max_dd": -0.0496
+              }
+            },
+            "checks": {
+              "crises_better": "3/6",
+              "crises_ok": false,
+              "full_dd_ok": true,
+              "sharpe_ok": false,
+              "cagr_ok": true
+            },
+            "pass": false,
+            "mc": {
+              "p_ruin": 0.0,
+              "median_1y": 0.0905,
+              "p5_1y": -0.111
+            }
+          }
+        ]
+      },
+      "vol_target": {
+        "pass": false,
+        "rows": [
+          {
+            "threshold": 0.1,
+            "full": {
+              "cagr": 0.0433,
+              "sharpe": 0.508,
+              "max_dd": -0.198,
+              "cvar95_day": -0.0148,
+              "ret": 1.2078
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.0628,
+                "max_dd": -0.082
+              },
+              "euro_2011": {
+                "ret": -0.0665,
+                "max_dd": -0.0667
+              },
+              "gold_crash_2013": {
+                "ret": 0.0228,
+                "max_dd": -0.043
+              },
+              "covid_2020": {
+                "ret": -0.0622,
+                "max_dd": -0.0846
+              },
+              "rates_2022": {
+                "ret": -0.022,
+                "max_dd": -0.0764
+              },
+              "tariff_apr_2025": {
+                "ret": -0.0092,
+                "max_dd": -0.0284
+              }
+            },
+            "checks": {
+              "crises_better": "4/6",
+              "crises_ok": false,
+              "full_dd_ok": true,
+              "sharpe_ok": false,
+              "cagr_ok": false
+            },
+            "pass": false
+          },
+          {
+            "threshold": 0.15,
+            "full": {
+              "cagr": 0.0538,
+              "sharpe": 0.558,
+              "max_dd": -0.2248,
+              "cvar95_day": -0.0166,
+              "ret": 1.6622
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.0539,
+                "max_dd": -0.0863
+              },
+              "euro_2011": {
+                "ret": -0.0659,
+                "max_dd": -0.0662
+              },
+              "gold_crash_2013": {
+                "ret": 0.0241,
+                "max_dd": -0.043
+              },
+              "covid_2020": {
+                "ret": -0.0763,
+                "max_dd": -0.1063
+              },
+              "rates_2022": {
+                "ret": -0.023,
+                "max_dd": -0.1084
+              },
+              "tariff_apr_2025": {
+                "ret": -0.014,
+                "max_dd": -0.0424
+              }
+            },
+            "checks": {
+              "crises_better": "3/6",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          },
+          {
+            "threshold": 0.25,
+            "full": {
+              "cagr": 0.063,
+              "sharpe": 0.618,
+              "max_dd": -0.2235,
+              "cvar95_day": -0.0171,
+              "ret": 2.1311
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.0406,
+                "max_dd": -0.0863
+              },
+              "euro_2011": {
+                "ret": -0.0659,
+                "max_dd": -0.0662
+              },
+              "gold_crash_2013": {
+                "ret": 0.0244,
+                "max_dd": -0.043
+              },
+              "covid_2020": {
+                "ret": -0.0661,
+                "max_dd": -0.1069
+              },
+              "rates_2022": {
+                "ret": -0.015,
+                "max_dd": -0.1167
+              },
+              "tariff_apr_2025": {
+                "ret": -0.0135,
+                "max_dd": -0.0496
+              }
+            },
+            "checks": {
+              "crises_better": "1/6",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          }
+        ]
+      },
+      "equity_ma": {
+        "pass": false,
+        "rows": [
+          {
+            "threshold": 30,
+            "full": {
+              "cagr": 0.0045,
+              "sharpe": 0.1,
+              "max_dd": -0.2357,
+              "cvar95_day": -0.0111,
+              "ret": 0.088
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": 0.0068,
+                "max_dd": -0.0093
+              },
+              "euro_2011": {
+                "ret": -0.0245,
+                "max_dd": -0.0245
+              },
+              "gold_crash_2013": {
+                "ret": -0.0088,
+                "max_dd": -0.0562
+              },
+              "covid_2020": {
+                "ret": -0.029,
+                "max_dd": -0.0352
+              },
+              "rates_2022": {
+                "ret": -0.0329,
+                "max_dd": -0.0633
+              },
+              "tariff_apr_2025": {
+                "ret": -0.0259,
+                "max_dd": -0.0255
+              }
+            },
+            "checks": {
+              "crises_better": "5/6",
+              "crises_ok": true,
+              "full_dd_ok": false,
+              "sharpe_ok": false,
+              "cagr_ok": false
+            },
+            "pass": false
+          },
+          {
+            "threshold": 60,
+            "full": {
+              "cagr": 0.0176,
+              "sharpe": 0.281,
+              "max_dd": -0.152,
+              "cvar95_day": -0.0116,
+              "ret": 0.3862
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.0576,
+                "max_dd": -0.0504
+              },
+              "euro_2011": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "gold_crash_2013": {
+                "ret": -0.026,
+                "max_dd": -0.0669
+              },
+              "covid_2020": {
+                "ret": -0.0286,
+                "max_dd": -0.0348
+              },
+              "rates_2022": {
+                "ret": -0.0849,
+                "max_dd": -0.0849
+              },
+              "tariff_apr_2025": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              }
+            },
+            "checks": {
+              "crises_better": "5/6",
+              "crises_ok": true,
+              "full_dd_ok": true,
+              "sharpe_ok": false,
+              "cagr_ok": false
+            },
+            "pass": false
+          },
+          {
+            "threshold": 90,
+            "full": {
+              "cagr": 0.0271,
+              "sharpe": 0.395,
+              "max_dd": -0.149,
+              "cvar95_day": -0.0122,
+              "ret": 0.648
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.0307,
+                "max_dd": -0.0233
+              },
+              "euro_2011": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              },
+              "gold_crash_2013": {
+                "ret": -0.0113,
+                "max_dd": -0.0586
+              },
+              "covid_2020": {
+                "ret": -0.0286,
+                "max_dd": -0.0348
+              },
+              "rates_2022": {
+                "ret": -0.0873,
+                "max_dd": -0.1137
+              },
+              "tariff_apr_2025": {
+                "ret": 0.0,
+                "max_dd": 0.0
+              }
+            },
+            "checks": {
+              "crises_better": "5/6",
+              "crises_ok": true,
+              "full_dd_ok": true,
+              "sharpe_ok": false,
+              "cagr_ok": false
+            },
+            "pass": false
+          }
+        ]
+      },
+      "daily_limit": {
+        "pass": false,
+        "rows": [
+          {
+            "threshold": 0.03,
+            "full": {
+              "cagr": 0.0599,
+              "sharpe": 0.593,
+              "max_dd": -0.2459,
+              "cvar95_day": -0.017,
+              "ret": 1.9622
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.0658,
+                "max_dd": -0.1016
+              },
+              "euro_2011": {
+                "ret": -0.0659,
+                "max_dd": -0.0662
+              },
+              "gold_crash_2013": {
+                "ret": 0.0244,
+                "max_dd": -0.043
+              },
+              "covid_2020": {
+                "ret": -0.0436,
+                "max_dd": -0.0852
+              },
+              "rates_2022": {
+                "ret": -0.0195,
+                "max_dd": -0.1196
+              },
+              "tariff_apr_2025": {
+                "ret": -0.0135,
+                "max_dd": -0.0496
+              }
+            },
+            "checks": {
+              "crises_better": "1/6",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          },
+          {
+            "threshold": 0.05,
+            "full": {
+              "cagr": 0.0621,
+              "sharpe": 0.61,
+              "max_dd": -0.2235,
+              "cvar95_day": -0.0171,
+              "ret": 2.0812
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.0406,
+                "max_dd": -0.0863
+              },
+              "euro_2011": {
+                "ret": -0.0659,
+                "max_dd": -0.0662
+              },
+              "gold_crash_2013": {
+                "ret": 0.0244,
+                "max_dd": -0.043
+              },
+              "covid_2020": {
+                "ret": -0.066,
+                "max_dd": -0.1069
+              },
+              "rates_2022": {
+                "ret": -0.0159,
+                "max_dd": -0.1175
+              },
+              "tariff_apr_2025": {
+                "ret": -0.0135,
+                "max_dd": -0.0496
+              }
+            },
+            "checks": {
+              "crises_better": "0/6",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          },
+          {
+            "threshold": 0.07,
+            "full": {
+              "cagr": 0.0632,
+              "sharpe": 0.619,
+              "max_dd": -0.2235,
+              "cvar95_day": -0.0171,
+              "ret": 2.1411
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.0406,
+                "max_dd": -0.0863
+              },
+              "euro_2011": {
+                "ret": -0.0659,
+                "max_dd": -0.0662
+              },
+              "gold_crash_2013": {
+                "ret": 0.0244,
+                "max_dd": -0.043
+              },
+              "covid_2020": {
+                "ret": -0.066,
+                "max_dd": -0.1069
+              },
+              "rates_2022": {
+                "ret": -0.0159,
+                "max_dd": -0.1175
+              },
+              "tariff_apr_2025": {
+                "ret": -0.0135,
+                "max_dd": -0.0496
+              }
+            },
+            "checks": {
+              "crises_better": "0/6",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          }
+        ]
+      },
+      "market_guard": {
+        "pass": false,
+        "rows": [
+          {
+            "threshold": 0.04,
+            "full": {
+              "cagr": 0.0558,
+              "sharpe": 0.56,
+              "max_dd": -0.2472,
+              "cvar95_day": -0.0171,
+              "ret": 1.7592
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.0761,
+                "max_dd": -0.1101
+              },
+              "euro_2011": {
+                "ret": -0.0788,
+                "max_dd": -0.0791
+              },
+              "gold_crash_2013": {
+                "ret": 0.0244,
+                "max_dd": -0.043
+              },
+              "covid_2020": {
+                "ret": -0.067,
+                "max_dd": -0.105
+              },
+              "rates_2022": {
+                "ret": -0.0198,
+                "max_dd": -0.1175
+              },
+              "tariff_apr_2025": {
+                "ret": 0.0062,
+                "max_dd": -0.0307
+              }
+            },
+            "checks": {
+              "crises_better": "2/6",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          },
+          {
+            "threshold": 0.06,
+            "full": {
+              "cagr": 0.0621,
+              "sharpe": 0.61,
+              "max_dd": -0.2235,
+              "cvar95_day": -0.0171,
+              "ret": 2.0825
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.0444,
+                "max_dd": -0.0899
+              },
+              "euro_2011": {
+                "ret": -0.0767,
+                "max_dd": -0.077
+              },
+              "gold_crash_2013": {
+                "ret": 0.0244,
+                "max_dd": -0.043
+              },
+              "covid_2020": {
+                "ret": -0.0687,
+                "max_dd": -0.1069
+              },
+              "rates_2022": {
+                "ret": -0.0159,
+                "max_dd": -0.1175
+              },
+              "tariff_apr_2025": {
+                "ret": -0.0135,
+                "max_dd": -0.0496
+              }
+            },
+            "checks": {
+              "crises_better": "0/6",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          },
+          {
+            "threshold": 0.08,
+            "full": {
+              "cagr": 0.063,
+              "sharpe": 0.617,
+              "max_dd": -0.2235,
+              "cvar95_day": -0.0171,
+              "ret": 2.1286
+            },
+            "crises": {
+              "gfc_2008": {
+                "ret": -0.0421,
+                "max_dd": -0.0877
+              },
+              "euro_2011": {
+                "ret": -0.0659,
+                "max_dd": -0.0662
+              },
+              "gold_crash_2013": {
+                "ret": 0.0244,
+                "max_dd": -0.043
+              },
+              "covid_2020": {
+                "ret": -0.0679,
+                "max_dd": -0.1069
+              },
+              "rates_2022": {
+                "ret": -0.0159,
+                "max_dd": -0.1175
+              },
+              "tariff_apr_2025": {
+                "ret": -0.0135,
+                "max_dd": -0.0496
+              }
+            },
+            "checks": {
+              "crises_better": "0/6",
+              "crises_ok": false,
+              "full_dd_ok": false,
+              "sharpe_ok": true,
+              "cagr_ok": true
+            },
+            "pass": false
+          }
+        ]
+      }
+    }
+  },
+  "verdict": "WATCH",
+  "reasons": [
+    "OOS Sharpe (excess of T-bill) 0.484 < 0.5",
+    "with 2x costs it does not beat the equal-weight benchmark",
+    "Reality Check p 1.0 > 0.1 (best variant may be data-mined)"
+  ],
+  "targets": {
+    "positions": {
+      "ES=F": 0.1875,
+      "NQ=F": 0.1875,
+      "YM=F": 0.1875,
+      "NKD=F": 0.25
+    },
+    "entry_long_next_open": [],
+    "exit_long_next_open": [
+      "ES=F",
+      "NQ=F",
+      "YM=F",
+      "RTY=F"
+    ],
+    "entry_short_next_open": []
+  }
+}

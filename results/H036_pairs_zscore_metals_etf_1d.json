@@ -1,0 +1,509 @@
+{
+  "name": "pairs_zscore",
+  "kind": "strategy",
+  "source": "Gatev, Goetzmann & Rouwenhorst (2006) Pairs Trading; Vidyamurthy (2004)",
+  "timeframe": "1d",
+  "bars_per_year": 251.7,
+  "n_assets": 8,
+  "data_start": "2010-01-04 00:00:00",
+  "data_end": "2026-10-16 00:00:00",
+  "costs": {
+    "commission": 0.0002,
+    "slippage": 0.0003,
+    "funding_annual": 0.0,
+    "borrow_annual": 0.0
+  },
+  "survivorship_mask": false,
+  "n_trials": 38,
+  "train_years": 3.0,
+  "test_months": 6,
+  "failed_variants": 0,
+  "full_sample_top": [
+    {
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=dd20",
+      "sharpe": 0.415
+    },
+    {
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=dd10",
+      "sharpe": 0.415
+    },
+    {
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.6,hedge=ratio",
+      "sharpe": 0.415
+    },
+    {
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=vt20",
+      "sharpe": 0.415
+    },
+    {
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=vt15",
+      "sharpe": 0.415
+    },
+    {
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=vt10",
+      "sharpe": 0.406
+    },
+    {
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=dd20",
+      "sharpe": 0.381
+    },
+    {
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=vt20",
+      "sharpe": 0.381
+    },
+    {
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=vt15",
+      "sharpe": 0.381
+    },
+    {
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.6,hedge=ratio",
+      "sharpe": 0.381
+    },
+    {
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=vt10",
+      "sharpe": 0.374
+    },
+    {
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.8,hedge=ratio",
+      "sharpe": 0.369
+    },
+    {
+      "variant": "pairs_zscore|form=126,entry_z=1.5,min_corr=0.6,hedge=ratio",
+      "sharpe": 0.362
+    },
+    {
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=dd10",
+      "sharpe": 0.362
+    },
+    {
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.8,hedge=ratio",
+      "sharpe": 0.332
+    }
+  ],
+  "oos": {
+    "start": "2014-01-13 00:00:00",
+    "end": "2026-10-16 00:00:00",
+    "years": 12.76,
+    "cagr": 0.0018,
+    "vol": 0.0325,
+    "sharpe": 0.07,
+    "sharpe_excess_rf": -0.511,
+    "sortino": -0.734,
+    "max_dd": -0.105,
+    "max_dd_bars": 2575,
+    "calmar": 0.017,
+    "ulcer": 0.0361,
+    "var95": -0.0027,
+    "cvar95": -0.005,
+    "omega": 1.02,
+    "tail_ratio": 0.952,
+    "skew": 1.376,
+    "kurtosis": 34.541,
+    "hit_rate": 0.287,
+    "psr": 0.6,
+    "time_in_market": null,
+    "turnover_ann": 6.56,
+    "bench_cagr": 0.0974,
+    "bench_sharpe": 0.502,
+    "info_ratio": -0.479,
+    "beta": -0.019,
+    "up_capture": -0.012,
+    "down_capture": -0.015
+  },
+  "oos_usd": null,
+  "gate_sharpe": -0.511,
+  "gate_sharpe_basis": "excess of T-bill",
+  "dsr": 0.1,
+  "pbo": 0.753,
+  "reality_check_p": 0.88,
+  "benchmark": {
+    "start": "2014-01-13 00:00:00",
+    "end": "2026-10-16 00:00:00",
+    "years": 12.76,
+    "cagr": 0.0974,
+    "vol": 0.2457,
+    "sharpe": 0.502,
+    "sharpe_excess_rf": null,
+    "sortino": 0.702,
+    "max_dd": -0.4505,
+    "max_dd_bars": 890,
+    "calmar": 0.216,
+    "ulcer": 0.1685,
+    "var95": -0.0236,
+    "cvar95": -0.0363,
+    "omega": 1.091,
+    "tail_ratio": 1.022,
+    "skew": -0.479,
+    "kurtosis": 5.437,
+    "hit_rate": 0.523,
+    "psr": 0.962,
+    "time_in_market": null
+  },
+  "stress_2x_cost": {
+    "sharpe": -0.031
+  },
+  "bootstrap": {
+    "p_sharpe_pos": 0.625,
+    "cagr_p05": -0.0116,
+    "maxdd_p05": -0.1975
+  },
+  "yearly_sharpe": {
+    "2014": -0.53,
+    "2015": 0.06,
+    "2016": -1.66,
+    "2017": 1.69,
+    "2018": -1.1,
+    "2019": -0.01,
+    "2020": 0.66,
+    "2021": -0.2,
+    "2022": 0.25,
+    "2023": 1.05,
+    "2024": 1.45,
+    "2025": -0.78,
+    "2026": 0.5
+  },
+  "regimes": {
+    "bull": {
+      "sharpe": 0.04,
+      "ann_ret": 0.0014,
+      "bars": 2038
+    },
+    "bear": {
+      "sharpe": 0.19,
+      "ann_ret": 0.0039,
+      "bars": 1172
+    },
+    "calm": {
+      "sharpe": -0.27,
+      "ann_ret": -0.0065,
+      "bars": 1701
+    },
+    "stressed": {
+      "sharpe": 0.31,
+      "ann_ret": 0.0122,
+      "bars": 1509
+    },
+    "vix_lt_20": {
+      "sharpe": -0.1,
+      "ann_ret": -0.0031,
+      "bars": 2335
+    },
+    "vix_20_30": {
+      "sharpe": 0.77,
+      "ann_ret": 0.0249,
+      "bars": 717
+    },
+    "vix_ge_30": {
+      "sharpe": -0.49,
+      "ann_ret": -0.0203,
+      "bars": 158
+    },
+    "curve_inverted": {
+      "sharpe": 0.6,
+      "ann_ret": 0.0206,
+      "bars": 614
+    },
+    "curve_normal": {
+      "sharpe": -0.06,
+      "ann_ret": -0.002,
+      "bars": 2596
+    }
+  },
+  "calendar": {
+    "weekday": {
+      "0": 6e-05,
+      "1": -0.00012,
+      "2": 4e-05,
+      "3": -4e-05,
+      "4": 0.00011
+    },
+    "month": {
+      "1": 8e-05,
+      "2": -0.00019,
+      "3": 0.00023,
+      "4": 8e-05,
+      "5": -5e-05,
+      "6": -0.00011,
+      "7": 3e-05,
+      "8": -9e-05,
+      "9": 3e-05,
+      "10": 8e-05,
+      "11": 9e-05,
+      "12": -8e-05
+    }
+  },
+  "trade_stats": null,
+  "walk_forward": [
+    {
+      "test_start": "2014-01-13 00:00:00",
+      "test_end": "2014-07-11 00:00:00",
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.8,hedge=ratio",
+      "is_sharpe": 0.867,
+      "oos_sharpe": -1.032
+    },
+    {
+      "test_start": "2014-07-14 00:00:00",
+      "test_end": "2015-01-08 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=2.5,min_corr=0.8,hedge=ratio",
+      "is_sharpe": 1.001,
+      "oos_sharpe": 0.979
+    },
+    {
+      "test_start": "2015-01-09 00:00:00",
+      "test_end": "2015-07-09 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=2.5,min_corr=0.8,hedge=ratio",
+      "is_sharpe": 0.927,
+      "oos_sharpe": 0.161
+    },
+    {
+      "test_start": "2015-07-10 00:00:00",
+      "test_end": "2016-01-06 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.8,hedge=ratio",
+      "is_sharpe": 1.039,
+      "oos_sharpe": -0.716
+    },
+    {
+      "test_start": "2016-01-07 00:00:00",
+      "test_end": "2016-07-06 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.8,hedge=ratio",
+      "is_sharpe": 1.177,
+      "oos_sharpe": -2.775
+    },
+    {
+      "test_start": "2016-07-07 00:00:00",
+      "test_end": "2017-01-03 00:00:00",
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=eqma_s",
+      "is_sharpe": 0.969,
+      "oos_sharpe": 1.276
+    },
+    {
+      "test_start": "2017-01-04 00:00:00",
+      "test_end": "2017-07-03 00:00:00",
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=eqma_s",
+      "is_sharpe": 0.675,
+      "oos_sharpe": 0.293
+    },
+    {
+      "test_start": "2017-07-05 00:00:00",
+      "test_end": "2017-12-29 00:00:00",
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=eqma_s",
+      "is_sharpe": 0.754,
+      "oos_sharpe": 2.921
+    },
+    {
+      "test_start": "2018-01-02 00:00:00",
+      "test_end": "2018-06-29 00:00:00",
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=eqma_s",
+      "is_sharpe": 0.922,
+      "oos_sharpe": -1.042
+    },
+    {
+      "test_start": "2018-07-02 00:00:00",
+      "test_end": "2018-12-28 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=1.5,min_corr=0.6,hedge=ratio",
+      "is_sharpe": 0.606,
+      "oos_sharpe": -1.313
+    },
+    {
+      "test_start": "2018-12-31 00:00:00",
+      "test_end": "2019-06-28 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=2.5,min_corr=0.6,hedge=ols",
+      "is_sharpe": 0.642,
+      "oos_sharpe": 0.0
+    },
+    {
+      "test_start": "2019-07-01 00:00:00",
+      "test_end": "2019-12-26 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=eqma_l",
+      "is_sharpe": 0.864,
+      "oos_sharpe": 0.133
+    },
+    {
+      "test_start": "2019-12-27 00:00:00",
+      "test_end": "2020-06-25 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=eqma_l",
+      "is_sharpe": 0.604,
+      "oos_sharpe": 0.843
+    },
+    {
+      "test_start": "2020-06-26 00:00:00",
+      "test_end": "2020-12-22 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=2.5,min_corr=0.6,hedge=ols",
+      "is_sharpe": 0.568,
+      "oos_sharpe": 0.0
+    },
+    {
+      "test_start": "2020-12-23 00:00:00",
+      "test_end": "2021-06-23 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.6,hedge=ols",
+      "is_sharpe": 0.704,
+      "oos_sharpe": -0.281
+    },
+    {
+      "test_start": "2021-06-24 00:00:00",
+      "test_end": "2021-12-20 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.6,hedge=ols",
+      "is_sharpe": 0.696,
+      "oos_sharpe": 0.0
+    },
+    {
+      "test_start": "2021-12-21 00:00:00",
+      "test_end": "2022-06-21 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.6,hedge=ols",
+      "is_sharpe": 0.696,
+      "oos_sharpe": -0.256
+    },
+    {
+      "test_start": "2022-06-22 00:00:00",
+      "test_end": "2022-12-16 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=2.0,min_corr=0.8,hedge=ratio",
+      "is_sharpe": 0.598,
+      "oos_sharpe": 0.315
+    },
+    {
+      "test_start": "2022-12-19 00:00:00",
+      "test_end": "2023-06-20 00:00:00",
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.6,hedge=ratio|overlay=eqma_l",
+      "is_sharpe": 0.795,
+      "oos_sharpe": 0.308
+    },
+    {
+      "test_start": "2023-06-21 00:00:00",
+      "test_end": "2023-12-15 00:00:00",
+      "variant": "pairs_zscore|form=252,entry_z=1.5,min_corr=0.6,hedge=ratio",
+      "is_sharpe": 1.082,
+      "oos_sharpe": 1.98
+    },
+    {
+      "test_start": "2023-12-18 00:00:00",
+      "test_end": "2024-06-17 00:00:00",
+      "variant": "pairs_zscore|form=252,entry_z=1.5,min_corr=0.6,hedge=ratio",
+      "is_sharpe": 1.642,
+      "oos_sharpe": 0.645
+    },
+    {
+      "test_start": "2024-06-18 00:00:00",
+      "test_end": "2024-12-13 00:00:00",
+      "variant": "pairs_zscore|form=252,entry_z=1.5,min_corr=0.6,hedge=ratio",
+      "is_sharpe": 1.411,
+      "oos_sharpe": 2.015
+    },
+    {
+      "test_start": "2024-12-16 00:00:00",
+      "test_end": "2025-06-17 00:00:00",
+      "variant": "pairs_zscore|form=252,entry_z=1.5,min_corr=0.6,hedge=ratio",
+      "is_sharpe": 1.669,
+      "oos_sharpe": -0.201
+    },
+    {
+      "test_start": "2025-06-18 00:00:00",
+      "test_end": "2025-12-15 00:00:00",
+      "variant": "pairs_zscore|form=252,entry_z=1.5,min_corr=0.6,hedge=ratio",
+      "is_sharpe": 1.152,
+      "oos_sharpe": -0.803
+    },
+    {
+      "test_start": "2025-12-16 00:00:00",
+      "test_end": "2026-06-16 00:00:00",
+      "variant": "pairs_zscore|form=126,entry_z=1.5,min_corr=0.6,hedge=ratio",
+      "is_sharpe": 0.818,
+      "oos_sharpe": -0.035
+    },
+    {
+      "test_start": "2026-06-17 00:00:00",
+      "test_end": "2026-10-16 00:00:00",
+      "variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.8,hedge=ratio",
+      "is_sharpe": 0.964,
+      "oos_sharpe": 0.733
+    }
+  ],
+  "wf_efficiency": 0.077,
+  "final_variant": "pairs_zscore|form=252,entry_z=2.0,min_corr=0.8,hedge=ratio",
+  "final_params": {
+    "form": 252,
+    "entry_z": 2.0,
+    "min_corr": 0.8,
+    "hedge": "ratio"
+  },
+  "robustness": {
+    "delay": {
+      "sharpe": 0.349,
+      "sharpe_delayed_1bar": 0.342,
+      "retained": 0.982
+    },
+    "neighbourhood": {
+      "neighbours": 4,
+      "best_sharpe": 0.332,
+      "neighbour_median": 0.29,
+      "share_positive": 1.0,
+      "stability": 0.874
+    },
+    "noise": {
+      "noise_bp": 0.002,
+      "sharpe_min": 0.226,
+      "sharpe_median": 0.396
+    }
+  },
+  "studies": {
+    "overlays": {
+      "none": {
+        "sharpe": 0.07,
+        "cagr": 0.0018,
+        "max_dd": -0.105
+      },
+      "vol_target_0.1": {
+        "sharpe": 0.01,
+        "cagr": -0.0009,
+        "max_dd": -0.1744
+      },
+      "vol_target_0.15": {
+        "sharpe": 0.024,
+        "cagr": -0.0004,
+        "max_dd": -0.1924
+      },
+      "vol_target_0.2": {
+        "sharpe": 0.058,
+        "cagr": 0.0017,
+        "max_dd": -0.2027
+      },
+      "dd_brake_0.1": {
+        "sharpe": 0.064,
+        "cagr": 0.0015,
+        "max_dd": -0.1032
+      },
+      "dd_brake_0.2": {
+        "sharpe": 0.07,
+        "cagr": 0.0018,
+        "max_dd": -0.105
+      },
+      "equity_ma_41": {
+        "sharpe": -0.269,
+        "cagr": -0.0054,
+        "max_dd": -0.1151
+      },
+      "equity_ma_125": {
+        "sharpe": -0.153,
+        "cagr": -0.0034,
+        "max_dd": -0.098
+      },
+      "best_by_calmar": "none"
+    }
+  },
+  "verdict": "REJECT",
+  "reasons": [
+    "DSR 0.1 < 0.9 (luck not excluded after 38 trials)",
+    "OOS Sharpe (excess of T-bill) -0.511 < 0.5",
+    "bootstrap P(SR>0) 0.625 < 0.85",
+    "only 54% of OOS years positive",
+    "with 2x costs it does not beat the equal-weight benchmark",
+    "PBO 0.753 > 0.5 (variant selection is overfit)",
+    "Reality Check p 0.88 > 0.1 (best variant may be data-mined)"
+  ],
+  "targets": {
+    "SLV": 0.05,
+    "PALL": 0.05,
+    "SIL": 0.05,
+    "GDX": -0.05,
+    "PPLT": -0.1
+  }
+}
