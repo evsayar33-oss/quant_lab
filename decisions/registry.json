@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-04T23:58:03+00:00",
+  "updated": "2026-11-05T23:52:15+00:00",
   "hypotheses": {
     "H001": {
       "verdict": "WATCH",
@@ -8193,7 +8193,7 @@
       "previous_verdict": null,
       "reasons": [
         "all gate checks passed",
-        "live tracking: CUSUM: live returns persistently below backtest (stat -7.2 sd)"
+        "live tracking: CUSUM: live returns persistently below backtest (stat -9.5 sd)"
       ],
       "strategy": "core_dual_trend_vt",
       "kind": "strategy",
@@ -8312,13 +8312,13 @@
       "accepted_at": "2026-10-17T17:53:48+00:00",
       "data_end": "2026-10-17 12:00:00",
       "live": {
-        "live_bars": 108,
-        "live_return": -0.0167,
-        "live_sharpe": -0.722,
-        "live_max_dd": -0.0966,
+        "live_bars": 114,
+        "live_return": -0.0629,
+        "live_sharpe": -2.616,
+        "live_max_dd": -0.0972,
         "degraded": true,
-        "why": "CUSUM: live returns persistently below backtest (stat -7.2 sd)",
-        "checked_at": "2026-11-04T23:57:59+00:00"
+        "why": "CUSUM: live returns persistently below backtest (stat -9.5 sd)",
+        "checked_at": "2026-11-05T23:52:11+00:00"
       }
     },
     "H053": {
@@ -8449,7 +8449,7 @@
       "previous_verdict": null,
       "reasons": [
         "all gate checks passed",
-        "live tracking: CUSUM: live returns persistently below backtest (stat -7.4 sd)"
+        "live tracking: CUSUM: live returns persistently below backtest (stat -9.7 sd)"
       ],
       "strategy": "core_dual_trend_vt_band",
       "kind": "strategy",
@@ -8568,13 +8568,13 @@
       "accepted_at": "2026-10-17T18:34:11+00:00",
       "data_end": "2026-10-17 12:00:00",
       "live": {
-        "live_bars": 108,
-        "live_return": -0.0195,
-        "live_sharpe": -0.831,
-        "live_max_dd": -0.1006,
+        "live_bars": 114,
+        "live_return": -0.0673,
+        "live_sharpe": -2.709,
+        "live_max_dd": -0.1027,
         "degraded": true,
-        "why": "CUSUM: live returns persistently below backtest (stat -7.4 sd)",
-        "checked_at": "2026-11-04T23:57:59+00:00"
+        "why": "CUSUM: live returns persistently below backtest (stat -9.7 sd)",
+        "checked_at": "2026-11-05T23:52:11+00:00"
       }
     },
     "H063": {
