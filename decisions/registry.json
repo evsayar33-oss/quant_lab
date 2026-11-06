@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-05T23:52:15+00:00",
+  "updated": "2026-11-06T23:33:54+00:00",
   "hypotheses": {
     "H001": {
       "verdict": "WATCH",
@@ -8312,13 +8312,13 @@
       "accepted_at": "2026-10-17T17:53:48+00:00",
       "data_end": "2026-10-17 12:00:00",
       "live": {
-        "live_bars": 114,
-        "live_return": -0.0629,
-        "live_sharpe": -2.616,
-        "live_max_dd": -0.0972,
+        "live_bars": 120,
+        "live_return": -0.0698,
+        "live_sharpe": -2.85,
+        "live_max_dd": -0.1033,
         "degraded": true,
         "why": "CUSUM: live returns persistently below backtest (stat -9.5 sd)",
-        "checked_at": "2026-11-05T23:52:11+00:00"
+        "checked_at": "2026-11-06T23:33:50+00:00"
       }
     },
     "H053": {
@@ -8568,13 +8568,13 @@
       "accepted_at": "2026-10-17T18:34:11+00:00",
       "data_end": "2026-10-17 12:00:00",
       "live": {
-        "live_bars": 114,
-        "live_return": -0.0673,
-        "live_sharpe": -2.709,
-        "live_max_dd": -0.1027,
+        "live_bars": 120,
+        "live_return": -0.0742,
+        "live_sharpe": -2.931,
+        "live_max_dd": -0.1088,
         "degraded": true,
         "why": "CUSUM: live returns persistently below backtest (stat -9.7 sd)",
-        "checked_at": "2026-11-05T23:52:11+00:00"
+        "checked_at": "2026-11-06T23:33:50+00:00"
       }
     },
     "H063": {
