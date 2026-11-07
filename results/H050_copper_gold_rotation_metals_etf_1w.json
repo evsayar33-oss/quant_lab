@@ -1,0 +1,528 @@
+{
+  "name": "copper_gold_rotation",
+  "kind": "strategy",
+  "source": "Copper/gold ratio as growth signal (risk-on industrial vs safe-haven gold)",
+  "timeframe": "1w",
+  "bars_per_year": 52.2,
+  "n_assets": 8,
+  "data_start": "2008-01-04 00:00:00",
+  "data_end": "2026-10-16 00:00:00",
+  "costs": {
+    "commission": 0.0002,
+    "slippage": 0.0003,
+    "funding_annual": 0.0,
+    "borrow_annual": 0.0
+  },
+  "survivorship_mask": false,
+  "n_trials": 17,
+  "train_years": 3.0,
+  "test_months": 6,
+  "failed_variants": 0,
+  "full_sample_top": [
+    {
+      "variant": "copper_gold_rotation|n=100|overlay=dd10",
+      "sharpe": 0.444
+    },
+    {
+      "variant": "copper_gold_rotation|n=50|overlay=dd10",
+      "sharpe": 0.419
+    },
+    {
+      "variant": "copper_gold_rotation|n=100",
+      "sharpe": 0.407
+    },
+    {
+      "variant": "copper_gold_rotation|n=50",
+      "sharpe": 0.406
+    },
+    {
+      "variant": "copper_gold_rotation|n=50|overlay=dd20",
+      "sharpe": 0.406
+    },
+    {
+      "variant": "copper_gold_rotation|n=100|overlay=dd20",
+      "sharpe": 0.362
+    },
+    {
+      "variant": "copper_gold_rotation|n=50|overlay=eqma_s",
+      "sharpe": 0.335
+    },
+    {
+      "variant": "copper_gold_rotation|n=100|overlay=eqma_s",
+      "sharpe": 0.328
+    },
+    {
+      "variant": "copper_gold_rotation|n=100|overlay=vt20",
+      "sharpe": 0.322
+    },
+    {
+      "variant": "copper_gold_rotation|n=50|overlay=eqma_l",
+      "sharpe": 0.302
+    },
+    {
+      "variant": "copper_gold_rotation|n=50|overlay=vt20",
+      "sharpe": 0.3
+    },
+    {
+      "variant": "copper_gold_rotation|n=100|overlay=vt15",
+      "sharpe": 0.298
+    },
+    {
+      "variant": "copper_gold_rotation|n=100|overlay=eqma_l",
+      "sharpe": 0.296
+    },
+    {
+      "variant": "copper_gold_rotation|n=200",
+      "sharpe": 0.288
+    },
+    {
+      "variant": "copper_gold_rotation|n=100|overlay=vt10",
+      "sharpe": 0.286
+    }
+  ],
+  "oos": {
+    "start": "2012-01-06 00:00:00",
+    "end": "2026-10-16 00:00:00",
+    "years": 14.78,
+    "cagr": 0.0516,
+    "vol": 0.219,
+    "sharpe": 0.34,
+    "sharpe_excess_rf": 0.266,
+    "sortino": 0.385,
+    "max_dd": -0.4708,
+    "max_dd_bars": 406,
+    "calmar": 0.11,
+    "ulcer": 0.2644,
+    "var95": -0.0472,
+    "cvar95": -0.0667,
+    "omega": 1.154,
+    "tail_ratio": 1.067,
+    "skew": -0.238,
+    "kurtosis": 5.501,
+    "hit_rate": 0.409,
+    "psr": 0.903,
+    "time_in_market": null,
+    "turnover_ann": 10.69,
+    "bench_cagr": 0.0622,
+    "bench_sharpe": 0.373,
+    "info_ratio": -0.102,
+    "beta": 0.756,
+    "up_capture": 0.756,
+    "down_capture": 0.744
+  },
+  "oos_usd": null,
+  "gate_sharpe": 0.266,
+  "gate_sharpe_basis": "excess of T-bill",
+  "dsr": 0.816,
+  "pbo": 0.657,
+  "reality_check_p": 0.904,
+  "benchmark": {
+    "start": "2012-01-06 00:00:00",
+    "end": "2026-10-16 00:00:00",
+    "years": 14.78,
+    "cagr": 0.0622,
+    "vol": 0.2372,
+    "sharpe": 0.373,
+    "sharpe_excess_rf": null,
+    "sortino": 0.549,
+    "max_dd": -0.5979,
+    "max_dd_bars": 440,
+    "calmar": 0.104,
+    "ulcer": 0.2771,
+    "var95": -0.0469,
+    "cvar95": -0.0697,
+    "omega": 1.149,
+    "tail_ratio": 1.155,
+    "skew": -0.103,
+    "kurtosis": 3.158,
+    "hit_rate": 0.516,
+    "psr": 0.923,
+    "time_in_market": null
+  },
+  "stress_2x_cost": {
+    "sharpe": 0.316
+  },
+  "bootstrap": {
+    "p_sharpe_pos": 0.92,
+    "cagr_p05": -0.0369,
+    "maxdd_p05": -0.7363
+  },
+  "yearly_sharpe": {
+    "2012": -0.17,
+    "2013": -2.21,
+    "2014": 0.06,
+    "2015": 0.12,
+    "2016": 1.34,
+    "2017": 0.2,
+    "2018": -0.81,
+    "2019": 0.98,
+    "2020": 1.31,
+    "2021": 0.1,
+    "2022": -0.43,
+    "2023": -0.02,
+    "2024": 1.19,
+    "2025": 2.45,
+    "2026": -0.4
+  },
+  "regimes": {
+    "bull": {
+      "sharpe": 1.15,
+      "ann_ret": 0.2755,
+      "bars": 446
+    },
+    "bear": {
+      "sharpe": -1.12,
+      "ann_ret": -0.2005,
+      "bars": 326
+    },
+    "calm": {
+      "sharpe": -0.13,
+      "ann_ret": -0.0213,
+      "bars": 399
+    },
+    "stressed": {
+      "sharpe": 0.68,
+      "ann_ret": 0.177,
+      "bars": 373
+    },
+    "vix_lt_20": {
+      "sharpe": 0.42,
+      "ann_ret": 0.0756,
+      "bars": 579
+    },
+    "vix_20_30": {
+      "sharpe": 0.06,
+      "ann_ret": 0.0144,
+      "bars": 163
+    },
+    "curve_inverted": {
+      "sharpe": 0.73,
+      "ann_ret": 0.1441,
+      "bars": 125
+    },
+    "curve_normal": {
+      "sharpe": 0.27,
+      "ann_ret": 0.0611,
+      "bars": 647
+    }
+  },
+  "calendar": {
+    "weekday": {
+      "4": 0.00143
+    },
+    "month": {
+      "1": 0.00561,
+      "2": 0.00475,
+      "3": -0.00222,
+      "4": 0.00647,
+      "5": -0.00424,
+      "6": -0.00299,
+      "7": 0.00362,
+      "8": 0.00262,
+      "9": -0.00277,
+      "10": 0.00057,
+      "11": 0.00121,
+      "12": 0.00513
+    }
+  },
+  "trade_stats": null,
+  "walk_forward": [
+    {
+      "test_start": "2012-01-06 00:00:00",
+      "test_end": "2012-06-29 00:00:00",
+      "variant": "copper_gold_rotation|n=100|overlay=vt20",
+      "is_sharpe": 1.238,
+      "oos_sharpe": -0.728
+    },
+    {
+      "test_start": "2012-07-06 00:00:00",
+      "test_end": "2012-12-28 00:00:00",
+      "variant": "copper_gold_rotation|n=100",
+      "is_sharpe": 1.053,
+      "oos_sharpe": 0.38
+    },
+    {
+      "test_start": "2013-01-04 00:00:00",
+      "test_end": "2013-06-28 00:00:00",
+      "variant": "copper_gold_rotation|n=100",
+      "is_sharpe": 0.912,
+      "oos_sharpe": -3.912
+    },
+    {
+      "test_start": "2013-07-05 00:00:00",
+      "test_end": "2013-12-27 00:00:00",
+      "variant": "copper_gold_rotation|n=100|overlay=eqma_s",
+      "is_sharpe": 0.622,
+      "oos_sharpe": 0.162
+    },
+    {
+      "test_start": "2014-01-03 00:00:00",
+      "test_end": "2014-06-27 00:00:00",
+      "variant": "copper_gold_rotation|n=100|overlay=eqma_s",
+      "is_sharpe": -0.137,
+      "oos_sharpe": 0.188
+    },
+    {
+      "test_start": "2014-07-04 00:00:00",
+      "test_end": "2014-12-26 00:00:00",
+      "variant": "copper_gold_rotation|n=50|overlay=eqma_s",
+      "is_sharpe": 0.104,
+      "oos_sharpe": -0.306
+    },
+    {
+      "test_start": "2015-01-02 00:00:00",
+      "test_end": "2015-06-26 00:00:00",
+      "variant": "copper_gold_rotation|n=50|overlay=eqma_s",
+      "is_sharpe": 0.231,
+      "oos_sharpe": 0.56
+    },
+    {
+      "test_start": "2015-07-03 00:00:00",
+      "test_end": "2015-12-25 00:00:00",
+      "variant": "copper_gold_rotation|n=50|overlay=eqma_s",
+      "is_sharpe": 0.532,
+      "oos_sharpe": -0.351
+    },
+    {
+      "test_start": "2016-01-01 00:00:00",
+      "test_end": "2016-06-24 00:00:00",
+      "variant": "copper_gold_rotation|n=50|overlay=eqma_s",
+      "is_sharpe": 0.21,
+      "oos_sharpe": 1.709
+    },
+    {
+      "test_start": "2016-07-01 00:00:00",
+      "test_end": "2016-12-23 00:00:00",
+      "variant": "copper_gold_rotation|n=50|overlay=eqma_s",
+      "is_sharpe": 0.69,
+      "oos_sharpe": 0.856
+    },
+    {
+      "test_start": "2016-12-30 00:00:00",
+      "test_end": "2017-06-23 00:00:00",
+      "variant": "copper_gold_rotation|n=50|overlay=eqma_s",
+      "is_sharpe": 0.781,
+      "oos_sharpe": 0.298
+    },
+    {
+      "test_start": "2017-06-30 00:00:00",
+      "test_end": "2017-12-22 00:00:00",
+      "variant": "copper_gold_rotation|n=50|overlay=eqma_s",
+      "is_sharpe": 0.682,
+      "oos_sharpe": -0.3
+    },
+    {
+      "test_start": "2017-12-29 00:00:00",
+      "test_end": "2018-06-22 00:00:00",
+      "variant": "copper_gold_rotation|n=50",
+      "is_sharpe": 0.649,
+      "oos_sharpe": -0.745
+    },
+    {
+      "test_start": "2018-06-29 00:00:00",
+      "test_end": "2018-12-21 00:00:00",
+      "variant": "copper_gold_rotation|n=50",
+      "is_sharpe": 0.572,
+      "oos_sharpe": -0.706
+    },
+    {
+      "test_start": "2018-12-28 00:00:00",
+      "test_end": "2019-06-21 00:00:00",
+      "variant": "copper_gold_rotation|n=50",
+      "is_sharpe": 0.753,
+      "oos_sharpe": 1.795
+    },
+    {
+      "test_start": "2019-06-28 00:00:00",
+      "test_end": "2019-12-20 00:00:00",
+      "variant": "copper_gold_rotation|n=50|overlay=eqma_s",
+      "is_sharpe": 0.451,
+      "oos_sharpe": -0.25
+    },
+    {
+      "test_start": "2019-12-27 00:00:00",
+      "test_end": "2020-06-19 00:00:00",
+      "variant": "copper_gold_rotation|n=50",
+      "is_sharpe": 0.634,
+      "oos_sharpe": 1.14
+    },
+    {
+      "test_start": "2020-06-26 00:00:00",
+      "test_end": "2020-12-18 00:00:00",
+      "variant": "copper_gold_rotation|n=50",
+      "is_sharpe": 0.661,
+      "oos_sharpe": 2.19
+    },
+    {
+      "test_start": "2020-12-25 00:00:00",
+      "test_end": "2021-06-18 00:00:00",
+      "variant": "copper_gold_rotation|n=50|overlay=dd20",
+      "is_sharpe": 0.913,
+      "oos_sharpe": 0.647
+    },
+    {
+      "test_start": "2021-06-25 00:00:00",
+      "test_end": "2021-12-17 00:00:00",
+      "variant": "copper_gold_rotation|n=50|overlay=dd20",
+      "is_sharpe": 1.001,
+      "oos_sharpe": -0.793
+    },
+    {
+      "test_start": "2021-12-24 00:00:00",
+      "test_end": "2022-06-17 00:00:00",
+      "variant": "copper_gold_rotation|n=50",
+      "is_sharpe": 0.905,
+      "oos_sharpe": -0.462
+    },
+    {
+      "test_start": "2022-06-24 00:00:00",
+      "test_end": "2022-12-16 00:00:00",
+      "variant": "copper_gold_rotation|n=50",
+      "is_sharpe": 0.639,
+      "oos_sharpe": -0.196
+    },
+    {
+      "test_start": "2022-12-23 00:00:00",
+      "test_end": "2023-06-16 00:00:00",
+      "variant": "copper_gold_rotation|n=50",
+      "is_sharpe": 0.508,
+      "oos_sharpe": 0.11
+    },
+    {
+      "test_start": "2023-06-23 00:00:00",
+      "test_end": "2023-12-15 00:00:00",
+      "variant": "copper_gold_rotation|n=50|overlay=eqma_l",
+      "is_sharpe": 0.476,
+      "oos_sharpe": -0.252
+    },
+    {
+      "test_start": "2023-12-22 00:00:00",
+      "test_end": "2024-06-14 00:00:00",
+      "variant": "copper_gold_rotation|n=100|overlay=eqma_s",
+      "is_sharpe": 0.18,
+      "oos_sharpe": 1.968
+    },
+    {
+      "test_start": "2024-06-21 00:00:00",
+      "test_end": "2024-12-13 00:00:00",
+      "variant": "copper_gold_rotation|n=100|overlay=eqma_s",
+      "is_sharpe": 0.252,
+      "oos_sharpe": 0.461
+    },
+    {
+      "test_start": "2024-12-20 00:00:00",
+      "test_end": "2025-06-13 00:00:00",
+      "variant": "copper_gold_rotation|n=100|overlay=eqma_s",
+      "is_sharpe": 0.564,
+      "oos_sharpe": 2.126
+    },
+    {
+      "test_start": "2025-06-20 00:00:00",
+      "test_end": "2025-12-12 00:00:00",
+      "variant": "copper_gold_rotation|n=100|overlay=dd20",
+      "is_sharpe": 1.024,
+      "oos_sharpe": 2.27
+    },
+    {
+      "test_start": "2025-12-19 00:00:00",
+      "test_end": "2026-06-12 00:00:00",
+      "variant": "copper_gold_rotation|n=200",
+      "is_sharpe": 1.419,
+      "oos_sharpe": 0.036
+    },
+    {
+      "test_start": "2026-06-19 00:00:00",
+      "test_end": "2026-10-16 00:00:00",
+      "variant": "copper_gold_rotation|n=100|overlay=vt20",
+      "is_sharpe": 1.257,
+      "oos_sharpe": -0.845
+    }
+  ],
+  "wf_efficiency": 0.516,
+  "final_variant": "copper_gold_rotation|n=100|overlay=vt20",
+  "final_params": {
+    "n": 100,
+    "_overlay": "vt20"
+  },
+  "robustness": {
+    "delay": {
+      "sharpe": 0.322,
+      "sharpe_delayed_1bar": 0.323,
+      "retained": 1.002
+    },
+    "neighbourhood": {
+      "neighbours": 1,
+      "best_sharpe": 0.322,
+      "neighbour_median": 0.3,
+      "share_positive": 1.0,
+      "stability": 0.933
+    },
+    "noise": {
+      "noise_bp": 0.002,
+      "sharpe_min": 0.312,
+      "sharpe_median": 0.32
+    }
+  },
+  "studies": {
+    "overlays": {
+      "none": {
+        "sharpe": 0.34,
+        "cagr": 0.0516,
+        "max_dd": -0.4708
+      },
+      "vol_target_0.1": {
+        "sharpe": 0.314,
+        "cagr": 0.0326,
+        "max_dd": -0.2733
+      },
+      "vol_target_0.15": {
+        "sharpe": 0.319,
+        "cagr": 0.0421,
+        "max_dd": -0.3832
+      },
+      "vol_target_0.2": {
+        "sharpe": 0.32,
+        "cagr": 0.0485,
+        "max_dd": -0.4853
+      },
+      "dd_brake_0.1": {
+        "sharpe": 0.385,
+        "cagr": 0.0471,
+        "max_dd": -0.3422
+      },
+      "dd_brake_0.2": {
+        "sharpe": 0.235,
+        "cagr": 0.0261,
+        "max_dd": -0.4176
+      },
+      "equity_ma_8": {
+        "sharpe": 0.24,
+        "cagr": 0.0261,
+        "max_dd": -0.2999
+      },
+      "equity_ma_26": {
+        "sharpe": 0.295,
+        "cagr": 0.0361,
+        "max_dd": -0.3667
+      },
+      "best_by_calmar": "dd_brake_0.1"
+    }
+  },
+  "verdict": "WATCH",
+  "reasons": [
+    "DSR 0.816 < 0.9 (luck not excluded after 17 trials)",
+    "OOS Sharpe (excess of T-bill) 0.266 < 0.5",
+    "OOS MaxDD -0.4708 worse than -0.45 (local or USD)",
+    "with 2x costs it does not beat the equal-weight benchmark",
+    "PBO 0.657 > 0.5 (variant selection is overfit)",
+    "Reality Check p 0.904 > 0.1 (best variant may be data-mined)"
+  ],
+  "targets": {
+    "SLV": 0.1149,
+    "CPER": 0.1149,
+    "PPLT": 0.1149,
+    "PALL": 0.1149,
+    "SIL": 0.1149,
+    "COPX": 0.1149
+  }
+}
